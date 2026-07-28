@@ -1,0 +1,21 @@
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Crash dumps
+*.dmp
+
+# Temporary files
+*.tmp
+*.bak
+*.old
+*.orig
+
+# VS Code local state
+.vscode/*.code-snippets
+
+# PowerShell
+*.psd1.cache

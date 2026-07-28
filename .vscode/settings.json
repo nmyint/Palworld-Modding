@@ -1,0 +1,19 @@
+{
+    "powershell.powerShellDefaultVersion": "PowerShell (x64)",
+    "editor.formatOnSave": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.eol": "\n",
+    "editor.rulers": [
+        100
+    ],
+    "editor.renderWhitespace": "selection",
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "[powershell]": {
+        "editor.defaultFormatter": "ms-vscode.powershell"
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "git.autofetch": true,
+    "git.confirmSync": false
+}

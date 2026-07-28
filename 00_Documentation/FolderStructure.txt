@@ -1,0 +1,20 @@
+Folder PATH listing for volume Data
+Volume serial number is 000000AD 34A6:06E2
+D:.
+|   .gitattributes
+|   .gitignore
+|   
++---00_Documentation
+|       FolderStructure.txt
+|       
++---01_Game
++---02_Mod_Archives
++---03Current_Installation
++---04_Working
++---05_Custom_Patches
++---06_Testing
++---07_Logs
++---08_Tools
++---09_Backups
++---10_Scripts
+\---11_Utilities

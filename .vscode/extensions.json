@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "ms-vscode.powershell",
+        "eamodio.gitlens",
+        "yzhang.markdown-all-in-one",
+        "sumneko.lua",
+        "gruntfuggly.todo-tree",
+        "aaron-bond.better-comments",
+        "usernamehw.errorlens",
+        "editorconfig.editorconfig"
+    ]
+}
