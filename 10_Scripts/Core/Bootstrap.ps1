@@ -14,11 +14,11 @@ function Initialize-PwWorkshop {
     [CmdletBinding()]
     param()
 
-    $root       = Get-PwWorkshopRoot
+    $root = Get-PwWorkshopRoot
     $configPath = Get-PwWorkshopConfigPath
-    $config     = Get-PwWorkshopConfig
+    $config = Get-PwWorkshopConfig
 
-    [PSCustomObject]@{
+    $script:PwContext = [PSCustomObject]@{
 
         WorkshopRoot = $root
 
@@ -30,6 +30,7 @@ function Initialize-PwWorkshop {
 
     }
 
+    return $script:PwContext
 }
 
 function Get-PwContext {
@@ -37,14 +38,11 @@ function Get-PwContext {
     [CmdletBinding()]
     param()
 
-    if (-not $script:PwContext) {
-
-        $script:PwContext = Initialize-PwWorkshop
-
+    if (-not (Get-Variable -Name PwContext -Scope Script -ErrorAction SilentlyContinue)) {
+        Initialize-PwWorkshop | Out-Null
     }
 
-    $script:PwContext
-
+    return $script:PwContext
 }
 
 function Reset-PwContext {
