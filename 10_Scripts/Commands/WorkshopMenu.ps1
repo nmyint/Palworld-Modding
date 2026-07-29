@@ -5,28 +5,314 @@
 
 Set-StrictMode -Version Latest
 
-function Show-PwWorkshopMenuHeader {
+function Get-PwWorkshopTerminalSize {
+
+    [CmdletBinding()]
+    param()
+
+    try {
+        $terminalWidth = [Console]::WindowWidth
+        $terminalHeight = [Console]::WindowHeight
+    }
+    catch {
+        $terminalWidth = 80
+        $terminalHeight = 24
+    }
+
+    if ($terminalWidth -lt 1) {
+        $terminalWidth = 80
+    }
+
+    if ($terminalHeight -lt 1) {
+        $terminalHeight = 24
+    }
+
+    [PSCustomObject]@{
+        # Leave one terminal column unused to prevent automatic line wrapping.
+        Width = [math]::Max(40, [math]::Min(110, $terminalWidth - 1))
+        Height = [math]::Max(18, [math]::Min(40, $terminalHeight))
+    }
+}
+
+function New-PwWorkshopMenuLine {
+
+    [CmdletBinding()]
+    param(
+        [string]$Text = '',
+
+        [ValidateSet('Left', 'Center')]
+        [string]$Alignment = 'Left',
+
+        [ConsoleColor]$Color = [ConsoleColor]::Gray,
+
+        [Parameter(Mandatory)]
+        [ValidateRange(40, 110)]
+        [int]$Width
+    )
+
+    $contentWidth = $Width - 4
+    $content = $Text
+
+    if ($content.Length -gt $contentWidth) {
+        $content = $content.Substring(0, $contentWidth - 3) + '...'
+    }
+
+    $leftPadding = 0
+
+    if ($Alignment -eq 'Center') {
+        $leftPadding = [math]::Floor(
+            ($contentWidth - $content.Length) / 2
+        )
+    }
+
+    $rightPadding = $contentWidth - $content.Length - $leftPadding
+
+    [PSCustomObject]@{
+        Text = (
+            '| ' +
+            (' ' * $leftPadding) +
+            $content +
+            (' ' * $rightPadding) +
+            ' |'
+        )
+        Color = $Color
+    }
+}
+
+function Get-PwWorkshopMenuLayout {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Profile,
+
+        [Parameter(Mandatory)]
+        [string]$EnvironmentStatus,
+
+        [ValidateRange(40, 110)]
+        [int]$Width = 80,
+
+        [ValidateRange(18, 40)]
+        [int]$Height = 24
+    )
+
+    $border = '+' + ('-' * ($Width - 2)) + '+'
+    $content = @(
+        New-PwWorkshopMenuLine `
+            -Text 'PALWORLD MODDING WORKSHOP' `
+            -Alignment Center `
+            -Color Cyan `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text 'Sprint 4 - Catalog and Library Management' `
+            -Alignment Center `
+            -Color DarkCyan `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text ('-' * ($Width - 4)) `
+            -Color DarkGray `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text "Active profile : $Profile" `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text "Environment    : $EnvironmentStatus" `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text ('-' * ($Width - 4)) `
+            -Color DarkGray `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text 'MOD CATALOG' `
+            -Color Yellow `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [1] View catalog and version matches' `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [2] View Nexus archive metadata' `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [3] View loose staging snapshot' `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [4] Check Nexus for updates' `
+            -Width $Width
+        New-PwWorkshopMenuLine -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text 'WORKSHOP HEALTH' `
+            -Color Yellow `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [5] Run diagnostics' `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [6] View known-good installation inventory' `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [7] View deployment and restore history' `
+            -Width $Width
+        New-PwWorkshopMenuLine -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [Q] Exit' `
+            -Color Yellow `
+            -Width $Width
+        New-PwWorkshopMenuLine -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text 'Press 1-7 or Q.' `
+            -Color DarkGray `
+            -Width $Width
+    )
+
+    if ($Height -lt 24) {
+        $content = @(
+            New-PwWorkshopMenuLine `
+                -Text 'PALWORLD MODDING WORKSHOP' `
+                -Alignment Center `
+                -Color Cyan `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text "Profile: $Profile | Environment: $EnvironmentStatus" `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text ('-' * ($Width - 4)) `
+                -Color DarkGray `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text 'MOD CATALOG' `
+                -Color Yellow `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [1] Catalog and versions' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [2] Nexus archive metadata' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [3] Loose staging snapshot' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [4] Check Nexus updates' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text 'WORKSHOP HEALTH' `
+                -Color Yellow `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [5] Diagnostics' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [6] Installation inventory' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [7] Deployment history' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [Q] Exit' `
+                -Color Yellow `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text 'Press 1-7 or Q.' `
+                -Color DarkGray `
+                -Width $Width
+        )
+    }
+    $targetRenderedRows = $Height - 2
+    $extraRows = [math]::Max(0, $targetRenderedRows - ($content.Count + 2))
+    $topPadding = [math]::Floor($extraRows / 2)
+    $bottomPadding = $extraRows - $topPadding
+    $layout = [System.Collections.Generic.List[object]]::new()
+
+    $layout.Add(
+        [PSCustomObject]@{
+            Text = $border
+            Color = [ConsoleColor]::Cyan
+        }
+    )
+
+    for ($index = 0; $index -lt $topPadding; $index++) {
+        $layout.Add((New-PwWorkshopMenuLine -Width $Width))
+    }
+
+    foreach ($line in $content) {
+        $layout.Add($line)
+    }
+
+    for ($index = 0; $index -lt $bottomPadding; $index++) {
+        $layout.Add((New-PwWorkshopMenuLine -Width $Width))
+    }
+
+    $layout.Add(
+        [PSCustomObject]@{
+            Text = $border
+            Color = [ConsoleColor]::Cyan
+        }
+    )
+
+    @($layout)
+}
+
+function Show-PwWorkshopMenu {
 
     [CmdletBinding()]
     param()
 
     $configuration = Get-PwWorkshopConfig
     $environment = Test-PwEnvironment
-
-    Write-Host ''
-    Write-Host '==================================================' `
-        -ForegroundColor Cyan
-    Write-Host ' Palworld Modding Workshop' -ForegroundColor Cyan
-    Write-Host " Profile: $($configuration.Deployment.ActiveProfile)"
-    Write-Host " Environment: $(if ($environment.IsReady) {
+    $environmentStatus = if ($environment.IsReady) {
         'Ready'
     }
     else {
         'Needs attention'
-    })"
-    Write-Host '==================================================' `
-        -ForegroundColor Cyan
-    Write-Host ''
+    }
+    $terminal = Get-PwWorkshopTerminalSize
+    $layout = Get-PwWorkshopMenuLayout `
+        -Profile $configuration.Deployment.ActiveProfile `
+        -EnvironmentStatus $environmentStatus `
+        -Width $terminal.Width `
+        -Height $terminal.Height
+
+    foreach ($line in $layout) {
+        Write-Host $line.Text -ForegroundColor $line.Color
+    }
+}
+
+function Read-PwWorkshopMenuSelection {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$RenderedTerminal
+    )
+
+    try {
+        $null = [Console]::KeyAvailable
+    }
+    catch {
+        return Read-Host ' Select'
+    }
+
+    while ($true) {
+        $currentTerminal = Get-PwWorkshopTerminalSize
+
+        if (
+            $currentTerminal.Width -ne $RenderedTerminal.Width -or
+            $currentTerminal.Height -ne $RenderedTerminal.Height
+        ) {
+            return '__RESIZE__'
+        }
+
+        if ([Console]::KeyAvailable) {
+            $key = [Console]::ReadKey($true)
+            $selection = $key.KeyChar.ToString().ToUpperInvariant()
+
+            if ($selection -in @('1', '2', '3', '4', '5', '6', '7', 'Q')) {
+                return $selection
+            }
+        }
+
+        Start-Sleep -Milliseconds 100
+    }
 }
 
 function Show-PwCatalogSummary {
@@ -174,21 +460,14 @@ function Start-PwWorkshop {
             Clear-Host
         }
 
-        Show-PwWorkshopMenuHeader
-        Write-Host ' MOD CATALOG'
-        Write-Host '  1. View catalog and version matches'
-        Write-Host '  2. View Nexus archive metadata'
-        Write-Host '  3. View loose staging snapshot'
-        Write-Host '  4. Check Nexus for updates'
-        Write-Host ''
-        Write-Host ' WORKSHOP HEALTH'
-        Write-Host '  5. Run diagnostics'
-        Write-Host '  6. View known-good installation inventory'
-        Write-Host '  7. View deployment and restore history'
-        Write-Host ''
-        Write-Host '  Q. Exit'
-        Write-Host ''
-        $selection = Read-Host 'Select an option'
+        $renderedTerminal = Get-PwWorkshopTerminalSize
+        Show-PwWorkshopMenu
+        $selection = Read-PwWorkshopMenuSelection `
+            -RenderedTerminal $renderedTerminal
+
+        if ($selection -eq '__RESIZE__') {
+            continue
+        }
 
         if (-not $NoClear) {
             Clear-Host

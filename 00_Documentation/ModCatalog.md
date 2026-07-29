@@ -20,6 +20,11 @@ menu contains only safe reporting actions:
 - loose staging inventory and enablement state;
 - diagnostics, known-good installation inventory, and deployment history.
 
+The menu measures the active terminal while it is waiting for input. It redraws
+after a window resize, adjusts between compact and full-height layouts, and
+truncates long labels inside the frame instead of allowing them to wrap.
+Selections `1` through `7` and `Q` respond immediately without requiring Enter.
+
 The menu will become the primary workshop interface as later Sprint 4 actions
 are reviewed. Existing PowerShell commands remain available for automation and
 troubleshooting.

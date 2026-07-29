@@ -159,13 +159,14 @@ Planned outcomes:
 
 ### Sprint 4.1 - Catalog discovery and menu foundation
 
-Status: In progress
+Status: Complete
 
 - Parse offline Nexus archive metadata from surviving download filenames.
 - Inspect archives for internal UE4SS installation names.
 - Inventory loose staging files and legacy enablement metadata without writes.
 - Match staging folders to candidate archives and report anomalies.
 - Establish `PwWorkshop.ps1` as the one-command, menu-driven interface.
+- Adapt the menu live to narrow, wide, short, and tall terminal windows.
 - Check known Nexus IDs for updates through the supported authenticated API.
 - Offer normal browser downloads and validated Premium direct downloads.
 - Keep initial menu actions read-only while later actions are designed and

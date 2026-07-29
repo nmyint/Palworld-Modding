@@ -188,4 +188,34 @@ Describe 'PalworldModding mod catalog' {
         $result.ModCount | Should Be 2
         $result.ArchiveCount | Should Be 2
     }
+
+    It 'renders the main menu responsively within terminal dimensions' {
+        InModuleScope PalworldModding {
+            $compactLayout = @(
+                Get-PwWorkshopMenuLayout `
+                    -Profile 'Stable' `
+                    -EnvironmentStatus 'Ready' `
+                    -Width 48 `
+                    -Height 18
+            )
+            $wideLayout = @(
+                Get-PwWorkshopMenuLayout `
+                    -Profile 'Testing' `
+                    -EnvironmentStatus 'Needs attention' `
+                    -Width 110 `
+                    -Height 32
+            )
+
+            $compactLayout.Count | Should Be 16
+            $wideLayout.Count | Should Be 30
+
+            foreach ($line in $compactLayout) {
+                $line.Text.Length | Should Be 48
+            }
+
+            foreach ($line in $wideLayout) {
+                $line.Text.Length | Should Be 110
+            }
+        }
+    }
 }
