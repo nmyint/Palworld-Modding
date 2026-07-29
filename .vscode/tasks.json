@@ -198,6 +198,23 @@
                 "clear": true,
                 "reveal": "always"
             }
+        },
+        {
+            "label": "PwTools: Backup Workshop",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Backup-Workshop.ps1",
+                "-DestinationRoot",
+                "${input:workshopBackupDestination}"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
         }
     ],
     "inputs": [
@@ -225,6 +242,11 @@
             "id": "backupPath",
             "type": "promptString",
             "description": "Deployment backup folder or manifest.json path"
+        },
+        {
+            "id": "workshopBackupDestination",
+            "type": "promptString",
+            "description": "External backup folder (blank uses Workshop.json)"
         }
     ]
 }

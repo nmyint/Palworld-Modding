@@ -97,6 +97,11 @@ function Get-PwModPackageRoot {
     }
 
     $areaRoot = (Get-PwPaths).$Area
+
+    if ($Area -eq 'ModLibrary') {
+        return Join-Path $areaRoot "$Name-$Version"
+    }
+
     Join-Path (Join-Path $areaRoot $Name) $Version
 }
 
@@ -1515,7 +1520,8 @@ function Publish-PwModPackage {
     deployment package, and hash-matching loose deployment files.
 
     The original download in 01_Archives and curated package in 03_Mod_Library
-    are retained.
+    are retained. The established 05_Deployment directory structure is never
+    removed or pruned.
 .PARAMETER Name
     Mod identifier.
 .PARAMETER Version
@@ -1553,9 +1559,10 @@ function Complete-PwModInstallation {
     }
 
     $paths = Get-PwPaths
-    $libraryRoot = Join-Path (
-        Join-Path $paths.ModLibrary $Name
-    ) $Version
+    $libraryRoot = Get-PwModPackageRoot `
+        -Area ModLibrary `
+        -Name $Name `
+        -Version $Version
     $manifestPath = Join-Path $libraryRoot 'manifest.json'
     $packageValidation = Test-PwModPackage `
         -Name $Name `

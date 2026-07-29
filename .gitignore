@@ -2,22 +2,94 @@
 Thumbs.db
 Desktop.ini
 
-# Logs
-*.log
-/09_Logs/*
-!/09_Logs/.gitkeep
+# Original downloads are stored in external workshop backups
+/01_Archives/**/*
+!/01_Archives/**/
+!/01_Archives/**/.gitkeep
 
-# Generated backups
-/13_Backups/*
-!/13_Backups/.gitkeep
-
-# Generated staging and deployment output
+# Temporary staging
 /02_Staging/**/*
 !/02_Staging/**/
 !/02_Staging/**/.gitkeep
+
+# Curated library metadata stays in Git; binary packages stay external
+/03_Mod_Library/**/*
+!/03_Mod_Library/**/
+!/03_Mod_Library/**/.gitkeep
+!/03_Mod_Library/**/manifest.json
+
+# Project source stays in Git; generated Unreal output does not
+/04_Projects/**/Binaries/
+/04_Projects/**/Build/
+/04_Projects/**/DerivedDataCache/
+/04_Projects/**/Intermediate/
+/04_Projects/**/Saved/
+/04_Projects/**/dist/
+/04_Projects/**/out/
+/04_Projects/**/*.dll
+/04_Projects/**/*.exe
+/04_Projects/**/*.pak
+/04_Projects/**/*.pdb
+/04_Projects/**/*.ucas
+/04_Projects/**/*.utoc
+
+# Generated deployment output
 /05_Deployment/**/*
 !/05_Deployment/**/
 !/05_Deployment/**/.gitkeep
+
+# Known-good installation metadata stays in Git
+/06_Current_Installation/**/*
+!/06_Current_Installation/**/
+!/06_Current_Installation/**/.gitkeep
+!/06_Current_Installation/**/*.json
+!/06_Current_Installation/**/*.md
+
+# Test definitions stay in Git; generated results stay external
+/07_Testing/Performance/**/*
+!/07_Testing/Performance/**/
+!/07_Testing/Performance/**/.gitkeep
+/07_Testing/Results/**/*
+!/07_Testing/Results/**/
+!/07_Testing/Results/**/.gitkeep
+
+# Downloaded tools are restored from external workshop backups
+/08_Tools/**/*
+!/08_Tools/**/
+!/08_Tools/**/.gitkeep
+
+# Logs
+*.log
+/09_Logs/**/*
+!/09_Logs/**/
+!/09_Logs/**/.gitkeep
+
+# Utility source stays in Git; downloaded and compiled payloads do not
+/11_Utilities/**/*.7z
+/11_Utilities/**/*.dll
+/11_Utilities/**/*.exe
+/11_Utilities/**/*.msi
+/11_Utilities/**/*.zip
+
+# Research notes stay in Git; downloaded binary references do not
+/12_Research/**/*.7z
+/12_Research/**/*.dll
+/12_Research/**/*.exe
+/12_Research/**/*.pak
+/12_Research/**/*.pdf
+/12_Research/**/*.ucas
+/12_Research/**/*.utoc
+/12_Research/**/*.zip
+
+# Generated recovery backups
+/13_Backups/**/*
+!/13_Backups/**/
+!/13_Backups/**/.gitkeep
+
+# Disposable experiments
+/15_Sandbox/**/*
+!/15_Sandbox/**/
+!/15_Sandbox/**/.gitkeep
 
 # Crash dumps
 *.dmp

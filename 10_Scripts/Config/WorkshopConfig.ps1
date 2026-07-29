@@ -134,6 +134,7 @@ function Test-PwWorkshopConfig {
         'Workshop',
         'Paths',
         'Deployment',
+        'Backup',
         'Tools',
         'Git',
         'Preferences'
@@ -212,6 +213,36 @@ function Test-PwWorkshopConfig {
             )
         ) {
             $errors.Add("Deployment property 'ActiveProfile' cannot be empty.")
+        }
+
+        foreach ($property in @('DestinationRoot', 'RetentionCount')) {
+            if (-not $configurationValue.Backup.PSObject.Properties[$property]) {
+                $errors.Add("Missing required Backup property '$property'.")
+            }
+        }
+
+        if (
+            $configurationValue.Backup.PSObject.Properties['DestinationRoot'] -and
+            $configurationValue.Backup.DestinationRoot -isnot [string]
+        ) {
+            $errors.Add("Backup property 'DestinationRoot' must be a string.")
+        }
+
+        if ($configurationValue.Backup.PSObject.Properties['RetentionCount']) {
+            try {
+                $retentionCount = [int](
+                    $configurationValue.Backup.RetentionCount
+                )
+
+                if ($retentionCount -lt 1 -or $retentionCount -gt 100) {
+                    throw 'Retention is outside the supported range.'
+                }
+            }
+            catch {
+                $errors.Add(
+                    "Backup property 'RetentionCount' must be between 1 and 100."
+                )
+            }
         }
 
         if (

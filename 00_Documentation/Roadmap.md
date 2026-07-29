@@ -120,7 +120,8 @@ Status: Complete
 - Detect path traversal, unsupported layouts, and suspicious files.
 - Capture source, version, author, and download metadata.
 - Classify common Palworld mod types and installation targets.
-- Promote approved packages into `03_Mod_Library`.
+- Promote approved packages into flat
+  `03_Mod_Library\<ModName>-<Version>` folders.
 - Create maximum-compression library and portable deployment 7z packages.
 - Generate deterministic content under `05_Deployment`.
 - Record a hash-verified known-good installation after successful in-game

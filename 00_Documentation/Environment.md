@@ -28,7 +28,7 @@ deliberate future task rather than an incidental dependency update.
 2. Install the required software.
 3. Open `Palworld-Modding.code-workspace` in VS Code.
 4. Update `16_Profiles\Stable.json` with the new game and Saved-directory paths.
-5. Update `.config\Workshop.json` if PowerShell or 7-Zip uses a different path.
+5. Update `.config\Workshop.json` for local tool paths and external backups.
 6. Run `PwTools: Validate Environment`.
 7. Run `PwTools: Test`.
 8. Run `PwTools: Preview Deployment` before applying anything.
@@ -45,6 +45,13 @@ The following settings currently affect behavior:
 - configured workshop paths
 - configured tool information
 - `Tools.SevenZip`
+- `Backup.DestinationRoot`
+- `Backup.RetentionCount`
+
+External backups use maximum-compression 7z packages. Configure a locally
+synced Google Drive, OneDrive, or other external folder only after confirming
+its filesystem path; see
+[WorkshopBackup.md](WorkshopBackup.md).
 
 The following settings are reserved for later sprints:
 

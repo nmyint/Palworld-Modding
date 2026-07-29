@@ -29,6 +29,10 @@
     "Deployment": {
         "ActiveProfile": "Stable"
     },
+    "Backup": {
+        "DestinationRoot": "",
+        "RetentionCount": 5
+    },
     "Tools": {
         "PowerShell": {
             "RequiredVersion": "7.6.4"

@@ -110,7 +110,7 @@ additional `-AllowReviewRequired` switch.
 
 Publishing reuses the verified staging package and creates:
 
-- `03_Mod_Library\<Name>\<Version>\package.7z`, containing the curated source;
+- `03_Mod_Library\<Name>-<Version>\package.7z`, containing the curated source;
 - a library manifest with the package SHA-256 hash;
 - `05_Deployment\Packages\<Name>-<Version>.7z`, containing the portable
   game-layout bundle; and
@@ -166,4 +166,7 @@ readable does it remove:
 - matching, unchanged loose files under `05_Deployment`.
 
 It never removes the original download, curated library package, installed game
-files, or deployment backups.
+files, or deployment backups. Cleanup never removes the established
+`05_Deployment` directory tree. It removes only the selected mod's generated
+archive and verified loose files, leaving shared folders and `.gitkeep`
+placeholders intact for subsequent deployments.

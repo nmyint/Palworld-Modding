@@ -61,6 +61,13 @@ Deployment backups can be validated and restored through an explicit,
 preview-first workflow. See [Recovery.md](00_Documentation/Recovery.md) for
 restoration, known-good inventory, history, and diagnostics.
 
+## Git and external backups
+
+Git tracks source and lightweight metadata rather than large workshop binaries.
+Maximum-compression 7z backups preserve durable workshop data on external
+storage. See
+[WorkshopBackup.md](00_Documentation/WorkshopBackup.md).
+
 ## Tests
 
 Run the automated checks from the repository root:

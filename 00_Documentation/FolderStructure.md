@@ -11,7 +11,7 @@ directly in the Palworld installation.
 | `00_Documentation` | Architecture, standards, and operating notes |
 | `01_Archives` | Original downloaded mod archives |
 | `02_Staging` | Temporary preparation area |
-| `03_Mod_Library` | Curated, compressed mod packages and manifests |
+| `03_Mod_Library` | Flat `<ModName>-<Version>` curated package folders |
 | `04_Projects` | Active mod and compatibility projects |
 | `05_Deployment` | Loose game-layout output and portable deployment packages |
 | `06_Current_Installation` | Known-good installation manifests and inventories |
@@ -31,3 +31,6 @@ directly in the Palworld installation.
 ```text
 Archive -> Stage -> Library -> Deploy -> Validate -> Inventory
 ```
+
+Git stores source and lightweight metadata. External 7z archives preserve
+durable binary content; see [WorkshopBackup.md](WorkshopBackup.md).

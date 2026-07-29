@@ -322,8 +322,13 @@ Describe 'PalworldModding mod intake' {
             Should Be $false
         Test-Path -LiteralPath (
             Join-Path `
+                $global:PwIntakePaths.Deployment `
+                'Pal\Content\Paks\~mods'
+        ) | Should Be $true
+        Test-Path -LiteralPath (
+            Join-Path `
                 $global:PwIntakePaths.ModLibrary `
-                'WorkshopTest\1.0\package.7z'
+                'WorkshopTest-1.0\package.7z'
         ) | Should Be $true
 
         $record = Get-Content -LiteralPath $result.RecordPath -Raw |

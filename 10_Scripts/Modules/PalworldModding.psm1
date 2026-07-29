@@ -33,6 +33,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\DeploymentActions.ps1"
 . "$PSScriptRoot\..\Commands\ModIntake.ps1"
 . "$PSScriptRoot\..\Commands\Recovery.ps1"
+. "$PSScriptRoot\..\Commands\WorkshopBackup.ps1"
 . "$PSScriptRoot\..\Commands\Tools.ps1"
 
 # ============================================================
@@ -88,6 +89,9 @@ Export-ModuleMember -Function @(
     'Get-PwDeploymentHistory',
     'Get-PwInstallationInventory',
     'Get-PwDiagnostics',
+
+    # External workshop backup
+    'New-PwWorkshopBackup',
 
     # Tools
     'Get-PwTool',
