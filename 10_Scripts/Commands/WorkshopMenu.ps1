@@ -141,6 +141,9 @@ function Get-PwWorkshopMenuLayout {
         New-PwWorkshopMenuLine `
             -Text '  [H] View compatibility and conflict report' `
             -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [8] Profile mod sets' `
+            -Width $Width
         New-PwWorkshopMenuLine -Width $Width
         New-PwWorkshopMenuLine `
             -Text 'WORKSHOP HEALTH' `
@@ -162,7 +165,7 @@ function Get-PwWorkshopMenuLayout {
             -Width $Width
         New-PwWorkshopMenuLine -Width $Width
         New-PwWorkshopMenuLine `
-            -Text 'Press 1-7 or Q.' `
+            -Text 'Press 1-8, H, or Q.' `
             -Color DarkGray `
             -Width $Width
     )
@@ -201,6 +204,9 @@ function Get-PwWorkshopMenuLayout {
                 -Text '  [H] Compatibility and conflict report' `
                 -Width $Width
             New-PwWorkshopMenuLine `
+                -Text '  [8] Profile mod sets' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
                 -Text 'WORKSHOP HEALTH' `
                 -Color Yellow `
                 -Width $Width
@@ -218,7 +224,7 @@ function Get-PwWorkshopMenuLayout {
                 -Color Yellow `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text 'Press 1-7 or Q.' `
+                -Text 'Press 1-8, H, or Q.' `
                 -Color DarkGray `
                 -Width $Width
         )
@@ -312,7 +318,7 @@ function Read-PwWorkshopMenuSelection {
             $key = [Console]::ReadKey($true)
             $selection = $key.KeyChar.ToString().ToUpperInvariant()
 
-            if ($selection -in @('1', '2', '3', '4', '5', '6', '7', 'H', 'Q', 'U')) {
+            if ($selection -in @('1', '2', '3', '4', '5', '6', '7', '8', 'H', 'Q')) {
                 return $selection
             }
         }
@@ -1480,6 +1486,125 @@ function Start-PwWorkshop {
                     ) {
                         $historyMenuActive = $false
                         break
+                    }
+                }
+            }
+            '8' {
+                $skipReturnPrompt = $true
+                $modSetsMenuActive = $true
+
+                while ($modSetsMenuActive) {
+                    $profileName = (Get-PwWorkshopConfig).Deployment.ActiveProfile
+                    $modSets = @(Get-PwProfileModSets -Name $profileName)
+
+                    Write-Host "Profile mod sets for: $profileName" -ForegroundColor Cyan
+                    if ($modSets.Count -eq 0) {
+                        Write-Host 'No mod sets have been defined yet.'
+                    }
+                    else {
+                        $modSets |
+                            Select-Object `
+                                @{Name = '#'; Expression = {
+                                    1 + $modSets.IndexOf($_)
+                                }},
+                                Name,
+                                Description,
+                                IsActive,
+                                @{Name = 'CatalogKeys'; Expression = {
+                                    @($_.CatalogKeys) -join ', '
+                                }} |
+                            Format-Table -AutoSize -Wrap
+                    }
+
+                    $modSetChoice = Read-Host (
+                        '[N] New set, [V] Preview active set, [B] Back, or Q to quit'
+                    )
+
+                    if (Test-PwWorkshopQuitSelection $modSetChoice) {
+                        $quitRequested = $true
+                        break
+                    }
+
+                    if (
+                        [string]::IsNullOrWhiteSpace($modSetChoice) -or
+                        (Test-PwWorkshopBackSelection $modSetChoice)
+                    ) {
+                        $modSetsMenuActive = $false
+                        break
+                    }
+
+                    if ($modSetChoice -match '^(?i:N)$') {
+                        $setName = Read-Host 'Set name (or B to back)'
+                        if (Test-PwWorkshopQuitSelection $setName) {
+                            $quitRequested = $true
+                            break
+                        }
+
+                        if (Test-PwWorkshopBackSelection $setName) {
+                            continue
+                        }
+
+                        $catalogKeysInput = Read-Host (
+                            'Catalog keys, comma-separated (or B to back)'
+                        )
+                        if (Test-PwWorkshopQuitSelection $catalogKeysInput) {
+                            $quitRequested = $true
+                            break
+                        }
+
+                        if (Test-PwWorkshopBackSelection $catalogKeysInput) {
+                            continue
+                        }
+
+                        $description = Read-Host (
+                            'Description (optional, or B to back)'
+                        )
+                        if (Test-PwWorkshopQuitSelection $description) {
+                            $quitRequested = $true
+                            break
+                        }
+
+                        if (Test-PwWorkshopBackSelection $description) {
+                            continue
+                        }
+
+                        $activate = Read-Host (
+                            '[A] Save and activate this mod set, [S] Save only, [B] Back, or Q to quit'
+                        )
+
+                        if (Test-PwWorkshopQuitSelection $activate) {
+                            $quitRequested = $true
+                            break
+                        }
+
+                        if (Test-PwWorkshopBackSelection $activate) {
+                            continue
+                        }
+
+                        if ($activate -match '^(?i:[AS])$') {
+                            $selectedKeys = @(
+                                $catalogKeysInput -split ',' |
+                                    ForEach-Object { $_.Trim() } |
+                                    Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+                            )
+                            Set-PwProfileModSet `
+                                -Name $profileName `
+                                -SetName $setName `
+                                -Description $description `
+                                -CatalogKeys $selectedKeys `
+                                -Activate:($activate -match '^(?i:A)$') |
+                                Select-Object Name, Description, IsActive, CatalogKeys |
+                                Format-List
+                        }
+                    }
+                    elseif ($modSetChoice -match '^(?i:V)$') {
+                        $preview = Get-PwProfileModSetPreview -Name $profileName
+                        $preview |
+                            Select-Object Profile, ModSet, Description, ModCount |
+                            Format-List
+                        $preview.Mods |
+                            Select-Object CatalogKey, DisplayName, InstalledVersion, ReconciliationStatus, Types |
+                            Format-Table -AutoSize
                     }
                 }
             }

@@ -128,6 +128,165 @@ function Get-PwProfiles {
         }
 }
 
+function Get-PwProfileModSets {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Name
+    )
+
+    $profile = Get-PwProfile -Name $Name
+
+    @(
+        if ($profile.PSObject.Properties.Name -contains 'ModSets') {
+            @($profile.ModSets)
+        }
+    ) |
+        Where-Object { $null -ne $_ } |
+        ForEach-Object {
+            [PSCustomObject]@{
+                Name = [string]$_.Name
+                Description = [string]$_.Description
+                IsActive = [bool]$_.IsActive
+                CatalogKeys = @($_.CatalogKeys)
+            }
+        } |
+        Sort-Object Name
+}
+
+function Set-PwProfileModSet {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Name,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$SetName,
+
+        [string]$Description = '',
+
+        [string[]]$CatalogKeys = @(),
+
+        [switch]$Activate
+    )
+
+    $profilePath = Get-PwProfilePath -Name $Name
+    $profile = Get-PwProfile -Name $Name
+
+    if ($profile.PSObject.Properties.Name -notcontains 'ModSets') {
+        $profile | Add-Member -NotePropertyName ModSets -NotePropertyValue @()
+    }
+
+    $modSets = [System.Collections.Generic.List[object]]::new()
+    foreach ($modSet in @($profile.ModSets)) {
+        if ([string]$modSet.Name -ieq $SetName) {
+            continue
+        }
+
+        $copy = [ordered]@{}
+        foreach ($property in $modSet.PSObject.Properties) {
+            $copy[$property.Name] = $property.Value
+        }
+        $copy.IsActive = [bool]$modSet.IsActive
+        $modSets.Add([PSCustomObject]$copy)
+    }
+
+    $modSets.Add([PSCustomObject]@{
+        Name = $SetName
+        Description = $Description
+        IsActive = [bool]$Activate
+        CatalogKeys = @($CatalogKeys | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    })
+
+    if ($Activate) {
+        foreach ($modSet in $modSets) {
+            if ([string]$modSet.Name -ne $SetName) {
+                $modSet.IsActive = $false
+            }
+        }
+    }
+
+    $profile.ModSets = @($modSets | Sort-Object Name)
+
+    if ($PSCmdlet.ShouldProcess($profilePath, "Write mod set '$SetName'")) {
+        Write-PwJson -InputObject $profile -Path $profilePath
+    }
+
+    Get-PwProfileModSets -Name $Name |
+        Where-Object Name -eq $SetName |
+        Select-Object -First 1
+}
+
+function Get-PwProfileModSetPreview {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Name,
+
+        [string]$SetName = ''
+    )
+
+    $profile = Get-PwProfile -Name $Name
+    $catalog = Get-PwPersistentModCatalog
+    $modSets = @(
+        Get-PwProfileModSets -Name $Name
+    )
+
+    if ($modSets.Count -eq 0) {
+        return [PSCustomObject]@{
+            Profile = $Name
+            ModSet = ''
+            ModCount = 0
+            Mods = @()
+        }
+    }
+
+    $selectedSet = if ([string]::IsNullOrWhiteSpace($SetName)) {
+        $modSets | Where-Object IsActive | Select-Object -First 1
+    }
+    else {
+        $modSets | Where-Object Name -eq $SetName | Select-Object -First 1
+    }
+
+    if (-not $selectedSet) {
+        $selectedSet = $modSets | Select-Object -First 1
+    }
+
+    $modsByKey = @{}
+    foreach ($mod in @($catalog.Mods)) {
+        $modsByKey[[string]$mod.CatalogKey] = $mod
+    }
+
+    $mods = foreach ($catalogKey in @($selectedSet.CatalogKeys)) {
+        $mod = $modsByKey[[string]$catalogKey]
+        if ($null -ne $mod) {
+            [PSCustomObject]@{
+                CatalogKey = [string]$mod.CatalogKey
+                DisplayName = [string]$mod.DisplayName
+                InstalledVersion = [string]$mod.InstalledVersion
+                ReconciliationStatus = [string]$mod.ReconciliationStatus
+                Types = @($mod.Types)
+            }
+        }
+    }
+    $mods = @($mods | Sort-Object DisplayName)
+
+    [PSCustomObject]@{
+        Profile = $Name
+        ModSet = [string]$selectedSet.Name
+        Description = [string]$selectedSet.Description
+        ModCount = $mods.Count
+        Mods = $mods
+    }
+}
+
 <#
 .SYNOPSIS
     Creates a workshop profile.

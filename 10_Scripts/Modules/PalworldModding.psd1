@@ -49,7 +49,10 @@ FunctionsToExport = @(
     # Profiles
     'Get-PwProfile',
     'Get-PwProfiles',
+    'Get-PwProfileModSets',
+    'Get-PwProfileModSetPreview',
     'New-PwProfile',
+    'Set-PwProfileModSet',
     'Test-PwProfile',
     'Set-PwActiveProfile',
 

@@ -24,6 +24,7 @@ The top-level menu is the one shown by `Start-PwWorkshop`.
 - `5` Diagnostics
 - `6` Installation inventory
 - `7` Deployment and restore history
+- `8` Profile mod sets
 - `Q` Exit
 
 ## Catalog Submenu
@@ -77,9 +78,26 @@ Back behavior:
 - Nested prompts inside the update flow accept `B` to step back to the updates
   submenu.
 
+## Profile Mod Sets Submenu
+
+The profile mod sets submenu is a nested loop tied to the active deployment
+profile.
+
+Actions:
+
+- `N` create or replace a named mod set for the active profile
+- `V` preview the currently active mod set
+
+Back behavior:
+
+- `B` returns to the main menu from the profile mod sets submenu.
+- `Enter` returns to the main menu from the profile mod sets submenu.
+- Nested prompts inside the create flow accept `B` to step back without saving.
+
 ## Current Navigation Notes
 
 - Catalog, archive, and update actions are grouped as dedicated submenu loops.
+- Profile mod sets follow the same submenu pattern and are profile-scoped.
 - The main menu still redraws after each completed action.
 - Submenu prompts should be updated before adding new action branches so they
   continue to support `B` consistently.
