@@ -178,6 +178,8 @@ Status: In progress
 
 - Normalize catalog records into tracked lightweight manifests.
 - Preserve archive provenance, hashes, Nexus IDs, and known installed versions.
+- Check optional, explicitly selected Nexus and GitHub release providers while
+  treating discovered upstream links as advisory metadata.
 - Reconcile loose mods whose original downloads are missing.
 - Preview catalog changes before writing `03_Mod_Library/catalog.json`.
 

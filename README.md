@@ -56,6 +56,10 @@ Manual browser downloads work for normal accounts; validated direct downloads
 are available when Nexus permits them. See
 [NexusUpdates.md](00_Documentation/NexusUpdates.md).
 
+Optional tools and dependencies can also use explicit Nexus or GitHub release
+providers without silently changing sources. See
+[UpdateSources.md](00_Documentation/UpdateSources.md).
+
 ## Profiles
 
 Installation and deployment settings are stored in JSON profiles under

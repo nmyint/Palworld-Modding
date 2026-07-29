@@ -35,6 +35,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\ModCatalog.ps1"
 . "$PSScriptRoot\..\Commands\PersistentCatalog.ps1"
 . "$PSScriptRoot\..\Commands\NexusUpdates.ps1"
+. "$PSScriptRoot\..\Commands\SourceUpdates.ps1"
 . "$PSScriptRoot\..\Commands\Recovery.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopBackup.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopMenu.ps1"
@@ -98,6 +99,9 @@ Export-ModuleMember -Function @(
     'Get-PwModUpdateReport',
     'Open-PwNexusModPage',
     'Save-PwNexusModUpdate',
+    'Get-PwUpdateSources',
+    'Get-PwSourceUpdateReport',
+    'Set-PwGitHubSourceBaseline',
 
     # Recovery and diagnostics
     'Test-PwBackup',

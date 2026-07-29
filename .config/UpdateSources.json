@@ -1,0 +1,39 @@
+{
+    "SchemaVersion": "1.0",
+    "Enabled": true,
+    "Sources": [
+        {
+            "Key": "UE4SS",
+            "DisplayName": "RE-UE4SS Experimental Palworld",
+            "Enabled": true,
+            "Provider": "GitHubRelease",
+            "Repository": "Okaetsu/RE-UE4SS",
+            "ReleaseTag": "experimental-palworld",
+            "AssetPattern": "^UE4SS-Palworld\\.zip$",
+            "InstalledAssetId": null,
+            "InstalledAssetUpdatedAt": null,
+            "AlternateSources": [
+                {
+                    "Provider": "NexusMods",
+                    "NexusModId": 3035,
+                    "Enabled": false
+                }
+            ]
+        },
+        {
+            "Key": "PalSchema",
+            "DisplayName": "PalSchema",
+            "Enabled": true,
+            "Provider": "NexusMods",
+            "NexusModId": 3037,
+            "InstalledVersion": "260719",
+            "AlternateSources": [
+                {
+                    "Provider": "GitHubRelease",
+                    "Repository": "Okaetsu/PalSchema",
+                    "Enabled": false
+                }
+            ]
+        }
+    ]
+}

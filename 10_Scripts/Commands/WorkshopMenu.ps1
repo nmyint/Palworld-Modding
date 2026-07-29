@@ -136,7 +136,7 @@ function Get-PwWorkshopMenuLayout {
             -Text '  [3] View loose staging snapshot' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [4] Check Nexus for updates' `
+            -Text '  [4] Check mod and tool updates' `
             -Width $Width
         New-PwWorkshopMenuLine -Width $Width
         New-PwWorkshopMenuLine `
@@ -192,7 +192,7 @@ function Get-PwWorkshopMenuLayout {
                 -Text '  [3] Loose staging snapshot' `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text '  [4] Check Nexus updates' `
+                -Text '  [4] Check mod and tool updates' `
                 -Width $Width
             New-PwWorkshopMenuLine `
                 -Text 'WORKSHOP HEALTH' `
@@ -399,6 +399,7 @@ function Invoke-PwWorkshopMenuAction {
             'Archives',
             'Staging',
             'Updates',
+            'SourceUpdates',
             'Diagnostics',
             'Inventory',
             'History'
@@ -424,6 +425,9 @@ function Invoke-PwWorkshopMenuAction {
         }
         'Updates' {
             return @(Get-PwModUpdateReport)
+        }
+        'SourceUpdates' {
+            return @(Get-PwSourceUpdateReport)
         }
         'Diagnostics' {
             return Get-PwDiagnostics
@@ -461,6 +465,7 @@ function Start-PwWorkshop {
             'Archives',
             'Staging',
             'Updates',
+            'SourceUpdates',
             'Diagnostics',
             'Inventory',
             'History'
@@ -558,6 +563,16 @@ function Start-PwWorkshop {
                         Invoke-PwWorkshopMenuAction -Action Updates
                     )
                     Show-PwUpdateReport -Updates $updates
+                    Write-Host ''
+                    Write-Host 'Configured tool and dependency sources:'
+                    Invoke-PwWorkshopMenuAction -Action SourceUpdates |
+                        Select-Object `
+                            Name,
+                            Provider,
+                            LocalVersion,
+                            RemoteVersion,
+                            Status |
+                        Format-Table -AutoSize
                     $selectedId = Read-Host (
                         'Enter a Nexus mod ID, Enter to return, or Q to quit'
                     )
