@@ -19,7 +19,7 @@ The top-level menu is the one shown by `Start-PwWorkshop`.
 
 - `1` Catalog
 - `2` Archives
-- `3` Staging snapshot
+- `3` Staged UE4SS snapshot
 - `4` Updates
 - `5` Diagnostics
 - `6` Installation inventory
@@ -82,6 +82,12 @@ Back behavior:
 
 The profile mod sets submenu is a nested loop tied to the active deployment
 profile.
+
+## Staged UE4SS Snapshot
+
+Menu option `3` now mirrors the migrated `02_Staging\Pal\Binaries\Win64\ue4ss\Mods`
+tree when that layout is present. It remains a read-only view of the active
+UE4SS/Lua staging folders and their enablement markers.
 
 Actions:
 

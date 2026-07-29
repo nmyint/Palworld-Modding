@@ -133,7 +133,7 @@ function Get-PwWorkshopMenuLayout {
             -Text '  [2] View Nexus archive metadata' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [3] View loose staging and ownership snapshot' `
+            -Text '  [3] View staged UE4SS and ownership snapshot' `
             -Width $Width
         New-PwWorkshopMenuLine `
             -Text '  [4] Check mod and tool updates' `
@@ -195,7 +195,7 @@ function Get-PwWorkshopMenuLayout {
                 -Text '  [2] Nexus archive metadata' `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text '  [3] Loose staging and ownership snapshot' `
+                -Text '  [3] Staged UE4SS and ownership snapshot' `
                 -Width $Width
             New-PwWorkshopMenuLine `
                 -Text '  [4] Check mod and tool updates' `

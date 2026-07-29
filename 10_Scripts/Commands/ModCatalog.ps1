@@ -435,12 +435,22 @@ function Get-PwStagedModSnapshot {
         throw "Staging root does not exist: $root"
     }
 
+    $ue4ssModsRoot = Join-Path $root 'Pal\Binaries\Win64\ue4ss\Mods'
+    $inventoryRoot = if (
+        Test-Path -LiteralPath $ue4ssModsRoot -PathType Container
+    ) {
+        $ue4ssModsRoot
+    }
+    else {
+        $root
+    }
+
     $legacyStates = Get-PwLegacyModState -StagingRoot $root
 
     @(
         foreach (
-            $directory in Get-ChildItem -LiteralPath $root -Directory |
-                Where-Object Name -ne 'Pal' |
+            $directory in Get-ChildItem -LiteralPath $inventoryRoot -Directory |
+                Where-Object Name -notin @('Pal', '~mods', 'LogicMods') |
                 Sort-Object Name
         ) {
             $enabledMarker = Join-Path $directory.FullName 'enabled.txt'

@@ -348,7 +348,7 @@ Describe 'PalworldModding mod catalog' {
                     -Height 32
             )
 
-            $compactLayout.Count | Should Be 16
+            $compactLayout.Count | Should Be 18
             $wideLayout.Count | Should Be 30
 
             foreach ($line in $compactLayout) {
