@@ -1,6 +1,6 @@
 {
   "SchemaVersion": "1.0",
-  "UpdatedAt": "2026-07-29T08:42:39.7418056Z",
+  "UpdatedAt": "2026-07-29T09:00:57.1451241Z",
   "Mods": [
     {
       "CatalogKey": "antiphat",
@@ -12,13 +12,20 @@
       "NexusModIds": [
         3799
       ],
-      "InstalledVersion": "",
+      "InstalledVersion": "SP-2.0.5",
       "InstalledContentHash": "D938DBC6B4300E7F64AFD2A93FFCF48548499E019F5FE175BC10C89E56720FCF",
       "Enabled": true,
       "Types": [
         "UE4SS"
       ],
-      "ReconciliationStatus": "Matched",
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "SinglePlayer",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
+      "ReconciliationStatus": "ManuallyReconciled",
       "Versions": [
         {
           "Version": "SP-2.0.5",
@@ -29,7 +36,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-26T02:09:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "SinglePlayer",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua"
+          ]
         }
       ]
     },
@@ -49,6 +62,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -60,7 +80,14 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-27T14:06:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua",
+            "Pak"
+          ]
         },
         {
           "Version": "2.1.1",
@@ -71,7 +98,14 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-28T08:43:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua",
+            "Pak"
+          ]
         }
       ]
     },
@@ -91,6 +125,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -108,6 +149,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "BundledDependency",
       "Versions": []
     },
@@ -125,6 +173,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "BundledDependency",
       "Versions": []
     },
@@ -145,6 +200,14 @@
         "UE4SS",
         "Native"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua",
+          "Native"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -156,7 +219,15 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-27T19:23:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Configuration",
+            "Documentation",
+            "UE4SSLua",
+            "Native"
+          ]
         }
       ]
     },
@@ -174,6 +245,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "BundledDependency",
       "Versions": []
     },
@@ -193,6 +271,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -210,6 +295,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "BundledDependency",
       "Versions": []
     },
@@ -227,6 +319,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "BundledDependency",
       "Versions": []
     },
@@ -246,6 +345,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -265,6 +371,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -284,6 +397,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -303,6 +423,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -314,7 +441,15 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-28T10:45:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Configuration",
+            "Documentation",
+            "UE4SSLua",
+            "Native"
+          ]
         }
       ]
     },
@@ -334,6 +469,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -345,7 +487,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-27T15:32:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua"
+          ]
         },
         {
           "Version": "1.0.3",
@@ -356,7 +504,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-27T22:37:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua"
+          ]
         }
       ]
     },
@@ -374,6 +528,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "BundledDependency",
       "Versions": []
     },
@@ -405,7 +566,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-28T07:12:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua"
+          ]
         }
       ]
     },
@@ -419,12 +586,19 @@
       "NexusModIds": [
         98
       ],
-      "InstalledVersion": "1.20",
+      "InstalledVersion": "1.2",
       "InstalledContentHash": "6E0239BE371D74FE18709435CD2AC3BC20647B796E608992860EF94E55433778",
       "Enabled": true,
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -442,6 +616,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "BundledDependency",
       "Versions": []
     },
@@ -461,6 +642,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -472,7 +660,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-26T15:18:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua"
+          ]
         }
       ]
     },
@@ -492,6 +686,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -503,7 +704,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-24T14:35:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua"
+          ]
         }
       ]
     },
@@ -523,6 +730,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -534,7 +748,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-27T23:32:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua"
+          ]
         }
       ]
     },
@@ -554,6 +774,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -573,6 +800,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -592,6 +826,13 @@
       "Types": [
         "Native"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "Native"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -611,6 +852,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -630,6 +878,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     },
@@ -659,7 +914,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2025-01-28T06:43:00Z",
           "TimestampSource": "NexusFileUploadedAt",
-          "FilenamePattern": "NexusLegacyHyphen"
+          "FilenamePattern": "NexusLegacyHyphen",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Configuration",
+            "Pak"
+          ]
         }
       ]
     },
@@ -679,6 +940,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -690,7 +958,15 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-28T10:45:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Configuration",
+            "Documentation",
+            "UE4SSLua",
+            "Native"
+          ]
         }
       ]
     },
@@ -710,6 +986,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -721,7 +1004,13 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-27T17:39:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "UE4SSLua"
+          ]
         }
       ]
     },
@@ -739,6 +1028,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "BundledDependency",
       "Versions": []
     },
@@ -758,6 +1054,13 @@
       "Types": [
         "Native"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "Native"
+        ]
+      },
       "ReconciliationStatus": "Matched",
       "Versions": [
         {
@@ -769,7 +1072,14 @@
           "ArchivePresent": true,
           "DownloadedAt": "2026-07-25T10:32:00Z",
           "TimestampSource": "DownloadedAt",
-          "FilenamePattern": "NexusDownload"
+          "FilenamePattern": "NexusDownload",
+          "Platform": "Universal",
+          "PlayMode": "Universal",
+          "PackageTypes": [
+            "Documentation",
+            "Native",
+            "Other"
+          ]
         }
       ]
     },
@@ -789,6 +1099,13 @@
       "Types": [
         "UE4SS"
       ],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": [
+          "UE4SSLua"
+        ]
+      },
       "ReconciliationStatus": "ManuallyReconciled",
       "Versions": []
     }

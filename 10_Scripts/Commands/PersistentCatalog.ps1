@@ -63,6 +63,11 @@ function ConvertTo-PwPortableArchiveVersion {
         [bool]$ArchivePresent = $true
     )
 
+    $playMode = Get-PwCatalogPlayMode `
+        -Name ([string]$Archive.OriginalFileName) `
+        -Version ([string]$Archive.ArchiveVersion)
+    $platform = Get-PwCatalogPlatform -Name ([string]$Archive.OriginalFileName)
+
     [PSCustomObject]@{
         Version = [string]$Archive.ArchiveVersion
         ArchiveFileName = [string]$Archive.OriginalFileName
@@ -73,7 +78,75 @@ function ConvertTo-PwPortableArchiveVersion {
         DownloadedAt = $Archive.DownloadedAt
         TimestampSource = [string]$Archive.TimestampSource
         FilenamePattern = [string]$Archive.FilenamePattern
+        Platform = $platform
+        PlayMode = $playMode
+        PackageTypes = @(
+            @($Archive.Categories) |
+                ForEach-Object {
+                    switch ([string]$_) {
+                        'Lua' { 'UE4SSLua' }
+                        'Pak' { 'Pak' }
+                        'LogicMods' { 'LogicMods' }
+                        'Native' { 'Native' }
+                        default { [string]$_ }
+                    }
+                } |
+                Select-Object -Unique
+        )
     }
+}
+
+function Get-PwCatalogPlayMode {
+
+    [CmdletBinding()]
+    param(
+        [string]$Name,
+
+        [string]$Version
+    )
+
+    $identity = "$Name $Version"
+
+    if (
+        $identity -match '(?i)(^|[\s_.()\-])SP(?:[\s_.\-]|$)' -or
+        $identity -match '(?i)Single[\s_-]*player'
+    ) {
+        return 'SinglePlayer'
+    }
+
+    if (
+        $identity -match '(?i)(^|[\s_.()\-])DS(?:[\s_.\-]|$)' -or
+        $identity -match '(?i)Dedicated(?:[\s_-]*Server)?'
+    ) {
+        return 'DedicatedServer'
+    }
+
+    if (
+        $identity -match '(?i)(^|[\s_.()\-])MP(?:[\s_.\-]|$)' -or
+        $identity -match '(?i)Multi[\s_-]*player'
+    ) {
+        return 'MultiplayerHost'
+    }
+
+    'Universal'
+}
+
+function Get-PwCatalogPlatform {
+
+    [CmdletBinding()]
+    param(
+        [string]$Name
+    )
+
+    if ($Name -match '(?i)Game[\s_-]*Pass|WinGDK|Xbox') {
+        return 'GamePass'
+    }
+
+    if ($Name -match '(?i)Steam') {
+        return 'Steam'
+    }
+
+    'Universal'
 }
 
 function Merge-PwCatalogVersions {
@@ -214,7 +287,15 @@ function Get-PwModCatalogSyncPlan {
                     Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
                     Select-Object -Unique
             )
-            Source = 'NexusMods'
+            Source = if (
+                $null -ne $prior -and
+                -not [string]::IsNullOrWhiteSpace([string]$prior.Source)
+            ) {
+                [string]$prior.Source
+            }
+            else {
+                'NexusMods'
+            }
             NexusModIds = $nexusIds
             InstalledVersion = if ($null -ne $prior) {
                 [string]$prior.InstalledVersion
@@ -225,7 +306,55 @@ function Get-PwModCatalogSyncPlan {
             InstalledContentHash = [string]$mod.InstalledContentHash
             Enabled = $mod.Enabled
             Types = @($mod.Types)
+            InstalledVariant = [PSCustomObject]@{
+                Platform = if (
+                    $null -ne $prior -and
+                    $prior.PSObject.Properties['InstalledVariant'] -and
+                    $prior.InstalledVariant.Platform
+                ) {
+                    [string]$prior.InstalledVariant.Platform
+                }
+                else {
+                    'Universal'
+                }
+                PlayMode = if (@($mod.Archives).Count -gt 0) {
+                    $latestArchive = @($mod.Archives)[-1]
+                    Get-PwCatalogPlayMode `
+                        -Name ([string]$latestArchive.OriginalFileName) `
+                        -Version ([string]$latestArchive.ArchiveVersion)
+                }
+                elseif (
+                    $null -ne $prior -and
+                    $prior.PSObject.Properties['InstalledVariant'] -and
+                    $prior.InstalledVariant.PlayMode
+                ) {
+                    [string]$prior.InstalledVariant.PlayMode
+                }
+                else {
+                    'Universal'
+                }
+                PackageTypes = @(
+                    @($mod.Types) |
+                        ForEach-Object {
+                            if ($_ -eq 'UE4SS') {
+                                'UE4SSLua'
+                            }
+                            else {
+                                [string]$_
+                            }
+                        }
+                )
+            }
             ReconciliationStatus = if (
+                $null -ne $prior -and
+                [string]$prior.ReconciliationStatus -in @(
+                    'ManuallyReconciled',
+                    'BundledDependency'
+                )
+            ) {
+                [string]$prior.ReconciliationStatus
+            }
+            elseif (
                 $mod.ArchiveMatchStatus -eq 'MissingArchive'
             ) {
                 'NeedsMetadata'

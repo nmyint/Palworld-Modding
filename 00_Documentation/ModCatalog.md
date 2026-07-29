@@ -99,6 +99,12 @@ not erased from history; their version records remain with
 `ArchivePresent = false`. Loose mods without a matching archive are marked
 `NeedsMetadata` for later reconciliation.
 
+Later synchronization preserves reviewed source, Nexus identity, installed
+version, and reconciliation status. Each installed record also carries an
+`InstalledVariant` with platform, play mode, and package type. Archive-version
+records carry the same dimensions so Steam/GamePass,
+singleplayer/dedicated/multiplayer, and UE4SS/PAK releases can coexist.
+
 After confirming missing information from Nexus or the installed mod, record it
 without changing any mod files:
 

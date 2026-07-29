@@ -292,6 +292,42 @@ Describe 'PalworldModding mod catalog' {
         @($record.NexusModIds).Count | Should Be $beforeIds.Count
     }
 
+    It 'preserves reviewed metadata during later catalog synchronization' {
+        Update-PwModCatalog -Confirm:$false | Out-Null
+        Set-PwModCatalogMetadata `
+            -CatalogKey 'orphanmod' `
+            -NexusModId 999 `
+            -InstalledVersion '1.0.0' `
+            -Source NexusMods `
+            -Confirm:$false |
+            Out-Null
+        $plan = Get-PwModCatalogSyncPlan
+        $record = $plan.Catalog.Mods |
+            Where-Object CatalogKey -eq 'orphanmod'
+
+        $record.Source | Should Be 'NexusMods'
+        $record.ReconciliationStatus | Should Be 'ManuallyReconciled'
+        $record.InstalledVersion | Should Be '1.0.0'
+        @($record.NexusModIds) -contains 999 | Should Be $true
+    }
+
+    It 'infers play-mode and platform variants conservatively' {
+        InModuleScope PalworldModding {
+            Get-PwCatalogPlayMode `
+                -Name 'AntiPhat (Singleplayer)' `
+                -Version 'SP-2.0.5' |
+                Should Be 'SinglePlayer'
+            Get-PwCatalogPlayMode `
+                -Name 'AntiPhat Dedicated' `
+                -Version 'DS-2.0.17' |
+                Should Be 'DedicatedServer'
+            Get-PwCatalogPlatform -Name 'Example GamePass WinGDK' |
+                Should Be 'GamePass'
+            Get-PwCatalogPlatform -Name 'Generic archive' |
+                Should Be 'Universal'
+        }
+    }
+
     It 'renders the main menu responsively within terminal dimensions' {
         InModuleScope PalworldModding {
             $compactLayout = @(
