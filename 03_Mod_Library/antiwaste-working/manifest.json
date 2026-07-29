@@ -1,0 +1,140 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "antiwaste",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:16.7682218-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "5372CE781F9C060CE1634573C3BA68A8D84003D46C1E37A98F6B9EAC1A955E64",
+  "ContentSetHash": "5372CE781F9C060CE1634573C3BA68A8D84003D46C1E37A98F6B9EAC1A955E64",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "2DE1BACF2D31A945F4090D347B4601A3655A44FBE16111F8A4774DA9ACEED3EB",
+  "RequiresReview": false,
+  "Categories": [
+    "Pak",
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/config.lua",
+      "Length": 856,
+      "Hash": "CA33D06DB07ED15AFE6F0F844D441098F1658F91D376CD84D12CE298A25FE027",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/main.lua",
+      "Length": 5611,
+      "Hash": "7E8CEF9699DD995FFE6012493E5DE5AC6607761B75763E4ECED3A38BED61C6AE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/bench_ui.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/bench_ui.lua",
+      "Length": 55126,
+      "Hash": "0E666139C457DBDF6A957CBC77238F03411228782FF8A7347EF53F1EEDD91B81",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/bench_ui.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/core.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/core.lua",
+      "Length": 13238,
+      "Hash": "D884EA67EACA36C2E36E2F79FDF856F7AF0D5C9B033D7CFE8C28CE5B0A871562",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/core.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/displaynames.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/displaynames.lua",
+      "Length": 105163,
+      "Hash": "23AEEDFE7B5C17F7CBB637054692A05B5B9B92ADCCCFCBBADE13742EC2580F6E",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/displaynames.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/helpers.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/helpers.lua",
+      "Length": 11041,
+      "Hash": "291B43DD410E508E16F7AB2068702CE930633BFAF6A1FAD3BF06DAD21BB8057A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/helpers.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/itemeffecttypes.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/itemeffecttypes.lua",
+      "Length": 21528,
+      "Hash": "D4B763AD94E8A353875B88775C8AEB49EADC24610F3BB9B230647B9D1C034F17",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/itemeffecttypes.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/itemtypes.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/itemtypes.lua",
+      "Length": 26762,
+      "Hash": "0F9DC12F8888886FB5C824E4BBCFB83EAB8A63CD26F8E450090B6106BA2F9F40",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/itemtypes.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/net.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/net.lua",
+      "Length": 3144,
+      "Hash": "65EF7E2C1FABBAD1B040F7C214A07EDE33A7D96CEC044C30598C320D0E4429E0",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/net.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/recipecost.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/recipecost.lua",
+      "Length": 4452,
+      "Hash": "FCA9BC8C88F6A145805F5C3462B76D22A9E376C48C428C41C36B041B63589281",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/recipecost.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/server.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/server.lua",
+      "Length": 7953,
+      "Hash": "214D463455B11B46AF40B6B46F36D3E7F3F59A1305FB326DC015979A58F2B0AA",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiWaste/Scripts/Core/server.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Content/Paks/~mods/AntiWaste_P.Pak",
+      "StagedRelativePath": "Pal/Content/Paks/~mods/AntiWaste_P.Pak",
+      "Length": 351129,
+      "Hash": "A2A1E5D910905607E6B41651B9F0BDD2CD3F23FEF8A8D3B4DB07CD3D5A1E6B0A",
+      "Category": "Pak",
+      "DeploymentRelativePath": "Pal/Content/Paks/~mods/AntiWaste_P.Pak",
+      "ReviewRequired": false
+    }
+  ]
+}

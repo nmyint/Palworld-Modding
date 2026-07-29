@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "mapcollectablesmod",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:35.1204252-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "4951D78EE8C6095A818C7796E8D0D62D0A0A6D6E792E7B9B34B4BE245A9E04A9",
+  "ContentSetHash": "4951D78EE8C6095A818C7796E8D0D62D0A0A6D6E792E7B9B34B4BE245A9E04A9",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "3669CC787F5BF12255D034089E3AAFF7CC387E715448B8882A2B638ABF0B47D2",
+  "RequiresReview": false,
+  "Categories": [
+    "LogicMods"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/MapCollectablesMod.pak",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/MapCollectablesMod.pak",
+      "Length": 1317251,
+      "Hash": "56168EA5E933900ECE02CE1CBF09587A113FFE123E2E114942251E0327E7CA43",
+      "Category": "LogicMods",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/MapCollectablesMod.pak",
+      "ReviewRequired": false
+    }
+  ]
+}

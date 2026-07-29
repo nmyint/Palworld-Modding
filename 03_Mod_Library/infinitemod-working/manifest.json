@@ -1,0 +1,589 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "infinitemod",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:28.4724019-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "EBD2EBA7EDDE047F7CC5E975A9AB1D391D33D55D3A32EBC2C8EB652096B90390",
+  "ContentSetHash": "EBD2EBA7EDDE047F7CC5E975A9AB1D391D33D55D3A32EBC2C8EB652096B90390",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "BC84A145C9B0D5A09F8FB857A59D642CAC9E2A96EED59C383E9EC12D7EF8A440",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/config.lua",
+      "Length": 1726,
+      "Hash": "91EBB1DA5AC6A771427CD436035C3B2ABFCBC2D2DA97B143B452FE581020F737",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/main.lua",
+      "Length": 572,
+      "Hash": "A84766F67C75ABEE9E3C2EA11727ED6D0242119D9859037A272BE0AA3D4361D9",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Core/Hooks.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Core/Hooks.lua",
+      "Length": 5436,
+      "Hash": "493A936A717CC1FAB74531D625C33F3733602AD644A2E02BBDD258BD6D6A292A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Core/Hooks.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Core/Utils.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Core/Utils.lua",
+      "Length": 16960,
+      "Hash": "9854E43167D7992F2E1A75F0A07DCEDB71BA587F5D9E934FEF3B28B490DFA8B2",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Core/Utils.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/blueprints.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/blueprints.lua",
+      "Length": 1974,
+      "Hash": "DEAAE28571F9046CEE642380552A9CB92BB92513039C80DFF14C0F1FFA900CD8",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/blueprints.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/breed.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/breed.lua",
+      "Length": 1713,
+      "Hash": "F95380A1135C6FD64F919A8C454657DABDD25DCF99F376D840F3E6CAEAE69A30",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/breed.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/buff.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/buff.lua",
+      "Length": 1245,
+      "Hash": "2CA07BC6771D7D8D31DA0EB3E9FD976351B579FB2B5ED4CED0EED1DFA476B959",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/buff.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/buildings.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/buildings.lua",
+      "Length": 3120,
+      "Hash": "AD4E57222C6BCEE00E2DCB181FFCB67F36F32AE6BC9DA24F35A9D5BB8C15E50E",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/buildings.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/butcher.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/butcher.lua",
+      "Length": 2523,
+      "Hash": "89886D7A5505BF26EA35186B95A488377FBE028FEC4F28E8689A805563FCA7CE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/butcher.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/bypasser.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/bypasser.lua",
+      "Length": 1399,
+      "Hash": "64918AD1C24F67BF4E2EF18BC1A2B6F5C14B6BEDB67AA99CFEBE537C8DC373BD",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/bypasser.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/cage.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/cage.lua",
+      "Length": 970,
+      "Hash": "79532DCA250DB0A8285C2860F38DD241D5AEAC28A9768C1C91F562F7F103FE62",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/cage.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/camp.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/camp.lua",
+      "Length": 3194,
+      "Hash": "D2B9B40188077FBBBB501B3C9AB907B858BB78986862F7B26E74DD83C8DF0332",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/camp.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/catch.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/catch.lua",
+      "Length": 2507,
+      "Hash": "0B06CF7792589A22601F0F007DB11555D6A9B0E2CA9E278AD2791DEF0DED5DBD",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/catch.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/cleanse.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/cleanse.lua",
+      "Length": 3451,
+      "Hash": "7E0C56985810D6F6D8848994D08BC82CB5B3A4B6BEDD08CA313AB851D6407BB7",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/cleanse.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/clear.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/clear.lua",
+      "Length": 1044,
+      "Hash": "5A2CBFFE2DB2D230EC047C49278170DFACCAB3E019A5313D21D31FEAB19404D7",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/clear.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/coop.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/coop.lua",
+      "Length": 8993,
+      "Hash": "D156BD278308A28E6791E95EDBC43E877F4D44545F51A37205B8BB06D5EB3815",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/coop.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/crops.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/crops.lua",
+      "Length": 624,
+      "Hash": "69299159E0E36F7C5AE1765369BEF08E79D9DC025163C66E9080C14B3ED460AF",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/crops.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/currency.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/currency.lua",
+      "Length": 834,
+      "Hash": "5B4461F329C8F0D8BE0B088B3252514BE23312E131B6BB0BD934A8EC0B484373",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/currency.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/eggs.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/eggs.lua",
+      "Length": 2283,
+      "Hash": "15E47FE2DE7B92CBD2C2A4A9CFCCEE3402C8F498B4547503B74CB985462C79F7",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/eggs.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/elixirs.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/elixirs.lua",
+      "Length": 1576,
+      "Hash": "F3D480B74687EC0DA18E67363B512C86C02A44D7060130D1015FD7F5D58B3233",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/elixirs.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/expedition.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/expedition.lua",
+      "Length": 1504,
+      "Hash": "5587072F0D90E3C6B695155C5D73CA330B521EF7A0A75CB41F647A3BE95B3A10",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/expedition.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/fall.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/fall.lua",
+      "Length": 1451,
+      "Hash": "0869F5BBA6E4D469571482F084E974073CD8A1032B25D1CE2CEFB54EE3E7FB44",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/fall.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/fuel.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/fuel.lua",
+      "Length": 1491,
+      "Hash": "8E2248871581236E5C9A4FBCBB82261DF381505BA229DDE28DBC6901F6C3AF41",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/fuel.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/give.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/give.lua",
+      "Length": 4569,
+      "Hash": "ADFB312CE2BDEA57D960DCFDB0BCC0517CC664411FBF6155501A655DC9B4C007",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/give.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/god.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/god.lua",
+      "Length": 1921,
+      "Hash": "9AD768D1204A599F6E5298534D8DDEC20793EE7E42BF79F7362AED40356B768A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/god.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/home.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/home.lua",
+      "Length": 1386,
+      "Hash": "0908917661D3B507DA3102B5A07354123D8CAF75E63C01826C5AE4BC0B3CA608",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/home.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/items.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/items.lua",
+      "Length": 1750,
+      "Hash": "0FCEF1C898962F725733F23F62C8421A332F7597B5B5E7827524D4AC19BF6A01",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/items.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/lab.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/lab.lua",
+      "Length": 1129,
+      "Hash": "AF0917C9E8F6B9EB54852BB73C703ECE041E3C5A6464A46493B63E370DCD5C42",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/lab.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/loot.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/loot.lua",
+      "Length": 2340,
+      "Hash": "79209EB8A7D431DE84C80B0F79C6C7849F0C13A3A8A007FC5B0B30AE4F9CA1EE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/loot.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/minigame.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/minigame.lua",
+      "Length": 3559,
+      "Hash": "6C10E4579DA5B6E4F33E8A1C09CF026348FDE226A824878A7ED8AD0767E26990",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/minigame.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/notes.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/notes.lua",
+      "Length": 2690,
+      "Hash": "D7A4D072F413732F3DE70EC0F7ED9DD0EC00B290A1BBF7F77F98A6BD8B2A4E17",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/notes.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/oilrig.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/oilrig.lua",
+      "Length": 868,
+      "Hash": "B122A1F3787886E0F6651FB9DEC8487F881405215CD75F79FDCED83AF33C18D4",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/oilrig.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/options.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/options.lua",
+      "Length": 1301,
+      "Hash": "D8B95674C149435592C441D16AEE92A5725EDF7A6B4CD49044B5000DF1D7A4FA",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/options.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/partner.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/partner.lua",
+      "Length": 984,
+      "Hash": "46D9121A247E18A6D4A354A29ECC5D60930F3FCD80DE94244476D76090BE0164",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/partner.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/passives.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/passives.lua",
+      "Length": 4598,
+      "Hash": "DA0E61D298E711D58D43356F31EEF36419A4FBCE36693944E01A4B8A0B1F05CF",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/passives.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/pick.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/pick.lua",
+      "Length": 6950,
+      "Hash": "4DBCF7B2159BD759E8629F419865FC113E9235F8C89FDE5F6DF9642B4C6868D4",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/pick.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/points.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/points.lua",
+      "Length": 2417,
+      "Hash": "05AC9DCC732F7CE24E3DF0ADD0FD2E31B16B24F29F488DB0E687CB857D94AC5E",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/points.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/power.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/power.lua",
+      "Length": 2501,
+      "Hash": "CB3CA649C7BB82A13765789AA418C1A3C2685E5C8E4BD91DB4EF4217982FFBA6",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/power.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/quest.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/quest.lua",
+      "Length": 992,
+      "Hash": "3F88FB5AA940A03EA24C833A4C7442C02C903EA3F8C243019C9CBF1A3017BBA6",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/quest.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/rader.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/rader.lua",
+      "Length": 576,
+      "Hash": "30A3E9910DF901A8520FF4DE06126928DEB29525D2E3C9A6FC75AE453FF36CD9",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/rader.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/random.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/random.lua",
+      "Length": 8946,
+      "Hash": "FB04D960E46D78556E0FAAEA21414416420021E96B596341E51A3AADC7E11B8A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/random.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/rate.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/rate.lua",
+      "Length": 791,
+      "Hash": "091FB8CD4146DE8B3F0C084B69B707D103B90E8A9ACEFDA00C30D6C465683809",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/rate.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/relics.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/relics.lua",
+      "Length": 7306,
+      "Hash": "E1627CD501311B65F60E7DDCC6F40233D3EE2AC260FF903906C0334DDF091630",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/relics.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/settings.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/settings.lua",
+      "Length": 3616,
+      "Hash": "0C4F51B61E69D94093ED6AE1982CC98C07A53654796E318310557DE34BDAC9E5",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/settings.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/size.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/size.lua",
+      "Length": 4344,
+      "Hash": "E68F970B5725C71E2DB7D6766BDB256964366A5F2BE7883145D6ADE96336BE10",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/size.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/skills.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/skills.lua",
+      "Length": 2781,
+      "Hash": "F88146ED3370439B95A3DFD327B1409D623005DF816B532B97536980010F165C",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/skills.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/sphere.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/sphere.lua",
+      "Length": 1285,
+      "Hash": "1CA0F6C2D94E89A3689C3E39B9B8B1CE406EDA222C42B84C2872ADA1725C0CCB",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/sphere.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/stacking.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/stacking.lua",
+      "Length": 2446,
+      "Hash": "36A59C28547876CD6B71F44595250E82A28814D118382A9C978304844EC9953D",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/stacking.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/storages.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/storages.lua",
+      "Length": 890,
+      "Hash": "A447FF1B1572ACFEEA694814E90882DBCA6D6EB99F888C1E456DAFD234D37A8F",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/storages.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/surgery.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/surgery.lua",
+      "Length": 1933,
+      "Hash": "5BFE097DF1E820D3A19A33350BAC4E783B93B83AF391ED281C71FD5C54DF85EF",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/surgery.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/tasks.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/tasks.lua",
+      "Length": 804,
+      "Hash": "48C04585447B5E489E510A1E6042CCAD3A76D8FDBF71A6165BFD0B48547F129A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/tasks.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/team.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/team.lua",
+      "Length": 6592,
+      "Hash": "0C1FDBFBE451469C0AC0D4906F1397596C14F9F23FACE1DB807457F09923BE69",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/team.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/technology.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/technology.lua",
+      "Length": 6962,
+      "Hash": "FC9140A90F3F376BC9135BA6E2A453C731538746ECB69B2A071DB38330A48135",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/technology.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/time.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/time.lua",
+      "Length": 968,
+      "Hash": "57DEFB78636C9B1C2F83B631449EE91B37748392ED3D4A57BE0F1C136A24F879",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/time.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/travel.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/travel.lua",
+      "Length": 2243,
+      "Hash": "BD41E894674BE954DC9190E03151F9C930DB7C65E57CC0F0E111B7E4D59CC289",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/travel.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/treasures.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/treasures.lua",
+      "Length": 6099,
+      "Hash": "6F3F05823B5B2E0F1B5218F7AB0E23F7AD50DD29450C5C26B1B462B88A982C33",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/treasures.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/upgrades.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/upgrades.lua",
+      "Length": 5580,
+      "Hash": "174D298CCB11F9040A15EE1D47A18924C34A9B029ACAB6273798BEF541256697",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/upgrades.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/view.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/view.lua",
+      "Length": 2032,
+      "Hash": "7AEA190A056A3811B4999DFB96569C241DA04C885225FEDDC95A4C01AF349676",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/view.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/weapons.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/weapons.lua",
+      "Length": 1292,
+      "Hash": "FA0CC06464362B1265A390E5B228E013FB82AC7D9AACEAF22E14852D0726FD0D",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/weapons.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/work.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/work.lua",
+      "Length": 985,
+      "Hash": "6B35EF17787B2170D1872BB274D02B3D790FE6A3CA47467183AD08442400A81A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InfiniteMod/Scripts/Modules/work.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/shared/README.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/shared/README.txt",
+      "Length": 153,
+      "Hash": "92C6FE5085C086D16E0D30506B55C54455112CD4C6A3441F0B20FAA8C1C4BD33",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/shared/README.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/shared/UEHelpers/UEHelpers.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/shared/UEHelpers/UEHelpers.lua",
+      "Length": 10237,
+      "Hash": "7476F02EEF0C87BFEAB169F2FFE2E704363FAEAAE4BF9F1BDA574B1E34F4A0E9",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/shared/UEHelpers/UEHelpers.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

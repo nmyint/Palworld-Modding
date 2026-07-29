@@ -1,0 +1,77 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "buildflightcamera",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:59:34.1685521-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "16BCBFACC2E637D4945048F1F1926F503A7EC83EA1347B447896AD68C3FA5A4E",
+  "ContentSetHash": "16BCBFACC2E637D4945048F1F1926F503A7EC83EA1347B447896AD68C3FA5A4E",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "D008C1799CFEA3CAEC13B007812CF4760636785898570A24975B9B1E34E7ACE4",
+  "RequiresReview": false,
+  "Categories": [
+    "Native",
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main_experimental.dll",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main_experimental.dll",
+      "Length": 66048,
+      "Hash": "94E6FE922D70DBA7A766ACD8893DE99ABA66EEC436E2AE724A08202A769D3436",
+      "Category": "Native",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main_experimental.dll",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main_stable.dll",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main_stable.dll",
+      "Length": 445440,
+      "Hash": "0DBAD755458E7FA9F39F7DA2F87FB1972421DAC0F8FEC14485E5CDB68543B483",
+      "Category": "Native",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main_stable.dll",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main.dll",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main.dll",
+      "Length": 51200,
+      "Hash": "478E95C2F3214F1E4DBCCFBEF4C9D7C231D32B00FF88EB89B6BC5C7649DC2A46",
+      "Category": "Native",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/dlls/main.dll",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/Scripts/BuildFlightConfig.ini",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/Scripts/BuildFlightConfig.ini",
+      "Length": 703,
+      "Hash": "43CA6E536697D7F0D0C3E34D5C7247E0F826626863688C504F8DA35B924C6529",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/Scripts/BuildFlightConfig.ini",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/Scripts/main.lua",
+      "Length": 1217605,
+      "Hash": "E480D0DF1E3E778A9F136F001012C83D028EB3DBA6D817376BEE8286C0E9CA13",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BuildFlightCamera/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

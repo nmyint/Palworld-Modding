@@ -1,0 +1,50 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "dekmodconfigmenu",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:26.3092314-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "F790A356BFEE07B082F1A017ABC79B58F54D7DDF6F4F749CBF775BCA634BE379",
+  "ContentSetHash": "F790A356BFEE07B082F1A017ABC79B58F54D7DDF6F4F749CBF775BCA634BE379",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "178CABA3B6D6A1187D6A144E7B20D042C67ABFDA06A95B45124630B3D5E74859",
+  "RequiresReview": false,
+  "Categories": [
+    "LogicMods",
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/DekModConfigMenu/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/DekModConfigMenu/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/DekModConfigMenu/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/DekModConfigMenu/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/DekModConfigMenu/Scripts/main.lua",
+      "Length": 13638,
+      "Hash": "7B6D25A91E0317993B90FF1A2D2AC7AE73BD010DFE64DFB1BE71F9B95FE0E335",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/DekModConfigMenu/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/DekModConfigMenu_P.pak",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/DekModConfigMenu_P.pak",
+      "Length": 12092638,
+      "Hash": "8BA71CB40E98C9A55D0C883D4D0B12B1A47765979FBAA77EEEFC933015468B51",
+      "Category": "LogicMods",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/DekModConfigMenu_P.pak",
+      "ReviewRequired": false
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "smartpause",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:45.7797899-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "CEA7893054E8A91CD85AB7B61F112BC86AECC0E30661454FDDCACD1E9BC65000",
+  "ContentSetHash": "CEA7893054E8A91CD85AB7B61F112BC86AECC0E30661454FDDCACD1E9BC65000",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "21678EAB8B979C4F75356C7186409CDC697BDE3E4F227B6CFB34797F276A382F",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/enabled.txt",
+      "Length": 49,
+      "Hash": "AC15E205516592BBC13DE433D0B4B15871AE24256C7B3F1DB645BFDE16209A19",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/Scripts/config.lua",
+      "Length": 4678,
+      "Hash": "39096BF764486581EEFEE4B7BD44D40F099F6A88162DEE947ACA56172F6D72BE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/Scripts/main.lua",
+      "Length": 35828,
+      "Hash": "384696BB304291B66B0929FD022AE8DD6251B8BA8A9456B6A95225E5B11D1E94",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/SmartPause/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

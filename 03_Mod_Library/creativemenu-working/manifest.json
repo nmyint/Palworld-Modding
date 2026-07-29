@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "creativemenu",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:23.5318293-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "9220B45D72A516600E83B89BA858AD4AD319319DF44CB7BA355A7B56D8C2C013",
+  "ContentSetHash": "9220B45D72A516600E83B89BA858AD4AD319319DF44CB7BA355A7B56D8C2C013",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "208EA31F048B51C3C12A95B1FD6778F7FB6E04A8E666B4DADB930DB0EE91F070",
+  "RequiresReview": false,
+  "Categories": [
+    "Pak"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Content/Paks/~mods/CreativeMenu_P.pak",
+      "StagedRelativePath": "Pal/Content/Paks/~mods/CreativeMenu_P.pak",
+      "Length": 578836,
+      "Hash": "B1507A64CD4B1D97730A17C7E61FFC02575239CD46D586E0F322A081EB4B16F9",
+      "Category": "Pak",
+      "DeploymentRelativePath": "Pal/Content/Paks/~mods/CreativeMenu_P.pak",
+      "ReviewRequired": false
+    }
+  ]
+}

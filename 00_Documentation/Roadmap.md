@@ -201,11 +201,13 @@ Status: In progress
 
 ### Sprint 4.4 - Profile mod sets and deterministic assembly
 
-Status: In progress
+Status: Complete
 
 - Enable and disable reviewed mod sets through profiles.
 - Assemble deployments deterministically from the curated library.
 - Preserve preview, backup, rollback, and explicit-approval safeguards.
+- Capture the reconciled working staging snapshot into SHA-256 manifests.
+- Require assembly and live-game comparison verification before deployment.
 
 ### Sprint 4.5 - Upgrade and removal workflow
 

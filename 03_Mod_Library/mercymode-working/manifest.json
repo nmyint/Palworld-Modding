@@ -1,0 +1,67 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "mercymode",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:36.1230322-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "5C70A3A3D4B34E688D85CB4C62597D67694A0463A82327AAF991CCB1FFD87AAF",
+  "ContentSetHash": "5C70A3A3D4B34E688D85CB4C62597D67694A0463A82327AAF991CCB1FFD87AAF",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "C0B27605196BB730668F668DAAF454210F3FB0C069407D883C177F8399BE10A3",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/enabled.txt",
+      "Length": 1,
+      "Hash": "01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/core.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/core.lua",
+      "Length": 446,
+      "Hash": "16D1E47B13DF8EBCB2A6F8A9343C3665B1C88273F5915ED8B3CC97C829EDB968",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/core.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/main.lua",
+      "Length": 14786,
+      "Hash": "5B6BA03DB351DD35D2A66BA3A37E27B2B878C790D6B149C9970B641ECABBCD1F",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/PalModOptionsClient.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/PalModOptionsClient.lua",
+      "Length": 12039,
+      "Hash": "70338231B330223AF3F78D7DCBC31D81BADD5CB61AB09F1356D72798699401B1",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/PalModOptionsClient.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/pmo_json.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/pmo_json.lua",
+      "Length": 9313,
+      "Hash": "1CA2CAB6460E8A85930ECD96F717470A49AA780A7647C2BBB0EF714F25C666E7",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MercyMode/Scripts/pmo_json.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

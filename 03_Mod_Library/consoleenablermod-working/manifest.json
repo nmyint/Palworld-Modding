@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "consoleenablermod",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:22.6624534-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "12FC5B0981776E8A138E3F8D68749282FE04D6B581A4B4DBFF14FA0852245EA6",
+  "ContentSetHash": "12FC5B0981776E8A138E3F8D68749282FE04D6B581A4B4DBFF14FA0852245EA6",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "537AA0A90CE680C3F5E7DD3E5289BFC7AF2AAB2013A4203A1182AA49DACBC641",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleEnablerMod/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleEnablerMod/Scripts/main.lua",
+      "Length": 3261,
+      "Hash": "2517EA80A074BC5E6F00C55263C1867BF8E74C6B8665A79217ADB53FDBE04343",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleEnablerMod/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

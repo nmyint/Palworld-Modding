@@ -1,0 +1,77 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "palminimap",
+  "Version": "1.2.5",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:39.0294413-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "6716C991272E5645AF6AA472787CE8DFA7E8E03D4F20FB5432AD7AE5F5926A42",
+  "ContentSetHash": "6716C991272E5645AF6AA472787CE8DFA7E8E03D4F20FB5432AD7AE5F5926A42",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "EAF590CA2477A9D8B44227D455725AB1CC96CA862481CAE246FE06999BF006AD",
+  "RequiresReview": false,
+  "Categories": [
+    "LogicMods",
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/Scripts/json.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/Scripts/json.lua",
+      "Length": 9638,
+      "Hash": "0EACCDA57FABC0330736DE25F45CF589821A42B5E0FE02E4E3125F7DC0BF2B7E",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/Scripts/json.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/Scripts/main.lua",
+      "Length": 82606,
+      "Hash": "3CF5561B4EDED3C4AB6F6867535942AF8997B88F65EBB6554414290552F4741F",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalMiniMap/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/Paldar.modconfig.json",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/Paldar.modconfig.json",
+      "Length": 6760,
+      "Hash": "AED846B3D11875D9CCB53DB79A125C820596B2EA6694C87347BB64C370811FBB",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/Paldar.modconfig.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/PalMiniMap.pak",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/PalMiniMap.pak",
+      "Length": 6679475,
+      "Hash": "9E9CF7A36C5BCCF6D4A5BA1B1FD6275F4827D3707A28BE5217A0B5B65A035C5F",
+      "Category": "LogicMods",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/PalMiniMap.pak",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/PalMiniMap/config.lua",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/PalMiniMap/config.lua",
+      "Length": 237,
+      "Hash": "D5490A6D8F6B78C704FFEDF14FCEE595C7BDC4B10ABEE7FFC00AF5B33CD788AD",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/PalMiniMap/config.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

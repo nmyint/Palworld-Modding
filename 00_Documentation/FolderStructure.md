@@ -13,7 +13,7 @@ directly in the Palworld installation.
 | `02_Staging` | Current working mod setup and temporary preparation area |
 | `03_Mod_Library` | Flat `<ModName>-<Version>` curated package folders |
 | `04_Projects` | Active mod and compatibility projects |
-| `05_Deployment` | Loose game-layout output and portable deployment packages |
+| `05_Deployment` | Generated game-layout output and verified profile assembly manifest |
 | `06_Current_Installation` | Known-good installation manifests and inventories |
 | `07_Testing` | Test plans, results, compatibility notes, and regression data |
 | `08_Tools` | Workshop-managed development tools |

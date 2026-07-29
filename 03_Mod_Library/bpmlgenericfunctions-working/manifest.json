@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "bpmlgenericfunctions",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:18.3304359-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "A9A537928809614691C54510F72EC04768FE435541D429A6F9ED2B06BB8A7F68",
+  "ContentSetHash": "A9A537928809614691C54510F72EC04768FE435541D429A6F9ED2B06BB8A7F68",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "2B620339293611E2F95F96B5A8F000BB3513CEAD199B7131743DDC7A344461DA",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BPML_GenericFunctions/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BPML_GenericFunctions/Scripts/main.lua",
+      "Length": 2950,
+      "Hash": "DF87C361CDFC231AC8017FF9B930C323FAC09F436CA4C41D48E952FF4B38D38F",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BPML_GenericFunctions/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

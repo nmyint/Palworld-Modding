@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "linetracemod",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:34.5379547-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "DA005E7BA86A6457BB10B64435FB71D3EF352370A16387B7772DC636FAED5560",
+  "ContentSetHash": "DA005E7BA86A6457BB10B64435FB71D3EF352370A16387B7772DC636FAED5560",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "E967535909F71C5FA1FF6CA49C1116E41A970152FAE88CDA35189C091F502006",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/LineTraceMod/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/LineTraceMod/Scripts/main.lua",
+      "Length": 2721,
+      "Hash": "05C181A5CC3CB24E0BD7496D6BBC14A1111D0A1E731A2526203B41B07D972DAE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/LineTraceMod/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

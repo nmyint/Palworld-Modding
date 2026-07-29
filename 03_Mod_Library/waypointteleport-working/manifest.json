@@ -1,0 +1,40 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "waypointteleport",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:49.3456803-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "F50C1B96F25268115274F9D094691DA1D00BC4EF891157E644105E28E2F7DA55",
+  "ContentSetHash": "F50C1B96F25268115274F9D094691DA1D00BC4EF891157E644105E28E2F7DA55",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "7A3D0F95A66B3C52E11EB8DE18A55DE555CFA590EA39645C71EBE6752489B328",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/WaypointTeleport/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/WaypointTeleport/enabled.txt",
+      "Length": 40,
+      "Hash": "C8F5017CE777AB08D2CCBEDC9642B79BC66873017743644C8858E5B5CD845407",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/WaypointTeleport/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/WaypointTeleport/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/WaypointTeleport/Scripts/main.lua",
+      "Length": 7492,
+      "Hash": "283633B87DB36FF238597EEBD7E9D5D46D62585815CFCB3EA5BB556C30DB3B20",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/WaypointTeleport/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

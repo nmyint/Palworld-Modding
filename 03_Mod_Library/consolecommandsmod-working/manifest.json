@@ -1,0 +1,58 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "consolecommandsmod",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:22.1241895-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "0E706E86DFCE1C4A01951B8008C8F4E3665E9914CB67E67DE0AA7B34678C47FD",
+  "ContentSetHash": "0E706E86DFCE1C4A01951B8008C8F4E3665E9914CB67E67DE0AA7B34678C47FD",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "25636B7ABC3490421CA912E13D9BC6B9740282A7E96A143D27BE8380432FA2CD",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/dump_object.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/dump_object.lua",
+      "Length": 13093,
+      "Hash": "365B7E8A803F8AE917F54F6C852854C681E388227DD1F94B0EA3F6FB938B5086",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/dump_object.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/main.lua",
+      "Length": 297,
+      "Hash": "5BF33CD4EF9F6A155FE5F7842218A6486C2C227858FFD99806E75D81D0DA9F27",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/set.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/set.lua",
+      "Length": 2056,
+      "Hash": "876E7DE49F0E30A4329C081472BC7D5E1948459C774B7ABBB8BE4B6323F16EC8",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/set.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/summon_unloaded_assets.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/summon_unloaded_assets.lua",
+      "Length": 489,
+      "Hash": "194B557404B6078767F8B57B836AA44D084CF6F3F2CBDE71A6831857567F8103",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConsoleCommandsMod/Scripts/summon_unloaded_assets.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

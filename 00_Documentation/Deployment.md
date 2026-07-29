@@ -15,6 +15,41 @@ active profile's Palworld `Pal` directory.
 8. Applied deployments produce a structured JSON log.
 9. Source and destination hashes are revalidated immediately before copying.
 10. Every copied destination is hashed again to verify the deployed content.
+11. Applying a deployment first runs the mandatory assembly and current-game
+    readiness verification.
+12. Files found only in the current game's managed mod roots are reported for
+    review and are never silently deleted.
+
+## Profile assembly
+
+Menu option `7/S` finishes the standard workshop-side build without deploying
+to Palworld:
+
+```powershell
+$plan = Get-PwProfileAssemblyPlan
+$plan.Packages | Format-Table CatalogKey, Version, FileCount, Action
+
+Build-PwProfileDeployment -Apply
+Test-PwProfileDeploymentAssembly
+```
+
+The build captures the active profile's reconciled `02_Staging` components into
+flat, manifest-backed packages under `03_Mod_Library`, then reproduces the game
+layout beneath `05_Deployment\Pal`. Every payload and generated package is
+SHA-256 verified. `Build-PwProfileDeployment` never writes to the live game.
+
+Before a future deployment, compare the verified output with the current game:
+
+```powershell
+$review = Test-PwDeploymentReadiness
+$review | Format-List ReadyToDeploy, DeploymentFileCount, IdenticalCount,
+    CreateCount, UpdateCount, CurrentGameOnlyCount
+$review.Comparison | Format-Table Status, RelativePath
+$review.CurrentGameOnly | Format-Table Status, RelativePath
+```
+
+The managed live-game roots checked for current-only files are UE4SS `Mods`,
+`Content\Paks\~mods`, and `Content\Paks\LogicMods`.
 
 ## Preview
 

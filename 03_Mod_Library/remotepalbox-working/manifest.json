@@ -1,0 +1,40 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "remotepalbox",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:44.139168-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "D8326A382EAFF5417B00F610019CB4B20BAD0FB125A7E424F69557F2DF693D62",
+  "ContentSetHash": "D8326A382EAFF5417B00F610019CB4B20BAD0FB125A7E424F69557F2DF693D62",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "866F51D21C1795A5E8B4828E167FD5952EB868C69A8D1C30AE75A52F108D9E97",
+  "RequiresReview": false,
+  "Categories": [
+    "LogicMods"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/RemotePalbox.modconfig.json",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/RemotePalbox.modconfig.json",
+      "Length": 541,
+      "Hash": "E93F8082AE82790D28E7371AF327FF944C00FDA6F2D8B994A26A8C40EE100B1E",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/RemotePalbox.modconfig.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/RemotePalBox.pak",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/RemotePalBox.pak",
+      "Length": 9491,
+      "Hash": "282CFF66D9B42161E3D4547132D5E84505D01BC347021C1C51320B5CD6EE60D2",
+      "Category": "LogicMods",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/RemotePalBox.pak",
+      "ReviewRequired": false
+    }
+  ]
+}

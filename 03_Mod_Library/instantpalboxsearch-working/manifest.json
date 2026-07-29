@@ -1,0 +1,265 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "instantpalboxsearch",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:31.4798437-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "2B8CD234C3F838B73711E168C309D8591AB34915D3A4A25CB88E40F232CAA0E2",
+  "ContentSetHash": "2B8CD234C3F838B73711E168C309D8591AB34915D3A4A25CB88E40F232CAA0E2",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "705B49C62E8CF443CEC6AA81B5A09D48EA416EFEE072E41971938EF89F4E15E8",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/active_skill_index.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/active_skill_index.lua",
+      "Length": 11901,
+      "Hash": "10ECF094C1764FB008E15E40238C4311B2F376A558CB3D8445AFB00D53E7D39F",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/active_skill_index.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/cancel_input_guard.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/cancel_input_guard.lua",
+      "Length": 3557,
+      "Hash": "4E965746A46D1E25C6EE75A08D2472DDDECEF5642AFA8388CB219D598EB415AE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/cancel_input_guard.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/common_cancel_keyboard_guard.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/common_cancel_keyboard_guard.lua",
+      "Length": 4449,
+      "Hash": "761C896A139AF94FC95BC7884FDFF6D88337F0C90C07F8F5B489C821F46D39FE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/common_cancel_keyboard_guard.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/condensation_refresh.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/condensation_refresh.lua",
+      "Length": 11912,
+      "Hash": "97AB1411DC1411DE660F921779FB01B016828D84024147383F2B2FF754450321",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/condensation_refresh.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/dedicated_storage_loader.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/dedicated_storage_loader.lua",
+      "Length": 20347,
+      "Hash": "5D92C61739C089E53D61069809EA79AE5E14818EC6CB9D9C5F7779F877C50BBF",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/dedicated_storage_loader.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/dimension_storage_probe.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/dimension_storage_probe.lua",
+      "Length": 16454,
+      "Hash": "C8B2882670BAB54A11330874B35380E0C0D60597A1D629EF1E31F98DD59CD670",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/dimension_storage_probe.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/display_filter.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/display_filter.lua",
+      "Length": 16256,
+      "Hash": "3612B66DD22BEFF54A26DB3B5A87E65A2E42AB24538B2093679AB8EB78B94127",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/display_filter.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/list_view.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/list_view.lua",
+      "Length": 53746,
+      "Hash": "7001EAE661A7087205F7970AE582B4B6801A00634F994887EF8369A6A11A7D77",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/list_view.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/main.lua",
+      "Length": 64807,
+      "Hash": "436A45EE1D850653E2D621544CDA6BA903EB5EA455E5A3C437509A88FE639FDD",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/native_input.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/native_input.lua",
+      "Length": 37843,
+      "Hash": "DC0691C9D9D7E5B32FD5D54565B663AEEB157AFF4E338E609DBCFCF30515912D",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/native_input.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/page_input_guard.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/page_input_guard.lua",
+      "Length": 3549,
+      "Hash": "14733A827DCA7E16533E5FC9C2B7CD3D925BE152F23BABAFB1DA7E5DA61DA382",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/page_input_guard.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_metadata.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_metadata.lua",
+      "Length": 16588,
+      "Hash": "D8BDFCE72AB8A9C0D2F17DA895CEC0B6FF4EAA5D76644FF36110BE14243F8BA2",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_metadata.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_operation_guard.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_operation_guard.lua",
+      "Length": 5474,
+      "Hash": "0F58B879F4E53FCD8FA5188389C8D019676B5C573C44CF998140D9AA813669CA",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_operation_guard.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_storage.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_storage.lua",
+      "Length": 930,
+      "Hash": "88A5AB9C2980444CA92227F8619CCFC85A5E3DC862E7081A30FC535EEF3CECF7",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/pal_storage.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/palbox_lifecycle.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/palbox_lifecycle.lua",
+      "Length": 3133,
+      "Hash": "773A68B47DECA1CDDFA84EB6800E14D71787A24EF4E19C7942E4AD196F2097C7",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/palbox_lifecycle.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/search_ui.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/search_ui.lua",
+      "Length": 16108,
+      "Hash": "7003C0B553C5191D0B9B87C4795079FE03133609FABFE177321C768A95CAE85A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/search_ui.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/search.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/search.lua",
+      "Length": 7180,
+      "Hash": "1A8B1542CFA73A050855A5223DCC05FFEF1AACB7AD5C2C804DC002BD6D28B3BE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/search.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/sort_lifecycle.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/sort_lifecycle.lua",
+      "Length": 6217,
+      "Hash": "CB70E38C1472C11096B44742B667C3866844D0B866F8A4DB9A197EAC9DA75C56",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/sort_lifecycle.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_change_monitor.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_change_monitor.lua",
+      "Length": 3508,
+      "Hash": "C6379DCF462B7E04FA29C5A47DB3BA4FDA7B319C0B3B0AC0B1F6FD37232876FC",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_change_monitor.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_state_monitor.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_state_monitor.lua",
+      "Length": 8319,
+      "Hash": "79C4BD168A1FDF713A595CA331E4FF11082F2D86419D8C87908B493FEC6779D2",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_state_monitor.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_adapter.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_adapter.lua",
+      "Length": 5612,
+      "Hash": "D52F40697585B61225CDBC6DDC60E18B81474995E8F8D4CCC015280DA626739A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_adapter.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_context.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_context.lua",
+      "Length": 3341,
+      "Hash": "683F9791028247FD5CFC13D1CB2B36F45613917EA59147B8CCEDDE4768CF6FDC",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_context.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_lifecycle.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_lifecycle.lua",
+      "Length": 2457,
+      "Hash": "769A8476A1D0DF9B184878B851434BDCBA4DCFE1ABB130099AD736E9954FD961",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/storage_view_lifecycle.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/unicode_casefold_data.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/unicode_casefold_data.lua",
+      "Length": 51168,
+      "Hash": "703C9556EA57072E45A947E07FC9661324B77C1CD4C3F18BB6F72719453F162D",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/unicode_casefold_data.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/unicode_text.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/unicode_text.lua",
+      "Length": 1364,
+      "Hash": "B489D335F20E98268CF2F7C65B08D146284B6C2CB7F7E86DE8A5D954120C478D",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/unicode_text.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/view_toggle.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/view_toggle.lua",
+      "Length": 14122,
+      "Hash": "A4E083BEFA72B861C9BC1EE45772EB7340D7F681A23CD4896C4EA79E0848D513",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/InstantPalboxSearch/Scripts/view_toggle.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

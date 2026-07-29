@@ -1,0 +1,58 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "concealedcarry",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:21.6284013-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "3A627335D309DE52B6461307D598831F538C007B55775F158285A9FA68EAAAB5",
+  "ContentSetHash": "3A627335D309DE52B6461307D598831F538C007B55775F158285A9FA68EAAAB5",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "D6E8D06748257D2BD0EBCB4DD3D99BE782DA65AFE4CDB20449CE2EC67D0F4E1C",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/README.md",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/README.md",
+      "Length": 2160,
+      "Hash": "324163E98F278368911750BB5491021DC3BA81DC5A65F6DBED688D6D98E24CF3",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/README.md",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/Scripts/config.lua",
+      "Length": 1463,
+      "Hash": "AD1D1CD97033C04B5E8DCBDA11731796AAE7A29909B7C8004E52D92C9993A335",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/Scripts/main.lua",
+      "Length": 7464,
+      "Hash": "C7E1B162DDC5494454E5679E7759648C7B3CE7EF598C99248A82E210DE3DB90F",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ConcealedCarry/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

@@ -203,6 +203,147 @@ function Get-PwDeploymentPlan {
 
 <#
 .SYNOPSIS
+    Verifies assembled deployment files and compares them with the current game.
+.DESCRIPTION
+    Validates the profile assembly manifest, re-hashes every deployment source,
+    compares source files with their live-game destinations, and inventories
+    files that currently exist only in the managed game mod roots. It never
+    changes either location.
+#>
+function Test-PwDeploymentReadiness {
+
+    [CmdletBinding()]
+    param()
+
+    $assembly = Test-PwProfileDeploymentAssembly
+    $plan = Get-PwDeploymentPlan
+    $comparison = @(
+        foreach ($file in $plan.Files) {
+            [PSCustomObject]@{
+                RelativePath = $file.RelativePath
+                DeploymentHash = $file.SourceHash
+                GameHash = [string]$file.DestinationHash
+                Status = switch ($file.Action) {
+                    'Create' { 'DeploymentOnly' }
+                    'Update' { 'Different' }
+                    'Unchanged' { 'Identical' }
+                }
+            }
+        }
+    )
+    $deploymentPaths = [System.Collections.Generic.HashSet[string]]::new(
+        [System.StringComparer]::OrdinalIgnoreCase
+    )
+    foreach ($file in $plan.Files) {
+        [void]$deploymentPaths.Add(
+            ([string]$file.RelativePath).Replace('/', '\')
+        )
+    }
+
+    $managedRoots = @(
+        'Binaries\Win64\ue4ss\Mods',
+        'Content\Paks\~mods',
+        'Content\Paks\LogicMods'
+    )
+    $currentOnly = @(
+        foreach ($managedRoot in $managedRoots) {
+            $fullRoot = Join-Path $plan.DestinationRoot $managedRoot
+
+            if (-not (Test-Path -LiteralPath $fullRoot -PathType Container)) {
+                continue
+            }
+
+            foreach (
+                $file in Get-ChildItem -LiteralPath $fullRoot -Recurse -File |
+                    Sort-Object FullName
+            ) {
+                $relativePath = [System.IO.Path]::GetRelativePath(
+                    $plan.DestinationRoot,
+                    $file.FullName
+                )
+
+                if (-not $deploymentPaths.Contains($relativePath)) {
+                    $classification = if (
+                        Test-PwStagingRuntimeArtifact -Path $relativePath
+                    ) {
+                        'RuntimeState'
+                    }
+                    else {
+                        'ModPayload'
+                    }
+                    [PSCustomObject]@{
+                        RelativePath = $relativePath
+                        GamePath = $file.FullName
+                        GameHash = (
+                            Get-FileHash `
+                                -LiteralPath $file.FullName `
+                                -Algorithm SHA256
+                        ).Hash
+                        Status = 'CurrentGameOnly'
+                        Classification = $classification
+                    }
+                }
+            }
+        }
+    )
+    $errors = @(
+        if (-not $assembly.IsValid) {
+            @($assembly.Errors)
+        }
+        foreach ($file in $plan.Files) {
+            try {
+                $currentHash = (
+                    Get-FileHash `
+                        -LiteralPath $file.SourcePath `
+                        -Algorithm SHA256 `
+                        -ErrorAction Stop
+                ).Hash
+                if ($currentHash -ne $file.SourceHash) {
+                    "Deployment source hash changed: $($file.RelativePath)"
+                }
+            }
+            catch {
+                "Deployment source cannot be verified: $($file.RelativePath)"
+            }
+        }
+    )
+
+    [PSCustomObject]@{
+        SchemaVersion = '1.0'
+        VerifiedAt = Get-Date
+        Profile = $plan.Profile
+        ReadyToDeploy = ($errors.Count -eq 0)
+        DeploymentFileCount = $plan.Files.Count
+        IdenticalCount = @(
+            $comparison |
+                Where-Object Status -eq 'Identical'
+        ).Count
+        CreateCount = @(
+            $comparison |
+                Where-Object Status -eq 'DeploymentOnly'
+        ).Count
+        UpdateCount = @(
+            $comparison |
+                Where-Object Status -eq 'Different'
+        ).Count
+        CurrentGameOnlyCount = @(
+            $currentOnly |
+                Where-Object Classification -eq 'ModPayload'
+        ).Count
+        RuntimeStateOnlyCount = @(
+            $currentOnly |
+                Where-Object Classification -eq 'RuntimeState'
+        ).Count
+        Errors = $errors
+        Comparison = $comparison
+        CurrentGameOnly = $currentOnly
+        Assembly = $assembly
+        Plan = $plan
+    }
+}
+
+<#
+.SYNOPSIS
     Backs up files that a deployment plan would overwrite.
 .PARAMETER Plan
     Deployment plan returned by `Get-PwDeploymentPlan`.
@@ -334,6 +475,15 @@ function Invoke-PwDeployment {
         return $plan
     }
 
+    $verification = Test-PwDeploymentReadiness
+
+    if (-not $verification.ReadyToDeploy) {
+        throw (
+            'Deployment verification failed: ' +
+            ($verification.Errors -join ' ')
+        )
+    }
+
     $actionableFiles = @(
         $plan.Files |
             Where-Object { $_.Action -in @('Create', 'Update') }
@@ -346,6 +496,7 @@ function Invoke-PwDeployment {
             Reason = 'No deployment changes were required.'
             Backup = $null
             LogPath = ''
+            Verification = $verification
             Files = @()
         }
     }
@@ -360,6 +511,7 @@ function Invoke-PwDeployment {
             Reason = 'Deployment was not approved.'
             Backup = $null
             LogPath = ''
+            Verification = $verification
             Files = @()
         }
     }
@@ -462,6 +614,7 @@ function Invoke-PwDeployment {
         SourceRoot = $plan.SourceRoot
         DestinationRoot = $plan.DestinationRoot
         Backup = $backup
+        Verification = $verification
         Files = @($appliedFiles)
     }
     $logPath = Write-PwDeploymentLog -InputObject $result
@@ -472,6 +625,7 @@ function Invoke-PwDeployment {
         Applied = $true
         Reason = ''
         Backup = $backup
+        Verification = $verification
         LogPath = $logPath
         Files = @($appliedFiles)
     }

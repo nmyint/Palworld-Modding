@@ -1,0 +1,49 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "lessrestrictivebuilding",
+  "Version": "1.2",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:34.1189809-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "BC46D88C6045E02A9C72BBCC502B6A1744298FC3743E0ED7F20DC954FC3D048C",
+  "ContentSetHash": "BC46D88C6045E02A9C72BBCC502B6A1744298FC3743E0ED7F20DC954FC3D048C",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "46740EEAA009F557AA855F3833D300A3FA627672625BA68279D320D70226C465",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/Scripts/config.lua",
+      "Length": 894,
+      "Hash": "76206CFFEDDE88F3FE09803E3C294948B911DE0DDCCB63B055E04401CDC0BE16",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/Scripts/main.lua",
+      "Length": 4695,
+      "Hash": "086D41D8CF9DF01027A630418F630272D5CF81D674D8722FD6C367EDE6A36BD1",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/LessRestrictiveBuilding/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

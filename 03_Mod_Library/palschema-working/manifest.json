@@ -1,0 +1,130 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "palschema",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:41.3865192-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "5EB7EB17D230FB89EA981EF96953BC6B568511DF44018ED5E6F510F70C39DA27",
+  "ContentSetHash": "5EB7EB17D230FB89EA981EF96953BC6B568511DF44018ED5E6F510F70C39DA27",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "60D99DB3D131607880B122BA8E23AB4D755E9CB9D7ED8A3E8ABADF7443571E3E",
+  "RequiresReview": false,
+  "Categories": [
+    "Native"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/config/config.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/config/config.json",
+      "Length": 95,
+      "Hash": "909923915060ED883EB5EB0A8DE1626C340D2C257C4E57E7472E20C76A626CE0",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/config/config.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/dlls/main.dll",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/dlls/main.dll",
+      "Length": 1990144,
+      "Hash": "423854569D03952BC9C71832386031DE505839FDF938396D7CA882DF9CDD6A10",
+      "Category": "Native",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/dlls/main.dll",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/blueprints/restthresholds.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/blueprints/restthresholds.json",
+      "Length": 224,
+      "Hash": "FDEF7D4D3A078C3F10AFA9583F25E9E406C14BECBADEEB91F4899F9EAA13478F",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/blueprints/restthresholds.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/raw/workerevents.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/raw/workerevents.json",
+      "Length": 156,
+      "Hash": "241ADEFFDD42DD4134B5B8CB6C63041AC21E9CEC9A9A6709BB7E3C8522429333",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/raw/workerevents.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/translations/en/workerevents.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/translations/en/workerevents.json",
+      "Length": 157,
+      "Hash": "DDF775D61FCE91F52B12B9F6B60EF05141AFA7539D1120C5F654C99E98A1327B",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalWellbeingSchema/translations/en/workerevents.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/metadata.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/metadata.json",
+      "Length": 168,
+      "Hash": "D80CB3BA8A7F286D206A7C7D43B5F310265C2B25953661328ACD67EAE625D2DD",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/metadata.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/50_stack_sizes.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/50_stack_sizes.json",
+      "Length": 251,
+      "Hash": "0989A0235A8872BC7628C4CB4E0E3AF5F0DEDE0BDBECA577AB5762A96E2D0C7B",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/50_stack_sizes.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/60_work_suitability.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/60_work_suitability.json",
+      "Length": 559,
+      "Hash": "C9A981012642E9AD0605AC0295C30ADEC4F8343B9E898DA80AD67046A690D056",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/60_work_suitability.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/70_faster_pals_run.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/70_faster_pals_run.json",
+      "Length": 169,
+      "Hash": "692CF90644881B45192FC4C1DC5726F06DD83981BF015E45A116412AB67B47A4",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/70_faster_pals_run.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/71_faster_pals_ride.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/71_faster_pals_ride.json",
+      "Length": 183,
+      "Hash": "8FAC29E31EC86FB0E4EF976A75F11D6BF6D683B904418E265E106ECA411B326D",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/PalworldTuner/raw/71_faster_pals_ride.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/zzz_Expanded Storage/blueprints/ExpandedStorage.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/zzz_Expanded Storage/blueprints/ExpandedStorage.json",
+      "Length": 3537,
+      "Hash": "A337B2B2420B00223D88C90AF40B3FFAFC7E9A75674BCEDA6D44AAF6CE8D79DD",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalSchema/mods/zzz_Expanded Storage/blueprints/ExpandedStorage.json",
+      "ReviewRequired": false
+    }
+  ]
+}

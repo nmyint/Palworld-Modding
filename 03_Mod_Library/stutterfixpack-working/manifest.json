@@ -1,0 +1,40 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "stutterfixpack",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:48.6370659-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "6EA314C5CD63494FB5E779432C093BF221234093F278B6072FEC4AD40C535610",
+  "ContentSetHash": "6EA314C5CD63494FB5E779432C093BF221234093F278B6072FEC4AD40C535610",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "38626F863DE8F0DE5CFD43DF96BA061F85BF2D45BDEA1D1BBEB2B5902FAB3E4D",
+  "RequiresReview": false,
+  "Categories": [
+    "Native"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/StutterFixPack/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/StutterFixPack/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/StutterFixPack/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/StutterFixPack/dlls/main.dll",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/StutterFixPack/dlls/main.dll",
+      "Length": 114176,
+      "Hash": "6BBE272778D81BB2C8BA2599F97E3012738D5AB370B1A27B07110914A440FEC7",
+      "Category": "Native",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/StutterFixPack/dlls/main.dll",
+      "ReviewRequired": false
+    }
+  ]
+}

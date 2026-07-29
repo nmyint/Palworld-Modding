@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "keybinds",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:32.9043221-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "C4F4585F4B1EFB38F8BA2E17D8F5057C1068B6852AA844B12259F570363FF95E",
+  "ContentSetHash": "C4F4585F4B1EFB38F8BA2E17D8F5057C1068B6852AA844B12259F570363FF95E",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "4AD149B9A5BEF8F7930D1A2FC3772D076731621FA54BDB775CEAF0FBF7CA0CED",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/Keybinds/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/Keybinds/Scripts/main.lua",
+      "Length": 4025,
+      "Hash": "560E8FFFFE3B7E0378C63DB8A8F8DA6465397A098D554B3A1D38E95794E3EB48",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/Keybinds/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

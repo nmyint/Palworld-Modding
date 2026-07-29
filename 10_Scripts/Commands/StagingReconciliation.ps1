@@ -5,6 +5,30 @@
 
 Set-StrictMode -Version Latest
 
+function Test-PwStagingRuntimeArtifact {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path
+    )
+
+    $normalized = $Path.Replace('\', '/')
+    $leaf = [System.IO.Path]::GetFileName($normalized)
+
+    (
+        $leaf -match '(?i)\.log$' -or
+        $normalized -match '(?i)(^|/)logs(/|$)' -or
+        $leaf -in @(
+            'logs-index.txt',
+            'defeated.tsv',
+            'mods.json',
+            'mods.txt',
+            'test.ps1'
+        )
+    )
+}
+
 function Get-PwStagingComponentOwnerName {
 
     [CmdletBinding()]
@@ -237,6 +261,7 @@ function Get-PwStagingReconciliation {
     $catalog = Get-PwPersistentModCatalog
     $catalogMods = @($catalog.Mods)
     $components = [System.Collections.Generic.List[object]]::new()
+    $excludedItems = [System.Collections.Generic.List[object]]::new()
 
     $ue4ssRoot = Get-PwStagingModsRoot -StagingRoot $stagingRoot
 
@@ -254,6 +279,16 @@ function Get-PwStagingReconciliation {
         foreach (
             $file in Get-ChildItem -LiteralPath $directory.FullName -Recurse -File
         ) {
+            if (Test-PwStagingRuntimeArtifact -Path $file.FullName) {
+                $excludedItems.Add([PSCustomObject]@{
+                    RelativePath = [System.IO.Path]::GetRelativePath(
+                        $stagingRoot,
+                        $file.FullName
+                    ).Replace('\', '/')
+                    Reason = 'RuntimeState'
+                })
+                continue
+            }
             $packageType = switch ($file.Extension.ToLowerInvariant()) {
                 '.lua' { 'UE4SSLua' }
                 '.dll' { 'Native' }
@@ -278,6 +313,16 @@ function Get-PwStagingReconciliation {
         }
 
         foreach ($file in Get-ChildItem -LiteralPath $areaRoot -Recurse -File) {
+            if (Test-PwStagingRuntimeArtifact -Path $file.FullName) {
+                $excludedItems.Add([PSCustomObject]@{
+                    RelativePath = [System.IO.Path]::GetRelativePath(
+                        $stagingRoot,
+                        $file.FullName
+                    ).Replace('\', '/')
+                    Reason = 'RuntimeState'
+                })
+                continue
+            }
             $packageType = if (
                 $file.Extension -in @('.pak', '.utoc', '.ucas')
             ) {
@@ -343,6 +388,8 @@ function Get-PwStagingReconciliation {
                 Where-Object IsMixedPackage
         ).Count
         ReviewItemCount = $reviewItems.Count
+        ExcludedItemCount = $excludedItems.Count
+        ExcludedItems = @($excludedItems)
         Groups = $groups
         ReviewItems = $reviewItems
         Components = @($components)

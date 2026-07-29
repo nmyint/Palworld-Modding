@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "splitscreenmod",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:46.7413064-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "A4A76F998B84118FB8D139D027000A16727E646621CE78E0EA805F1C04DB8CB7",
+  "ContentSetHash": "A4A76F998B84118FB8D139D027000A16727E646621CE78E0EA805F1C04DB8CB7",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "F323C317FC70893DA8F3B32842271B36BB68FD90984DF9ECA3A23B0B9CB1BB29",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/SplitScreenMod/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/SplitScreenMod/Scripts/main.lua",
+      "Length": 4380,
+      "Hash": "05094AB61F016EBFCB651A0271A4C614884881B847090E6A74E6A51754E088DB",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/SplitScreenMod/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

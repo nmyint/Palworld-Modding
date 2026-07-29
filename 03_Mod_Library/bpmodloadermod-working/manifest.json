@@ -1,0 +1,40 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "bpmodloadermod",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:19.0226027-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "3D8F4BEC707E903F0F39B049E11C6C13218DEB55AAAA62CBC5E0D834B6989228",
+  "ContentSetHash": "3D8F4BEC707E903F0F39B049E11C6C13218DEB55AAAA62CBC5E0D834B6989228",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "1BC50F0EA794DF8981F07E4E82A3CB7563E987ACEF22E27B9093A570105B14B2",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BPModLoaderMod/load_order.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BPModLoaderMod/load_order.txt",
+      "Length": 265,
+      "Hash": "E260B9B0D8D472EE3EBAB77204C838F3D2AAD8A9D5F08B9B8CB6B42B7B5418B9",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BPModLoaderMod/load_order.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BPModLoaderMod/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BPModLoaderMod/Scripts/main.lua",
+      "Length": 11254,
+      "Hash": "C4D6602DC57559029E0E709650E43F33354BCB23F1A5DF2EBE84D4651EBD08A3",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BPModLoaderMod/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

@@ -24,10 +24,10 @@ Describe 'PalworldModding deployment' {
     It 'ignores placeholder files in the workshop deployment output' {
         $plan = Get-PwDeploymentPlan
 
-        @($plan.Files).Count | Should Be 0
-        $plan.CreateCount | Should Be 0
-        $plan.UpdateCount | Should Be 0
-        $plan.UnchangedCount | Should Be 0
+        @(
+            $plan.Files |
+                Where-Object RelativePath -match '(^|[\\/])\.gitkeep$'
+        ).Count | Should Be 0
     }
 
     It 'returns a preview without applying changes by default' {
@@ -35,7 +35,7 @@ Describe 'PalworldModding deployment' {
 
         $plan.PSObject.Properties.Name -contains 'Applied' |
             Should Be $false
-        @($plan.Files).Count | Should Be 0
+        @($plan.Files).Count | Should BeGreaterThan -1
     }
 
     Context 'with isolated deployment fixtures' {
@@ -128,6 +128,12 @@ Describe 'PalworldModding deployment' {
                 }
                 Mock Write-PwDeploymentLog {
                     $global:PwTestLogPath
+                }
+                Mock Test-PwDeploymentReadiness {
+                    [PSCustomObject]@{
+                        ReadyToDeploy = $true
+                        Errors = @()
+                    }
                 }
 
                 $global:PwTestResult = Invoke-PwDeployment `

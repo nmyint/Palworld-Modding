@@ -1,0 +1,40 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "rotateitbeta",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:44.6979495-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "5F0E2533165884061D4E6850BFB9A15FD38C69945E152140405237775B1B7036",
+  "ContentSetHash": "5F0E2533165884061D4E6850BFB9A15FD38C69945E152140405237775B1B7036",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "5A2CB85297C4F5C5B42EEE2DCB21B165D0ABF289D87514A11730B6538B1EE943",
+  "RequiresReview": false,
+  "Categories": [
+    "LogicMods"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/RotateIt.modconfig.json",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/RotateIt.modconfig.json",
+      "Length": 1880,
+      "Hash": "161F64350A99F1B04D063C4595BBB68D60AB8F81A7BBCD9FC3D18F75AAC1409D",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/RotateIt.modconfig.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Content/Paks/LogicMods/RotateIt.pak",
+      "StagedRelativePath": "Pal/Content/Paks/LogicMods/RotateIt.pak",
+      "Length": 54353,
+      "Hash": "D12CAE192EE457C185E4FADBD02CC1DE64D02683A418D25117C457BD071F72A8",
+      "Category": "LogicMods",
+      "DeploymentRelativePath": "Pal/Content/Paks/LogicMods/RotateIt.pak",
+      "ReviewRequired": false
+    }
+  ]
+}

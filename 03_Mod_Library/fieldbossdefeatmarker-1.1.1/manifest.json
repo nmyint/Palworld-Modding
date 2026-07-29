@@ -1,0 +1,67 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "fieldbossdefeatmarker",
+  "Version": "1.1.1",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:59:36.1786761-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "265E16D31EBFC5B0D3EACE3B56E63C41F555957F557ECFAD0D327BA2158E849F",
+  "ContentSetHash": "265E16D31EBFC5B0D3EACE3B56E63C41F555957F557ECFAD0D327BA2158E849F",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "02E9552079B1EBE16F2AE38277BE16B25E736C39FDAB20F0D92A9AE9EBE1DFF4",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/enabled.txt",
+      "Length": 2,
+      "Hash": "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/README.md",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/README.md",
+      "Length": 6768,
+      "Hash": "9197773ABD330016B774DEC2E8E06AAFEF84C840F3D82EC5FF752D664A352FCB",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/README.md",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/common.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/common.lua",
+      "Length": 6329,
+      "Hash": "FC8A3DFBF619FD5C4AAB7BEF3C83F324E1CF47EE5A480609676BDC00F4312F60",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/common.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/config.lua",
+      "Length": 819,
+      "Hash": "9F71B64932699F37189601679A445C60087DF2DB181CF05912024C14085D7A01",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/main.lua",
+      "Length": 35911,
+      "Hash": "CD4471F443D120CC10AAF25ECFC765FD68850A91EDD3224056A5D27FD2E7EC21",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/FieldBossDefeatMarker/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

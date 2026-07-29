@@ -1,0 +1,58 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "palworldtuner",
+  "Version": "1.9.0",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:43.1602799-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "00BEB72D7BD46BE94F8BB51AD3FACAC8A8C056545FB9A8C28D6572AE84EF3E26",
+  "ContentSetHash": "00BEB72D7BD46BE94F8BB51AD3FACAC8A8C056545FB9A8C28D6572AE84EF3E26",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "0F19E557F87C771DC980CA34866DC66E40E836624681AC968D86DD864EFEA901",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/my_settings.json",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/my_settings.json",
+      "Length": 629,
+      "Hash": "02EEE379E99A8359C77B7530837860CC03CB6F304B1C22675B282A4663D545C4",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/my_settings.json",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/Scripts/config.lua",
+      "Length": 228,
+      "Hash": "27FF4E00A85AECE2411F98C94611B351EDAFF328102F074E42DC5F21FAC67B05",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/Scripts/main.lua",
+      "Length": 1507,
+      "Hash": "AF92F0B18E7A433C97BA44BDCE7DD2857D8C67DE2E45D4E84A08C10D29DE9F13",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalworldTuner/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

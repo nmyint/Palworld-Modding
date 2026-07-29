@@ -27,6 +27,7 @@ Describe 'PalworldModding staging reconciliation' {
         New-Item -ItemType Directory -Path $logicRoot -Force | Out-Null
         New-Item -ItemType Directory -Path $loosePakRoot -Force | Out-Null
         Set-Content -LiteralPath (Join-Path $luaRoot 'main.lua') -Value 'lua'
+        Set-Content -LiteralPath (Join-Path $luaRoot 'runtime.log') -Value 'log'
         Set-Content `
             -LiteralPath (Join-Path (Split-Path $logicRoot) 'MixedMod.pak') `
             -Value 'pak'
@@ -70,6 +71,8 @@ Describe 'PalworldModding staging reconciliation' {
         $result.MatchedComponentCount | Should Be 3
         $result.MixedPackageCount | Should Be 1
         $result.ReviewItemCount | Should Be 1
+        $result.ExcludedItemCount | Should Be 1
+        $result.ExcludedItems[0].Reason | Should Be 'RuntimeState'
         $mixed.IsMixedPackage | Should Be $true
         @($mixed.PackageTypes) -contains 'UE4SSLua' | Should Be $true
         @($mixed.PackageTypes) -contains 'LogicMods' | Should Be $true

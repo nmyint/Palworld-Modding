@@ -1,0 +1,94 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "antiphat",
+  "Version": "SP-2.0.5",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:15.4707579-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "EFE6E8E10525AA884377E407C6FDCC100A0642DF22ACD8F330B92052EF7F6246",
+  "ContentSetHash": "EFE6E8E10525AA884377E407C6FDCC100A0642DF22ACD8F330B92052EF7F6246",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "55269D234386774D81F03226A5099847F0ABACDA5F48D0B910A9DD21F9F05421",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/config.lua",
+      "Length": 6469,
+      "Hash": "17EA84447439DBBFD4E57553F85AE973EEBC45017E6E1BDACC93161DE20F3B55",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/main.lua",
+      "Length": 38552,
+      "Hash": "900736B3DC673DE263E21E9576CE95965C6B22207DCA756DD0D3842BE5791FA3",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/settings.ini",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/settings.ini",
+      "Length": 1776,
+      "Hash": "926A5AB42E1CD748EF0B8174BBFA524153F2BFB9C326FE2805DCDAFE0D09DAB6",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/settings.ini",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/bossscales.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/bossscales.lua",
+      "Length": 10785,
+      "Hash": "B4AD798730AD32FAD0749210726F7C64D9BE6708D9039E4E907FBF8FF78F0E41",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/bossscales.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/displaynames.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/displaynames.lua",
+      "Length": 15037,
+      "Hash": "BAE7BD79646128849CF7D68F1D2583E3A68B965A7F395A50BF7005B4C464F569",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/displaynames.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/sizetable.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/sizetable.lua",
+      "Length": 7432,
+      "Hash": "7FD9F7D9C31726CE701B2BE40D03C016C3984B83EF45F85C3C41E0A7718B4BAE",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/sizetable.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/ui.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/ui.lua",
+      "Length": 41420,
+      "Hash": "DA30A2D7448E938F5A56DD50FF0B241AE67AC2E8C61A68FE751F9D2B4DC959E3",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/AntiPhat/Scripts/core/ui.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "palmodoptions",
+  "Version": "0.1.3",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:40.0710511-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "2FFBE45324EF9E0C7BE106BDE02B5ED2F4555AD9C059A005D2A82688675D3E69",
+  "ContentSetHash": "2FFBE45324EF9E0C7BE106BDE02B5ED2F4555AD9C059A005D2A82688675D3E69",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "AD15B6D2C412CA2CA2F29314FF45840EA119ED60521212E28B473ED6B73BFAA8",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/disabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/disabled.txt",
+      "Length": 2,
+      "Hash": "4355A46B19D348DC2F57C046F8EF63D4538EBB936000F3C9EE954A27460DD865",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/disabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/localization.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/localization.lua",
+      "Length": 17412,
+      "Hash": "DD296D901B67CAF5A072C21ACBA84B4DCAD957BEB3A58C2B1D437956E36EB88B",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/localization.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/main.lua",
+      "Length": 55773,
+      "Hash": "0A77BF1E8506F8669F0F55C4153318D06001C667FFD4CF12B6E735FCFF1CCFE6",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/pmo_json.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/pmo_json.lua",
+      "Length": 9313,
+      "Hash": "1CA2CAB6460E8A85930ECD96F717470A49AA780A7647C2BBB0EF714F25C666E7",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/pmo_json.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/config/README.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/config/README.txt",
+      "Length": 142,
+      "Hash": "AE1F0199D5B1017720A7A4EFD8B892B4C0403C415BC012445B4CDDC1896F2EF7",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalModOptions/Scripts/config/README.txt",
+      "ReviewRequired": false
+    }
+  ]
+}

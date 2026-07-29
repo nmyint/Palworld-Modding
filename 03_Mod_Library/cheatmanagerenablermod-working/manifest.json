@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "cheatmanagerenablermod",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:21.1712702-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "3066267D121609AB9B932D69BBCC742E9EAC5420716DD06008F2AA4C8F2A0079",
+  "ContentSetHash": "3066267D121609AB9B932D69BBCC742E9EAC5420716DD06008F2AA4C8F2A0079",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "0D429637784209AF0AE3032ABCC1894ECC41081EA282CFC142ADFBF84B1C7BE8",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/CheatManagerEnablerMod/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/CheatManagerEnablerMod/Scripts/main.lua",
+      "Length": 1439,
+      "Hash": "15C7722168EB8966ED454E900E04DE4B0ADE42657905D8016C0E0660C119CD9E",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/CheatManagerEnablerMod/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

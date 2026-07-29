@@ -18,14 +18,15 @@ losing the intended hierarchy.
 The top-level menu is the one shown by `Start-PwWorkshop`.
 
 - `1` Catalog
-- `2` Archives
-- `3` Staged UE4SS snapshot
+- `2` Archive intake and staging
+- `3` Staging and ownership snapshot
 - `4` Updates
-- `H` Compatibility and conflict report
-- `5` Diagnostics
-- `6` Installation inventory
-- `7` Deployment and restore history
-- `8` Profile mod sets
+- `5` Compatibility and conflict report
+- `6` Profile mod sets
+- `7` Stage, experiment, build, or deploy
+- `8` Diagnostics
+- `9` Installation inventory
+- `0` Deployment and restore history
 - `Q` Exit
 
 ## Catalog Submenu
@@ -60,6 +61,23 @@ Back behavior:
   review, staging groups and ownership, archives and archive contents, the
   staging snapshot, updates, deployment inventory and history, mod sets and
   previews, and compatibility reports.
+
+## Workflow and deployment (`7`)
+
+- `S` runs the standard staged build: captures reviewed staging groups into
+  `03_Mod_Library` and builds verified loose output in `05_Deployment`.
+- `E` creates an isolated experiment/debug build under
+  `15_Sandbox\ProfileExperiments`; it changes neither the curated library nor
+  the game.
+- `C` adopts a current-game-only mod into staging and the catalog. A Nexus ID
+  can be verified before copying, then a reviewed Nexus file can be downloaded
+  into `01_Archives` for Premium accounts or opened for manual download.
+- `D` performs readiness verification and requires the exact text `DEPLOY`
+  before invoking the backed-up live deployment.
+- `V` re-hashes and verifies the assembled output against its manifest.
+- `R` compares the verified deployment with the current game and reports
+  identical, new, changed, and current-game-only files.
+- Current-game-only files are review information and are not deleted.
 - Ownership lists are compact numbered tables so they remain usable in the same
   narrow terminal sizes supported by the main responsive menu.
 
@@ -93,7 +111,7 @@ Back behavior:
 - Nested prompts inside the update flow accept `B` to step back to the updates
   submenu.
 
-## Profile Mod Sets Submenu
+## Profile Mod Sets Submenu (`6`)
 
 The profile mod sets submenu is a nested loop tied to the active deployment
 profile.

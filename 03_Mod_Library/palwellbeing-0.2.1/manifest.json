@@ -1,0 +1,49 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "palwellbeing",
+  "Version": "0.2.1",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:59:42.3147265-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "4657253DD6A575521CEA1173ACFA9649B251BCAD260589E19F7743AFCA05A41D",
+  "ContentSetHash": "4657253DD6A575521CEA1173ACFA9649B251BCAD260589E19F7743AFCA05A41D",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "C5CAE47D694FA1445F52E3E6ADF14F3946046A70AE1CAA710103B4327DB29CF1",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/Scripts/main.lua",
+      "Length": 21096,
+      "Hash": "7C20A6AF9BC58764E194018C3960E547C8AB57189AADBF86E2410EAFA563D833",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/Scripts/palnames.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/Scripts/palnames.lua",
+      "Length": 11932,
+      "Hash": "C7094CE7CE5D0CEAABFEBDCD19FBB46274380DAD43716F74F8BC1C801B3DB86B",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/PalWellbeing/Scripts/palnames.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

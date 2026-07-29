@@ -77,6 +77,17 @@ Deployment is preview-first and backs up overwritten files before applying chang
 See [Deployment.md](00_Documentation/Deployment.md) for the safety model and
 commands.
 
+Menu option `7` captures the reconciled active mod set into curated library
+manifests, builds and SHA-256 verifies `05_Deployment`, and compares it with the
+current game before deployment is permitted. Nexus identity and local integrity
+boundaries are described in
+[NexusHashVerification.md](00_Documentation/NexusHashVerification.md).
+
+The complete repeatable operator checklist is in
+[DailyWorkflow.md](00_Documentation/DailyWorkflow.md). The sequential main menu
+uses `1–7` for catalog-to-deployment work, `8–0` for health/history, and `Q` to
+quit.
+
 ## Mod intake
 
 Downloaded ZIP and 7z archives can be inspected, staged, validated, and promoted

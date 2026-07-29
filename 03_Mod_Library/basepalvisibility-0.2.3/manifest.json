@@ -1,0 +1,49 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "basepalvisibility",
+  "Version": "0.2.3",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:17.7507248-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "E759DD73AE5976D7E66C983F9AF625FA59053D333CBBD96E1BA33E97C4199EBC",
+  "ContentSetHash": "E759DD73AE5976D7E66C983F9AF625FA59053D333CBBD96E1BA33E97C4199EBC",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "29A7175982903E49236A3AEE0E040B021B94B61DD3DEDE91A21D565701EC8A5A",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/enabled.txt",
+      "Length": 1,
+      "Hash": "01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/Scripts/base_worker_visibility_config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/Scripts/base_worker_visibility_config.lua",
+      "Length": 328,
+      "Hash": "57B421A6691BA89D310AEAE71567DD50B211B017B4CEC2ED14BFE646B52BCCC1",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/Scripts/base_worker_visibility_config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/Scripts/main.lua",
+      "Length": 57644,
+      "Hash": "147A246CA70539EE6991C2BFEA6A98DDE68DB9C7ED0FB5C37767A4EBDD2B4F85",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/BasePalVisibility/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

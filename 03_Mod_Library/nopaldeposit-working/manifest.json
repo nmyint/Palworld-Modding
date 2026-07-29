@@ -1,0 +1,85 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "nopaldeposit",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:37.4689954-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "4915E08D5F006F0F1E7BA7300CDE90F4FCAC7220BB5BAA412C940E30B394EAED",
+  "ContentSetHash": "4915E08D5F006F0F1E7BA7300CDE90F4FCAC7220BB5BAA412C940E30B394EAED",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "5006362EB16101E1E440E7C5A8347D52A58F7C06ACED084474727D2B1C19610B",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/README.md",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/README.md",
+      "Length": 5921,
+      "Hash": "9042B630CED51D14B9EF5101E5E3407E13B25F5943D3D4495A00C67CE16DCF45",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/README.md",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/README.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/README.txt",
+      "Length": 1825,
+      "Hash": "B6B5B84F9FD43F3F5231B0071E4233FE887FD1C8D9CACBD67C226C5A9401CB31",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/README.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/chest_gui.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/chest_gui.lua",
+      "Length": 18695,
+      "Hash": "EBC75A0CF69E9DA2C23ECA8371B59C3370C3F91A793C97D57EFDC0BCB746C38B",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/chest_gui.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/config.lua",
+      "Length": 1095,
+      "Hash": "6458D4814EE72DF05B7554B95BF986AFC46257946B2082C2B761F30A9FE25D6B",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/main.lua",
+      "Length": 44087,
+      "Hash": "DB682FDBC0B2A5DF5E9BD9CA0A5D6EA3EBB033BF35EA72474DED9689BBF6434C",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/main.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/net.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/net.lua",
+      "Length": 18612,
+      "Hash": "946CFDFC6712D7458F7F66C226C0ABFFA9F4189D95F41530E03875959065D7A3",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/NoPalDeposit/Scripts/net.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

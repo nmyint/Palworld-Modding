@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.4.7'
+ModuleVersion = '0.4.8'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -60,8 +60,13 @@ FunctionsToExport = @(
     # Deployment
     'Get-PwDeployment',
     'Get-PwDeploymentPlan',
+    'Test-PwDeploymentReadiness',
     'Backup-PwDeployment',
     'Invoke-PwDeployment',
+    'Get-PwProfileAssemblyPlan',
+    'Build-PwProfileDeployment',
+    'Build-PwProfileExperiment',
+    'Test-PwProfileDeploymentAssembly',
 
     # Mod intake
     'Get-PwModArchiveInfo',
@@ -93,6 +98,10 @@ FunctionsToExport = @(
     'Get-PwNexusModIdentity',
     'Get-PwGitHubSourcesFromText',
     'Update-PwNexusCatalogMetadata',
+    'Get-PwCurrentGameOnlyMods',
+    'Get-PwCurrentGameModAdoptionPlan',
+    'Import-PwCurrentGameMod',
+    'Get-PwNexusModFiles',
 
     # Recovery and diagnostics
     'Test-PwBackup',
@@ -139,7 +148,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 4.4 normalized staging and component ownership'
+        ReleaseNotes = 'Sprint 4.4 deterministic profile assembly and verification'
 
     }
 

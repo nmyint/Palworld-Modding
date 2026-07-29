@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "stacksize999999999zeroweight",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:48.0244791-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "92CBF1E9C60E6EE88BA0AD5753276AEBD396645C799888957884F6F47923FA2A",
+  "ContentSetHash": "92CBF1E9C60E6EE88BA0AD5753276AEBD396645C799888957884F6F47923FA2A",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "71D0B24D173FCA78A915D6F5D91BA169C7CA66FC75D73F99759DBC351EE11CD2",
+  "RequiresReview": false,
+  "Categories": [
+    "Pak"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Content/Paks/~mods/StackSize999999999ZeroWeight_P.pak",
+      "StagedRelativePath": "Pal/Content/Paks/~mods/StackSize999999999ZeroWeight_P.pak",
+      "Length": 748882,
+      "Hash": "BA3B680C41014B44DA170DF49D5C86FFEC1DC142E116DD1243ED19DFEF6976AE",
+      "Category": "Pak",
+      "DeploymentRelativePath": "Pal/Content/Paks/~mods/StackSize999999999ZeroWeight_P.pak",
+      "ReviewRequired": false
+    }
+  ]
+}

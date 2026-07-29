@@ -35,9 +35,11 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\ModCatalog.ps1"
 . "$PSScriptRoot\..\Commands\PersistentCatalog.ps1"
 . "$PSScriptRoot\..\Commands\StagingReconciliation.ps1"
+. "$PSScriptRoot\..\Commands\ProfileAssembly.ps1"
 . "$PSScriptRoot\..\Commands\NexusUpdates.ps1"
 . "$PSScriptRoot\..\Commands\SourceUpdates.ps1"
 . "$PSScriptRoot\..\Commands\CatalogMetadata.ps1"
+. "$PSScriptRoot\..\Commands\CurrentGameAdoption.ps1"
 . "$PSScriptRoot\..\Commands\Recovery.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopBackup.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopMenu.ps1"
@@ -82,8 +84,13 @@ Export-ModuleMember -Function @(
     # Deployment
     'Get-PwDeployment',
     'Get-PwDeploymentPlan',
+    'Test-PwDeploymentReadiness',
     'Backup-PwDeployment',
     'Invoke-PwDeployment',
+    'Get-PwProfileAssemblyPlan',
+    'Build-PwProfileDeployment',
+    'Build-PwProfileExperiment',
+    'Test-PwProfileDeploymentAssembly',
 
     # Mod intake
     'Get-PwModArchiveInfo',
@@ -116,6 +123,10 @@ Export-ModuleMember -Function @(
     'Get-PwNexusModIdentity',
     'Get-PwGitHubSourcesFromText',
     'Update-PwNexusCatalogMetadata',
+    'Get-PwCurrentGameOnlyMods',
+    'Get-PwCurrentGameModAdoptionPlan',
+    'Import-PwCurrentGameMod',
+    'Get-PwNexusModFiles',
 
     # Recovery and diagnostics
     'Test-PwBackup',

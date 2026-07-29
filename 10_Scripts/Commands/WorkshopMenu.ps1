@@ -123,10 +123,6 @@ function Get-PwWorkshopMenuLayout {
             -Color DarkGray `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text 'MOD CATALOG' `
-            -Color Yellow `
-            -Width $Width
-        New-PwWorkshopMenuLine `
             -Text '  [1] View catalog overview and version matches' `
             -Width $Width
         New-PwWorkshopMenuLine `
@@ -139,24 +135,22 @@ function Get-PwWorkshopMenuLayout {
             -Text '  [4] Check mod and tool updates' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [H] View compatibility and conflict report' `
+            -Text '  [5] View compatibility and conflict report' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [8] Profile mod sets' `
-            -Width $Width
-        New-PwWorkshopMenuLine -Width $Width
-        New-PwWorkshopMenuLine `
-            -Text 'WORKSHOP HEALTH' `
-            -Color Yellow `
+            -Text '  [6] Manage profile mod sets' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [5] Run diagnostics' `
+            -Text '  [7] Stage, experiment, build, or deploy' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [6] View known-good installation inventory' `
+            -Text '  [8] Run diagnostics' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [7] View deployment and restore history' `
+            -Text '  [9] View known-good installation inventory' `
+            -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [0] View deployment and restore history' `
             -Width $Width
         New-PwWorkshopMenuLine -Width $Width
         New-PwWorkshopMenuLine `
@@ -165,7 +159,7 @@ function Get-PwWorkshopMenuLayout {
             -Width $Width
         New-PwWorkshopMenuLine -Width $Width
         New-PwWorkshopMenuLine `
-            -Text 'Press 1-8, H, or Q.' `
+            -Text 'Press 0-9 or Q.' `
             -Color DarkGray `
             -Width $Width
     )
@@ -185,51 +179,33 @@ function Get-PwWorkshopMenuLayout {
                 -Color DarkGray `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text 'MOD CATALOG' `
+                -Text ' [1] Catalog  [2] Archives  [3] Staging' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text ' [4] Updates  [5] Compatibility  [6] Mod sets' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text ' [7] Stage, experiment, build, or deploy' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text ' [8] Diagnostics  [9] Inventory  [0] History' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text ' [Q] Exit' `
                 -Color Yellow `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text '  [1] Catalog overview and version matches' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [2] Nexus archive metadata' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [3] Staged UE4SS and ownership snapshot' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [4] Check mod and tool updates' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [H] Compatibility and conflict report' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [8] Profile mod sets' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text 'WORKSHOP HEALTH' `
-                -Color Yellow `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [5] Diagnostics' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [6] Installation inventory' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [7] Deployment history' `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text '  [Q] Exit' `
-                -Color Yellow `
-                -Width $Width
-            New-PwWorkshopMenuLine `
-                -Text 'Press 1-8, H, or Q.' `
+                -Text 'Press 0-9 or Q.' `
                 -Color DarkGray `
                 -Width $Width
         )
     }
-    $targetRenderedRows = $Height - 2
+    $targetRenderedRows = if ($Height -le 18) {
+        $Height
+    }
+    else {
+        $Height - 2
+    }
     $extraRows = [math]::Max(0, $targetRenderedRows - ($content.Count + 2))
     $topPadding = [math]::Floor($extraRows / 2)
     $bottomPadding = $extraRows - $topPadding
@@ -1947,7 +1923,7 @@ function Start-PwWorkshop {
                     }
                 }
             }
-            '5' {
+            '8' {
                 $skipReturnPrompt = $true
                 $diagnosticsMenuActive = $true
 
@@ -1972,7 +1948,7 @@ function Start-PwWorkshop {
                     }
                 }
             }
-            '6' {
+            '9' {
                 $skipReturnPrompt = $true
                 $inventoryMenuActive = $true
 
@@ -2006,7 +1982,7 @@ function Start-PwWorkshop {
                     }
                 }
             }
-            '7' {
+            '0' {
                 $skipReturnPrompt = $true
                 $historyMenuActive = $true
 
@@ -2040,7 +2016,7 @@ function Start-PwWorkshop {
                     }
                 }
             }
-            '8' {
+            '6' {
                 $skipReturnPrompt = $true
                 $modSetsMenuActive = $true
 
@@ -2282,7 +2258,473 @@ function Start-PwWorkshop {
                     }
                 }
             }
-            'H' {
+            '7' {
+                $skipReturnPrompt = $true
+                $assemblyMenuActive = $true
+
+                while ($assemblyMenuActive) {
+                    try {
+                        $assemblyPlan = Get-PwProfileAssemblyPlan
+                        $assemblyChoice = Read-PwWorkshopPagedTable `
+                            -Title (
+                                "Deployment Assembly Review: " +
+                                "$($assemblyPlan.Profile) / " +
+                                "$($assemblyPlan.ModSet) | " +
+                                "$($assemblyPlan.PackageCount) packages, " +
+                                "$($assemblyPlan.FileCount) files"
+                            ) `
+                            -Rows @($assemblyPlan.Packages) `
+                            -Properties @(
+                                'CatalogKey',
+                                'Version',
+                                'PackageTypes',
+                                'FileCount',
+                                'Action'
+                            ) `
+                            -Prompt (
+                                '[S] Standard staged build, ' +
+                                    '[E] Experiment/debug build, ' +
+                                    '[C] Adopt current-game-only mod, ' +
+                                    '[D] Verify and deploy, ' +
+                                    '[V] Verify assembled output, ' +
+                                    '[R] Compare with current game, ' +
+                                    '[B] Back, or Q to quit'
+                            )
+
+                        if (Test-PwWorkshopQuitSelection $assemblyChoice) {
+                            $quitRequested = $true
+                            break
+                        }
+                        if (
+                            [string]::IsNullOrWhiteSpace($assemblyChoice) -or
+                            (Test-PwWorkshopBackSelection $assemblyChoice)
+                        ) {
+                            $assemblyMenuActive = $false
+                            break
+                        }
+
+                        if ($assemblyChoice -match '^(?i:S)$') {
+                            $build = Build-PwProfileDeployment `
+                                -Apply `
+                                -Confirm:$false
+                            $build |
+                                Select-Object `
+                                    Profile,
+                                    ModSet,
+                                    Status,
+                                    PackageCount,
+                                    FileCount,
+                                    DeployedToGame,
+                                    ManifestPath |
+                                Format-List
+                            Write-Host (
+                                'Workshop output was built and verified. ' +
+                                'No live game files were changed.'
+                            ) -ForegroundColor Green
+                            Read-Host 'Press Enter to review the refreshed plan' |
+                                Out-Null
+                            continue
+                        }
+
+                        if ($assemblyChoice -match '^(?i:E)$') {
+                            $experimentLabel = Read-Host (
+                                'Experiment label [Debug], [B] Back, or Q to quit'
+                            )
+                            if (
+                                Test-PwWorkshopQuitSelection $experimentLabel
+                            ) {
+                                $quitRequested = $true
+                                break
+                            }
+                            if (
+                                Test-PwWorkshopBackSelection $experimentLabel
+                            ) {
+                                continue
+                            }
+                            if (
+                                [string]::IsNullOrWhiteSpace($experimentLabel)
+                            ) {
+                                $experimentLabel = 'Debug'
+                            }
+                            $experiment = Build-PwProfileExperiment `
+                                -Label $experimentLabel `
+                                -Apply `
+                                -Confirm:$false
+                            $experiment |
+                                Select-Object `
+                                    Profile,
+                                    Label,
+                                    Status,
+                                    FileCount,
+                                    DeployedToGame,
+                                    ExperimentRoot,
+                                    ManifestPath |
+                                Format-List
+                            Write-Host (
+                                'Isolated experiment output is ready. ' +
+                                'No curated package or live game file changed.'
+                            ) -ForegroundColor Green
+                            Read-Host 'Press Enter to return to workflows' |
+                                Out-Null
+                            continue
+                        }
+
+                        if ($assemblyChoice -match '^(?i:C)$') {
+                            $candidates = @(Get-PwCurrentGameOnlyMods)
+                            $candidateRows = @(
+                                for (
+                                    $candidateIndex = 0
+                                    $candidateIndex -lt $candidates.Count
+                                    $candidateIndex++
+                                ) {
+                                    [PSCustomObject]@{
+                                        '#' = $candidateIndex + 1
+                                        CandidateName = (
+                                            $candidates[$candidateIndex].
+                                                CandidateName
+                                        )
+                                        FileCount = (
+                                            $candidates[$candidateIndex].
+                                                FileCount
+                                        )
+                                    }
+                                }
+                            )
+                            $candidateChoice = Read-PwWorkshopPagedTable `
+                                -Title 'Adopt Current-Game-Only Mod' `
+                                -Rows $candidateRows `
+                                -Properties @(
+                                    '#',
+                                    'CandidateName',
+                                    'FileCount'
+                                ) `
+                                -Prompt (
+                                    'Candidate #, [B] Back, or Q to quit'
+                                )
+                            if (
+                                Test-PwWorkshopQuitSelection $candidateChoice
+                            ) {
+                                $quitRequested = $true
+                                break
+                            }
+                            if (
+                                Test-PwWorkshopBackSelection $candidateChoice
+                            ) {
+                                continue
+                            }
+                            if ($candidateChoice -notmatch '^\d+$') {
+                                continue
+                            }
+                            $candidateIndex = [int]$candidateChoice - 1
+                            if (
+                                $candidateIndex -lt 0 -or
+                                $candidateIndex -ge $candidates.Count
+                            ) {
+                                Write-Host (
+                                    'Candidate number was not found.'
+                                ) -ForegroundColor Yellow
+                                continue
+                            }
+
+                            $candidate = $candidates[$candidateIndex]
+                            $nexusId = Read-Host (
+                                'Verified Nexus mod ID, Enter for manual ' +
+                                'catalog identity, [B] Back, or Q to quit'
+                            )
+                            if (Test-PwWorkshopQuitSelection $nexusId) {
+                                $quitRequested = $true
+                                break
+                            }
+                            if (Test-PwWorkshopBackSelection $nexusId) {
+                                continue
+                            }
+                            $adoptionParameters = @{
+                                CandidateName = $candidate.CandidateName
+                            }
+                            if ($nexusId -match '^\d+$') {
+                                $adoptionParameters.NexusModId = [int]$nexusId
+                            }
+                            elseif (
+                                -not [string]::IsNullOrWhiteSpace($nexusId)
+                            ) {
+                                Write-Host (
+                                    'Nexus mod ID must be numeric.'
+                                ) -ForegroundColor Yellow
+                                continue
+                            }
+
+                            $adoptionPlan = `
+                                Get-PwCurrentGameModAdoptionPlan `
+                                    @adoptionParameters
+                            $adoptionPlan |
+                                Select-Object `
+                                    CandidateName,
+                                    CatalogKey,
+                                    CatalogExists,
+                                    NexusModId,
+                                    FileCount,
+                                    CanAdopt |
+                                Format-List
+                            if ($adoptionPlan.NexusIdentity) {
+                                $adoptionPlan.NexusIdentity |
+                                    Select-Object `
+                                        NexusModId,
+                                        Name,
+                                        Version,
+                                        NameMatch,
+                                        NexusUrl |
+                                    Format-List
+                            }
+
+                            $approveAdoption = Read-Host (
+                                '[A] Adopt into staging and catalog, ' +
+                                '[B] Back, or Q to quit'
+                            )
+                            if (
+                                Test-PwWorkshopQuitSelection $approveAdoption
+                            ) {
+                                $quitRequested = $true
+                                break
+                            }
+                            if (
+                                Test-PwWorkshopBackSelection $approveAdoption
+                            ) {
+                                continue
+                            }
+                            if ($approveAdoption -notmatch '^(?i:A)$') {
+                                continue
+                            }
+
+                            $adoptionResult = Import-PwCurrentGameMod `
+                                @adoptionParameters `
+                                -ApproveIdentity `
+                                -Apply `
+                                -Confirm:$false
+                            $adoptionResult | Format-List
+
+                            if ($adoptionResult.NexusModId -gt 0) {
+                                $remoteFiles = @(
+                                    Get-PwNexusModFiles `
+                                        -ModId $adoptionResult.NexusModId
+                                )
+                                $remoteRows = @(
+                                    for (
+                                        $fileIndex = 0
+                                        $fileIndex -lt $remoteFiles.Count
+                                        $fileIndex++
+                                    ) {
+                                        [PSCustomObject]@{
+                                            '#' = $fileIndex + 1
+                                            FileId = $remoteFiles[
+                                                $fileIndex
+                                            ].FileId
+                                            Name = $remoteFiles[
+                                                $fileIndex
+                                            ].Name
+                                            Version = $remoteFiles[
+                                                $fileIndex
+                                            ].Version
+                                            Category = $remoteFiles[
+                                                $fileIndex
+                                            ].Category
+                                        }
+                                    }
+                                )
+                                $remoteChoice = Read-PwWorkshopPagedTable `
+                                    -Title (
+                                        'Nexus Files for ' +
+                                        $adoptionResult.NexusModId
+                                    ) `
+                                    -Rows $remoteRows `
+                                    -Properties @(
+                                        '#',
+                                        'FileId',
+                                        'Name',
+                                        'Version',
+                                        'Category'
+                                    ) `
+                                    -Prompt (
+                                        'File # to download, [O] Open Nexus, ' +
+                                        '[B] Back, or Q to quit'
+                                    )
+                                if (
+                                    Test-PwWorkshopQuitSelection $remoteChoice
+                                ) {
+                                    $quitRequested = $true
+                                    break
+                                }
+                                if ($remoteChoice -match '^(?i:O)$') {
+                                    Open-PwNexusModPage `
+                                        -ModId $adoptionResult.NexusModId `
+                                        -Launch |
+                                        Out-Null
+                                }
+                                elseif ($remoteChoice -match '^\d+$') {
+                                    $fileIndex = [int]$remoteChoice - 1
+                                    if (
+                                        $fileIndex -ge 0 -and
+                                        $fileIndex -lt $remoteFiles.Count
+                                    ) {
+                                        Save-PwNexusModUpdate `
+                                            -ModId (
+                                                $adoptionResult.NexusModId
+                                            ) `
+                                            -FileId (
+                                                $remoteFiles[$fileIndex].FileId
+                                            ) |
+                                            Format-List
+                                    }
+                                }
+                            }
+                            continue
+                        }
+
+                        if ($assemblyChoice -match '^(?i:D)$') {
+                            $readiness = Test-PwDeploymentReadiness
+                            $readiness |
+                                Select-Object `
+                                    ReadyToDeploy,
+                                    DeploymentFileCount,
+                                    IdenticalCount,
+                                    CreateCount,
+                                    UpdateCount,
+                                    CurrentGameOnlyCount,
+                                    RuntimeStateOnlyCount |
+                                Format-List
+
+                            if (-not $readiness.ReadyToDeploy) {
+                                throw (
+                                    'Direct deployment is blocked by failed ' +
+                                    'verification.'
+                                )
+                            }
+
+                            Write-Host (
+                                'This will back up overwritten files and copy ' +
+                                'verified changes into the live Palworld game.'
+                            ) -ForegroundColor Yellow
+                            $deployConfirmation = Read-Host (
+                                'Type DEPLOY to continue, [B] Back, or Q to quit'
+                            )
+                            if (
+                                Test-PwWorkshopQuitSelection `
+                                    $deployConfirmation
+                            ) {
+                                $quitRequested = $true
+                                break
+                            }
+                            if (
+                                Test-PwWorkshopBackSelection `
+                                    $deployConfirmation
+                            ) {
+                                continue
+                            }
+                            if ($deployConfirmation -cne 'DEPLOY') {
+                                Write-Host (
+                                    'Deployment cancelled; confirmation did ' +
+                                    'not match DEPLOY.'
+                                ) -ForegroundColor Yellow
+                                continue
+                            }
+
+                            Invoke-PwDeployment `
+                                -Apply `
+                                -Confirm:$false |
+                                Select-Object `
+                                    Profile,
+                                    Status,
+                                    Applied,
+                                    Reason,
+                                    Backup,
+                                    LogPath,
+                                    Files |
+                                Format-List
+                            continue
+                        }
+
+                        if ($assemblyChoice -match '^(?i:V)$') {
+                            $validation = Test-PwProfileDeploymentAssembly
+                            $validationChoice = Read-PwWorkshopPagedTable `
+                                -Title (
+                                    "Assembly Verification | " +
+                                    "$($validation.VerifiedCount) of " +
+                                    "$($validation.FileCount) verified"
+                                ) `
+                                -Rows @($validation.Files) `
+                                -Properties @(
+                                    'CatalogKey',
+                                    'RelativePath',
+                                    'Status'
+                                ) `
+                                -Prompt (
+                                    '[B] Back, Enter to return, or Q to quit'
+                                )
+                            if (
+                                Test-PwWorkshopQuitSelection $validationChoice
+                            ) {
+                                $quitRequested = $true
+                                break
+                            }
+                            continue
+                        }
+
+                        if ($assemblyChoice -match '^(?i:R)$') {
+                            $readiness = Test-PwDeploymentReadiness
+                            $comparisonRows = @(
+                                $readiness.Comparison
+                                $readiness.CurrentGameOnly
+                            )
+                            $readinessChoice = Read-PwWorkshopPagedTable `
+                                -Title (
+                                    "Current Game Comparison | " +
+                                    "$($readiness.IdenticalCount) identical, " +
+                                    "$($readiness.CreateCount) new, " +
+                                    "$($readiness.UpdateCount) changed, " +
+                                    "$($readiness.CurrentGameOnlyCount) " +
+                                    'current-only mods, ' +
+                                    "$($readiness.RuntimeStateOnlyCount) " +
+                                    'runtime-only'
+                                ) `
+                                -Rows $comparisonRows `
+                                -Properties @(
+                                    'RelativePath',
+                                    'Status',
+                                    'Classification',
+                                    'DeploymentHash',
+                                    'GameHash'
+                                ) `
+                                -Prompt (
+                                    '[B] Back, Enter to return, or Q to quit'
+                                )
+                            if (
+                                Test-PwWorkshopQuitSelection $readinessChoice
+                            ) {
+                                $quitRequested = $true
+                                break
+                            }
+                        }
+                    }
+                    catch {
+                        Write-Host $_.Exception.Message -ForegroundColor Red
+                        $assemblyErrorChoice = Read-Host (
+                            '[B] Back, Enter to retry, or Q to quit'
+                        )
+                        if (
+                            Test-PwWorkshopQuitSelection $assemblyErrorChoice
+                        ) {
+                            $quitRequested = $true
+                            break
+                        }
+                        if (
+                            Test-PwWorkshopBackSelection $assemblyErrorChoice
+                        ) {
+                            $assemblyMenuActive = $false
+                            break
+                        }
+                    }
+                }
+            }
+            '5' {
                 $skipReturnPrompt = $true
                 $compatibility = Get-PwCompatibilityReport
                 $compatibilityChoice = Read-PwWorkshopPagedTable `

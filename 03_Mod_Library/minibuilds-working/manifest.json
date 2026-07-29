@@ -1,0 +1,67 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "minibuilds",
+  "Version": "working",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:36.8489937-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "88F132549BC3877CFC866C7C8F0788AE149DB710EA663C915D57856BF0CA07EE",
+  "ContentSetHash": "88F132549BC3877CFC866C7C8F0788AE149DB710EA663C915D57856BF0CA07EE",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "743A1C10FA1DA4E1879607BC96889E6826074B520225221821F12C9C4928ED11",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/config.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/config.lua",
+      "Length": 136328,
+      "Hash": "9490B097D863A6598535A4D2474AD99637ADA14143D7CE62FE8BDC1A004B76E5",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/config.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/README.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/README.txt",
+      "Length": 1742,
+      "Hash": "DB03DA0D8C643AA6668EDB96089A05F593D8CE72E187F1B4BF820AF72BAADFE9",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/README.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/Scripts/logic.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/Scripts/logic.lua",
+      "Length": 18501,
+      "Hash": "0CD2188AB0A4A8FBA5E50F9CA80161F6B9C36375F1AF87837E12E90B58809EE9",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/Scripts/logic.lua",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/Scripts/main.lua",
+      "Length": 2320,
+      "Hash": "A0D47FC7C6F8207B6F7540B291137A1F4E7E5F287E605D99563EF1B48938EC4A",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/MiniBuilds/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}

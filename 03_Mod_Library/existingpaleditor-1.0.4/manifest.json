@@ -1,0 +1,40 @@
+{
+  "SchemaVersion": "1.1",
+  "Name": "existingpaleditor",
+  "Version": "1.0.4",
+  "Author": "",
+  "SourceUri": "",
+  "ImportedAt": "2026-07-29T09:56:27.2017811-04:00",
+  "CaptureSource": "02_Staging",
+  "OriginalArchive": "",
+  "OriginalFormat": "StagingSnapshot",
+  "ArchiveHash": "94174F8EB73C4B43E7BAEC57E442C6F59346C06196295A81953F0B61FC8E581A",
+  "ContentSetHash": "94174F8EB73C4B43E7BAEC57E442C6F59346C06196295A81953F0B61FC8E581A",
+  "HashAuthority": "LocalSHA256",
+  "PackageArchive": "package.7z",
+  "PackageArchiveHash": "1E6058BCBF22609D0F39DB91138C1E4A8D4B77D904EFFE378CFEA66E9A45D9EC",
+  "RequiresReview": false,
+  "Categories": [
+    "UE4SSLua"
+  ],
+  "Entries": [
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ExistingPalEditor/enabled.txt",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ExistingPalEditor/enabled.txt",
+      "Length": 0,
+      "Hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "Category": "Configuration",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ExistingPalEditor/enabled.txt",
+      "ReviewRequired": false
+    },
+    {
+      "ArchivePath": "Pal/Binaries/Win64/ue4ss/Mods/ExistingPalEditor/Scripts/main.lua",
+      "StagedRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ExistingPalEditor/Scripts/main.lua",
+      "Length": 121237,
+      "Hash": "18B313FDF48B77723B6429DBC370AB7D78FC57DF60E0B6E30FF3FCA9EE58174B",
+      "Category": "UE4SSLua",
+      "DeploymentRelativePath": "Pal/Binaries/Win64/ue4ss/Mods/ExistingPalEditor/Scripts/main.lua",
+      "ReviewRequired": false
+    }
+  ]
+}
