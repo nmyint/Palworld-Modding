@@ -43,9 +43,9 @@ Describe 'PalworldModding staging reconciliation' {
                 [PSCustomObject]@{
                     Mods = @(
                         [PSCustomObject]@{
-                            CatalogKey = 'mixedmod'
-                            DisplayName = 'MixedMod'
-                            InstallNames = @('MixedMod')
+                            CatalogKey     = 'mixedmod'
+                            DisplayName    = 'MixedMod'
+                            InstallNames   = @('MixedMod')
                             ComponentNames = @('MixedConfig')
                         }
                     )
@@ -65,7 +65,7 @@ Describe 'PalworldModding staging reconciliation' {
         $result = Get-PwStagingReconciliation `
             -Path $global:PwReconcileRoot
         $mixed = $result.Groups |
-            Where-Object CatalogKey -eq 'mixedmod'
+        Where-Object CatalogKey -eq 'mixedmod'
 
         $result.ComponentCount | Should Be 4
         $result.MatchedComponentCount | Should Be 3
@@ -88,56 +88,136 @@ Describe 'PalworldModding staging reconciliation' {
         $review.OwnershipStatus | Should Be 'Unmatched'
     }
 
-    It 'surfaces compatibility hints from staging and catalog metadata' {
-        InModuleScope PalworldModding {
-            Mock Get-PwStagingReconciliation {
-                [PSCustomObject]@{
-                    ReviewItemCount = 1
-                    Groups = @(
-                        [PSCustomObject]@{
-                            CatalogKey = 'mixedmod'
-                            DisplayName = 'MixedMod'
-                            PackageTypes = @('UE4SSLua', 'LogicMods')
-                            ComponentCount = 2
-                            IsMixedPackage = $true
-                        }
-                    )
-                    ReviewItems = @()
+    Context 'isolated compatibility metadata fixtures' {
+
+        It 'surfaces compatibility hints from staging and catalog metadata' {
+            InModuleScope PalworldModding {
+                Mock Get-PwStagingReconciliation {
+                    [PSCustomObject]@{
+                        ReviewItemCount = 1
+                        Groups          = @(
+                            [PSCustomObject]@{
+                                CatalogKey     = 'mixedmod'
+                                DisplayName    = 'MixedMod'
+                                PackageTypes   = @('UE4SSLua', 'LogicMods')
+                                ComponentCount = 2
+                                IsMixedPackage = $true
+                            }
+                        )
+                        ReviewItems     = @()
+                    }
                 }
-            }
 
-            Mock Get-PwPersistentModCatalog {
-                [PSCustomObject]@{
-                    Mods = @(
-                        [PSCustomObject]@{
-                            CatalogKey = 'example'
-                            DisplayName = 'Example'
-                            Versions = @(
-                                [PSCustomObject]@{
-                                    ArchiveHash = 'abc'
-                                    Version = '1.0'
-                                    Platform = 'Steam'
-                                    PlayMode = 'Universal'
-                                }
-                                [PSCustomObject]@{
-                                    ArchiveHash = 'abc'
-                                    Version = '1.1'
-                                    Platform = 'GamePass'
-                                    PlayMode = 'DedicatedServer'
-                                }
-                            )
-                        }
-                    )
+                Mock Get-PwPersistentModCatalog {
+                    [PSCustomObject]@{
+                        Mods = @(
+                            [PSCustomObject]@{
+                                CatalogKey  = 'example'
+                                DisplayName = 'Example'
+                                Versions    = @(
+                                    [PSCustomObject]@{
+                                        ArchiveHash = 'abc'
+                                        Version     = '1.0'
+                                        Platform    = 'Steam'
+                                        PlayMode    = 'Universal'
+                                    }
+                                    [PSCustomObject]@{
+                                        ArchiveHash = 'abc'
+                                        Version     = '1.1'
+                                        Platform    = 'GamePass'
+                                        PlayMode    = 'DedicatedServer'
+                                    }
+                                )
+                            }
+                        )
+                    }
                 }
+
+                $result = Get-PwCompatibilityReport -Path $global:PwReconcileRoot
+
+                $result.ConflictCount | Should Be 0
+                $result.ReviewCount | Should Be 3
+                $result.DuplicateArchives.Count | Should Be 1
+                $result.MixedPackages.Count | Should Be 1
+                $result.VariantWarnings.Count | Should Be 1
             }
-
-            $result = Get-PwCompatibilityReport -Path $global:PwReconcileRoot
-
-            $result.ConflictCount | Should Be 0
-            $result.ReviewCount | Should Be 3
-            $result.DuplicateArchives.Count | Should Be 1
-            $result.MixedPackages.Count | Should Be 1
-            $result.VariantWarnings.Count | Should Be 1
         }
     }
+
+    It 'reports PalSchema dependencies from staged payload destinations' {
+
+InModuleScope PalworldModding {
+    Mock Get-PwWorkshopConfig {
+        [PSCustomObject]@{
+            Deployment = [PSCustomObject]@{
+                ActiveProfile = 'Test'
+            }
+        }
+    }
+
+    Mock Get-PwProfileModSetPreview {
+        [PSCustomObject]@{
+            Mods = @(
+                [PSCustomObject]@{
+                    CatalogKey = 'mixedmod'
+                }
+                [PSCustomObject]@{
+                    CatalogKey = 'palschema'
+                }
+            )
+        }
+    }
+
+    $payloadRoot = Join-Path `
+        $global:PwReconcileRoot `
+    (
+        'Pal\Binaries\Win64\ue4ss\Mods\' +
+        'PalSchema\mods\MixedMod'
+    )
+
+    New-Item `
+        -ItemType Directory `
+        -Path $payloadRoot `
+        -Force |
+    Out-Null
+
+    Set-Content `
+        -LiteralPath (
+        Join-Path $payloadRoot 'settings.json'
+    ) `
+        -Value '{}'
+
+    try {
+        $report = Get-PwCompatibilityReport `
+            -Path $global:PwReconcileRoot
+
+        $dependency = $report.DependencyNotices |
+        Where-Object CatalogKey -eq 'mixedmod' |
+        Select-Object -First 1
+
+        $dependency.Requirement |
+        Should Be 'PalSchema'
+
+        $dependency.Status |
+        Should Be 'Satisfied'
+
+        $report.MissingDependencies.Count |
+        Should Be 0
+    }
+    finally {
+        $palSchemaRoot = Join-Path `
+            $global:PwReconcileRoot `
+        (
+            'Pal\Binaries\Win64\ue4ss\Mods\' +
+            'PalSchema'
+        )
+
+        Remove-Item `
+            -LiteralPath $palSchemaRoot `
+            -Recurse `
+            -Force `
+            -ErrorAction SilentlyContinue
+    }
+}
+}
 }

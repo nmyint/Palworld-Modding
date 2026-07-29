@@ -612,6 +612,17 @@ function Get-PwCompatibilityDisplayRows {
                 )
             }
         }
+        $Compatibility.DependencyNotices |
+            Where-Object Selected |
+            ForEach-Object {
+                [PSCustomObject]@{
+                    Category = 'Dependency'
+                    Name = $_.DisplayName
+                    Details = (
+                        "$($_.Requirement) | $($_.Status)"
+                    )
+                }
+            }
     )
 }
 
