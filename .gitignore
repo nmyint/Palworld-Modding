@@ -19,3 +19,7 @@ Desktop.ini
 
 # PowerShell
 *.psd1.cache
+
+# Local repository backups
+/Palworld-Modding.zip
+/Palworld-Modding.7z
