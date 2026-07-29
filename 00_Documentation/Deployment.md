@@ -13,6 +13,8 @@ active profile's Palworld `Pal` directory.
 6. Only Create and Update actions are copied.
 7. Deployment never deletes files from the game installation.
 8. Applied deployments produce a structured JSON log.
+9. Source and destination hashes are revalidated immediately before copying.
+10. Every copied destination is hashed again to verify the deployed content.
 
 ## Preview
 
@@ -49,5 +51,9 @@ Deployment logs are written beneath `09_Logs\Deployments`. Each backup includes 
 `manifest.json` that records the original path, backup path, and pre-deployment
 SHA-256 hash.
 
-Sprint 3.3 does not automate restoration. Restore operations remain manual until a
-later sprint can add explicit validation and confirmation.
+Successful logs include the verified hash for every copied file. If an operation
+fails after approval, a failure log records the error, backup information, planned
+files, and any files copied before the failure.
+
+Sprint 3.4 does not automate restoration. Restore operations remain manual until
+Sprint 3.6 adds explicit validation and confirmation.

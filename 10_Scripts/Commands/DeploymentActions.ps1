@@ -98,6 +98,59 @@ function Assert-PwDeploymentPlan {
     }
 }
 
+function Assert-PwDeploymentFileState {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$File
+    )
+
+    if (-not (Test-Path -LiteralPath $File.SourcePath -PathType Leaf)) {
+        throw "Deployment source file no longer exists: $($File.SourcePath)"
+    }
+
+    $currentSourceHash = (
+        Get-FileHash -LiteralPath $File.SourcePath -Algorithm SHA256 -ErrorAction Stop
+    ).Hash
+
+    if ($currentSourceHash -ne $File.SourceHash) {
+        throw "Deployment source changed after planning: $($File.RelativePath)"
+    }
+
+    switch ($File.Action) {
+        'Create' {
+            if (Test-Path -LiteralPath $File.DestinationPath) {
+                throw "Deployment destination appeared after planning: " +
+                    $File.RelativePath
+            }
+        }
+        'Update' {
+            if (-not (
+                Test-Path -LiteralPath $File.DestinationPath -PathType Leaf
+            )) {
+                throw "Deployment destination disappeared after planning: " +
+                    $File.RelativePath
+            }
+
+            $currentDestinationHash = (
+                Get-FileHash `
+                    -LiteralPath $File.DestinationPath `
+                    -Algorithm SHA256 `
+                    -ErrorAction Stop
+            ).Hash
+
+            if ($currentDestinationHash -ne $File.DestinationHash) {
+                throw "Deployment destination changed after planning: " +
+                    $File.RelativePath
+            }
+        }
+        default {
+            throw "Unsupported deployment action '$($File.Action)'."
+        }
+    }
+}
+
 function Write-PwDeploymentLog {
 
     [CmdletBinding()]
@@ -312,48 +365,114 @@ function Invoke-PwDeployment {
     }
 
     $backup = $null
+    $appliedFiles = [System.Collections.Generic.List[object]]::new()
     $configuration = Get-PwWorkshopConfig
     $backupEnabled = $configuration.Preferences.CreateBackupsBeforeDeployment
 
-    if ($backupEnabled -and -not $SkipBackup -and $plan.UpdateCount -gt 0) {
-        $backup = Backup-PwDeployment -Plan $plan -Confirm:$false
-    }
-
-    foreach ($file in $actionableFiles) {
-        $destinationDirectory = Split-Path -Parent $file.DestinationPath
-
-        if (-not (Test-Path -LiteralPath $destinationDirectory)) {
-            New-Item `
-                -ItemType Directory `
-                -Path $destinationDirectory `
-                -Force |
-                Out-Null
+    try {
+        foreach ($file in $actionableFiles) {
+            Assert-PwDeploymentFileState -File $file
         }
 
-        Copy-Item `
-            -LiteralPath $file.SourcePath `
-            -Destination $file.DestinationPath `
-            -Force
+        if ($backupEnabled -and -not $SkipBackup -and $plan.UpdateCount -gt 0) {
+            $backup = Backup-PwDeployment -Plan $plan -Confirm:$false
+
+            if (-not $backup.Created) {
+                throw 'Deployment backup was required but was not created.'
+            }
+        }
+
+        foreach ($file in $actionableFiles) {
+            Assert-PwDeploymentFileState -File $file
+            $destinationDirectory = Split-Path -Parent $file.DestinationPath
+
+            if (-not (Test-Path -LiteralPath $destinationDirectory)) {
+                New-Item `
+                    -ItemType Directory `
+                    -Path $destinationDirectory `
+                    -Force `
+                    -ErrorAction Stop |
+                    Out-Null
+            }
+
+            Copy-Item `
+                -LiteralPath $file.SourcePath `
+                -Destination $file.DestinationPath `
+                -Force `
+                -ErrorAction Stop
+
+            $deployedHash = (
+                Get-FileHash `
+                    -LiteralPath $file.DestinationPath `
+                    -Algorithm SHA256 `
+                    -ErrorAction Stop
+            ).Hash
+
+            if ($deployedHash -ne $file.SourceHash) {
+                throw "Post-deployment verification failed: $($file.RelativePath)"
+            }
+
+            $appliedFiles.Add([PSCustomObject]@{
+                RelativePath = $file.RelativePath
+                SourcePath = $file.SourcePath
+                DestinationPath = $file.DestinationPath
+                Action = $file.Action
+                VerifiedHash = $deployedHash
+            })
+        }
+    }
+    catch {
+        $failure = [PSCustomObject]@{
+            SchemaVersion = '1.0'
+            Profile = $plan.Profile
+            Status = 'Failed'
+            Applied = $false
+            AppliedAt = Get-Date
+            SourceRoot = $plan.SourceRoot
+            DestinationRoot = $plan.DestinationRoot
+            Backup = $backup
+            Error = $_.Exception.Message
+            Files = @($appliedFiles)
+            PlannedFiles = $actionableFiles
+        }
+        $failureLogPath = ''
+
+        try {
+            $failureLogPath = Write-PwDeploymentLog -InputObject $failure
+        }
+        catch {
+            Write-Warning "The deployment failure log could not be written: $_"
+        }
+
+        $message = "Deployment failed: $($failure.Error)"
+
+        if (-not [string]::IsNullOrWhiteSpace($failureLogPath)) {
+            $message += " Failure log: $failureLogPath"
+        }
+
+        throw [System.InvalidOperationException]::new($message)
     }
 
     $result = [PSCustomObject]@{
         SchemaVersion = '1.0'
         Profile = $plan.Profile
+        Status = 'Succeeded'
         Applied = $true
         AppliedAt = Get-Date
         SourceRoot = $plan.SourceRoot
         DestinationRoot = $plan.DestinationRoot
         Backup = $backup
-        Files = $actionableFiles
+        Files = @($appliedFiles)
     }
     $logPath = Write-PwDeploymentLog -InputObject $result
 
     [PSCustomObject]@{
         Profile = $plan.Profile
+        Status = 'Succeeded'
         Applied = $true
         Reason = ''
         Backup = $backup
         LogPath = $logPath
-        Files = $actionableFiles
+        Files = @($appliedFiles)
     }
 }

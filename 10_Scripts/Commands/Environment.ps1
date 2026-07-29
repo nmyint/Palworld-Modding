@@ -19,21 +19,84 @@ function Test-PwEnvironment {
     [CmdletBinding()]
     param()
 
+    $configurationValidation = Test-PwWorkshopConfig -Detailed
+    $workshopRoot = Get-PwWorkshopRoot
+    $configPath = Get-PwWorkshopConfigPath
+
+    if (-not $configurationValidation.IsValid) {
+        return [PSCustomObject]@{
+            WorkshopRootExists = Test-Path -LiteralPath $workshopRoot
+            ConfigExists = Test-Path -LiteralPath $configPath
+            ConfigValid = $false
+            ConfigErrors = $configurationValidation.Errors
+            MissingPaths = @()
+            GitAvailable = $null -ne (
+                Get-Command git -ErrorAction SilentlyContinue
+            )
+            VSCodeAvailable = $null -ne (
+                Get-Command code -ErrorAction SilentlyContinue
+            )
+            PowerShellVersion = $PSVersionTable.PSVersion
+            RequiredPowerShellVersion = $null
+            MeetsPowerShellRequirement = $false
+            ModuleLoaded = ($null -ne (Get-Module PalworldModding))
+            IsReady = $false
+        }
+    }
+
     $ctx = Get-PwContext
+    $requiredPowerShellVersion = [version](
+        $ctx.Config.Tools.PowerShell.RequiredVersion
+    )
+    $paths = Get-PwPaths
+    $missingPaths = @(
+        $paths.PSObject.Properties |
+            Where-Object {
+                $_.Name -ne 'Root' -and
+                -not (Test-Path -LiteralPath $_.Value -PathType Container)
+            } |
+            Select-Object -ExpandProperty Name
+    )
+    $gitAvailable = $null -ne (
+        Get-Command git -ErrorAction SilentlyContinue
+    )
+    $vsCodeAvailable = $null -ne (
+        Get-Command code -ErrorAction SilentlyContinue
+    )
+    $meetsPowerShellRequirement = (
+        $PSVersionTable.PSVersion -ge $requiredPowerShellVersion
+    )
 
     [PSCustomObject]@{
 
-        WorkshopRootExists = Test-Path $ctx.WorkshopRoot
+        WorkshopRootExists = Test-Path -LiteralPath $ctx.WorkshopRoot
 
-        ConfigExists       = Test-Path $ctx.ConfigPath
+        ConfigExists       = Test-Path -LiteralPath $ctx.ConfigPath
 
-        GitAvailable       = ($null -ne (Get-Command git -ErrorAction SilentlyContinue))
+        ConfigValid        = $configurationValidation.IsValid
 
-        VSCodeAvailable    = ($null -ne (Get-Command code -ErrorAction SilentlyContinue))
+        ConfigErrors       = $configurationValidation.Errors
+
+        MissingPaths       = $missingPaths
+
+        GitAvailable       = $gitAvailable
+
+        VSCodeAvailable    = $vsCodeAvailable
 
         PowerShellVersion  = $PSVersionTable.PSVersion
 
+        RequiredPowerShellVersion = $requiredPowerShellVersion
+
+        MeetsPowerShellRequirement = $meetsPowerShellRequirement
+
         ModuleLoaded       = ($null -ne (Get-Module PalworldModding))
+
+        IsReady            = (
+            $configurationValidation.IsValid -and
+            $missingPaths.Count -eq 0 -and
+            $gitAvailable -and
+            $meetsPowerShellRequirement
+        )
 
     }
 

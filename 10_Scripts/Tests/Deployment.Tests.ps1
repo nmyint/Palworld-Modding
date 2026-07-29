@@ -93,6 +93,11 @@ Describe 'PalworldModding deployment' {
             Remove-Variable PwTestPlan -Scope Global -ErrorAction SilentlyContinue
             Remove-Variable PwTestBackup -Scope Global -ErrorAction SilentlyContinue
             Remove-Variable PwTestResult -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable PwStalePlan -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable PwStaleSource -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable PwStaleDestination `
+                -Scope Global `
+                -ErrorAction SilentlyContinue
         }
 
         It 'classifies create, update, and unchanged files by hash' {
@@ -133,6 +138,9 @@ Describe 'PalworldModding deployment' {
 
             $global:PwTestResult.Applied | Should Be $true
             @($global:PwTestResult.Files).Count | Should Be 2
+            $global:PwTestResult.Status | Should Be 'Succeeded'
+            $global:PwTestResult.Files[0].VerifiedHash |
+                Should Not BeNullOrEmpty
             Get-Content `
                 -LiteralPath (
                     Join-Path $global:PwTestDestination 'Create.txt'
@@ -143,6 +151,52 @@ Describe 'PalworldModding deployment' {
                     Join-Path $global:PwTestDestination 'Update.txt'
                 ) |
                 Should Be 'new content'
+        }
+
+        It 'rejects a deployment plan when a source changes before apply' {
+            $global:PwStaleSource = Join-Path $TestDrive 'StaleSource'
+            $global:PwStaleDestination = Join-Path $TestDrive 'StaleDestination'
+            New-Item `
+                -ItemType Directory `
+                -Path $global:PwStaleSource `
+                -Force |
+                Out-Null
+            New-Item `
+                -ItemType Directory `
+                -Path $global:PwStaleDestination `
+                -Force |
+                Out-Null
+            $staleFile = Join-Path $global:PwStaleSource 'Changed.txt'
+            Set-Content -LiteralPath $staleFile -Value 'planned content'
+
+            InModuleScope PalworldModding {
+                $global:PwStalePlan = New-PwDeploymentPlan `
+                    -ProfileName 'Test' `
+                    -SourceRoot $global:PwStaleSource `
+                    -DestinationRoot $global:PwStaleDestination
+            }
+
+            Set-Content -LiteralPath $staleFile -Value 'changed after planning'
+            (Get-FileHash -LiteralPath $staleFile).Hash |
+                Should Not Be $global:PwStalePlan.Files[0].SourceHash
+
+            InModuleScope PalworldModding {
+                $threw = $false
+
+                try {
+                    Assert-PwDeploymentFileState `
+                        -File $global:PwStalePlan.Files[0]
+                }
+                catch {
+                    $threw = $true
+                }
+
+                $threw | Should Be $true
+            }
+
+            Test-Path -LiteralPath (
+                Join-Path $global:PwStaleDestination 'Changed.txt'
+            ) | Should Be $false
         }
     }
 }

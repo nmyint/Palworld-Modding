@@ -22,6 +22,12 @@ function Initialize-PwWorkshop {
 
     $root = Get-PwWorkshopRoot
     $configPath = Get-PwWorkshopConfigPath
+    $validation = Test-PwWorkshopConfig -Detailed
+
+    if (-not $validation.IsValid) {
+        throw "Workshop configuration is invalid: $($validation.Errors -join ' ')"
+    }
+
     $config = Get-PwWorkshopConfig
 
     $script:PwContext = [PSCustomObject]@{

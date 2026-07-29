@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.3.3'
+ModuleVersion = '0.3.4'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -90,7 +90,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 3.3 safe deployment planning, backups, and apply workflow'
+        ReleaseNotes = 'Sprint 3.4 workshop hardening, verification, and migration support'
 
     }
 

@@ -16,7 +16,7 @@ work separate from the live game installation.
 ## Workflow
 
 ```text
-Workshop -> Test -> Deploy -> Commit
+Archive -> Stage -> Develop -> Test -> Deploy -> Commit
 ```
 
 See [FolderStructure.md](00_Documentation/FolderStructure.md) for the role of each
@@ -55,7 +55,14 @@ commands.
 Run the automated checks from the repository root:
 
 ```powershell
-pwsh -NoProfile -Command "Invoke-Pester -Path './10_Scripts/Tests' -EnableExit"
+pwsh -NoProfile -File ./10_Scripts/Tasks/Test-Workshop.ps1
 ```
 
 In VS Code, run the default test task: `PwTools: Test`.
+
+## Scope
+
+This is a personal learning and backup workspace. Machine-specific integration
+checks and the `Stable` profile are intentional. See
+[Environment.md](00_Documentation/Environment.md) before moving the workshop to
+another computer.

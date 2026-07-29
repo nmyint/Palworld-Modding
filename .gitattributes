@@ -10,3 +10,4 @@
 
 # Preserve binary archives exactly.
 *.zip binary
+*.7z binary

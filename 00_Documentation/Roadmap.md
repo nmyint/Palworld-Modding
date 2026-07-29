@@ -98,7 +98,19 @@ Status: Complete
 - Prohibited automatic deletion from the live game.
 - Added structured deployment logs, documentation, tasks, and tests.
 
-### Sprint 3.4 - Mod intake foundation
+### Sprint 3.4 - Hardening and streamlining
+
+Status: In progress
+
+- Strengthen configuration and environment validation.
+- Revalidate deployment plans immediately before applying them.
+- Verify copied files and record partial failures.
+- Preserve useful machine-specific integration checks while improving migration
+  guidance.
+- Simplify VS Code tasks and MCP configuration.
+- Document dependencies, reserved settings, and the canonical workflow.
+
+### Sprint 3.5 - Mod intake foundation
 
 Status: Planned
 
@@ -111,7 +123,7 @@ Status: Planned
 - Generate deterministic content under `05_Deployment`.
 - Test the workflow with isolated fixtures.
 
-### Sprint 3.5 - Recovery and diagnostics
+### Sprint 3.6 - Recovery and diagnostics
 
 Status: Planned
 
@@ -123,7 +135,9 @@ Status: Planned
 
 ## Sprint 4 - Mod library and compatibility
 
-Manage multiple real mods safely and assemble coherent installations.
+Manage multiple curated mods safely and assemble coherent installations. Archive
+intake and basic validation belong to Sprint 3.5; Sprint 4 begins after packages
+have entered the library.
 
 Planned outcomes:
 

@@ -7,8 +7,8 @@
             "command": "pwsh",
             "args": [
                 "-NoProfile",
-                "-Command",
-                "Invoke-Pester -Path './10_Scripts/Tests' -EnableExit"
+                "-File",
+                "./10_Scripts/Tasks/Test-Workshop.ps1"
             ],
             "group": {
                 "kind": "test",
@@ -26,8 +26,23 @@
             "command": "pwsh",
             "args": [
                 "-NoProfile",
-                "-Command",
-                "Import-Module './10_Scripts/Modules/PalworldModding.psd1' -Force; $results = Get-PwProfiles | ForEach-Object { Test-PwProfile -Name $_.Name }; $results | Format-List; if ($results | Where-Object { -not $_.IsValid }) { exit 1 }"
+                "-File",
+                "./10_Scripts/Tasks/Test-Profiles.ps1"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "PwTools: Validate Environment",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Test-Environment.ps1"
             ],
             "problemMatcher": [],
             "presentation": {
@@ -41,8 +56,8 @@
             "command": "pwsh",
             "args": [
                 "-NoProfile",
-                "-Command",
-                "Import-Module './10_Scripts/Modules/PalworldModding.psd1' -Force; $plan = Get-PwDeploymentPlan; $plan | Format-List; $plan.Files | Format-Table Action, RelativePath, DestinationPath"
+                "-File",
+                "./10_Scripts/Tasks/Show-DeploymentPreview.ps1"
             ],
             "problemMatcher": [],
             "presentation": {
