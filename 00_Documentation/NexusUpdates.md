@@ -100,3 +100,6 @@ be found remotely, the report returns `VariantNotFound` instead of suggesting a
 different build.
 
 For example, AntiPhat `SP-2.0.5` is never compared with `DS-2.0.17`.
+When both versions are present, an identical version is current even if the
+remote upload timestamp contains seconds that were rounded out of the local
+archive filename. Upload time is used only when version metadata is missing.

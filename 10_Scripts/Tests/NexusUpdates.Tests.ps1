@@ -58,7 +58,7 @@ Describe 'PalworldModding Nexus updates' {
                                 [PSCustomObject]@{
                                     file_id = 101
                                     file_name = 'AntiPhat Singleplayer'
-                                    version = 'SP-2.0.6'
+                                    version = 'SP-2.0.5'
                                     category_id = 1
                                     category_name = 'MAIN'
                                     uploaded_timestamp = 1785100000
@@ -132,9 +132,10 @@ Describe 'PalworldModding Nexus updates' {
 
         $result[0].LocalVariant | Should Be 'SinglePlayer'
         $result[0].RemoteVariant | Should Be 'SinglePlayer'
-        $result[0].RemoteVersion | Should Be 'SP-2.0.6'
+        $result[0].RemoteVersion | Should Be 'SP-2.0.5'
         $result[0].RemoteFileId | Should Be 101
         $result[0].RemoteVersion | Should Not Match '^DS-'
+        $result[0].Status | Should Be 'Current'
     }
 
     It 'refuses direct downloads for a non-Premium account' {

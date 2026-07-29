@@ -259,20 +259,27 @@ function Get-PwModUpdateReport {
             elseif (-not $latestFile) {
                 'NoRemoteFiles'
             }
-            elseif (
-                $remoteUploadedAt -gt $local.DownloadedAt -or
-                (
-                    -not [string]::IsNullOrWhiteSpace(
-                        [string]$latestFile.version
-                    ) -and
-                    [string]$latestFile.version -ne
-                        [string]$local.ArchiveVersion
-                )
-            ) {
-                'UpdateAvailable'
-            }
             else {
-                'Current'
+                $remoteVersion = [string]$latestFile.version
+                $localVersion = [string]$local.ArchiveVersion
+
+                if (
+                    -not [string]::IsNullOrWhiteSpace($remoteVersion) -and
+                    -not [string]::IsNullOrWhiteSpace($localVersion)
+                ) {
+                    if ($remoteVersion -ne $localVersion) {
+                        'UpdateAvailable'
+                    }
+                    else {
+                        'Current'
+                    }
+                }
+                elseif ($remoteUploadedAt -gt $local.DownloadedAt) {
+                    'UpdateAvailable'
+                }
+                else {
+                    'Current'
+                }
             }
 
             $results.Add([PSCustomObject]@{
