@@ -77,102 +77,102 @@ function Find-PwStagingCatalogOwner {
     $ownerKey = ConvertTo-PwCatalogKey -Value $OwnerName
     $explicit = @(
         $CatalogMods |
-            Where-Object {
-                $_.PSObject.Properties['ComponentNames'] -and
-                $ownerKey -in @(
-                    @($_.ComponentNames) |
-                        Where-Object {
-                            -not [string]::IsNullOrWhiteSpace([string]$_)
-                        } |
-                        ForEach-Object {
-                            ConvertTo-PwCatalogKey -Value ([string]$_)
-                        }
-                )
-            }
+        Where-Object {
+            $_.PSObject.Properties['ComponentNames'] -and
+            $ownerKey -in @(
+                @($_.ComponentNames) |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace([string]$_)
+                } |
+                ForEach-Object {
+                    ConvertTo-PwCatalogKey -Value ([string]$_)
+                }
+            )
+        }
     )
 
     if ($explicit.Count -eq 1) {
         return [PSCustomObject]@{
-            Status = 'Matched'
-            CatalogKey = [string]$explicit[0].CatalogKey
+            Status      = 'Matched'
+            CatalogKey  = [string]$explicit[0].CatalogKey
             DisplayName = [string]$explicit[0].DisplayName
-            Confidence = 'ExplicitComponent'
+            Confidence  = 'ExplicitComponent'
         }
     }
 
     if ($explicit.Count -gt 1) {
         return [PSCustomObject]@{
-            Status = 'Ambiguous'
-            CatalogKey = ''
+            Status      = 'Ambiguous'
+            CatalogKey  = ''
             DisplayName = ''
-            Confidence = 'None'
+            Confidence  = 'None'
         }
     }
 
     $exact = @(
         $CatalogMods |
+        Where-Object {
+            $keys = @(
+                [string]$_.CatalogKey
+                [string]$_.DisplayName
+                @($_.InstallNames)
+            ) |
             Where-Object {
-                $keys = @(
-                    [string]$_.CatalogKey
-                    [string]$_.DisplayName
-                    @($_.InstallNames)
-                ) |
-                    Where-Object {
-                        -not [string]::IsNullOrWhiteSpace([string]$_)
-                    } |
-                    ForEach-Object {
-                        ConvertTo-PwCatalogKey -Value ([string]$_)
-                    }
-
-                $ownerKey -in $keys
+                -not [string]::IsNullOrWhiteSpace([string]$_)
+            } |
+            ForEach-Object {
+                ConvertTo-PwCatalogKey -Value ([string]$_)
             }
+
+            $ownerKey -in $keys
+        }
     )
 
     if ($exact.Count -eq 1) {
         return [PSCustomObject]@{
-            Status = 'Matched'
-            CatalogKey = [string]$exact[0].CatalogKey
+            Status      = 'Matched'
+            CatalogKey  = [string]$exact[0].CatalogKey
             DisplayName = [string]$exact[0].DisplayName
-            Confidence = 'Exact'
+            Confidence  = 'Exact'
         }
     }
 
     if ($exact.Count -gt 1) {
         return [PSCustomObject]@{
-            Status = 'Ambiguous'
-            CatalogKey = ''
+            Status      = 'Ambiguous'
+            CatalogKey  = ''
             DisplayName = ''
-            Confidence = 'None'
+            Confidence  = 'None'
         }
     }
 
     $prefix = @(
         $CatalogMods |
-            Where-Object {
-                $candidateKey = ConvertTo-PwCatalogKey -Value (
-                    [string]$_.CatalogKey
-                )
-                (
-                    $candidateKey.StartsWith($ownerKey) -or
-                    $ownerKey.StartsWith($candidateKey)
-                )
-            }
+        Where-Object {
+            $candidateKey = ConvertTo-PwCatalogKey -Value (
+                [string]$_.CatalogKey
+            )
+            (
+                $candidateKey.StartsWith($ownerKey) -or
+                $ownerKey.StartsWith($candidateKey)
+            )
+        }
     )
 
     if ($prefix.Count -eq 1) {
         return [PSCustomObject]@{
-            Status = 'Matched'
-            CatalogKey = [string]$prefix[0].CatalogKey
+            Status      = 'Matched'
+            CatalogKey  = [string]$prefix[0].CatalogKey
             DisplayName = [string]$prefix[0].DisplayName
-            Confidence = 'UniquePrefix'
+            Confidence  = 'UniquePrefix'
         }
     }
 
     [PSCustomObject]@{
-        Status = 'Unmatched'
-        CatalogKey = ''
+        Status      = 'Unmatched'
+        CatalogKey  = ''
         DisplayName = $OwnerName
-        Confidence = 'None'
+        Confidence  = 'None'
     }
 }
 
@@ -224,16 +224,16 @@ function New-PwStagingComponent {
         -CatalogMods $CatalogMods
 
     [PSCustomObject]@{
-        OwnerName = $ownerName
-        CatalogKey = $owner.CatalogKey
-        DisplayName = $owner.DisplayName
+        OwnerName       = $ownerName
+        CatalogKey      = $owner.CatalogKey
+        DisplayName     = $owner.DisplayName
         OwnershipStatus = $owner.Status
-        Confidence = $owner.Confidence
-        SourceArea = $SourceArea
-        PackageType = $PackageType
-        RelativePath = $relativePath
-        Length = (Get-Item -LiteralPath $Path).Length
-        Hash = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash
+        Confidence      = $owner.Confidence
+        SourceArea      = $SourceArea
+        PackageType     = $PackageType
+        RelativePath    = $relativePath
+        Length          = (Get-Item -LiteralPath $Path).Length
+        Hash            = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash
     }
 }
 
@@ -267,12 +267,12 @@ function Get-PwStagingReconciliation {
 
     foreach (
         $directory in Get-ChildItem -LiteralPath $ue4ssRoot -Directory |
-            Where-Object Name -notin @('Pal', '~mods', 'LogicMods') |
-            Sort-Object Name
+        Where-Object Name -notin @('Pal', '~mods', 'LogicMods') |
+        Sort-Object Name
     ) {
         if (Test-Path -LiteralPath (
-            Join-Path $directory.FullName 'manifest.json'
-        )) {
+                Join-Path $directory.FullName 'manifest.json'
+            )) {
             continue
         }
 
@@ -281,12 +281,12 @@ function Get-PwStagingReconciliation {
         ) {
             if (Test-PwStagingRuntimeArtifact -Path $file.FullName) {
                 $excludedItems.Add([PSCustomObject]@{
-                    RelativePath = [System.IO.Path]::GetRelativePath(
-                        $stagingRoot,
-                        $file.FullName
-                    ).Replace('\', '/')
-                    Reason = 'RuntimeState'
-                })
+                        RelativePath = [System.IO.Path]::GetRelativePath(
+                            $stagingRoot,
+                            $file.FullName
+                        ).Replace('\', '/')
+                        Reason       = 'RuntimeState'
+                    })
                 continue
             }
             $packageType = switch ($file.Extension.ToLowerInvariant()) {
@@ -315,12 +315,12 @@ function Get-PwStagingReconciliation {
         foreach ($file in Get-ChildItem -LiteralPath $areaRoot -Recurse -File) {
             if (Test-PwStagingRuntimeArtifact -Path $file.FullName) {
                 $excludedItems.Add([PSCustomObject]@{
-                    RelativePath = [System.IO.Path]::GetRelativePath(
-                        $stagingRoot,
-                        $file.FullName
-                    ).Replace('\', '/')
-                    Reason = 'RuntimeState'
-                })
+                        RelativePath = [System.IO.Path]::GetRelativePath(
+                            $stagingRoot,
+                            $file.FullName
+                        ).Replace('\', '/')
+                        Reason       = 'RuntimeState'
+                    })
                 continue
             }
             $packageType = if (
@@ -349,50 +349,50 @@ function Get-PwStagingReconciliation {
 
     $groups = @(
         $components |
-            Where-Object OwnershipStatus -eq 'Matched' |
-            Group-Object CatalogKey |
-            ForEach-Object {
-                $packageTypes = @(
-                    $_.Group.PackageType |
-                        Where-Object { $_ -ne 'Configuration' } |
-                        Select-Object -Unique |
-                        Sort-Object
-                )
+        Where-Object OwnershipStatus -eq 'Matched' |
+        Group-Object CatalogKey |
+        ForEach-Object {
+            $packageTypes = @(
+                $_.Group.PackageType |
+                Where-Object { $_ -ne 'Configuration' } |
+                Select-Object -Unique |
+                Sort-Object
+            )
 
-                [PSCustomObject]@{
-                    CatalogKey = $_.Name
-                    DisplayName = $_.Group[0].DisplayName
-                    PackageTypes = $packageTypes
-                    IsMixedPackage = $packageTypes.Count -gt 1
-                    ComponentCount = $_.Count
-                    Components = @($_.Group)
-                }
-            } |
-            Sort-Object DisplayName
+            [PSCustomObject]@{
+                CatalogKey     = $_.Name
+                DisplayName    = $_.Group[0].DisplayName
+                PackageTypes   = $packageTypes
+                IsMixedPackage = $packageTypes.Count -gt 1
+                ComponentCount = $_.Count
+                Components     = @($_.Group)
+            }
+        } |
+        Sort-Object DisplayName
     )
     $reviewItems = @(
         $components |
-            Where-Object OwnershipStatus -ne 'Matched' |
-            Sort-Object OwnerName, RelativePath
+        Where-Object OwnershipStatus -ne 'Matched' |
+        Sort-Object OwnerName, RelativePath
     )
 
     [PSCustomObject]@{
-        StagingRoot = $stagingRoot
-        ComponentCount = $components.Count
+        StagingRoot           = $stagingRoot
+        ComponentCount        = $components.Count
         MatchedComponentCount = @(
             $components |
-                Where-Object OwnershipStatus -eq 'Matched'
+            Where-Object OwnershipStatus -eq 'Matched'
         ).Count
-        MixedPackageCount = @(
+        MixedPackageCount     = @(
             $groups |
-                Where-Object IsMixedPackage
+            Where-Object IsMixedPackage
         ).Count
-        ReviewItemCount = $reviewItems.Count
-        ExcludedItemCount = $excludedItems.Count
-        ExcludedItems = @($excludedItems)
-        Groups = $groups
-        ReviewItems = $reviewItems
-        Components = @($components)
+        ReviewItemCount       = $reviewItems.Count
+        ExcludedItemCount     = $excludedItems.Count
+        ExcludedItems         = @($excludedItems)
+        Groups                = $groups
+        ReviewItems           = $reviewItems
+        Components            = @($components)
     }
 }
 
@@ -407,124 +407,361 @@ function Get-PwCompatibilityReport {
     $catalog = Get-PwPersistentModCatalog
     $mods = @($catalog.Mods)
 
+    $profileName = (Get-PwWorkshopConfig).Deployment.ActiveProfile
+    $profilePreview = Get-PwProfileModSetPreview -Name $profileName
+
+    $selectedCatalogKeys = @(
+        foreach ($mod in @($profilePreview.Mods)) {
+            if (
+                $null -ne $mod -and
+                $mod.PSObject.Properties.Name -contains 'CatalogKey' -and
+                -not [string]::IsNullOrWhiteSpace(
+                    [string]$mod.CatalogKey
+                )
+            ) {
+                [string]$mod.CatalogKey
+            }
+        }
+    )
+
     $archiveEntries = @(
         foreach ($mod in $mods) {
-            foreach ($version in @($mod.Versions)) {
-                if ([string]::IsNullOrWhiteSpace([string]$version.ArchiveHash)) {
+            $versions = @(
+                if (
+                    $null -ne $mod -and
+                    $mod.PSObject.Properties['Versions']
+                ) {
+                    @($mod.Versions)
+                }
+            )
+
+            foreach ($version in $versions) {
+                if (
+                    [string]::IsNullOrWhiteSpace(
+                        [string]$version.ArchiveHash
+                    )
+                ) {
                     continue
                 }
 
                 [PSCustomObject]@{
                     ArchiveHash = [string]$version.ArchiveHash
-                    CatalogKey = [string]$mod.CatalogKey
+                    CatalogKey  = [string]$mod.CatalogKey
                     DisplayName = [string]$mod.DisplayName
-                    Version = [string]$version.Version
+                    Version     = [string]$version.Version
                 }
             }
         }
     )
+
     $duplicateArchives = @(
         $archiveEntries |
-            Group-Object ArchiveHash |
-            Where-Object Count -gt 1 |
-            ForEach-Object {
-                $catalogKeys = @(
-                    $_.Group.CatalogKey |
-                        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
-                        Sort-Object -Unique
-                )
-                $isReviewedBundle = $false
+        Group-Object ArchiveHash |
+        Where-Object Count -gt 1 |
+        ForEach-Object {
+            $catalogKeys = @(
+                $_.Group.CatalogKey |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace($_)
+                } |
+                Sort-Object -Unique
+            )
 
-                foreach ($catalogKey in $catalogKeys) {
-                    $owner = $mods |
-                        Where-Object CatalogKey -eq $catalogKey |
-                        Select-Object -First 1
-                    $componentKeys = @(
-                        if (
-                            $null -ne $owner -and
-                            $owner.PSObject.Properties['ComponentNames']
-                        ) {
-                            @($owner.ComponentNames) |
-                                ForEach-Object {
-                                    ConvertTo-PwCatalogKey -Value ([string]$_)
-                                }
-                        }
-                    )
+            $isReviewedBundle = $false
+
+            foreach ($catalogKey in $catalogKeys) {
+                $owner = $mods |
+                Where-Object CatalogKey -eq $catalogKey |
+                Select-Object -First 1
+
+                $componentKeys = @(
                     if (
-                        @(
-                            $catalogKeys |
-                                Where-Object {
-                                    $_ -ne $catalogKey -and
-                                    $_ -in $componentKeys
-                                }
-                        ).Count -gt 0
+                        $null -ne $owner -and
+                        $owner.PSObject.Properties['ComponentNames']
                     ) {
-                        $isReviewedBundle = $true
-                        break
+                        @($owner.ComponentNames) |
+                        ForEach-Object {
+                            ConvertTo-PwCatalogKey `
+                                -Value ([string]$_)
+                        }
                     }
-                }
+                )
 
-                if (-not $isReviewedBundle) {
-                    [PSCustomObject]@{
-                        ArchiveHash = $_.Name
-                        CatalogKeys = $catalogKeys
-                        Versions = @(
-                            $_.Group.Version |
-                                Where-Object {
-                                    -not [string]::IsNullOrWhiteSpace($_)
-                                } |
-                                Sort-Object -Unique
-                        )
-                    }
+                if (
+                    @(
+                        $catalogKeys |
+                        Where-Object {
+                            $_ -ne $catalogKey -and
+                            $_ -in $componentKeys
+                        }
+                    ).Count -gt 0
+                ) {
+                    $isReviewedBundle = $true
+                    break
                 }
             }
+
+            if (-not $isReviewedBundle) {
+                [PSCustomObject]@{
+                    ArchiveHash = $_.Name
+                    CatalogKeys = $catalogKeys
+                    Versions    = @(
+                        $_.Group.Version |
+                        Where-Object {
+                            -not [string]::IsNullOrWhiteSpace($_)
+                        } |
+                        Sort-Object -Unique
+                    )
+                }
+            }
+        }
     )
 
     $mixedPackages = @(
         $staging.Groups |
-            Where-Object IsMixedPackage
+        Where-Object IsMixedPackage
     )
+
     $variantWarnings = @(
         $mods |
-            ForEach-Object {
-                $platforms = @(
-                    @($_.Versions) |
-                        ForEach-Object { [string]$_.Platform } |
-                        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
-                        Select-Object -Unique
-                )
-                $playModes = @(
-                    @($_.Versions) |
-                        ForEach-Object { [string]$_.PlayMode } |
-                        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
-                        Select-Object -Unique
-                )
+        ForEach-Object {
+            $versions = @(
+                if (
+                    $null -ne $_ -and
+                    $_.PSObject.Properties['Versions']
+                ) {
+                    @($_.Versions)
+                }
+            )
 
-                if ($platforms.Count -gt 1 -or $playModes.Count -gt 1) {
+            $platforms = @(
+                $versions |
+                ForEach-Object {
+                    [string]$_.Platform
+                } |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace($_)
+                } |
+                Select-Object -Unique
+            )
+
+            $playModes = @(
+                $versions |
+                ForEach-Object {
+                    [string]$_.PlayMode
+                } |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace($_)
+                } |
+                Select-Object -Unique
+            )
+
+            if (
+                $platforms.Count -gt 1 -or
+                $playModes.Count -gt 1
+            ) {
+                [PSCustomObject]@{
+                    CatalogKey  = [string]$_.CatalogKey
+                    DisplayName = [string]$_.DisplayName
+                    Platforms   = $platforms
+                    PlayModes   = $playModes
+                }
+            }
+        } |
+        Where-Object {
+            $null -ne $_
+        }
+    )
+
+    $dependencyEntries = @(
+        if ($staging.PSObject.Properties['Components']) {
+            foreach ($component in @($staging.Components)) {
+                if ($null -eq $component) {
+                    continue
+                }
+
+                $relativePath = if (
+                    $component.PSObject.Properties['RelativePath']
+                ) {
+                    [string]$component.RelativePath
+                }
+                elseif (
+                    $component.PSObject.Properties[
+                        'DeploymentRelativePath'
+                    ]
+                ) {
+                    [string]$component.DeploymentRelativePath
+                }
+                else {
+                    ''
+                }
+
+                if (
+                    -not [string]::IsNullOrWhiteSpace(
+                        $relativePath
+                    )
+                ) {
                     [PSCustomObject]@{
-                        CatalogKey = [string]$_.CatalogKey
-                        DisplayName = [string]$_.DisplayName
-                        Platforms = $platforms
-                        PlayModes = $playModes
+                        DeploymentRelativePath = $relativePath
                     }
                 }
-            } |
-            Where-Object { $null -ne $_ }
+            }
+        }
+    )
+
+    $dependencyMetadata = if ($dependencyEntries.Count -gt 0) {
+        Get-PwPackageRequirementMetadata `
+            -Entries $dependencyEntries
+    }
+    else {
+        [PSCustomObject]@{
+            Requirements         = @()
+            ExpectedDestinations = @()
+        }
+    }
+
+    $dependencyNotices = @(
+        foreach (
+            $requirement in @($dependencyMetadata.Requirements)
+        ) {
+            if ($null -eq $requirement) {
+                continue
+            }
+
+            $requirementName = if (
+                $requirement -is [string]
+            ) {
+                [string]$requirement
+            }
+            elseif (
+                $requirement.PSObject.Properties['Name']
+            ) {
+                [string]$requirement.Name
+            }
+            elseif (
+                $requirement.PSObject.Properties['Requirement']
+            ) {
+                [string]$requirement.Requirement
+            }
+            else {
+                ''
+            }
+
+            if (
+                [string]::IsNullOrWhiteSpace(
+                    $requirementName
+                )
+            ) {
+                continue
+            }
+
+            $payloadNames = @(
+                foreach (
+                    $destination in @(
+                        $dependencyMetadata.ExpectedDestinations
+                    )
+                ) {
+                    if ($null -eq $destination) {
+                        continue
+                    }
+
+                    if (
+                        -not $destination.PSObject.Properties[
+                            'Framework'
+                        ] -or
+                        [string]$destination.Framework -ine
+                            $requirementName
+                    ) {
+                        continue
+                    }
+
+                    if (
+                        $destination.PSObject.Properties[
+                            'PayloadNames'
+                        ]
+                    ) {
+                        @($destination.PayloadNames)
+                    }
+                }
+            ) |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace(
+                        [string]$_
+                    )
+                } |
+                Sort-Object -Unique
+
+            $requiredKey = ConvertTo-PwCatalogKey `
+                -Value $requirementName
+
+            foreach ($payloadName in $payloadNames) {
+                $owner = Find-PwStagingCatalogOwner `
+                    -OwnerName ([string]$payloadName) `
+                    -CatalogMods $mods
+
+                if ($owner.Status -ne 'Matched') {
+                    continue
+                }
+
+                $selected = (
+                    [string]$owner.CatalogKey -in
+                    $selectedCatalogKeys
+                )
+
+                $satisfied = (
+                    $requiredKey -in
+                    $selectedCatalogKeys
+                )
+
+                [PSCustomObject]@{
+                    CatalogKey = [string]$owner.CatalogKey
+                    DisplayName = [string]$owner.DisplayName
+                    Requirement = $requirementName
+                    RequiredCatalogKey = $requiredKey
+                    PayloadName = [string]$payloadName
+                    Selected = $selected
+                    Satisfied = $satisfied
+                    Status = if (-not $selected) {
+                        'NotSelected'
+                    }
+                    elseif ($satisfied) {
+                        'Satisfied'
+                    }
+                    else {
+                        'Missing'
+                    }
+                }
+            }
+        }
+    )
+
+    $missingDependencies = @(
+        $dependencyNotices |
+        Where-Object Status -eq 'Missing'
     )
 
     [PSCustomObject]@{
-        GeneratedAt = (Get-Date).ToUniversalTime()
-        Staging = $staging
-        DuplicateArchives = $duplicateArchives
-        MixedPackages = $mixedPackages
-        VariantWarnings = $variantWarnings
+        GeneratedAt                = (Get-Date).ToUniversalTime()
+        Staging                    = $staging
+        DuplicateArchives          = $duplicateArchives
+        MixedPackages              = $mixedPackages
+        VariantWarnings            = $variantWarnings
+        DependencyNotices          = $dependencyNotices
+        MissingDependencies        = $missingDependencies
+        DeferredCompatibilityRules = @(
+            'Mutually exclusive pairs: add only after a reviewed conflict.'
+            'Explicit load order: add only for a loader that supports it.'
+        )
+
         # Mixed deployment formats are valid when they share reviewed ownership.
         # Path-level conflicts will be added by deterministic assembly.
-        ConflictCount = 0
-        ReviewCount = (
+        ConflictCount              = 0
+
+        ReviewCount                = (
             $staging.ReviewItemCount +
             $variantWarnings.Count +
-            $duplicateArchives.Count
+            $duplicateArchives.Count +
+            $missingDependencies.Count
         )
     }
 }
