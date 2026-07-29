@@ -300,6 +300,16 @@ function Build-PwProfileDeployment {
                     PackageArchiveHash = $packageHash
                     RequiresReview = $false
                     Categories = @($package.PackageTypes)
+                    Requirements = @(
+                        (
+                            Get-PwPackageRequirementMetadata -Entries $entries
+                        ).Requirements
+                    )
+                    ExpectedDestinations = @(
+                        (
+                            Get-PwPackageRequirementMetadata -Entries $entries
+                        ).ExpectedDestinations
+                    )
                     Entries = $entries
                 }
                 Copy-Item `
@@ -375,6 +385,8 @@ function Build-PwProfileDeployment {
                 })
             }
 
+            $requirementMetadata = Get-PwPackageRequirementMetadata `
+                -Entries $entries
             $packageResults.Add([PSCustomObject]@{
                 CatalogKey = $package.CatalogKey
                 Version = $package.Version
@@ -383,6 +395,10 @@ function Build-PwProfileDeployment {
                 Action = $package.Action
                 ValidationStatus = 'Verified'
                 FileCount = $entries.Count
+                Requirements = @($requirementMetadata.Requirements)
+                ExpectedDestinations = @(
+                    $requirementMetadata.ExpectedDestinations
+                )
             })
         }
 
@@ -514,6 +530,7 @@ function Test-PwProfileDeploymentAssembly {
         FileCount = $files.Count
         Errors = @($errors)
         Files = $files
+        Manifest = $manifest
     }
 }
 

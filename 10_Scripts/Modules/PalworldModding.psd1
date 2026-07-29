@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.4.8'
+ModuleVersion = '0.4.9'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -102,6 +102,8 @@ FunctionsToExport = @(
     'Get-PwCurrentGameModAdoptionPlan',
     'Import-PwCurrentGameMod',
     'Get-PwNexusModFiles',
+    'Get-PwModRemovalPlan',
+    'Get-PwModUpgradePlan',
 
     # Recovery and diagnostics
     'Test-PwBackup',
@@ -148,7 +150,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 4.4 deterministic profile assembly and verification'
+        ReleaseNotes = 'Sprint 4.5 preview-only upgrade and removal planning'
 
     }
 

@@ -221,6 +221,51 @@ Describe 'PalworldModding mod intake' {
         }
     }
 
+    It 'preserves explicit PalSchema add-on destinations' {
+        InModuleScope PalworldModding {
+            Get-PwModDeploymentRelativePath `
+                -Path 'PalSchema/mods/ExampleSchemaMod.dll' `
+                -Category Native |
+                Should Be (
+                    'Pal\Binaries\Win64\ue4ss\Mods\' +
+                        'PalSchema\mods\ExampleSchemaMod.dll'
+                )
+            Get-PwModDeploymentRelativePath `
+                -Path (
+                    'ue4ss/Mods/PalSchema/mods/' +
+                        'ExampleSchemaMod/config.json'
+                ) `
+                -Category Configuration |
+                Should Be (
+                    'Pal\Binaries\Win64\ue4ss\Mods\PalSchema\mods\' +
+                        'ExampleSchemaMod\config.json'
+                )
+        }
+    }
+
+    It 'routes bare PalSchema data trees in hybrid packages' {
+        InModuleScope PalworldModding {
+            Get-PwModDeploymentRelativePath `
+                -Path 'MaxLevelExp/raw/exp.json' `
+                -Category Configuration |
+                Should Be (
+                    'Pal\Binaries\Win64\ue4ss\Mods\PalSchema\mods\' +
+                        'MaxLevelExp\raw\exp.json'
+                )
+            Get-PwModDeploymentRelativePath `
+                -Path (
+                    'Camp Border - Revamped/blueprints/' +
+                        'CampBorderRevamped.json'
+                ) `
+                -Category Configuration |
+                Should Be (
+                    'Pal\Binaries\Win64\ue4ss\Mods\PalSchema\mods\' +
+                        'Camp Border - Revamped\blueprints\' +
+                        'CampBorderRevamped.json'
+                )
+        }
+    }
+
     It 'archives and stages a verified 7z package' {
         $result = Import-PwModArchive `
             -Path $global:PwSafe7ZipArchive `

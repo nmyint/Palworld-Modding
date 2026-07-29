@@ -167,4 +167,30 @@ Describe 'PalworldModding remote catalog metadata' {
         }
     }
 
+    It 'marks PalSchema metadata as a routing hint pending archive review' {
+        InModuleScope PalworldModding {
+            Mock Invoke-PwNexusApi {
+                [PSCustomObject]@{
+                    name = 'Camp Border - Revamped (PalSchema)'
+                    version = '1.0'
+                    summary = 'A configurable PalSchema mod.'
+                    description = 'Requires UE4SS and PalSchema.'
+                }
+            }
+
+            $identity = Get-PwNexusModIdentity `
+                -ModId 4505 `
+                -ApiKey 'fixture-key'
+
+            @($identity.FrameworkHints) -contains 'PalSchema' |
+                Should Be $true
+            $identity.ExpectedInstallRoot |
+                Should Be (
+                    'Pal\Binaries\Win64\ue4ss\Mods\PalSchema\mods'
+                )
+            $identity.RoutingAuthority |
+                Should Be 'HintOnlyArchiveRequired'
+        }
+    }
+
 }

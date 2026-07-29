@@ -254,6 +254,22 @@ function Get-PwModDeploymentRelativePath {
             [System.StringSplitOptions]::RemoveEmptyEntries
         )
     )
+
+    # PalSchema data add-ons may be shipped beside a normal UE4SS mod as a
+    # bare <SchemaModName>\raw or <SchemaModName>\blueprints tree. These
+    # directories are PalSchema-specific payload shapes and belong beneath
+    # PalSchema\mods rather than at the top level of UE4SS\Mods.
+    if (
+        $segments.Count -ge 3 -and
+        $segments[1] -match '^(?i:raw|blueprints)$' -and
+        $Category -eq 'Configuration'
+    ) {
+        return (
+            "Pal\Binaries\Win64\ue4ss\Mods\PalSchema\mods\" +
+                $normalized.Replace('/', '\')
+        )
+    }
+
     if (
         $segments.Count -ge 2 -and
         (
@@ -292,6 +308,62 @@ function Get-PwModStagingRelativePath {
     # Keep review-only material available without pretending it has a safe
     # game destination.
     Join-Path '_Review' $Entry.ArchivePath.Replace('/', '\')
+}
+
+function Get-PwPackageRequirementMetadata {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object[]]$Entries
+    )
+
+    $palSchemaFiles = @(
+        $Entries |
+            Where-Object {
+                [string]$_.DeploymentRelativePath -match (
+                    '(?i)(?:^|[\\/])ue4ss[\\/]Mods[\\/]PalSchema' +
+                    '[\\/]mods[\\/]([^\\/]+)[\\/]'
+                )
+            }
+    )
+    $payloadNames = @(
+        foreach ($entry in $palSchemaFiles) {
+            if (
+                [string]$entry.DeploymentRelativePath -match (
+                    '(?i)(?:^|[\\/])ue4ss[\\/]Mods[\\/]PalSchema' +
+                    '[\\/]mods[\\/]([^\\/]+)[\\/]'
+                )
+            ) {
+                $Matches[1]
+            }
+        }
+    ) | Sort-Object -Unique
+
+    [PSCustomObject]@{
+        Requirements = @(
+            if ($palSchemaFiles.Count -gt 0) {
+                [PSCustomObject]@{
+                    Name = 'PalSchema'
+                    Reason = 'Package contains PalSchema data payloads.'
+                    Verification = 'RequiredAtDeployment'
+                }
+            }
+        )
+        ExpectedDestinations = @(
+            if ($palSchemaFiles.Count -gt 0) {
+                [PSCustomObject]@{
+                    Framework = 'PalSchema'
+                    Root = (
+                        'Pal\Binaries\Win64\ue4ss\Mods\PalSchema\mods'
+                    )
+                    PayloadNames = $payloadNames
+                    FileCount = $palSchemaFiles.Count
+                    Verification = 'ArchivePathConfirmed'
+                }
+            }
+        )
+    }
 }
 
 function Get-PwStreamHash {
@@ -1080,6 +1152,8 @@ function Import-PwModArchive {
         $stagingArchiveHash = New-Pw7ZipArchive `
             -SourceRoot $sourceRoot `
             -DestinationPath $stagingArchivePath
+        $requirementMetadata = Get-PwPackageRequirementMetadata `
+            -Entries $manifestEntries
         $manifest = [PSCustomObject]@{
             SchemaVersion = '1.1'
             Name = $Name
@@ -1097,6 +1171,10 @@ function Import-PwModArchive {
             PackageArchiveHash = $stagingArchiveHash
             RequiresReview = $inspection.RequiresReview
             Categories = $inspection.Categories
+            Requirements = @($requirementMetadata.Requirements)
+            ExpectedDestinations = @(
+                $requirementMetadata.ExpectedDestinations
+            )
             Entries = $manifestEntries
         }
         Write-PwJson -InputObject $manifest -Path $manifestPath

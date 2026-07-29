@@ -84,6 +84,21 @@ Common archive layouts are normalized automatically:
 - archives containing both UE4SS and PAK components retain both beneath the
   same package version.
 
+PalSchema add-ons are distinguished by explicit archive structure. Paths
+beneath `PalSchema\mods` or `ue4ss\Mods\PalSchema\mods` normalize to
+`Pal\Binaries\Win64\ue4ss\Mods\PalSchema\mods`. A bare DLL or data file remains
+review-only because Nexus metadata alone is not authoritative enough to invent
+that destination. Nexus names, summaries, and descriptions can provide a
+`PalSchema` framework hint and expected root, but the hint is recorded as
+`HintOnlyArchiveRequired` until package contents confirm the route.
+
+Hybrid archives are supported when they contain both a normal UE4SS folder and
+a PalSchema data folder. The explicit PalSchema shapes
+`<Name>\raw\*.json` and `<Name>\blueprints\*.json` are routed beneath
+`PalSchema\mods\<Name>`, while the normal UE4SS folder retains its own
+`ue4ss\Mods\<Name>` destination. Both components remain owned by one catalog
+package.
+
 Files without a safe, recognizable game destination are retained beneath
 `Source\_Review` and are not deployed automatically. This covers malformed,
 unusually nested, or otherwise ambiguous archives without discarding their

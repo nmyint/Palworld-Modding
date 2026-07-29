@@ -201,6 +201,124 @@ function Get-PwDeploymentPlan {
         -DestinationRoot (Join-Path $deployment.GameInstallRoot 'Pal')
 }
 
+function Get-PwDeploymentRequirementNotices {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Assembly,
+
+        [Parameter(Mandatory)]
+        [object]$Plan
+    )
+
+    $packages = @(
+        if (
+            $Assembly.PSObject.Properties['Manifest'] -and
+            $Assembly.Manifest -and
+            $Assembly.Manifest.PSObject.Properties['Packages']
+        ) {
+            @($Assembly.Manifest.Packages)
+        }
+    )
+    $palSchemaRuntimeRelativePath = (
+        'Binaries\Win64\ue4ss\Mods\PalSchema\dlls\main.dll'
+    )
+    $runtimeInDeployment = @(
+        $Plan.Files |
+            Where-Object {
+                ([string]$_.RelativePath).Replace('/', '\') -ieq (
+                    $palSchemaRuntimeRelativePath
+                )
+            }
+    ).Count -gt 0
+    $runtimeInGame = Test-Path -LiteralPath (
+        Join-Path $Plan.DestinationRoot $palSchemaRuntimeRelativePath
+    ) -PathType Leaf
+
+    @(
+        foreach ($package in $packages) {
+            $expectedDestinations = @(
+                if (
+                    $package.PSObject.Properties['ExpectedDestinations']
+                ) {
+                    @($package.ExpectedDestinations)
+                }
+            )
+            foreach ($destination in $expectedDestinations) {
+                if ([string]$destination.Framework -ine 'PalSchema') {
+                    continue
+                }
+
+                $expectedRoot = (
+                    [string]$destination.Root
+                ).Replace('/', '\')
+                if ($expectedRoot -match '^(?i:Pal)\\(.+)$') {
+                    $expectedRoot = $Matches[1]
+                }
+                $packageFiles = @(
+                    $Assembly.Files |
+                        Where-Object {
+                            if (
+                                [string]$_.CatalogKey -ne
+                                [string]$package.CatalogKey
+                            ) {
+                                return $false
+                            }
+                            $relativePath = (
+                                [string]$_.RelativePath
+                            ).Replace('/', '\')
+                            if ($relativePath -match '^(?i:Pal)\\(.+)$') {
+                                $relativePath = $Matches[1]
+                            }
+                            $relativePath.StartsWith(
+                                $expectedRoot.TrimEnd('\') + '\',
+                                [System.StringComparison]::OrdinalIgnoreCase
+                            )
+                        }
+                )
+                $destinationVerified = (
+                    $packageFiles.Count -eq [int]$destination.FileCount
+                )
+                $requirementPresent = (
+                    $runtimeInDeployment -or $runtimeInGame
+                )
+                $severity = if (
+                    $requirementPresent -and $destinationVerified
+                ) {
+                    'Information'
+                }
+                else {
+                    'Warning'
+                }
+                $payloadNames = @($destination.PayloadNames)
+                $message = (
+                    "{0} requires PalSchema; payload {1} expects '{2}'. " +
+                    'PalSchema present: {3}; destination verified: {4}.'
+                ) -f (
+                    [string]$package.CatalogKey
+                ), (
+                    $payloadNames -join ', '
+                ), (
+                    [string]$destination.Root
+                ), $requirementPresent, $destinationVerified
+
+                [PSCustomObject]@{
+                    CatalogKey = [string]$package.CatalogKey
+                    Requirement = 'PalSchema'
+                    PayloadNames = $payloadNames
+                    ExpectedDestination = [string]$destination.Root
+                    RequirementPresent = $requirementPresent
+                    DestinationVerified = $destinationVerified
+                    ManualReviewRecommended = $severity -eq 'Warning'
+                    Severity = $severity
+                    Message = $message
+                }
+            }
+        }
+    )
+}
+
 <#
 .SYNOPSIS
     Verifies assembled deployment files and compares them with the current game.
@@ -307,6 +425,16 @@ function Test-PwDeploymentReadiness {
             }
         }
     )
+    $requirementNotices = @(
+        Get-PwDeploymentRequirementNotices `
+            -Assembly $assembly `
+            -Plan $plan
+    )
+    $warnings = @(
+        $requirementNotices |
+            Where-Object Severity -eq 'Warning' |
+            ForEach-Object Message
+    )
 
     [PSCustomObject]@{
         SchemaVersion = '1.0'
@@ -334,6 +462,10 @@ function Test-PwDeploymentReadiness {
             $currentOnly |
                 Where-Object Classification -eq 'RuntimeState'
         ).Count
+        RequirementNoticeCount = $requirementNotices.Count
+        WarningCount = $warnings.Count
+        Warnings = $warnings
+        RequirementNotices = $requirementNotices
         Errors = $errors
         Comparison = $comparison
         CurrentGameOnly = $currentOnly

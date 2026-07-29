@@ -51,6 +51,14 @@ $review.CurrentGameOnly | Format-Table Status, RelativePath
 The managed live-game roots checked for current-only files are UE4SS `Mods`,
 `Content\Paks\~mods`, and `Content\Paks\LogicMods`.
 
+Deployment readiness also displays package requirements and expected
+destinations recorded by archive intake. PalSchema payloads show their owning
+catalog package, payload names, expected `PalSchema\mods` root, whether the
+PalSchema runtime is present, and whether every expected file is assembled at
+that root. Missing requirements or destination mismatches produce prominent
+manual-review warnings before the `DEPLOY` confirmation. These notices never
+silently relocate files or bypass the normal verification gate.
+
 ## Preview
 
 ```powershell

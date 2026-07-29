@@ -38,6 +38,72 @@ Describe 'PalworldModding deployment' {
         @($plan.Files).Count | Should BeGreaterThan -1
     }
 
+    It 'reports PalSchema requirements and expected destinations' {
+        InModuleScope PalworldModding {
+            $assembly = [PSCustomObject]@{
+                Manifest = [PSCustomObject]@{
+                    Packages = @(
+                        [PSCustomObject]@{
+                            CatalogKey = 'hybridmod'
+                            ExpectedDestinations = @(
+                                [PSCustomObject]@{
+                                    Framework = 'PalSchema'
+                                    Root = (
+                                        'Pal\Binaries\Win64\ue4ss\Mods\' +
+                                            'PalSchema\mods'
+                                    )
+                                    PayloadNames = @('SchemaPayload')
+                                    FileCount = 1
+                                }
+                            )
+                        }
+                    )
+                }
+                Files = @(
+                    [PSCustomObject]@{
+                        CatalogKey = 'hybridmod'
+                        RelativePath = (
+                            'Pal\Binaries\Win64\ue4ss\Mods\PalSchema\' +
+                                'mods\SchemaPayload\raw\data.json'
+                        )
+                    }
+                )
+            }
+            $plan = [PSCustomObject]@{
+                DestinationRoot = $TestDrive
+                Files = @(
+                    [PSCustomObject]@{
+                        RelativePath = (
+                            'Binaries\Win64\ue4ss\Mods\PalSchema\' +
+                                'dlls\main.dll'
+                        )
+                    }
+                )
+            }
+
+            $notices = @(
+                Get-PwDeploymentRequirementNotices `
+                    -Assembly $assembly `
+                    -Plan $plan
+            )
+
+            $notices.Count | Should Be 1
+            $notices[0].Requirement | Should Be 'PalSchema'
+            $notices[0].RequirementPresent | Should Be $true
+            $notices[0].DestinationVerified | Should Be $true
+            $notices[0].ManualReviewRecommended | Should Be $false
+
+            $plan.Files = @()
+            $missingRequirement = @(
+                Get-PwDeploymentRequirementNotices `
+                    -Assembly $assembly `
+                    -Plan $plan
+            )
+            $missingRequirement[0].Severity | Should Be 'Warning'
+            $missingRequirement[0].ManualReviewRecommended | Should Be $true
+        }
+    }
+
     Context 'with isolated deployment fixtures' {
 
         BeforeAll {

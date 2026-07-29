@@ -20,8 +20,8 @@ Describe 'PalworldModding module' {
             Should Not Throw
     }
 
-    It 'reports the completed Sprint 4.4 module version' {
-        Get-PwVersion | Should Be ([version]'0.4.8')
+    It 'reports the in-progress Sprint 4.5 module version' {
+        Get-PwVersion | Should Be ([version]'0.4.9')
     }
 
     It 'exports the expected public commands' {
@@ -46,6 +46,8 @@ Describe 'PalworldModding module' {
             'Get-PwCurrentGameOnlyMods'
             'Get-PwCurrentGameModAdoptionPlan'
             'Import-PwCurrentGameMod'
+            'Get-PwModRemovalPlan'
+            'Get-PwModUpgradePlan'
             'Get-PwGitHubSourcesFromText'
             'Get-PwSourceUpdateReport'
             'Get-PwUpdateSources'

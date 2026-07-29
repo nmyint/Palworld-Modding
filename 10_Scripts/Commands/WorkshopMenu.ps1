@@ -2589,8 +2589,38 @@ function Start-PwWorkshop {
                                     CreateCount,
                                     UpdateCount,
                                     CurrentGameOnlyCount,
-                                    RuntimeStateOnlyCount |
+                                    RuntimeStateOnlyCount,
+                                    RequirementNoticeCount,
+                                    WarningCount |
                                 Format-List
+
+                            if ($readiness.RequirementNoticeCount -gt 0) {
+                                Write-Host (
+                                    'Package requirements and expected ' +
+                                    'destinations:'
+                                ) -ForegroundColor Yellow
+                                $readiness.RequirementNotices |
+                                    Select-Object `
+                                        CatalogKey,
+                                        Requirement,
+                                        PayloadNames,
+                                        ExpectedDestination,
+                                        RequirementPresent,
+                                        DestinationVerified,
+                                        Severity |
+                                    Format-Table -AutoSize -Wrap
+                            }
+
+                            if ($readiness.WarningCount -gt 0) {
+                                Write-Host (
+                                    'Manual review warnings:'
+                                ) -ForegroundColor Yellow
+                                $readiness.Warnings |
+                                    ForEach-Object {
+                                        Write-Host " - $_" `
+                                            -ForegroundColor Yellow
+                                    }
+                            }
 
                             if (-not $readiness.ReadyToDeploy) {
                                 throw (

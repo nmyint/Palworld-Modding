@@ -237,6 +237,20 @@ function Get-PwNexusModIdentity {
     $gitSources = @(
         Get-PwGitHubSourcesFromText -Text ([string]$mod.description)
     )
+    $frameworkText = @(
+        [string]$mod.name
+        [string]$mod.summary
+        [string]$mod.description
+    ) -join ' '
+    $frameworkHints = @(
+        if ($frameworkText -match '(?i)\bPalSchema\b') {
+            'PalSchema'
+        }
+        if ($frameworkText -match '(?i)\bUE4SS\b') {
+            'UE4SS'
+        }
+    )
+    $isPalSchemaAddon = $frameworkHints -contains 'PalSchema'
 
     [PSCustomObject]@{
         NexusModId = $ModId
@@ -252,6 +266,19 @@ function Get-PwNexusModIdentity {
             'NotCompared'
         }
         GitSources = $gitSources
+        FrameworkHints = $frameworkHints
+        ExpectedInstallRoot = if ($isPalSchemaAddon) {
+            'Pal\Binaries\Win64\ue4ss\Mods\PalSchema\mods'
+        }
+        else {
+            ''
+        }
+        RoutingAuthority = if ($isPalSchemaAddon) {
+            'HintOnlyArchiveRequired'
+        }
+        else {
+            'ArchiveRequired'
+        }
         NexusUrl = "https://www.nexusmods.com/palworld/mods/$ModId"
     }
 }

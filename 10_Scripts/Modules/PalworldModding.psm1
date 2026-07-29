@@ -40,6 +40,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\SourceUpdates.ps1"
 . "$PSScriptRoot\..\Commands\CatalogMetadata.ps1"
 . "$PSScriptRoot\..\Commands\CurrentGameAdoption.ps1"
+. "$PSScriptRoot\..\Commands\UpgradeRemoval.ps1"
 . "$PSScriptRoot\..\Commands\Recovery.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopBackup.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopMenu.ps1"
@@ -127,6 +128,8 @@ Export-ModuleMember -Function @(
     'Get-PwCurrentGameModAdoptionPlan',
     'Import-PwCurrentGameMod',
     'Get-PwNexusModFiles',
+    'Get-PwModRemovalPlan',
+    'Get-PwModUpgradePlan',
 
     # Recovery and diagnostics
     'Test-PwBackup',

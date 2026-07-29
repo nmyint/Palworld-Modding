@@ -211,11 +211,13 @@ Status: Complete
 
 ### Sprint 4.5 - Upgrade and removal workflow
 
-Status: Planned
+Status: In progress
 
 - Compare installed and available versions.
 - Build safe upgrade and removal plans.
 - Preserve provenance and rollback information throughout each change.
+- Preview-only manifest and SHA-256 change plans are now available; applying
+  changes remains intentionally disabled until backup and rollback are complete.
 
 ## Sprint 5 - Development and testing
 
