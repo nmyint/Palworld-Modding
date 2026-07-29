@@ -276,6 +276,22 @@ Describe 'PalworldModding mod catalog' {
         (Get-FileHash -LiteralPath $orphanPath).Hash | Should Be $beforeHash
     }
 
+    It 'classifies bundled dependencies without inventing Nexus metadata' {
+        Update-PwModCatalog -Confirm:$false | Out-Null
+        $before = Get-PwPersistentModCatalog
+        $beforeRecord = $before.Mods |
+            Where-Object CatalogKey -eq 'orphanmod'
+        $beforeIds = @($beforeRecord.NexusModIds)
+        $record = Set-PwModCatalogMetadata `
+            -CatalogKey 'orphanmod' `
+            -Source UE4SSBundled `
+            -Confirm:$false
+
+        $record.Source | Should Be 'UE4SSBundled'
+        $record.ReconciliationStatus | Should Be 'BundledDependency'
+        @($record.NexusModIds).Count | Should Be $beforeIds.Count
+    }
+
     It 'renders the main menu responsively within terminal dimensions' {
         InModuleScope PalworldModding {
             $compactLayout = @(

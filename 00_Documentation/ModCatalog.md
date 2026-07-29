@@ -110,6 +110,15 @@ Set-PwModCatalogMetadata `
     -InstalledVersion '1.0.0'
 ```
 
+Bundled UE4SS support components can be classified without inventing a Nexus
+identity:
+
+```powershell
+Set-PwModCatalogMetadata `
+    -CatalogKey 'bpmodloadermod' `
+    -Source UE4SSBundled
+```
+
 ## Current limitations
 
 The catalog does not guess an authoritative installed version when loose files

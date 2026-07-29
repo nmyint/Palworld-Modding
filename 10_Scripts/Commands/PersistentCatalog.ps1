@@ -371,6 +371,14 @@ function Set-PwModCatalogMetadata {
 
         [string]$InstalledVersion,
 
+        [ValidateSet(
+            'NexusMods',
+            'UE4SSBundled',
+            'GitHub',
+            'Manual'
+        )]
+        [string]$Source,
+
         [string]$Path = (Get-PwCatalogManifestPath)
     )
 
@@ -406,11 +414,23 @@ function Set-PwModCatalogMetadata {
         $record.InstalledVersion = $InstalledVersion
     }
 
+    if ($PSBoundParameters.ContainsKey('Source')) {
+        $record.Source = $Source
+    }
+
     if (
         @($record.NexusModIds).Count -gt 0 -or
-        -not [string]::IsNullOrWhiteSpace($record.InstalledVersion)
+        -not [string]::IsNullOrWhiteSpace($record.InstalledVersion) -or
+        $PSBoundParameters.ContainsKey('Source')
     ) {
-        $record.ReconciliationStatus = 'ManuallyReconciled'
+        $record.ReconciliationStatus = if (
+            [string]$record.Source -eq 'UE4SSBundled'
+        ) {
+            'BundledDependency'
+        }
+        else {
+            'ManuallyReconciled'
+        }
     }
 
     $catalog.UpdatedAt = (Get-Date).ToUniversalTime().ToString('o')

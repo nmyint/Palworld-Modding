@@ -1,0 +1,796 @@
+{
+  "SchemaVersion": "1.0",
+  "UpdatedAt": "2026-07-29T08:42:39.7418056Z",
+  "Mods": [
+    {
+      "CatalogKey": "antiphat",
+      "DisplayName": "AntiPhat",
+      "InstallNames": [
+        "AntiPhat"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        3799
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "D938DBC6B4300E7F64AFD2A93FFCF48548499E019F5FE175BC10C89E56720FCF",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "SP-2.0.5",
+          "ArchiveFileName": "AntiPhat (Singleplayer) 3799 SP-2.0.5 2026-07-26T02-09Z eqOv9Zc4P.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 31655,
+          "ArchiveHash": "57D428868F3D9C86A3277BACCE78D0A425FF98EE634859DF6485FD2D9AA95EB1",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-26T02:09:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "antiwaste",
+      "DisplayName": "AntiWaste",
+      "InstallNames": [
+        "AntiWaste"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        3968
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "98F456F29BEB2D6D31B4D6252EE5A7754941440218B26B050AB1C80566F8A3BA",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "2.1",
+          "ArchiveFileName": "AntiWaste 3968 2.1 2026-07-27T14-06Z KHWaYeodq.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 123456,
+          "ArchiveHash": "6F1F9B0E1C21C2761FA8EB39CC027A555D3BE4392343370C7BD762E84A507CFA",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-27T14:06:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        },
+        {
+          "Version": "2.1.1",
+          "ArchiveFileName": "AntiWaste 3968 2.1.1 2026-07-28T08-43Z VTylL3Eoz.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 123524,
+          "ArchiveHash": "CE3E5C6272EA46D2AFDA8DFB1350A96727DE56484955C43199620B72D64008D7",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-28T08:43:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "basepalvisibility",
+      "DisplayName": "BasePalVisibility",
+      "InstallNames": [
+        "BasePalVisibility"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4416
+      ],
+      "InstalledVersion": "0.2.3",
+      "InstalledContentHash": "DD7496C28A8466D26A44797EDB21469B0FB2807AF166C1A84E98A4D95B766540",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "bpmlgenericfunctions",
+      "DisplayName": "BPML_GenericFunctions",
+      "InstallNames": [
+        "BPML_GenericFunctions"
+      ],
+      "Source": "UE4SSBundled",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "69ACD6BD83BFD498EA5902BB9A072B03B252A7E9042C3C1000A5E2E14E3B7479",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "BundledDependency",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "bpmodloadermod",
+      "DisplayName": "BPModLoaderMod",
+      "InstallNames": [
+        "BPModLoaderMod"
+      ],
+      "Source": "UE4SSBundled",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "FD4BFA6CBA289A095AB87889B4FF58595C59E3957A5042CD6DDAC22C68D6ECEC",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "BundledDependency",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "buildflightcamera",
+      "DisplayName": "BuildFlightCamera",
+      "InstallNames": [
+        "BuildFlightCamera"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4144
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "3546598E7917CEC45B07A0F0C05013E56BD5493346BA9C2686CC4C15D10EBEF0",
+      "Enabled": true,
+      "Types": [
+        "UE4SS",
+        "Native"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "0.10.4",
+          "ArchiveFileName": "BuildFlight v0.10.4 Public Beta 5 4144 0.10.4 2026-07-27T19-23Z ZdSPKTjlO.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 383839,
+          "ArchiveHash": "00E8BA7CDAEF9623B468B7F45B75E7E867D5B35CF673A6EE6170F7D908B83F7E",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-27T19:23:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "cheatmanagerenablermod",
+      "DisplayName": "CheatManagerEnablerMod",
+      "InstallNames": [
+        "CheatManagerEnablerMod"
+      ],
+      "Source": "UE4SSBundled",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "299511DAD3AC9E5F5B4F813355D146A5439672835A8FAE52AB4F12EAA5A30718",
+      "Enabled": false,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "BundledDependency",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "concealedcarry",
+      "DisplayName": "ConcealedCarry",
+      "InstallNames": [
+        "ConcealedCarry"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4333
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "0EEFC8EB75E64C8F159C7083698BBB5B960803394E6CFF5BB2631CA938B7AB33",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "consolecommandsmod",
+      "DisplayName": "ConsoleCommandsMod",
+      "InstallNames": [
+        "ConsoleCommandsMod"
+      ],
+      "Source": "UE4SSBundled",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "39B099683F7ABE10DE9CAD1DF06EF9A1B3A1C00DE23B913A57CCDA9F79B30894",
+      "Enabled": false,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "BundledDependency",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "consoleenablermod",
+      "DisplayName": "ConsoleEnablerMod",
+      "InstallNames": [
+        "ConsoleEnablerMod"
+      ],
+      "Source": "UE4SSBundled",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "C5B4799072162F9497DC5001A5B6701D9E379388378B002443DEDDC228FB2B3E",
+      "Enabled": false,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "BundledDependency",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "dekmodconfigmenu",
+      "DisplayName": "DekModConfigMenu",
+      "InstallNames": [
+        "DekModConfigMenu"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        577
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "A65CE999C6EFF52FA5C9B6AA23B67EFD9C11E2A717DC348ABD487061D43BD890",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "existingpaleditor",
+      "DisplayName": "ExistingPalEditor",
+      "InstallNames": [
+        "ExistingPalEditor"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4001
+      ],
+      "InstalledVersion": "1.0.4",
+      "InstalledContentHash": "A51D2C24C10C52A9511EDF1F2C11CFC9B55B87C936EDAD1BE1DF4A25CD92D9F5",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "fieldbossdefeatmarker",
+      "DisplayName": "FieldBossDefeatMarker",
+      "InstallNames": [
+        "FieldBossDefeatMarker"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        3954
+      ],
+      "InstalledVersion": "1.1.1",
+      "InstalledContentHash": "2179A610CBADC31C38AA492B664E567E304A7A8D2CA62E125A1D535681C54194",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "infinitemod",
+      "DisplayName": "InfiniteMod",
+      "InstallNames": [
+        "InfiniteMod"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        2441
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "D7EB55E4EB4C5A977126467179188291C298467E9E53E9ACECBEC3703838BCCC",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "1.0",
+          "ArchiveFileName": "Hazbin Edition 2441 1.0 2026-07-28T10-45Z H0toUqYxw.7z",
+          "ArchiveFormat": "7Z",
+          "ArchiveLength": 4628933,
+          "ArchiveHash": "AFA44B54595861869D3599E14D4440E35F9847E4A762DC401B7773971E2D516D",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-28T10:45:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "instantpalboxsearch",
+      "DisplayName": "InstantPalboxSearch",
+      "InstallNames": [
+        "InstantPalboxSearch"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4190
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "BE04B24C113AAFF26EC63E71E246F16B3248BC859C494CD7882B9A3ED07831ED",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "1.0.2",
+          "ArchiveFileName": "InstantPalboxSearch 4190 1.0.2 2026-07-27T15-32Z x2FA7zbkX.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 64170,
+          "ArchiveHash": "178CE969CF233A67895753E635513451F6F53CE3C22A4C86E70D55CD4153242B",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-27T15:32:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        },
+        {
+          "Version": "1.0.3",
+          "ArchiveFileName": "InstantPalboxSearch 4190 1.0.3 2026-07-27T22-37Z Fsb1P5CWc.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 75897,
+          "ArchiveHash": "8C878A6AEA3A84C3FB9E4B17A647D8D489E8394D77006819B2F7FB19AF5ED4B2",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-27T22:37:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "keybinds",
+      "DisplayName": "Keybinds",
+      "InstallNames": [
+        "Keybinds"
+      ],
+      "Source": "UE4SSBundled",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "5824EB3B50E43809929A83636E1518E9959F63FE8D3440FAC260700A15A41EC9",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "BundledDependency",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "lessbasehud",
+      "DisplayName": "LessBaseHud",
+      "InstallNames": [
+        "LessBaseHud"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4490
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "",
+      "Enabled": null,
+      "Types": [
+        "Documentation",
+        "Lua"
+      ],
+      "ReconciliationStatus": "ArchiveOnly",
+      "Versions": [
+        {
+          "Version": "1",
+          "ArchiveFileName": "LessBaseHud 4490 1 2026-07-28T07-12Z lEU84uMs5.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 7462,
+          "ArchiveHash": "ABF5C7EA3C52547CBFC3F2A8D049912495BDD64190F65887D55B206B0319871E",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-28T07:12:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "lessrestrictivebuilding",
+      "DisplayName": "LessRestrictiveBuilding",
+      "InstallNames": [
+        "LessRestrictiveBuilding"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        98
+      ],
+      "InstalledVersion": "1.20",
+      "InstalledContentHash": "6E0239BE371D74FE18709435CD2AC3BC20647B796E608992860EF94E55433778",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "linetracemod",
+      "DisplayName": "LineTraceMod",
+      "InstallNames": [
+        "LineTraceMod"
+      ],
+      "Source": "UE4SSBundled",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "28143E11A6A67465DAFBABAC875C556AA1B1E56909B0FF0FCDA1D3B5A7AB94F9",
+      "Enabled": false,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "BundledDependency",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "mercymode",
+      "DisplayName": "MercyMode",
+      "InstallNames": [
+        "MercyMode"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4411
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "63B4FB37418D73FC0B125023FB9754A5C2E292212016FC182A8DD9CE6AD7F0AF",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "1",
+          "ArchiveFileName": "MercyMode V0.4.5 4411 1 2026-07-26T15-18Z gWaxGn2tS.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 8902,
+          "ArchiveHash": "826AC69A59DDB63BACE6C2CCF02B16AE836C5F732A63A64EBB3B5001BF042143",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-26T15:18:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "minibuilds",
+      "DisplayName": "MiniBuilds",
+      "InstallNames": [
+        "MiniBuilds"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4143
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "DAFCDAC8A9B336B3BF1CD60AB92E814D8A40E518E6BA0EB7F1A0B4FD1E0A481B",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "2.1",
+          "ArchiveFileName": "MiniBuilds V2.1 4143 2.1 2026-07-24T14-35Z tlYGMm8Dd.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 21091,
+          "ArchiveHash": "B458A93067CD545160A17A1BE1185CB4FA033B29D44909AEF28C7E79E4B7F6AF",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-24T14:35:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "nopaldeposit",
+      "DisplayName": "NoPalDeposit",
+      "InstallNames": [
+        "NoPalDeposit"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4211
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "50DB3EFE8D8A5FEAA9656D4AEF2C0BEA4F48F3A07EFBFF20A8453997E5FC6231",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "4",
+          "ArchiveFileName": "NoPalDeposit V1.1.3 4211 4 2026-07-27T23-32Z 5V0tE6lOG.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 29220,
+          "ArchiveHash": "B76940F771C59006E8BE33349ADF36995B708026C391500D9F505CD268229308",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-27T23:32:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "palminimap",
+      "DisplayName": "PalMiniMap",
+      "InstallNames": [
+        "PalMiniMap"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        879
+      ],
+      "InstalledVersion": "1.2.5",
+      "InstalledContentHash": "88A6361F7EBC174C6944B453961300C0970D86B0D43BA9930F7875E261EC1531",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "palmodoptions",
+      "DisplayName": "PalModOptions",
+      "InstallNames": [
+        "PalModOptions"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4408
+      ],
+      "InstalledVersion": "0.1.3",
+      "InstalledContentHash": "E7F30142BA546E74FC5E2D1954DD847BD139473B2426EE64116E672F5B55D3FB",
+      "Enabled": false,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "palschema",
+      "DisplayName": "PalSchema",
+      "InstallNames": [
+        "PalSchema"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        3037
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "0346642E14F57D0CE29BDD0542834713BCA347EBE55EF14856D2D6E1542713CB",
+      "Enabled": true,
+      "Types": [
+        "Native"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "palwellbeing",
+      "DisplayName": "PalWellbeing",
+      "InstallNames": [
+        "PalWellbeing"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4240
+      ],
+      "InstalledVersion": "0.2.1",
+      "InstalledContentHash": "1CC68C5B756131A7E2999D8D9DAE3F7E31B89777EA5FC664F97E8D85550E49B0",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "palworldtuner",
+      "DisplayName": "PalworldTuner",
+      "InstallNames": [
+        "PalworldTuner"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        3739
+      ],
+      "InstalledVersion": "1.9.0",
+      "InstalledContentHash": "6EF3FD83E1C4735DD5E482A56DA68340AF2E8ECA51F92767590FAFE2087225E6",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "rotateitbeta",
+      "DisplayName": "RotateIt_beta",
+      "InstallNames": [],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        684
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "",
+      "Enabled": null,
+      "Types": [
+        "Configuration",
+        "Pak"
+      ],
+      "ReconciliationStatus": "ArchiveOnly",
+      "Versions": [
+        {
+          "Version": "1.17.1",
+          "ArchiveFileName": "RotateIt_beta-684-1-17-1-1738046580.7z",
+          "ArchiveFormat": "7Z",
+          "ArchiveLength": 47658,
+          "ArchiveHash": "96F02A65BD5FA2F85E31EAE480159F5CDADF15EC23F5360AEEB2E1821FE0C4B9",
+          "ArchivePresent": true,
+          "DownloadedAt": "2025-01-28T06:43:00Z",
+          "TimestampSource": "NexusFileUploadedAt",
+          "FilenamePattern": "NexusLegacyHyphen"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "shared",
+      "DisplayName": "shared",
+      "InstallNames": [
+        "shared"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        2441
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "FD8EDBBBC03AAC288D4A090A70E0EE33EA6C30552DB7417F2FCF91D30BDBE8FB",
+      "Enabled": null,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "1.0",
+          "ArchiveFileName": "Hazbin Edition 2441 1.0 2026-07-28T10-45Z H0toUqYxw.7z",
+          "ArchiveFormat": "7Z",
+          "ArchiveLength": 4628933,
+          "ArchiveHash": "AFA44B54595861869D3599E14D4440E35F9847E4A762DC401B7773971E2D516D",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-28T10:45:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "smartpause",
+      "DisplayName": "SmartPause",
+      "InstallNames": [
+        "SmartPause"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4186
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "6912C83ABF2DC148EDB1280C76FAFD223C4AE5B06A3F9CF42431B04662D9138D",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "1.2.0",
+          "ArchiveFileName": "SmartPause 4186 1.2.0 2026-07-27T17-39Z mu9Q1NXpa.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 14078,
+          "ArchiveHash": "6FDF379A7B1DE79622DA2A1609BF07009E689B037F3D4B369410A49835DE4613",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-27T17:39:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "splitscreenmod",
+      "DisplayName": "SplitScreenMod",
+      "InstallNames": [
+        "SplitScreenMod"
+      ],
+      "Source": "UE4SSBundled",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "5FB298CA6BC21C5AA376AD87E558B215C02062F60C5C959E55F864F04F64220F",
+      "Enabled": false,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "BundledDependency",
+      "Versions": []
+    },
+    {
+      "CatalogKey": "stutterfixpack",
+      "DisplayName": "StutterFixPack",
+      "InstallNames": [
+        "StutterFixPack"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        4087
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "629C086CD7ED8C0321897B12376588105BAA343083A0D8954B51BDB5ED1BEE44",
+      "Enabled": true,
+      "Types": [
+        "Native"
+      ],
+      "ReconciliationStatus": "Matched",
+      "Versions": [
+        {
+          "Version": "0.4.2",
+          "ArchiveFileName": "StutterFixPack 4087 0.4.2 2026-07-25T10-32Z nOvzQ7frP.zip",
+          "ArchiveFormat": "ZIP",
+          "ArchiveLength": 51311,
+          "ArchiveHash": "B067A54773D3235381B9EE6F1536FFBCBF96EF6392101CC27743E564845E97AB",
+          "ArchivePresent": true,
+          "DownloadedAt": "2026-07-25T10:32:00Z",
+          "TimestampSource": "DownloadedAt",
+          "FilenamePattern": "NexusDownload"
+        }
+      ]
+    },
+    {
+      "CatalogKey": "waypointteleport",
+      "DisplayName": "WaypointTeleport",
+      "InstallNames": [
+        "WaypointTeleport"
+      ],
+      "Source": "NexusMods",
+      "NexusModIds": [
+        606
+      ],
+      "InstalledVersion": "",
+      "InstalledContentHash": "045DAB9F40993A90717F7FDEFE67C5B8B0A6B8F4019F8F3AC37811C13F5B8FEF",
+      "Enabled": true,
+      "Types": [
+        "UE4SS"
+      ],
+      "ReconciliationStatus": "ManuallyReconciled",
+      "Versions": []
+    }
+  ]
+}
