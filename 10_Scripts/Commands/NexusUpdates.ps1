@@ -586,3 +586,210 @@ function Save-PwNexusModUpdate {
         ).Hash
     }
 }
+
+function Get-PwProfileModDownloadPlan {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$ProfileName,
+
+        [string]$SetName = '',
+
+        [bool]$MissingOnly = $true,
+
+        [string]$ApiKey
+    )
+
+    $profileSets = @(Get-PwProfileModSets -Name $ProfileName)
+    if ($profileSets.Count -eq 0) {
+        return @()
+    }
+
+    $selectedSet = if ([string]::IsNullOrWhiteSpace($SetName)) {
+        $profileSets | Where-Object IsActive | Select-Object -First 1
+    }
+    else {
+        $profileSets | Where-Object Name -eq $SetName | Select-Object -First 1
+    }
+
+    if (-not $selectedSet) {
+        $selectedSet = $profileSets | Select-Object -First 1
+    }
+
+    $catalog = @(Get-PwPersistentModCatalog)
+    $catalogByKey = @{}
+    foreach ($record in @($catalog.Mods)) {
+        $catalogByKey[[string]$record.CatalogKey] = $record
+    }
+
+    $selectedKeys = @($selectedSet.CatalogKeys | Where-Object {
+        -not [string]::IsNullOrWhiteSpace($_)
+    })
+
+    foreach ($catalogKey in $selectedKeys) {
+        $record = $catalogByKey[[string]$catalogKey]
+
+        if (-not $record) {
+            [PSCustomObject]@{
+                Profile = $ProfileName
+                ModSet = [string]$selectedSet.Name
+                CatalogKey = [string]$catalogKey
+                DisplayName = ''
+                NexusModId = $null
+                RemoteFileId = $null
+                RemoteFileName = ''
+                RemoteVersion = ''
+                LocalArchivePresent = $false
+                Status = 'CatalogMissing'
+                Reason = 'No catalog record exists for this catalog key.'
+            }
+
+            continue
+        }
+
+        $nexusModId = @($record.NexusModIds | Where-Object { $_ -gt 0 }) |
+            Select-Object -First 1
+        $archivePresent = @($record.ArchiveVersions).Count -gt 0 -and (
+            @($record.ArchiveVersions | Where-Object ArchivePresent).Count -gt 0
+        )
+
+        if ($MissingOnly -and $archivePresent) {
+            [PSCustomObject]@{
+                Profile = $ProfileName
+                ModSet = [string]$selectedSet.Name
+                CatalogKey = [string]$record.CatalogKey
+                DisplayName = [string]$record.DisplayName
+                NexusModId = [int]$nexusModId
+                RemoteFileId = $null
+                RemoteFileName = ''
+                RemoteVersion = ''
+                LocalArchivePresent = $true
+                Status = 'AlreadyPresent'
+                Reason = 'A matching archive already exists in the catalog.'
+            }
+
+            continue
+        }
+
+        if (-not $nexusModId) {
+            [PSCustomObject]@{
+                Profile = $ProfileName
+                ModSet = [string]$selectedSet.Name
+                CatalogKey = [string]$record.CatalogKey
+                DisplayName = [string]$record.DisplayName
+                NexusModId = $null
+                RemoteFileId = $null
+                RemoteFileName = ''
+                RemoteVersion = ''
+                LocalArchivePresent = $archivePresent
+                Status = 'NeedsNexusId'
+                Reason = 'No Nexus mod ID is recorded for this mod.'
+            }
+
+            continue
+        }
+
+        try {
+            $mod = Invoke-PwNexusApi `
+                -Path "games/palworld/mods/$nexusModId.json" `
+                -ApiKey $ApiKey
+            $files = Invoke-PwNexusApi `
+                -Path "games/palworld/mods/$nexusModId/files.json" `
+                -ApiKey $ApiKey
+            $latestFile = Get-PwLatestNexusFile -Response $files
+
+            if (-not $latestFile) {
+                [PSCustomObject]@{
+                    Profile = $ProfileName
+                    ModSet = [string]$selectedSet.Name
+                    CatalogKey = [string]$record.CatalogKey
+                    DisplayName = [string]$record.DisplayName
+                    NexusModId = [int]$nexusModId
+                    RemoteFileId = $null
+                    RemoteFileName = ''
+                    RemoteVersion = ''
+                    LocalArchivePresent = $archivePresent
+                    Status = 'NoRemoteFiles'
+                    Reason = 'Nexus returned no downloadable files.'
+                }
+
+                continue
+            }
+
+            [PSCustomObject]@{
+                Profile = $ProfileName
+                ModSet = [string]$selectedSet.Name
+                CatalogKey = [string]$record.CatalogKey
+                DisplayName = [string]$record.DisplayName
+                NexusModId = [int]$nexusModId
+                RemoteFileId = [int]$latestFile.file_id
+                RemoteFileName = [string]$latestFile.file_name
+                RemoteVersion = [string]$latestFile.version
+                LocalArchivePresent = $archivePresent
+                Status = 'Ready'
+                Reason = ''
+            }
+        }
+        catch {
+            [PSCustomObject]@{
+                Profile = $ProfileName
+                ModSet = [string]$selectedSet.Name
+                CatalogKey = [string]$record.CatalogKey
+                DisplayName = [string]$record.DisplayName
+                NexusModId = [int]$nexusModId
+                RemoteFileId = $null
+                RemoteFileName = ''
+                RemoteVersion = ''
+                LocalArchivePresent = $archivePresent
+                Status = 'CheckFailed'
+                Reason = $_.Exception.Message
+            }
+        }
+    }
+}
+
+function Save-PwProfileModDownloads {
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$ProfileName,
+
+        [string]$SetName = '',
+
+        [bool]$MissingOnly = $true,
+
+        [string]$ApiKey
+    )
+
+    $plan = @(
+        Get-PwProfileModDownloadPlan `
+            -ProfileName $ProfileName `
+            -SetName $SetName `
+            -MissingOnly:$MissingOnly `
+            -ApiKey $ApiKey
+    )
+
+    foreach ($item in $plan) {
+        if ($item.Status -ne 'Ready') {
+            continue
+        }
+
+        if (-not $PSCmdlet.ShouldProcess(
+            $item.DisplayName,
+            "Download Nexus mod $($item.NexusModId) file $($item.RemoteFileId)"
+        )) {
+            continue
+        }
+
+        Save-PwNexusModUpdate `
+            -ModId $item.NexusModId `
+            -FileId $item.RemoteFileId `
+            -ApiKey $ApiKey | Out-Null
+    }
+
+    $plan
+}

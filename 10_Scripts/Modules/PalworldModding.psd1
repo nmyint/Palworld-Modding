@@ -48,6 +48,7 @@ FunctionsToExport = @(
 
     # Profiles
     'Get-PwProfile',
+    'Get-PwProfileModDownloadPlan',
     'Get-PwProfiles',
     'Get-PwProfileModSets',
     'Get-PwProfileModSetPreview',
@@ -83,6 +84,7 @@ FunctionsToExport = @(
     'Get-PwModUpdateReport',
     'Open-PwNexusModPage',
     'Save-PwNexusModUpdate',
+    'Save-PwProfileModDownloads',
     'Get-PwUpdateSources',
     'Get-PwSourceUpdateReport',
     'Set-PwGitHubSourceBaseline',

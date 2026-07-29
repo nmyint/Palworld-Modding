@@ -163,4 +163,118 @@ Describe 'PalworldModding Nexus updates' {
             $threw | Should Be $true
         }
     }
+
+    It 'builds a profile mod download plan from the active mod set' {
+        InModuleScope PalworldModding {
+            Mock Get-PwProfileModSets {
+                @(
+                    [PSCustomObject]@{
+                        Name = 'Core'
+                        Description = 'Core mods'
+                        IsActive = $true
+                        CatalogKeys = @('examplemod', 'missingmod')
+                    }
+                )
+            }
+
+            Mock Get-PwPersistentModCatalog {
+                [PSCustomObject]@{
+                    Mods = @(
+                        [PSCustomObject]@{
+                            CatalogKey = 'examplemod'
+                            DisplayName = 'Example Mod'
+                            NexusModIds = @(1234)
+                            ArchiveVersions = @(
+                                [PSCustomObject]@{ ArchivePresent = $false }
+                            )
+                        }
+                        [PSCustomObject]@{
+                            CatalogKey = 'missingmod'
+                            DisplayName = 'Missing ID Mod'
+                            NexusModIds = @()
+                            ArchiveVersions = @()
+                        }
+                    )
+                }
+            }
+
+            Mock Invoke-PwNexusApi {
+                param($Path, $ApiKey)
+
+                switch -Regex ($Path) {
+                    'mods/1234\.json$' {
+                        [PSCustomObject]@{ name = 'Example Mod' }
+                    }
+                    'mods/1234/files\.json$' {
+                        [PSCustomObject]@{
+                            files = @(
+                                [PSCustomObject]@{
+                                    file_id = 42
+                                    file_name = 'Example Mod 1234 2.0 2026-07-29T00-00Z token.zip'
+                                    version = '2.0'
+                                    category_id = 1
+                                    category_name = 'MAIN'
+                                    uploaded_timestamp = 1785283200
+                                }
+                            )
+                        }
+                    }
+                    default { throw "Unexpected mocked API path: $Path" }
+                }
+            }
+
+            $plan = @(
+                Get-PwProfileModDownloadPlan `
+                    -ProfileName 'Stable' `
+                    -MissingOnly:$true `
+                    -ApiKey 'fixture-key'
+            )
+
+            $plan.Count | Should Be 2
+            ($plan | Where-Object CatalogKey -eq 'examplemod').Status |
+                Should Be 'Ready'
+            ($plan | Where-Object CatalogKey -eq 'missingmod').Status |
+                Should Be 'NeedsNexusId'
+        }
+    }
+
+    It 'requests downloads for ready profile mod archive items' {
+        InModuleScope PalworldModding {
+            Mock Get-PwProfileModDownloadPlan {
+                @(
+                    [PSCustomObject]@{
+                        Status = 'Ready'
+                        DisplayName = 'Example Mod'
+                        NexusModId = 1234
+                        RemoteFileId = 42
+                    }
+                    [PSCustomObject]@{
+                        Status = 'NeedsNexusId'
+                        DisplayName = 'Missing ID Mod'
+                        NexusModId = $null
+                        RemoteFileId = $null
+                    }
+                )
+            }
+
+            Mock Save-PwNexusModUpdate {
+                [PSCustomObject]@{
+                    Downloaded = $true
+                    Path = 'C:\Temp\Example.zip'
+                    ModId = 1234
+                    FileId = 42
+                }
+            }
+
+            $result = @(
+                Save-PwProfileModDownloads `
+                    -ProfileName 'Stable' `
+                    -ApiKey 'fixture-key' `
+                    -Confirm:$false
+            )
+
+            $result.Count | Should Be 2
+            Assert-MockCalled Save-PwNexusModUpdate -Times 1 -Scope It
+        }
+    }
 }

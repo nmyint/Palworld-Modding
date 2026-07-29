@@ -10,7 +10,7 @@ directly in the Palworld installation.
 | `.vscode` | Editor, task, and MCP configuration |
 | `00_Documentation` | Architecture, standards, and operating notes |
 | `01_Archives` | Original downloaded mod archives |
-| `02_Staging` | Temporary preparation area |
+| `02_Staging` | Current working mod setup and temporary preparation area |
 | `03_Mod_Library` | Flat `<ModName>-<Version>` curated package folders |
 | `04_Projects` | Active mod and compatibility projects |
 | `05_Deployment` | Loose game-layout output and portable deployment packages |
@@ -30,6 +30,11 @@ directly in the Palworld installation.
 
 ```text
 Archive -> Stage -> Library -> Deploy -> Validate -> Inventory
+
+`02_Staging` is now treated as the active working tree for the current mod
+setup. In practice, that means it may hold the current UE4SS scripts, `~mods`
+and `LogicMods` PAK content, and any other files you are actively reconciling
+before they are promoted into the curated library or deployment bundles.
 ```
 
 Git stores source and lightweight metadata. External 7z archives preserve

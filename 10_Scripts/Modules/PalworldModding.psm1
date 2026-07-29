@@ -106,6 +106,8 @@ Export-ModuleMember -Function @(
     'Get-PwModUpdateReport',
     'Open-PwNexusModPage',
     'Save-PwNexusModUpdate',
+    'Get-PwProfileModDownloadPlan',
+    'Save-PwProfileModDownloads',
     'Get-PwUpdateSources',
     'Get-PwSourceUpdateReport',
     'Set-PwGitHubSourceBaseline',

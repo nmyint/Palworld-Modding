@@ -86,6 +86,22 @@ download as a fallback. A direct download is written to a temporary file,
 inspected using the existing archive safety checks, and moved into
 `01_Archives` only after validation succeeds.
 
+## Download a profile's missing archives
+
+When you want to restore the current curated set for a profile, use the
+profile-aware download plan. It reads the active mod set for the named profile,
+looks up each mod in the persistent catalog, and downloads only the items that
+still need an archive:
+
+```powershell
+Get-PwProfileModDownloadPlan -ProfileName Stable
+Save-PwProfileModDownloads -ProfileName Stable -Confirm:$false
+```
+
+The helper keeps `02_Staging` aligned with the working setup while
+reconstructing missing files in `01_Archives`. It does not overwrite existing
+archives unless you explicitly choose to do so later.
+
 Traditional direct links may expire. Nexus also offers browser-based resumable
 downloads for eligible large files, so manual browser download remains the
 preferred fallback. See [Nexus resumable downloads][resumable].

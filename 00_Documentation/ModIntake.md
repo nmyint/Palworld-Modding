@@ -11,8 +11,9 @@ Download -> Inspect -> Archive -> Stage -> Validate -> Review -> Publish
 ```
 
 - Original ZIP or 7z downloads are preserved beneath `01_Archives`.
-- Temporary extracted files and a normalized `package.7z` live beneath
-  `02_Staging` and are ignored by Git.
+- `02_Staging` is the current working mod setup. It holds the extracted and
+  reconciled files you are actively using for review, validation, and profile
+  assembly, and it is ignored by Git.
 - Published packages are recompressed as curated `package.7z` files beneath
   `03_Mod_Library`.
 - Generated game-layout files live beneath `05_Deployment\Pal` and are ignored by
@@ -68,7 +69,7 @@ The command:
 
 1. inspects the ZIP or 7z archive;
 2. copies the original archive into `01_Archives`;
-3. extracts only validated files into a normalized game-relative tree beneath
+3. extracts only validated files into the current staging tree beneath
    `02_Staging\<Name>\<Version>\Source`;
 4. verifies every extracted SHA-256 hash; and
 5. creates a normalized maximum-compression `package.7z`; and
@@ -163,6 +164,12 @@ The later numbered directories are not additional unpacking stages:
 - `13_Backups` stores recovery copies of live files overwritten during deployment.
 
 Curated compressed packages remain authoritative in `03_Mod_Library`.
+
+If `02_Staging` is being used as the live working copy of your current setup,
+keep the repository-level staging mirror aligned with the actual `ue4ss\Mods`,
+`Pal\Content\Paks\~mods`, and `Pal\Content\Paks\LogicMods` content you are
+testing. That lets the workshop redownload missing archives while still
+reflecting the real in-game layout you are maintaining locally.
 
 ## Complete validation and clean temporary files
 
