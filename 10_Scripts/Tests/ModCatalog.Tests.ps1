@@ -36,6 +36,15 @@ Describe 'PalworldModding mod catalog' {
             -Force |
             Out-Null
 
+        $global:PwCatalogModsRoot = Join-Path `
+            $global:PwCatalogPaths.Staging `
+            'Pal\Binaries\Win64\ue4ss\Mods'
+        New-Item `
+            -ItemType Directory `
+            -Path $global:PwCatalogModsRoot `
+            -Force |
+            Out-Null
+
         $archiveContent = Join-Path $TestDrive 'ArchiveContent'
         $archiveModRoot = Join-Path $archiveContent 'ExampleInstall\Scripts'
         New-Item -ItemType Directory -Path $archiveModRoot -Force |
@@ -75,10 +84,10 @@ Describe 'PalworldModding mod catalog' {
             -Value 'legacy filename fixture'
 
         $stagedMod = Join-Path `
-            $global:PwCatalogPaths.Staging `
+            $global:PwCatalogModsRoot `
             'ExampleInstall\Scripts'
         $orphanMod = Join-Path `
-            $global:PwCatalogPaths.Staging `
+            $global:PwCatalogModsRoot `
             'OrphanMod\Scripts'
         New-Item -ItemType Directory -Path $stagedMod -Force | Out-Null
         New-Item -ItemType Directory -Path $orphanMod -Force | Out-Null
@@ -88,7 +97,7 @@ Describe 'PalworldModding mod catalog' {
         Set-Content `
             -LiteralPath (
                 Join-Path `
-                    $global:PwCatalogPaths.Staging `
+                    $global:PwCatalogModsRoot `
                     'ExampleInstall\enabled.txt'
             ) `
             -Value ''
@@ -97,12 +106,12 @@ Describe 'PalworldModding mod catalog' {
             -Value 'print("orphan")'
         Set-Content `
             -LiteralPath (
-                Join-Path $global:PwCatalogPaths.Staging 'mods.txt'
+                Join-Path $global:PwCatalogModsRoot 'mods.txt'
             ) `
             -Value 'OrphanMod : 0'
         Set-Content `
             -LiteralPath (
-                Join-Path $global:PwCatalogPaths.Staging 'mods.json'
+                Join-Path $global:PwCatalogModsRoot 'mods.json'
             ) `
             -Value '[{"broken": true}'
 
@@ -122,6 +131,7 @@ Describe 'PalworldModding mod catalog' {
     AfterAll {
         Remove-Variable PwCatalogRoot -Scope Global -ErrorAction SilentlyContinue
         Remove-Variable PwCatalogPaths -Scope Global -ErrorAction SilentlyContinue
+        Remove-Variable PwCatalogModsRoot -Scope Global -ErrorAction SilentlyContinue
         Remove-Variable PwCatalogArchive -Scope Global -ErrorAction SilentlyContinue
         Remove-Variable `
             PwCatalogTrickyArchive `
@@ -176,7 +186,7 @@ Describe 'PalworldModding mod catalog' {
         $beforeHash = (
             Get-FileHash `
                 -LiteralPath (
-                    Join-Path $global:PwCatalogPaths.Staging 'mods.txt'
+                    Join-Path $global:PwCatalogModsRoot 'mods.txt'
                 )
         ).Hash
         $result = @(Get-PwStagedModSnapshot)
@@ -193,7 +203,7 @@ Describe 'PalworldModding mod catalog' {
         (
             Get-FileHash `
                 -LiteralPath (
-                    Join-Path $global:PwCatalogPaths.Staging 'mods.txt'
+                    Join-Path $global:PwCatalogModsRoot 'mods.txt'
                 )
         ).Hash | Should Be $beforeHash
     }
@@ -260,7 +270,7 @@ Describe 'PalworldModding mod catalog' {
     It 'reconciles missing metadata without modifying mod content' {
         Update-PwModCatalog -Confirm:$false | Out-Null
         $orphanPath = Join-Path `
-            $global:PwCatalogPaths.Staging `
+            $global:PwCatalogModsRoot `
             'OrphanMod\Scripts\main.lua'
         $beforeHash = (Get-FileHash -LiteralPath $orphanPath).Hash
         $record = Set-PwModCatalogMetadata `
@@ -277,6 +287,34 @@ Describe 'PalworldModding mod catalog' {
         @($record.InstallNames) -contains 'Remote Orphan Name' |
             Should Be $true
         (Get-FileHash -LiteralPath $orphanPath).Hash | Should Be $beforeHash
+    }
+
+    It 'records component ownership separately from install names' {
+        Update-PwModCatalog -Confirm:$false | Out-Null
+        $record = Set-PwModCatalogMetadata `
+            -CatalogKey 'orphanmod' `
+            -ComponentName 'OrphanConfig' `
+            -Confirm:$false
+
+        @($record.ComponentNames) -contains 'OrphanConfig' | Should Be $true
+        @($record.InstallNames) -contains 'OrphanConfig' | Should Be $false
+
+        $plan = Get-PwModCatalogSyncPlan
+        $planned = $plan.Catalog.Mods |
+            Where-Object CatalogKey -eq 'orphanmod'
+        @($planned.ComponentNames) -contains 'OrphanConfig' | Should Be $true
+    }
+
+    It 'creates a metadata-only identity for a PAK-only component' {
+        $record = New-PwModCatalogRecord `
+            -DisplayName 'PAK Only Mod' `
+            -ComponentName 'PakOnly_P' `
+            -Confirm:$false
+
+        $record.CatalogKey | Should Be 'pakonlymod'
+        $record.Source | Should Be 'Manual'
+        @($record.ComponentNames) -contains 'PakOnly_P' | Should Be $true
+        @($record.Versions).Count | Should Be 0
     }
 
     It 'classifies bundled dependencies without inventing Nexus metadata' {
@@ -358,6 +396,78 @@ Describe 'PalworldModding mod catalog' {
             foreach ($line in $wideLayout) {
                 $line.Text.Length | Should Be 110
             }
+        }
+    }
+
+    It 'pages submenu tables according to terminal height' {
+        InModuleScope PalworldModding {
+            Mock Get-PwWorkshopTerminalSize {
+                [PSCustomObject]@{
+                    Width = 60
+                    Height = 18
+                }
+            }
+            Mock Clear-Host {}
+            Mock Write-Host {}
+            $rows = @(
+                1..20 |
+                    ForEach-Object {
+                        [PSCustomObject]@{
+                            Name = "Item $_"
+                            Value = $_
+                        }
+                    }
+            )
+
+            $result = Show-PwWorkshopPagedTable `
+                -Title 'Fixture' `
+                -Rows $rows `
+                -Properties @('Name', 'Value') `
+                -Page 2
+
+            $result.PageSize | Should Be 8
+            $result.PageCount | Should Be 3
+            $result.Page | Should Be 2
+            @($result.Rows).Count | Should Be 8
+            $result.Rows[0].Value | Should Be 9
+            $result.Width | Should Be 60
+        }
+    }
+
+    It 'keeps paging keys inside a table and returns action selections' {
+        InModuleScope PalworldModding {
+            Mock Get-PwWorkshopTerminalSize {
+                [PSCustomObject]@{
+                    Width = 60
+                    Height = 18
+                }
+            }
+            Mock Clear-Host {}
+            Mock Write-Host {}
+            $script:pageSelections = @('N', 'P', 'B')
+            Mock Read-Host {
+                $selection = $script:pageSelections[0]
+                $script:pageSelections = @($script:pageSelections | Select-Object -Skip 1)
+                $selection
+            }
+            $rows = @(
+                1..20 |
+                    ForEach-Object {
+                        [PSCustomObject]@{
+                            Name = "Item $_"
+                            Value = $_
+                        }
+                    }
+            )
+
+            $selection = Read-PwWorkshopPagedTable `
+                -Title 'Fixture' `
+                -Rows $rows `
+                -Properties @('Name', 'Value') `
+                -Prompt '[B] Back'
+
+            $selection | Should Be 'B'
+            Assert-MockCalled Read-Host -Times 3
         }
     }
 

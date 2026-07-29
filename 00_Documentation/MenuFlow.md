@@ -21,6 +21,7 @@ The top-level menu is the one shown by `Start-PwWorkshop`.
 - `2` Archives
 - `3` Staged UE4SS snapshot
 - `4` Updates
+- `H` Compatibility and conflict report
 - `5` Diagnostics
 - `6` Installation inventory
 - `7` Deployment and restore history
@@ -39,7 +40,8 @@ Actions:
 - `S` show the catalog sync plan
 - `R` inspect remote metadata
 - `E` edit catalog identity fields
-- `G` show staging reconciliation groups
+- `G` show staging reconciliation groups and assign component ownership
+- `H` show compatibility and conflict details
 
 Back behavior:
 
@@ -47,6 +49,19 @@ Back behavior:
 - `Enter` also returns to the main menu from the catalog submenu.
 - Prompts inside `R` and `E` now accept `B` to return to the catalog submenu
   instead of dropping all the way back to the main menu.
+- `G` numbers unresolved PAK, LogicMods, and configuration components. A
+  component can be assigned to an existing numbered catalog record or used to
+  create a new metadata-only identity for a PAK-only mod.
+- Long report and picker screens redraw as fixed paged views sized from the
+  current terminal. `N` and `P` move between pages without changing the
+  screen's existing action keys. Numbered selections retain their absolute
+  numbers across pages.
+- This applies to catalog lists and warnings, remote metadata and identity
+  review, staging groups and ownership, archives and archive contents, the
+  staging snapshot, updates, deployment inventory and history, mod sets and
+  previews, and compatibility reports.
+- Ownership lists are compact numbered tables so they remain usable in the same
+  narrow terminal sizes supported by the main responsive menu.
 
 ## Archives Submenu
 
@@ -69,12 +84,12 @@ The updates submenu is a nested loop.
 Actions:
 
 - Enter a Nexus mod ID to open the manual or premium update flow.
-- `B` records or inspects the UE4SS source baseline flow.
+- `U` records or inspects the UE4SS source baseline flow.
 
 Back behavior:
 
 - `Enter` returns to the main menu from the updates submenu.
-- `B` keeps its existing UE4SS baseline role at the top of the updates menu.
+- `U` runs the UE4SS baseline action; `B` returns to the main menu.
 - Nested prompts inside the update flow accept `B` to step back to the updates
   submenu.
 

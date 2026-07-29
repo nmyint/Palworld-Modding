@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.4.6'
+ModuleVersion = '0.4.7'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -78,6 +78,7 @@ FunctionsToExport = @(
     'Get-PwModCatalogSyncPlan',
     'Update-PwModCatalog',
     'Set-PwModCatalogMetadata',
+    'New-PwModCatalogRecord',
     'Get-PwStagingReconciliation',
     'Get-PwCompatibilityReport',
     'Get-PwNexusApiIdentity',
@@ -138,7 +139,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 4.2 consolidated menu identity workflows'
+        ReleaseNotes = 'Sprint 4.4 normalized staging and component ownership'
 
     }
 

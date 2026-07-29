@@ -57,7 +57,9 @@ download time are retained in memory. Archive inspection also discovers common
 UE4SS installation folder names. This is offline metadata discovery; it does
 not call Nexus Mods or require an API key.
 
-`Get-PwStagedModSnapshot` inventories top-level folders under `02_Staging`.
+`Get-PwStagedModSnapshot` inventories the normalized
+`02_Staging\Pal\Binaries\Win64\ue4ss\Mods` tree. It falls back to legacy
+top-level staging only when the normalized tree does not exist.
 It records:
 
 - marker and legacy `mods.txt` enablement state;
@@ -111,6 +113,28 @@ UE4SS Lua folder plus files under `Pal\Content\Paks\~mods` or
 `Pal\Content\Paks\LogicMods`. Configuration files remain attached to their
 component but do not create a separate package type.
 
+Component ownership aliases are stored separately from archive/install names.
+This allows a mixed mod such as `PalMiniMap` to own the UE4SS folder
+`PalMiniMap`, `PalMiniMap.pak`, and `Paldar.modconfig.json` without treating
+`Paldar` as a separate Nexus identity. PAK-only mods can receive a reviewed,
+metadata-only catalog record from the ownership menu.
+
+The same operations are available non-interactively:
+
+```powershell
+Set-PwModCatalogMetadata `
+    -CatalogKey 'palminimap' `
+    -ComponentName 'Paldar'
+
+New-PwModCatalogRecord `
+    -DisplayName 'Example PAK Mod' `
+    -ComponentName 'ExampleMod_P'
+```
+
+Explicit component ownership takes precedence over filename-derived identity.
+This allows bundled folders such as `shared` to remain owned by their parent
+package without creating a duplicate deployment selection.
+
 After confirming missing information from Nexus or the installed mod, record it
 without changing any mod files:
 
@@ -135,7 +159,9 @@ Set-PwModCatalogMetadata `
 
 The catalog does not guess an authoritative installed version when loose files
 contain no version metadata. Such records remain marked for reconciliation.
-Conflict detection, dependencies, and mod sets are later Sprint 4 work.
+Deterministic path-level conflict detection still depends on assembling curated
+library packages. Profile mod sets and preliminary compatibility reporting are
+available, while full assembly remains Sprint 4.4 work.
 Palworld itself does not appear to expose a general user-facing load-order
 system, so Sprint 4.3 focuses on practical compatibility rules, file conflicts,
 and dependency hints instead of a classic ordered-load manager.

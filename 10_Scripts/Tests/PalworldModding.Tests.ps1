@@ -20,8 +20,8 @@ Describe 'PalworldModding module' {
             Should Not Throw
     }
 
-    It 'reports the Sprint 4.2 module version' {
-        Get-PwVersion | Should Be ([version]'0.4.6')
+    It 'reports the Sprint 4.4 module version' {
+        Get-PwVersion | Should Be ([version]'0.4.7')
     }
 
     It 'exports the expected public commands' {
@@ -76,6 +76,7 @@ Describe 'PalworldModding module' {
             'Save-PwProfileModDownloads'
             'Set-PwActiveProfile'
             'Set-PwModCatalogMetadata'
+            'New-PwModCatalogRecord'
             'Set-PwGitHubSourceBaseline'
             'Set-PwProfileModSet'
             'Start-PwWorkshop'

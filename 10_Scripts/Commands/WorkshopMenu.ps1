@@ -363,6 +363,127 @@ function Test-PwWorkshopBackSelection {
     )
 }
 
+function Show-PwWorkshopPagedTable {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Title,
+
+        [object[]]$Rows = @(),
+
+        [Parameter(Mandatory)]
+        [object[]]$Properties,
+
+        [ValidateRange(1, [int]::MaxValue)]
+        [int]$Page = 1
+    )
+
+    $terminal = Get-PwWorkshopTerminalSize
+    $pageSize = [math]::Max(4, $terminal.Height - 10)
+    $rowCount = @($Rows).Count
+    $pageCount = [math]::Max(
+        1,
+        [math]::Ceiling($rowCount / [double]$pageSize)
+    )
+    $currentPage = [math]::Max(1, [math]::Min($Page, $pageCount))
+    $firstIndex = ($currentPage - 1) * $pageSize
+    $pageRows = @(
+        if ($rowCount -gt 0) {
+            $lastIndex = [math]::Min(
+                $firstIndex + $pageSize - 1,
+                $rowCount - 1
+            )
+            $Rows[$firstIndex..$lastIndex]
+        }
+    )
+
+    Clear-Host
+    Write-Host $Title -ForegroundColor Cyan
+    Write-Host (
+        "Page $currentPage of $pageCount | " +
+            "$rowCount item$(if ($rowCount -eq 1) { '' } else { 's' })"
+    ) -ForegroundColor DarkGray
+    Write-Host ''
+
+    if ($pageRows.Count -eq 0) {
+        Write-Host 'No items to display.' -ForegroundColor DarkGray
+    }
+    else {
+        $formatted = (
+            $pageRows |
+                Select-Object -Property $Properties |
+                Format-Table -AutoSize |
+                Out-String -Width $terminal.Width
+        ).TrimEnd()
+        Write-Host $formatted
+    }
+
+    [PSCustomObject]@{
+        Page = $currentPage
+        PageCount = [int]$pageCount
+        PageSize = $pageSize
+        RowCount = $rowCount
+        Rows = $pageRows
+        Width = $terminal.Width
+        Height = $terminal.Height
+    }
+}
+
+function Read-PwWorkshopPagedTable {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Title,
+
+        [object[]]$Rows = @(),
+
+        [Parameter(Mandatory)]
+        [object[]]$Properties,
+
+        [Parameter(Mandatory)]
+        [string]$Prompt,
+
+        [ValidateRange(1, [int]::MaxValue)]
+        [int]$Page = 1
+    )
+
+    $currentPage = $Page
+
+    while ($true) {
+        $view = Show-PwWorkshopPagedTable `
+            -Title $Title `
+            -Rows $Rows `
+            -Properties $Properties `
+            -Page $currentPage
+        $navigation = @()
+        if ($view.Page -gt 1) {
+            $navigation += '[P] Previous'
+        }
+        if ($view.Page -lt $view.PageCount) {
+            $navigation += '[N] Next'
+        }
+
+        Write-Host ''
+        if ($navigation.Count -gt 0) {
+            Write-Host ($navigation -join '  ') -ForegroundColor DarkGray
+        }
+
+        $selection = Read-Host $Prompt
+        if ($selection -match '^(?i:N)$' -and $view.Page -lt $view.PageCount) {
+            $currentPage = $view.Page + 1
+            continue
+        }
+        if ($selection -match '^(?i:P)$' -and $view.Page -gt 1) {
+            $currentPage = $view.Page - 1
+            continue
+        }
+
+        return $selection
+    }
+}
+
 function Show-PwCatalogSummary {
 
     [CmdletBinding()]
@@ -472,6 +593,50 @@ function Show-PwUpdateReport {
             RemoteVersion,
             Status |
         Format-Table -AutoSize
+}
+
+function Get-PwCompatibilityDisplayRows {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Compatibility
+    )
+
+    @(
+        $Compatibility.DuplicateArchives | ForEach-Object {
+            [PSCustomObject]@{
+                Category = 'Duplicate archive'
+                Name = $_.ArchiveHash
+                Details = (
+                    (@($_.CatalogKeys) -join ', ') +
+                    ' | ' +
+                    (@($_.Versions) -join ', ')
+                )
+            }
+        }
+        $Compatibility.MixedPackages | ForEach-Object {
+            [PSCustomObject]@{
+                Category = 'Mixed package'
+                Name = $_.DisplayName
+                Details = (
+                    (@($_.PackageTypes) -join ', ') +
+                    " | $($_.ComponentCount) components"
+                )
+            }
+        }
+        $Compatibility.VariantWarnings | ForEach-Object {
+            [PSCustomObject]@{
+                Category = 'Variant'
+                Name = $_.DisplayName
+                Details = (
+                    (@($_.Platforms) -join ', ') +
+                    ' | ' +
+                    (@($_.PlayModes) -join ', ')
+                )
+            }
+        }
+    )
 }
 
 function Invoke-PwWorkshopMenuAction {
@@ -630,12 +795,46 @@ function Start-PwWorkshop {
                     }
 
                     if ($catalogChoice -match '^(?i:L)$') {
-                        Show-PwCatalogMods -Catalog $catalog
+                        $listChoice = Read-PwWorkshopPagedTable `
+                            -Title 'Catalog Mods' `
+                            -Rows @($catalog.Mods) `
+                            -Properties @(
+                                'Name',
+                                'Enabled',
+                                'ArchiveMatchStatus',
+                                'LatestCandidateVersion',
+                                'Types'
+                            ) `
+                            -Prompt '[B] Back, Enter to return, or Q to quit'
+                        if (Test-PwWorkshopQuitSelection $listChoice) {
+                            $quitRequested = $true
+                            break
+                        }
                         continue
                     }
 
                     if ($catalogChoice -match '^(?i:W)$') {
-                        Show-PwCatalogWarnings -Catalog $catalog
+                        $warningRows = @(
+                            for (
+                                $warningIndex = 0
+                                $warningIndex -lt $catalog.Warnings.Count
+                                $warningIndex++
+                            ) {
+                                [PSCustomObject]@{
+                                    '#' = $warningIndex + 1
+                                    Warning = $catalog.Warnings[$warningIndex]
+                                }
+                            }
+                        )
+                        $warningChoice = Read-PwWorkshopPagedTable `
+                            -Title 'Catalog Warnings' `
+                            -Rows $warningRows `
+                            -Properties @('#', 'Warning') `
+                            -Prompt '[B] Back, Enter to return, or Q to quit'
+                        if (Test-PwWorkshopQuitSelection $warningChoice) {
+                            $quitRequested = $true
+                            break
+                        }
                         continue
                     }
 
@@ -682,19 +881,21 @@ function Start-PwWorkshop {
                                 Invoke-PwWorkshopMenuAction `
                                     -Action CatalogMetadata
                             )
-                            $metadata |
-                                Select-Object `
-                                    CatalogKey,
-                                    NexusModId,
-                                    RemoteName,
-                                    RemoteVersion,
-                                    NameMatch,
-                                    Status |
-                                Format-Table -AutoSize
-                            $applyMetadata = Read-Host (
-                                '[A] Store metadata, [V] Verify review item, ' +
-                                    '[B] Back, or Q to quit'
-                            )
+                            $applyMetadata = Read-PwWorkshopPagedTable `
+                                -Title 'Remote Catalog Metadata' `
+                                -Rows $metadata `
+                                -Properties @(
+                                    'CatalogKey',
+                                    'NexusModId',
+                                    'RemoteName',
+                                    'RemoteVersion',
+                                    'NameMatch',
+                                    'Status'
+                                ) `
+                                -Prompt (
+                                    '[A] Store metadata, [V] Verify review item, ' +
+                                        '[B] Back, or Q to quit'
+                                )
 
                             if (Test-PwWorkshopQuitSelection $applyMetadata) {
                                 $quitRequested = $true
@@ -728,7 +929,8 @@ function Start-PwWorkshop {
                                     )
                                 }
                                 else {
-                                    $reviewItems |
+                                    $reviewRows = @(
+                                        $reviewItems |
                                         Select-Object `
                                             @{Name = '#'; Expression = {
                                                 1 + $reviewItems.IndexOf($_)
@@ -737,12 +939,23 @@ function Start-PwWorkshop {
                                             InstallNames,
                                             NexusModId,
                                             RemoteName,
-                                            RemoteVersion |
-                                        Format-Table -AutoSize
-                                    $reviewKey = Read-Host (
-                                        'Review # to inspect, [B] Back, ' +
-                                            'or Q to quit'
+                                            RemoteVersion
                                     )
+                                    $reviewKey = Read-PwWorkshopPagedTable `
+                                        -Title 'Identity Review Items' `
+                                        -Rows $reviewRows `
+                                        -Properties @(
+                                            '#',
+                                            'CatalogKey',
+                                            'InstallNames',
+                                            'NexusModId',
+                                            'RemoteName',
+                                            'RemoteVersion'
+                                        ) `
+                                        -Prompt (
+                                            'Review # to inspect, [B] Back, ' +
+                                                'or Q to quit'
+                                        )
 
                                     if (
                                         Test-PwWorkshopQuitSelection $reviewKey
@@ -848,7 +1061,8 @@ function Start-PwWorkshop {
                         try {
                             $persistentCatalog = Get-PwPersistentModCatalog
                             $catalogEntries = @($persistentCatalog.Mods)
-                            $catalogEntries |
+                            $catalogRows = @(
+                                $catalogEntries |
                                 Select-Object `
                                     @{Name = '#'; Expression = {
                                         1 + $catalogEntries.IndexOf($_)
@@ -859,11 +1073,20 @@ function Start-PwWorkshop {
                                         @($_.NexusModIds) -join ','
                                     }},
                                     InstalledVersion,
-                                    ReconciliationStatus |
-                                Format-Table -AutoSize
-                            $catalogChoice = Read-Host (
-                                'Enter # to edit, [B] Back, or Q to quit'
+                                    ReconciliationStatus
                             )
+                            $catalogChoice = Read-PwWorkshopPagedTable `
+                                -Title 'Edit Catalog Identity' `
+                                -Rows $catalogRows `
+                                -Properties @(
+                                    '#',
+                                    'CatalogKey',
+                                    'DisplayName',
+                                    'NexusIds',
+                                    'InstalledVersion',
+                                    'ReconciliationStatus'
+                                ) `
+                                -Prompt 'Enter # to edit, [B] Back, or Q to quit'
 
                             if (Test-PwWorkshopQuitSelection $catalogChoice) {
                                 $quitRequested = $true
@@ -897,12 +1120,17 @@ function Start-PwWorkshop {
                                         'Installed version (Enter to keep current, ' +
                                             '[B] Back)'
                                     )
+                                    $installName = Read-Host (
+                                        'Install/component alias (Enter to keep current, ' +
+                                            '[B] Back)'
+                                    )
                                     $identity = $null
 
                                     if (
                                         (Test-PwWorkshopBackSelection $nexusId) -or
                                         (Test-PwWorkshopBackSelection $displayName) -or
-                                        (Test-PwWorkshopBackSelection $installedVersion)
+                                        (Test-PwWorkshopBackSelection $installedVersion) -or
+                                        (Test-PwWorkshopBackSelection $installName)
                                     ) {
                                         continue
                                     }
@@ -987,6 +1215,14 @@ function Start-PwWorkshop {
                                             )
                                         }
 
+                                        if (
+                                            -not [string]::IsNullOrWhiteSpace(
+                                                $installName
+                                            )
+                                        ) {
+                                            $parameters.ComponentName = $installName
+                                        }
+
                                         if ($parameters.Count -eq 2) {
                                             Write-Host 'No changes were entered.' `
                                                 -ForegroundColor Yellow
@@ -998,6 +1234,8 @@ function Start-PwWorkshop {
                                                     DisplayName,
                                                     NexusModIds,
                                                     InstalledVersion,
+                                                    InstallNames,
+                                                    ComponentNames,
                                                     ReconciliationStatus |
                                                 Format-List
                                         }
@@ -1016,34 +1254,308 @@ function Start-PwWorkshop {
                     if ($catalogChoice -match '^(?i:G)$') {
                         $reconciliation = Invoke-PwWorkshopMenuAction `
                             -Action StagingReconciliation
-                        $reconciliation.Groups |
-                            Select-Object `
-                                DisplayName,
-                                @{Name = 'PackageTypes'; Expression = {
-                                    @($_.PackageTypes) -join ', '
-                                }},
-                                ComponentCount,
-                                IsMixedPackage |
-                            Format-Table -AutoSize
-                        Write-Host ''
-                        $reconciliation |
-                            Select-Object `
-                                ComponentCount,
-                                MatchedComponentCount,
-                                MixedPackageCount,
-                                ReviewItemCount |
-                            Format-List
+                        $groupPage = 1
+                        $openOwnership = $false
+
+                        while ($true) {
+                            $groupView = Show-PwWorkshopPagedTable `
+                                -Title 'Staging Component Ownership' `
+                                -Rows @($reconciliation.Groups) `
+                                -Properties @(
+                                    'DisplayName',
+                                    @{
+                                        Name = 'Types'
+                                        Expression = {
+                                            @($_.PackageTypes) -join ', '
+                                        }
+                                    },
+                                    'ComponentCount',
+                                    'IsMixedPackage'
+                                ) `
+                                -Page $groupPage
+                            Write-Host ''
+                            Write-Host (
+                                "$($reconciliation.MatchedComponentCount) of " +
+                                    "$($reconciliation.ComponentCount) components " +
+                                    "matched | $($reconciliation.MixedPackageCount) " +
+                                    "mixed packages | " +
+                                    "$($reconciliation.ReviewItemCount) to review"
+                            ) -ForegroundColor DarkGray
+                            $groupChoice = Read-Host (
+                                '[N] Next, [P] Previous, [O] Ownership review, ' +
+                                    '[B] Back, or Q to quit'
+                            )
+
+                            if (Test-PwWorkshopQuitSelection $groupChoice) {
+                                $quitRequested = $true
+                                break
+                            }
+
+                            if (Test-PwWorkshopBackSelection $groupChoice) {
+                                break
+                            }
+
+                            if ($groupChoice -match '^(?i:N)$') {
+                                $groupPage = [math]::Min(
+                                    $groupView.Page + 1,
+                                    $groupView.PageCount
+                                )
+                                continue
+                            }
+
+                            if ($groupChoice -match '^(?i:P)$') {
+                                $groupPage = [math]::Max(
+                                    1,
+                                    $groupView.Page - 1
+                                )
+                                continue
+                            }
+
+                            if ($groupChoice -match '^(?i:O)$') {
+                                $openOwnership = $true
+                                break
+                            }
+                        }
+
+                        if ($quitRequested) {
+                            break
+                        }
+
+                        if (-not $openOwnership) {
+                            continue
+                        }
 
                         if ($reconciliation.ReviewItemCount -gt 0) {
-                            Write-Host 'Ownership review required:' `
-                                -ForegroundColor Yellow
-                            $reconciliation.ReviewItems |
+                            $reviewItems = @($reconciliation.ReviewItems)
+                            $numberedReviewItems = @(
+                                $reviewItems |
                                 Select-Object `
+                                    @{Name = '#'; Expression = {
+                                        1 + $reviewItems.IndexOf($_)
+                                    }},
                                     OwnerName,
                                     SourceArea,
                                     PackageType,
-                                    RelativePath |
-                                Format-Table -AutoSize
+                                    RelativePath
+                            )
+                            $reviewPage = 1
+
+                            while ($true) {
+                                $reviewView = Show-PwWorkshopPagedTable `
+                                    -Title 'Ownership Review' `
+                                    -Rows $numberedReviewItems `
+                                    -Properties @(
+                                        '#',
+                                        'OwnerName',
+                                        'SourceArea',
+                                        'PackageType',
+                                        'RelativePath'
+                                    ) `
+                                    -Page $reviewPage
+                                $ownershipChoice = Read-Host (
+                                    'Enter # to assign, [N] Next, [P] Previous, ' +
+                                        '[B] Back, or Q to quit'
+                                )
+
+                                if ($ownershipChoice -match '^(?i:N)$') {
+                                    $reviewPage = [math]::Min(
+                                        $reviewView.Page + 1,
+                                        $reviewView.PageCount
+                                    )
+                                    continue
+                                }
+
+                                if ($ownershipChoice -match '^(?i:P)$') {
+                                    $reviewPage = [math]::Max(
+                                        1,
+                                        $reviewView.Page - 1
+                                    )
+                                    continue
+                                }
+
+                                break
+                            }
+
+                            if (
+                                Test-PwWorkshopQuitSelection $ownershipChoice
+                            ) {
+                                $quitRequested = $true
+                                break
+                            }
+
+                            if (
+                                -not (
+                                    Test-PwWorkshopBackSelection $ownershipChoice
+                                ) -and
+                                $ownershipChoice -match '^\d+$'
+                            ) {
+                                $reviewIndex = [int]$ownershipChoice - 1
+
+                                if (
+                                    $reviewIndex -ge 0 -and
+                                    $reviewIndex -lt $reviewItems.Count
+                                ) {
+                                    $reviewItem = $reviewItems[$reviewIndex]
+                                    $persistentCatalog = Get-PwPersistentModCatalog
+                                    $catalogEntries = @($persistentCatalog.Mods)
+                                    $numberedCatalogEntries = @(
+                                        $catalogEntries |
+                                            Select-Object `
+                                            @{Name = '#'; Expression = {
+                                                1 + $catalogEntries.IndexOf($_)
+                                            }},
+                                            CatalogKey,
+                                            DisplayName,
+                                            ComponentNames
+                                    )
+                                    $catalogPage = 1
+
+                                    while ($true) {
+                                        $catalogView = Show-PwWorkshopPagedTable `
+                                            -Title (
+                                                "Assign '$($reviewItem.OwnerName)'"
+                                            ) `
+                                            -Rows $numberedCatalogEntries `
+                                            -Properties @(
+                                                '#',
+                                                'CatalogKey',
+                                                'DisplayName',
+                                                'ComponentNames'
+                                            ) `
+                                            -Page $catalogPage
+                                        $ownerChoice = Read-Host (
+                                            'Catalog #, [N] Next, [P] Previous, ' +
+                                                '[C] Create identity, [B] Back, or Q'
+                                        )
+
+                                        if ($ownerChoice -match '^(?i:P)$') {
+                                            $catalogPage = [math]::Max(
+                                                1,
+                                                $catalogView.Page - 1
+                                            )
+                                            continue
+                                        }
+
+                                        if (
+                                            $ownerChoice -match '^(?i:N)$'
+                                        ) {
+                                            $catalogPage = [math]::Min(
+                                                $catalogView.Page + 1,
+                                                $catalogView.PageCount
+                                            )
+                                            continue
+                                        }
+
+                                        break
+                                    }
+
+                                    if (
+                                        Test-PwWorkshopQuitSelection $ownerChoice
+                                    ) {
+                                        $quitRequested = $true
+                                        break
+                                    }
+
+                                    if ($ownerChoice -match '^(?i:C)$') {
+                                        $newName = Read-Host (
+                                            'New catalog display name ' +
+                                                '(Enter uses component name, [B] Back)'
+                                        )
+
+                                        if (
+                                            -not (
+                                                Test-PwWorkshopBackSelection $newName
+                                            )
+                                        ) {
+                                            if (
+                                                [string]::IsNullOrWhiteSpace($newName)
+                                            ) {
+                                                $newName = $reviewItem.OwnerName
+                                            }
+                                            New-PwModCatalogRecord `
+                                                -DisplayName $newName `
+                                                -ComponentName $reviewItem.OwnerName `
+                                                -Confirm:$false |
+                                                Select-Object `
+                                                    CatalogKey,
+                                                    DisplayName,
+                                                    ComponentNames,
+                                                    ReconciliationStatus |
+                                                Format-List
+                                        }
+                                    }
+                                    elseif (
+                                        -not (
+                                            Test-PwWorkshopBackSelection $ownerChoice
+                                        ) -and
+                                        $ownerChoice -match '^\d+$'
+                                    ) {
+                                        $ownerIndex = [int]$ownerChoice - 1
+
+                                        if (
+                                            $ownerIndex -ge 0 -and
+                                            $ownerIndex -lt $catalogEntries.Count
+                                        ) {
+                                            $ownerRecord = $catalogEntries[$ownerIndex]
+                                            $confirmOwner = Read-Host (
+                                                "[A] Assign '$($reviewItem.OwnerName)' " +
+                                                    "to '$($ownerRecord.DisplayName)', " +
+                                                    '[B] Back, or Q to quit'
+                                            )
+
+                                            if (
+                                                Test-PwWorkshopQuitSelection `
+                                                    $confirmOwner
+                                            ) {
+                                                $quitRequested = $true
+                                                break
+                                            }
+
+                                            if ($confirmOwner -match '^(?i:A)$') {
+                                                Set-PwModCatalogMetadata `
+                                                    -CatalogKey $ownerRecord.CatalogKey `
+                                                    -ComponentName $reviewItem.OwnerName `
+                                                    -Confirm:$false |
+                                                    Select-Object `
+                                                        CatalogKey,
+                                                        DisplayName,
+                                                        ComponentNames,
+                                                        ReconciliationStatus |
+                                                    Format-List
+                                            }
+                                        }
+                                        else {
+                                            Write-Host (
+                                                'Catalog number was not found.'
+                                            ) -ForegroundColor Yellow
+                                        }
+                                    }
+                                }
+                                else {
+                                    Write-Host (
+                                        'Ownership item number was not found.'
+                                    ) -ForegroundColor Yellow
+                                }
+                            }
+                        }
+                        else {
+                            Clear-Host
+                            Write-Host 'Ownership Review' -ForegroundColor Cyan
+                            Write-Host ''
+                            Write-Host (
+                                'All staged components already have reviewed ' +
+                                    'catalog ownership.'
+                            ) -ForegroundColor Green
+                            $ownershipDone = Read-Host (
+                                '[B] Back, Enter to return, or Q to quit'
+                            )
+
+                            if (
+                                Test-PwWorkshopQuitSelection $ownershipDone
+                            ) {
+                                $quitRequested = $true
+                                break
+                            }
                         }
 
                         continue
@@ -1051,48 +1563,24 @@ function Start-PwWorkshop {
 
                     if ($catalogChoice -match '^(?i:H)$') {
                         $compatibility = Get-PwCompatibilityReport
-                        $compatibility |
-                            Select-Object `
-                                ConflictCount,
-                                ReviewCount,
-                                GeneratedAt |
-                            Format-List
-
-                        if ($compatibility.DuplicateArchives.Count -gt 0) {
-                            Write-Host 'Duplicate archive hashes:' `
-                                -ForegroundColor Yellow
-                            $compatibility.DuplicateArchives |
-                                Select-Object `
-                                    ArchiveHash,
-                                    CatalogKeys,
-                                    Versions |
-                                Format-Table -AutoSize -Wrap
+                        $compatibilityChoice = Read-PwWorkshopPagedTable `
+                            -Title (
+                                'Compatibility and Conflict Report | ' +
+                                "$($compatibility.ConflictCount) conflicts, " +
+                                "$($compatibility.ReviewCount) reviews"
+                            ) `
+                            -Rows @(
+                                Get-PwCompatibilityDisplayRows `
+                                    -Compatibility $compatibility
+                            ) `
+                            -Properties @('Category', 'Name', 'Details') `
+                            -Prompt '[B] Back, Enter to return, or Q to quit'
+                        if (
+                            Test-PwWorkshopQuitSelection $compatibilityChoice
+                        ) {
+                            $quitRequested = $true
+                            break
                         }
-
-                        if ($compatibility.MixedPackages.Count -gt 0) {
-                            Write-Host 'Mixed package groups:' `
-                                -ForegroundColor Yellow
-                            $compatibility.MixedPackages |
-                                Select-Object `
-                                    CatalogKey,
-                                    DisplayName,
-                                    PackageTypes,
-                                    ComponentCount |
-                                Format-Table -AutoSize -Wrap
-                        }
-
-                        if ($compatibility.VariantWarnings.Count -gt 0) {
-                            Write-Host 'Variant warnings:' `
-                                -ForegroundColor Yellow
-                            $compatibility.VariantWarnings |
-                                Select-Object `
-                                    CatalogKey,
-                                    DisplayName,
-                                    Platforms,
-                                    PlayModes |
-                                Format-Table -AutoSize -Wrap
-                        }
-
                         continue
                     }
                 }
@@ -1105,17 +1593,19 @@ function Start-PwWorkshop {
                     $archives = @(
                         Invoke-PwWorkshopMenuAction -Action Archives
                     )
-                    $archives |
-                        Format-Table `
-                            Name,
-                            NexusModId,
-                            ArchiveVersion,
-                            DownloadedAt,
-                            InstallNames
-                    $archiveChoice = Read-Host (
-                        '[I] Inspect and import an archive, [B] Back, ' +
-                            'or Q to quit'
-                    )
+                    $archiveChoice = Read-PwWorkshopPagedTable `
+                        -Title 'Archive Inventory' `
+                        -Rows $archives `
+                        -Properties @(
+                            'Name',
+                            'NexusModId',
+                            'ArchiveVersion',
+                            'DownloadedAt',
+                            'InstallNames'
+                        ) `
+                        -Prompt (
+                            '[I] Inspect and import, [B] Back, or Q to quit'
+                        )
 
                     if (Test-PwWorkshopQuitSelection $archiveChoice) {
                         $quitRequested = $true
@@ -1160,28 +1650,50 @@ function Start-PwWorkshop {
 
                                 $inspection = Get-PwModArchiveInfo `
                                     -Path $archivePath
-                                $inspection.Entries |
-                                    Where-Object { -not $_.IsDirectory } |
-                                    Select-Object `
-                                        ArchivePath,
-                                        Category,
-                                        DeploymentRelativePath,
-                                        ReviewRequired |
-                                    Format-Table -AutoSize
-                                $inspection |
-                                    Select-Object `
-                                        Format,
-                                        IsSafe,
-                                        RequiresReview,
-                                        FileCount,
-                                        TotalUncompressedBytes |
-                                    Format-List
-
                                 if (-not $inspection.IsSafe) {
                                     throw (
                                         'Archive failed safety inspection: ' +
                                             ($inspection.Errors -join ' ')
                                     )
+                                }
+
+                                $inspectionChoice = `
+                                    Read-PwWorkshopPagedTable `
+                                        -Title (
+                                            'Archive Inspection | ' +
+                                            "$($inspection.Format), " +
+                                            "$($inspection.FileCount) files, " +
+                                            "$($inspection.TotalUncompressedBytes) bytes"
+                                        ) `
+                                        -Rows @(
+                                            $inspection.Entries |
+                                                Where-Object {
+                                                    -not $_.IsDirectory
+                                                }
+                                        ) `
+                                        -Properties @(
+                                            'ArchivePath',
+                                            'Category',
+                                            'DeploymentRelativePath',
+                                            'ReviewRequired'
+                                        ) `
+                                        -Prompt (
+                                            '[C] Continue import, [B] Back, ' +
+                                                'or Q to quit'
+                                        )
+                                if (
+                                    Test-PwWorkshopQuitSelection `
+                                        $inspectionChoice
+                                ) {
+                                    $quitRequested = $true
+                                    break
+                                }
+                                if (
+                                    (Test-PwWorkshopBackSelection `
+                                        $inspectionChoice) -or
+                                    $inspectionChoice -notmatch '^(?i:C)$'
+                                ) {
+                                    continue
                                 }
 
                                 $name = Read-Host (
@@ -1260,11 +1772,20 @@ function Start-PwWorkshop {
                 $stagingMenuActive = $true
 
                 while ($stagingMenuActive) {
-                    Invoke-PwWorkshopMenuAction -Action Staging |
-                        Format-Table Name, Enabled, EnabledSource, Types, FileCount
-                    $stagingChoice = Read-Host (
-                        '[B] Back, or Enter to return to the menu'
+                    $stagingRows = @(
+                        Invoke-PwWorkshopMenuAction -Action Staging
                     )
+                    $stagingChoice = Read-PwWorkshopPagedTable `
+                        -Title 'Loose Staging and Ownership Snapshot' `
+                        -Rows $stagingRows `
+                        -Properties @(
+                            'Name',
+                            'Enabled',
+                            'EnabledSource',
+                            'Types',
+                            'FileCount'
+                        ) `
+                        -Prompt '[B] Back, Enter to return, or Q to quit'
 
                     if (Test-PwWorkshopQuitSelection $stagingChoice) {
                         $quitRequested = $true
@@ -1289,24 +1810,46 @@ function Start-PwWorkshop {
                         $updates = @(
                             Invoke-PwWorkshopMenuAction -Action Updates
                         )
-                        Show-PwUpdateReport -Updates $updates
-                        Write-Host ''
-                        Write-Host 'Configured tool and dependency sources:'
                         $sourceUpdates = @(
                             Invoke-PwWorkshopMenuAction -Action SourceUpdates
                         )
-                        $sourceUpdates |
-                            Select-Object `
-                                Name,
-                                Provider,
-                                LocalVersion,
-                                RemoteVersion,
-                                Status |
-                            Format-Table -AutoSize
-                        $selectedId = Read-Host (
-                            'Enter Nexus mod ID, [U] record UE4SS baseline, ' +
-                                'or Enter to return, or Q to quit'
+                        $updateRows = @(
+                            $updates | ForEach-Object {
+                                [PSCustomObject]@{
+                                    Kind = 'Mod'
+                                    Name = $_.Name
+                                    Id = $_.NexusModId
+                                    Local = $_.LocalVersion
+                                    Remote = $_.RemoteVersion
+                                    Status = $_.Status
+                                }
+                            }
+                            $sourceUpdates | ForEach-Object {
+                                [PSCustomObject]@{
+                                    Kind = 'Tool'
+                                    Name = $_.Name
+                                    Id = $_.Provider
+                                    Local = $_.LocalVersion
+                                    Remote = $_.RemoteVersion
+                                    Status = $_.Status
+                                }
+                            }
                         )
+                        $selectedId = Read-PwWorkshopPagedTable `
+                            -Title 'Mod and Tool Updates' `
+                            -Rows $updateRows `
+                            -Properties @(
+                                'Kind',
+                                'Name',
+                                'Id',
+                                'Local',
+                                'Remote',
+                                'Status'
+                            ) `
+                            -Prompt (
+                                'Nexus mod ID, [U] record UE4SS baseline, ' +
+                                    'Enter to return, or Q to quit'
+                            )
 
                         if (Test-PwWorkshopQuitSelection $selectedId) {
                             $quitRequested = $true
@@ -1434,16 +1977,20 @@ function Start-PwWorkshop {
                 $inventoryMenuActive = $true
 
                 while ($inventoryMenuActive) {
-                    Invoke-PwWorkshopMenuAction -Action Inventory |
-                        Format-Table `
-                            Name,
-                            Version,
-                            Profile,
-                            Status,
-                            FileCount
-                    $inventoryChoice = Read-Host (
-                        '[B] Back, or Enter to return to the menu'
+                    $inventoryRows = @(
+                        Invoke-PwWorkshopMenuAction -Action Inventory
                     )
+                    $inventoryChoice = Read-PwWorkshopPagedTable `
+                        -Title 'Deployment Inventory' `
+                        -Rows $inventoryRows `
+                        -Properties @(
+                            'Name',
+                            'Version',
+                            'Profile',
+                            'Status',
+                            'FileCount'
+                        ) `
+                        -Prompt '[B] Back, Enter to return, or Q to quit'
 
                     if (Test-PwWorkshopQuitSelection $inventoryChoice) {
                         $quitRequested = $true
@@ -1464,16 +2011,20 @@ function Start-PwWorkshop {
                 $historyMenuActive = $true
 
                 while ($historyMenuActive) {
-                    Invoke-PwWorkshopMenuAction -Action History |
-                        Format-Table `
-                            Timestamp,
-                            Type,
-                            Profile,
-                            Status,
-                            FileCount
-                    $historyChoice = Read-Host (
-                        '[B] Back, or Enter to return to the menu'
+                    $historyRows = @(
+                        Invoke-PwWorkshopMenuAction -Action History
                     )
+                    $historyChoice = Read-PwWorkshopPagedTable `
+                        -Title 'Deployment History' `
+                        -Rows $historyRows `
+                        -Properties @(
+                            'Timestamp',
+                            'Type',
+                            'Profile',
+                            'Status',
+                            'FileCount'
+                        ) `
+                        -Prompt '[B] Back, Enter to return, or Q to quit'
 
                     if (Test-PwWorkshopQuitSelection $historyChoice) {
                         $quitRequested = $true
@@ -1500,9 +2051,13 @@ function Start-PwWorkshop {
                     Write-Host "Profile mod sets for: $profileName" -ForegroundColor Cyan
                     if ($modSets.Count -eq 0) {
                         Write-Host 'No mod sets have been defined yet.'
+                        $modSetChoice = Read-Host (
+                            '[N] New set, [B] Back, or Q to quit'
+                        )
                     }
                     else {
-                        $modSets |
+                        $modSetRows = @(
+                            $modSets |
                             Select-Object `
                                 @{Name = '#'; Expression = {
                                     1 + $modSets.IndexOf($_)
@@ -1512,13 +2067,23 @@ function Start-PwWorkshop {
                                 IsActive,
                                 @{Name = 'CatalogKeys'; Expression = {
                                     @($_.CatalogKeys) -join ', '
-                                }} |
-                            Format-Table -AutoSize -Wrap
+                                }}
+                        )
+                        $modSetChoice = Read-PwWorkshopPagedTable `
+                            -Title "Profile Mod Sets: $profileName" `
+                            -Rows $modSetRows `
+                            -Properties @(
+                                '#',
+                                'Name',
+                                'Description',
+                                'IsActive',
+                                'CatalogKeys'
+                            ) `
+                            -Prompt (
+                                '[1-#] Edit, [N] New, [V] Preview active, ' +
+                                    '[B] Back, or Q to quit'
+                            )
                     }
-
-                    $modSetChoice = Read-Host (
-                        '[1-#] Edit set, [N] New set, [V] Preview active set, [B] Back, or Q to quit'
-                    )
 
                     if (Test-PwWorkshopQuitSelection $modSetChoice) {
                         $quitRequested = $true
@@ -1695,62 +2260,43 @@ function Start-PwWorkshop {
                     }
                     elseif ($modSetChoice -match '^(?i:V)$') {
                         $preview = Get-PwProfileModSetPreview -Name $profileName
-                        $preview |
-                            Select-Object Profile, ModSet, Description, ModCount |
-                            Format-List
-                        $preview.Mods |
-                            Select-Object CatalogKey, DisplayName, InstalledVersion, ReconciliationStatus, Types |
-                            Format-Table -AutoSize
+                        $previewChoice = Read-PwWorkshopPagedTable `
+                            -Title (
+                                "Active Set Preview: $($preview.Profile) / " +
+                                    "$($preview.ModSet) ($($preview.ModCount) mods)"
+                            ) `
+                            -Rows @($preview.Mods) `
+                            -Properties @(
+                                'CatalogKey',
+                                'DisplayName',
+                                'InstalledVersion',
+                                'ReconciliationStatus',
+                                'Types'
+                            ) `
+                            -Prompt '[B] Back, Enter to return, or Q to quit'
+
+                        if (Test-PwWorkshopQuitSelection $previewChoice) {
+                            $quitRequested = $true
+                            break
+                        }
                     }
                 }
             }
             'H' {
                 $skipReturnPrompt = $true
                 $compatibility = Get-PwCompatibilityReport
-                $compatibility |
-                    Select-Object `
-                        ConflictCount,
-                        ReviewCount,
-                        GeneratedAt |
-                    Format-List
-
-                if ($compatibility.DuplicateArchives.Count -gt 0) {
-                    Write-Host 'Duplicate archive hashes:' `
-                        -ForegroundColor Yellow
-                    $compatibility.DuplicateArchives |
-                        Select-Object `
-                            ArchiveHash,
-                            CatalogKeys,
-                            Versions |
-                        Format-Table -AutoSize -Wrap
-                }
-
-                if ($compatibility.MixedPackages.Count -gt 0) {
-                    Write-Host 'Mixed package groups:' `
-                        -ForegroundColor Yellow
-                    $compatibility.MixedPackages |
-                        Select-Object `
-                            CatalogKey,
-                            DisplayName,
-                            PackageTypes,
-                            ComponentCount |
-                        Format-Table -AutoSize -Wrap
-                }
-
-                if ($compatibility.VariantWarnings.Count -gt 0) {
-                    Write-Host 'Variant warnings:' `
-                        -ForegroundColor Yellow
-                    $compatibility.VariantWarnings |
-                        Select-Object `
-                            CatalogKey,
-                            DisplayName,
-                            Platforms,
-                            PlayModes |
-                        Format-Table -AutoSize -Wrap
-                }
-                $compatibilityChoice = Read-Host (
-                    '[B] Back, or Enter to return to the menu'
-                )
+                $compatibilityChoice = Read-PwWorkshopPagedTable `
+                    -Title (
+                        'Compatibility and Conflict Report | ' +
+                        "$($compatibility.ConflictCount) conflicts, " +
+                        "$($compatibility.ReviewCount) reviews"
+                    ) `
+                    -Rows @(
+                        Get-PwCompatibilityDisplayRows `
+                            -Compatibility $compatibility
+                    ) `
+                    -Properties @('Category', 'Name', 'Details') `
+                    -Prompt '[B] Back, Enter to return, or Q to quit'
 
                 if (Test-PwWorkshopQuitSelection $compatibilityChoice) {
                     $running = $false

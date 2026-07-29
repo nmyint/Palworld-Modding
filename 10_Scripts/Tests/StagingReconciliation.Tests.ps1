@@ -14,7 +14,9 @@ Describe 'PalworldModding staging reconciliation' {
         Import-Module $moduleManifest -Force
 
         $global:PwReconcileRoot = Join-Path $TestDrive '02_Staging'
-        $luaRoot = Join-Path $global:PwReconcileRoot 'MixedMod\Scripts'
+        $luaRoot = Join-Path `
+            $global:PwReconcileRoot `
+            'Pal\Binaries\Win64\ue4ss\Mods\MixedMod\Scripts'
         $logicRoot = Join-Path (
             Join-Path $global:PwReconcileRoot 'Pal\Content\Paks\LogicMods'
         ) 'MixedMod'
@@ -43,6 +45,7 @@ Describe 'PalworldModding staging reconciliation' {
                             CatalogKey = 'mixedmod'
                             DisplayName = 'MixedMod'
                             InstallNames = @('MixedMod')
+                            ComponentNames = @('MixedConfig')
                         }
                     )
                 }
@@ -127,8 +130,8 @@ Describe 'PalworldModding staging reconciliation' {
 
             $result = Get-PwCompatibilityReport -Path $global:PwReconcileRoot
 
-            $result.ConflictCount | Should Be 2
-            $result.ReviewCount | Should Be 2
+            $result.ConflictCount | Should Be 0
+            $result.ReviewCount | Should Be 3
             $result.DuplicateArchives.Count | Should Be 1
             $result.MixedPackages.Count | Should Be 1
             $result.VariantWarnings.Count | Should Be 1

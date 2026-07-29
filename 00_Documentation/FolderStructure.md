@@ -30,6 +30,7 @@ directly in the Palworld installation.
 
 ```text
 Archive -> Stage -> Library -> Deploy -> Validate -> Inventory
+```
 
 `02_Staging` is now treated as the active working tree for the current mod
 setup. In practice, that means it should mirror the live game-shaped layout you
@@ -55,7 +56,6 @@ are working toward:
 
 That keeps the current working copy aligned with the files you are actually
 testing before they are promoted into the curated library or deployment bundles.
-```
 
 Git stores source and lightweight metadata. External 7z archives preserve
 durable binary content; see [WorkshopBackup.md](WorkshopBackup.md).

@@ -287,6 +287,14 @@ function Get-PwModCatalogSyncPlan {
                     Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
                     Select-Object -Unique
             )
+            ComponentNames = @(
+                if (
+                    $null -ne $prior -and
+                    $prior.PSObject.Properties['ComponentNames']
+                ) {
+                    @($prior.ComponentNames)
+                }
+            )
             Source = if (
                 $null -ne $prior -and
                 -not [string]::IsNullOrWhiteSpace([string]$prior.Source)
@@ -391,6 +399,14 @@ function Get-PwModCatalogSyncPlan {
             CatalogKey = $key
             DisplayName = [string]$archive.Name
             InstallNames = @($archive.InstallNames)
+            ComponentNames = @(
+                if (
+                    $null -ne $prior -and
+                    $prior.PSObject.Properties['ComponentNames']
+                ) {
+                    @($prior.ComponentNames)
+                }
+            )
             Source = [string]$archive.Source
             NexusModIds = @($archive.NexusModId)
             InstalledVersion = ''
@@ -421,6 +437,20 @@ function Get-PwModCatalogSyncPlan {
         })
     }
 
+    $stagedOwnershipKeys = [System.Collections.Generic.HashSet[string]]::new(
+        [System.StringComparer]::OrdinalIgnoreCase
+    )
+    try {
+        foreach ($group in @((Get-PwStagingReconciliation).Groups)) {
+            if (-not [string]::IsNullOrWhiteSpace([string]$group.CatalogKey)) {
+                $stagedOwnershipKeys.Add([string]$group.CatalogKey) | Out-Null
+            }
+        }
+    }
+    catch {
+        # Catalog synchronization remains usable before staging is populated.
+    }
+
     foreach ($prior in @($existing.Mods)) {
         if ($seenKeys.Contains([string]$prior.CatalogKey)) {
             continue
@@ -432,7 +462,14 @@ function Get-PwModCatalogSyncPlan {
             $copy[$property.Name] = $property.Value
         }
 
-        $copy.ReconciliationStatus = 'NotCurrentlyDiscovered'
+        $copy.ReconciliationStatus = if (
+            $stagedOwnershipKeys.Contains([string]$prior.CatalogKey)
+        ) {
+            [string]$prior.ReconciliationStatus
+        }
+        else {
+            'NotCurrentlyDiscovered'
+        }
         $copy.Versions = @(
             Merge-PwCatalogVersions -Existing @($prior.Versions)
         )
@@ -515,6 +552,8 @@ function Set-PwModCatalogMetadata {
 
         [string]$InstallName,
 
+        [string]$ComponentName,
+
         [ValidateRange(1, [int]::MaxValue)]
         [int]$NexusModId,
 
@@ -563,6 +602,20 @@ function Set-PwModCatalogMetadata {
         )
     }
 
+    if ($PSBoundParameters.ContainsKey('ComponentName')) {
+        if ($record.PSObject.Properties.Name -notcontains 'ComponentNames') {
+            $record |
+                Add-Member -NotePropertyName ComponentNames -NotePropertyValue @()
+        }
+        $record.ComponentNames = @(
+            @($record.ComponentNames) + $ComponentName |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace([string]$_)
+                } |
+                Select-Object -Unique
+        )
+    }
+
     if ($PSBoundParameters.ContainsKey('NexusModId')) {
         $record.NexusModIds = if ($ReplaceNexusModIds) {
             @($NexusModId)
@@ -588,6 +641,7 @@ function Set-PwModCatalogMetadata {
         @($record.NexusModIds).Count -gt 0 -or
         -not [string]::IsNullOrWhiteSpace($record.InstalledVersion) -or
         $PSBoundParameters.ContainsKey('InstallName') -or
+        $PSBoundParameters.ContainsKey('ComponentName') -or
         $PSBoundParameters.ContainsKey('Source')
     ) {
         $record.ReconciliationStatus = if (
@@ -603,6 +657,79 @@ function Set-PwModCatalogMetadata {
     $catalog.UpdatedAt = (Get-Date).ToUniversalTime().ToString('o')
 
     if ($PSCmdlet.ShouldProcess($Path, "Reconcile '$CatalogKey' metadata")) {
+        Write-PwJson -InputObject $catalog -Path $Path -Depth 20
+    }
+
+    $record
+}
+
+<#
+.SYNOPSIS
+    Creates a reviewed manual catalog identity for a staging-only component.
+.DESCRIPTION
+    Adds lightweight metadata only. It does not move, rename, package, deploy,
+    or modify any mod file.
+#>
+function New-PwModCatalogRecord {
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$DisplayName,
+
+        [string]$ComponentName = $DisplayName,
+
+        [ValidateSet('NexusMods', 'UE4SSBundled', 'GitHub', 'Manual')]
+        [string]$Source = 'Manual',
+
+        [string]$Path = (Get-PwCatalogManifestPath)
+    )
+
+    $catalog = Get-PwPersistentModCatalog -Path $Path
+    $catalogKey = ConvertTo-PwCatalogKey -Value $DisplayName
+
+    if ([string]::IsNullOrWhiteSpace($catalogKey)) {
+        throw 'Display name does not produce a valid catalog key.'
+    }
+
+    if (@($catalog.Mods | Where-Object CatalogKey -eq $catalogKey).Count -gt 0) {
+        throw "Catalog record already exists: $catalogKey"
+    }
+
+    $record = [PSCustomObject]@{
+        CatalogKey = $catalogKey
+        DisplayName = $DisplayName
+        InstallNames = @()
+        ComponentNames = @(
+            $ComponentName |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace([string]$_)
+                }
+        )
+        Source = $Source
+        NexusModIds = @()
+        InstalledVersion = ''
+        InstalledContentHash = ''
+        Enabled = $null
+        Types = @()
+        InstalledVariant = [PSCustomObject]@{
+            Platform = 'Universal'
+            PlayMode = 'Universal'
+            PackageTypes = @()
+        }
+        ReconciliationStatus = 'ManuallyReconciled'
+        RemoteMetadata = $null
+        Versions = @()
+    }
+
+    $catalog.Mods = @(
+        @($catalog.Mods) + $record |
+            Sort-Object DisplayName
+    )
+    $catalog.UpdatedAt = (Get-Date).ToUniversalTime().ToString('o')
+
+    if ($PSCmdlet.ShouldProcess($Path, "Create catalog record '$catalogKey'")) {
         Write-PwJson -InputObject $catalog -Path $Path -Depth 20
     }
 

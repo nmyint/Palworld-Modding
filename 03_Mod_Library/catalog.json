@@ -1,6 +1,6 @@
 {
   "SchemaVersion": "1.0",
-  "UpdatedAt": "2026-07-29T10:48:05.9973832Z",
+  "UpdatedAt": "2026-07-29T13:28:17.9396762Z",
   "Mods": [
     {
       "CatalogKey": "antiphat",
@@ -8,6 +8,7 @@
       "InstallNames": [
         "AntiPhat"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         3799
@@ -53,6 +54,7 @@
       "InstallNames": [
         "AntiWaste"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         3968
@@ -117,6 +119,7 @@
       "InstallNames": [
         "BasePalVisibility"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4416
@@ -153,6 +156,7 @@
       "InstallNames": [
         "BPML_GenericFunctions"
       ],
+      "ComponentNames": [],
       "Source": "UE4SSBundled",
       "NexusModIds": [],
       "InstalledVersion": "",
@@ -178,6 +182,7 @@
       "InstallNames": [
         "BPModLoaderMod"
       ],
+      "ComponentNames": [],
       "Source": "UE4SSBundled",
       "NexusModIds": [],
       "InstalledVersion": "",
@@ -203,6 +208,7 @@
       "InstallNames": [
         "BuildFlightCamera"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4144
@@ -252,6 +258,7 @@
       "InstallNames": [
         "CheatManagerEnablerMod"
       ],
+      "ComponentNames": [],
       "Source": "UE4SSBundled",
       "NexusModIds": [],
       "InstalledVersion": "",
@@ -277,6 +284,7 @@
       "InstallNames": [
         "ConcealedCarry"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4333
@@ -304,6 +312,7 @@
       "InstallNames": [
         "ConsoleCommandsMod"
       ],
+      "ComponentNames": [],
       "Source": "UE4SSBundled",
       "NexusModIds": [],
       "InstalledVersion": "",
@@ -329,6 +338,7 @@
       "InstallNames": [
         "ConsoleEnablerMod"
       ],
+      "ComponentNames": [],
       "Source": "UE4SSBundled",
       "NexusModIds": [],
       "InstalledVersion": "",
@@ -349,12 +359,35 @@
       "Versions": []
     },
     {
+      "CatalogKey": "creativemenu",
+      "DisplayName": "CreativeMenu",
+      "InstallNames": [],
+      "ComponentNames": [
+        "CreativeMenu"
+      ],
+      "Source": "Manual",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "",
+      "Enabled": null,
+      "Types": [],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": []
+      },
+      "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": null,
+      "Versions": []
+    },
+    {
       "CatalogKey": "dekmodconfigmenu",
       "DisplayName": "DekModConfigMenu",
       "InstallNames": [
         "DekModConfigMenu",
         "Mod Config Menu (UI)"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         577
@@ -406,6 +439,7 @@
       "InstallNames": [
         "ExistingPalEditor"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4001
@@ -450,6 +484,7 @@
       "InstallNames": [
         "FieldBossDefeatMarker"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         3954
@@ -501,6 +536,9 @@
       "InstallNames": [
         "InfiniteMod"
       ],
+      "ComponentNames": [
+        "shared"
+      ],
       "Source": "NexusMods",
       "NexusModIds": [
         2441
@@ -518,7 +556,7 @@
           "UE4SSLua"
         ]
       },
-      "ReconciliationStatus": "Matched",
+      "ReconciliationStatus": "ManuallyReconciled",
       "RemoteMetadata": null,
       "Versions": [
         {
@@ -548,6 +586,7 @@
       "InstallNames": [
         "InstantPalboxSearch"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4190
@@ -610,6 +649,7 @@
       "InstallNames": [
         "Keybinds"
       ],
+      "ComponentNames": [],
       "Source": "UE4SSBundled",
       "NexusModIds": [],
       "InstalledVersion": "",
@@ -635,6 +675,7 @@
       "InstallNames": [
         "LessBaseHud"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4490
@@ -674,6 +715,7 @@
       "InstallNames": [
         "LessRestrictiveBuilding"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         98
@@ -725,6 +767,7 @@
       "InstallNames": [
         "LineTraceMod"
       ],
+      "ComponentNames": [],
       "Source": "UE4SSBundled",
       "NexusModIds": [],
       "InstalledVersion": "",
@@ -745,11 +788,34 @@
       "Versions": []
     },
     {
+      "CatalogKey": "mapcollectablesmod",
+      "DisplayName": "MapCollectablesMod",
+      "InstallNames": [],
+      "ComponentNames": [
+        "MapCollectablesMod"
+      ],
+      "Source": "Manual",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "",
+      "Enabled": null,
+      "Types": [],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": []
+      },
+      "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": null,
+      "Versions": []
+    },
+    {
       "CatalogKey": "mercymode",
       "DisplayName": "MercyMode",
       "InstallNames": [
         "MercyMode"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4411
@@ -795,6 +861,7 @@
       "InstallNames": [
         "MiniBuilds"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4143
@@ -840,6 +907,7 @@
       "InstallNames": [
         "NoPalDeposit"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4211
@@ -884,6 +952,9 @@
       "DisplayName": "PalMiniMap",
       "InstallNames": [
         "PalMiniMap"
+      ],
+      "ComponentNames": [
+        "Paldar"
       ],
       "Source": "NexusMods",
       "NexusModIds": [
@@ -937,6 +1008,7 @@
         "PalModOptions",
         "Mod Options Framework"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4408
@@ -981,6 +1053,7 @@
       "InstallNames": [
         "PalSchema"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         3037
@@ -1025,6 +1098,7 @@
       "InstallNames": [
         "PalWellbeing"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4240
@@ -1061,6 +1135,7 @@
       "InstallNames": [
         "PalworldTuner"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         3739
@@ -1092,9 +1167,32 @@
       "Versions": []
     },
     {
+      "CatalogKey": "remotepalbox",
+      "DisplayName": "RemotePalBox",
+      "InstallNames": [],
+      "ComponentNames": [
+        "RemotePalBox"
+      ],
+      "Source": "Manual",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "",
+      "Enabled": null,
+      "Types": [],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": []
+      },
+      "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": null,
+      "Versions": []
+    },
+    {
       "CatalogKey": "rotateitbeta",
       "DisplayName": "RotateIt_beta",
       "InstallNames": [],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         684
@@ -1134,6 +1232,7 @@
       "InstallNames": [
         "shared"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         2441
@@ -1181,6 +1280,7 @@
       "InstallNames": [
         "SmartPause"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4186
@@ -1226,6 +1326,7 @@
       "InstallNames": [
         "SplitScreenMod"
       ],
+      "ComponentNames": [],
       "Source": "UE4SSBundled",
       "NexusModIds": [],
       "InstalledVersion": "",
@@ -1246,11 +1347,34 @@
       "Versions": []
     },
     {
+      "CatalogKey": "stacksize999999999zeroweight",
+      "DisplayName": "StackSize999999999ZeroWeight",
+      "InstallNames": [],
+      "ComponentNames": [
+        "StackSize999999999ZeroWeight"
+      ],
+      "Source": "Manual",
+      "NexusModIds": [],
+      "InstalledVersion": "",
+      "InstalledContentHash": "",
+      "Enabled": null,
+      "Types": [],
+      "InstalledVariant": {
+        "Platform": "Universal",
+        "PlayMode": "Universal",
+        "PackageTypes": []
+      },
+      "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": null,
+      "Versions": []
+    },
+    {
       "CatalogKey": "stutterfixpack",
       "DisplayName": "StutterFixPack",
       "InstallNames": [
         "StutterFixPack"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         4087
@@ -1297,6 +1421,7 @@
       "InstallNames": [
         "WaypointTeleport"
       ],
+      "ComponentNames": [],
       "Source": "NexusMods",
       "NexusModIds": [
         606

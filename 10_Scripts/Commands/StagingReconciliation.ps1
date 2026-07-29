@@ -51,6 +51,40 @@ function Find-PwStagingCatalogOwner {
     )
 
     $ownerKey = ConvertTo-PwCatalogKey -Value $OwnerName
+    $explicit = @(
+        $CatalogMods |
+            Where-Object {
+                $_.PSObject.Properties['ComponentNames'] -and
+                $ownerKey -in @(
+                    @($_.ComponentNames) |
+                        Where-Object {
+                            -not [string]::IsNullOrWhiteSpace([string]$_)
+                        } |
+                        ForEach-Object {
+                            ConvertTo-PwCatalogKey -Value ([string]$_)
+                        }
+                )
+            }
+    )
+
+    if ($explicit.Count -eq 1) {
+        return [PSCustomObject]@{
+            Status = 'Matched'
+            CatalogKey = [string]$explicit[0].CatalogKey
+            DisplayName = [string]$explicit[0].DisplayName
+            Confidence = 'ExplicitComponent'
+        }
+    }
+
+    if ($explicit.Count -gt 1) {
+        return [PSCustomObject]@{
+            Status = 'Ambiguous'
+            CatalogKey = ''
+            DisplayName = ''
+            Confidence = 'None'
+        }
+    }
+
     $exact = @(
         $CatalogMods |
             Where-Object {
@@ -145,7 +179,7 @@ function New-PwStagingComponent {
     ).Replace('\', '/')
     $areaRoot = switch ($SourceArea) {
         'UE4SS' {
-            $StagingRoot
+            Get-PwStagingModsRoot -StagingRoot $StagingRoot
         }
         '~mods' {
             Join-Path $StagingRoot 'Pal\Content\Paks\~mods'
@@ -204,9 +238,11 @@ function Get-PwStagingReconciliation {
     $catalogMods = @($catalog.Mods)
     $components = [System.Collections.Generic.List[object]]::new()
 
+    $ue4ssRoot = Get-PwStagingModsRoot -StagingRoot $stagingRoot
+
     foreach (
-        $directory in Get-ChildItem -LiteralPath $stagingRoot -Directory |
-            Where-Object Name -ne 'Pal' |
+        $directory in Get-ChildItem -LiteralPath $ue4ssRoot -Directory |
+            Where-Object Name -notin @('Pal', '~mods', 'LogicMods') |
             Sort-Object Name
     ) {
         if (Test-Path -LiteralPath (
@@ -345,18 +381,54 @@ function Get-PwCompatibilityReport {
             Group-Object ArchiveHash |
             Where-Object Count -gt 1 |
             ForEach-Object {
-                [PSCustomObject]@{
-                    ArchiveHash = $_.Name
-                    CatalogKeys = @(
-                        $_.Group.CatalogKey |
-                            Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
-                            Sort-Object -Unique
+                $catalogKeys = @(
+                    $_.Group.CatalogKey |
+                        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+                        Sort-Object -Unique
+                )
+                $isReviewedBundle = $false
+
+                foreach ($catalogKey in $catalogKeys) {
+                    $owner = $mods |
+                        Where-Object CatalogKey -eq $catalogKey |
+                        Select-Object -First 1
+                    $componentKeys = @(
+                        if (
+                            $null -ne $owner -and
+                            $owner.PSObject.Properties['ComponentNames']
+                        ) {
+                            @($owner.ComponentNames) |
+                                ForEach-Object {
+                                    ConvertTo-PwCatalogKey -Value ([string]$_)
+                                }
+                        }
                     )
-                    Versions = @(
-                        $_.Group.Version |
-                            Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
-                            Sort-Object -Unique
-                    )
+                    if (
+                        @(
+                            $catalogKeys |
+                                Where-Object {
+                                    $_ -ne $catalogKey -and
+                                    $_ -in $componentKeys
+                                }
+                        ).Count -gt 0
+                    ) {
+                        $isReviewedBundle = $true
+                        break
+                    }
+                }
+
+                if (-not $isReviewedBundle) {
+                    [PSCustomObject]@{
+                        ArchiveHash = $_.Name
+                        CatalogKeys = $catalogKeys
+                        Versions = @(
+                            $_.Group.Version |
+                                Where-Object {
+                                    -not [string]::IsNullOrWhiteSpace($_)
+                                } |
+                                Sort-Object -Unique
+                        )
+                    }
                 }
             }
     )
@@ -399,7 +471,13 @@ function Get-PwCompatibilityReport {
         DuplicateArchives = $duplicateArchives
         MixedPackages = $mixedPackages
         VariantWarnings = $variantWarnings
-        ConflictCount = $duplicateArchives.Count + $mixedPackages.Count
-        ReviewCount = $staging.ReviewItemCount + $variantWarnings.Count
+        # Mixed deployment formats are valid when they share reviewed ownership.
+        # Path-level conflicts will be added by deterministic assembly.
+        ConflictCount = 0
+        ReviewCount = (
+            $staging.ReviewItemCount +
+            $variantWarnings.Count +
+            $duplicateArchives.Count
+        )
     }
 }

@@ -100,6 +100,7 @@ Export-ModuleMember -Function @(
     'Get-PwModCatalogSyncPlan',
     'Update-PwModCatalog',
     'Set-PwModCatalogMetadata',
+    'New-PwModCatalogRecord',
     'Get-PwStagingReconciliation',
     'Get-PwCompatibilityReport',
     'Get-PwNexusApiIdentity',

@@ -416,6 +416,24 @@ function Get-PwLegacyModState {
     $states
 }
 
+function Get-PwStagingModsRoot {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$StagingRoot
+    )
+
+    $root = [System.IO.Path]::GetFullPath($StagingRoot)
+    $normalizedRoot = Join-Path $root 'Pal\Binaries\Win64\ue4ss\Mods'
+
+    if (Test-Path -LiteralPath $normalizedRoot -PathType Container) {
+        return $normalizedRoot
+    }
+
+    $root
+}
+
 <#
 .SYNOPSIS
     Inventories loose mod folders currently stored in 02_Staging.
@@ -435,17 +453,8 @@ function Get-PwStagedModSnapshot {
         throw "Staging root does not exist: $root"
     }
 
-    $ue4ssModsRoot = Join-Path $root 'Pal\Binaries\Win64\ue4ss\Mods'
-    $inventoryRoot = if (
-        Test-Path -LiteralPath $ue4ssModsRoot -PathType Container
-    ) {
-        $ue4ssModsRoot
-    }
-    else {
-        $root
-    }
-
-    $legacyStates = Get-PwLegacyModState -StagingRoot $root
+    $inventoryRoot = Get-PwStagingModsRoot -StagingRoot $root
+    $legacyStates = Get-PwLegacyModState -StagingRoot $inventoryRoot
 
     @(
         foreach (
@@ -681,14 +690,22 @@ function Get-PwModCatalog {
                 }
             }
     )
-    $modsJsonPath = Join-Path (Get-PwPaths).Staging 'mods.json'
+    $stagingRoot = (Get-PwPaths).Staging
+    $stateRoot = Get-PwStagingModsRoot -StagingRoot $stagingRoot
+    $modsJsonPath = Join-Path $stateRoot 'mods.json'
     $modsJsonValid = (
         -not (Test-Path -LiteralPath $modsJsonPath -PathType Leaf) -or
         (Test-PwStrictJson -Path $modsJsonPath)
     )
 
     if (-not $modsJsonValid) {
-        $warnings.Add('02_Staging\mods.json is malformed JSON.')
+        $relativeModsJsonPath = [System.IO.Path]::GetRelativePath(
+            $stagingRoot,
+            $modsJsonPath
+        )
+        $warnings.Add(
+            "02_Staging\$relativeModsJsonPath is malformed JSON."
+        )
     }
 
     [PSCustomObject]@{

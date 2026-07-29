@@ -46,9 +46,10 @@ Start the menu-driven workshop from the repository root:
 pwsh -NoProfile -File ./PwWorkshop.ps1
 ```
 
-Sprint 4.1 provides read-only catalog, archive, staging, diagnostic, inventory,
-history, and Nexus update views. The interface redraws automatically when its
-terminal window is resized. See
+The Sprint 4 menu provides catalog, archive, staging, component-ownership,
+compatibility, profile-set, diagnostic, inventory, history, and Nexus update
+workflows. The interface redraws automatically when its terminal window is
+resized. See
 [ModCatalog.md](00_Documentation/ModCatalog.md).
 
 Cataloged Nexus mods can be checked for updates through the supported API.

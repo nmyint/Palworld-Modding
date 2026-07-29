@@ -1,16 +1,60 @@
 {
-    "SchemaVersion": "1.0",
-    "Name": "Stable",
-    "Description": "Primary stable Palworld installation and mod deployment profile.",
-    "Game": {
-        "Platform": "Steam",
-        "InstallRoot": "D:\\Games\\Palworld",
-        "SavedRoot": "%LOCALAPPDATA%\\Pal\\Saved",
-        "Executable": "Palworld-Win64-Shipping.exe"
-    },
-    "Deployment": {
-        "TargetRoot": "05_Deployment\\Pal",
-        "MirrorGameStructure": true,
-        "CleanDeploymentBeforeBuild": false
+  "SchemaVersion": "1.0",
+  "Name": "Stable",
+  "Description": "Primary stable Palworld installation and mod deployment profile.",
+  "Game": {
+    "Platform": "Steam",
+    "InstallRoot": "D:\\Games\\Palworld",
+    "SavedRoot": "%LOCALAPPDATA%\\Pal\\Saved",
+    "Executable": "Palworld-Win64-Shipping.exe"
+  },
+  "Deployment": {
+    "TargetRoot": "05_Deployment\\Pal",
+    "MirrorGameStructure": true,
+    "CleanDeploymentBeforeBuild": false
+  },
+  "ModSets": [
+    {
+      "Name": "CurrentWorking",
+      "Description": "Current reconciled 02_Staging setup; includes present disabled components for reproducibility.",
+      "IsActive": true,
+      "CatalogKeys": [
+        "antiphat",
+        "antiwaste",
+        "basepalvisibility",
+        "bpmlgenericfunctions",
+        "bpmodloadermod",
+        "buildflightcamera",
+        "cheatmanagerenablermod",
+        "concealedcarry",
+        "consolecommandsmod",
+        "consoleenablermod",
+        "creativemenu",
+        "dekmodconfigmenu",
+        "existingpaleditor",
+        "fieldbossdefeatmarker",
+        "infinitemod",
+        "instantpalboxsearch",
+        "keybinds",
+        "lessrestrictivebuilding",
+        "linetracemod",
+        "mapcollectablesmod",
+        "mercymode",
+        "minibuilds",
+        "nopaldeposit",
+        "palminimap",
+        "palmodoptions",
+        "palschema",
+        "palwellbeing",
+        "palworldtuner",
+        "remotepalbox",
+        "rotateitbeta",
+        "smartpause",
+        "splitscreenmod",
+        "stacksize999999999zeroweight",
+        "stutterfixpack",
+        "waypointteleport"
+      ]
     }
+  ]
 }

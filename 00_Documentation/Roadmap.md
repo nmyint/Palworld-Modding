@@ -23,7 +23,7 @@ should describe what was actually delivered.
 | 0 | Development environment and repository setup | Complete |
 | 1 | Workshop foundation | Complete |
 | 2 | PowerShell module and integrated development tooling | Complete |
-| 3 | Safe workshop automation | In progress |
+| 3 | Safe workshop automation | Complete |
 | 4 | Mod intake, library management, and validation | In progress |
 | 5 | Mod development, testing, and diagnostics | Planned |
 | 6 | Packaging, releases, restoration, and maintenance | Planned |
@@ -174,7 +174,7 @@ Status: Complete
 
 ### Sprint 4.2 - Persistent metadata and version history
 
-Status: In progress
+Status: Complete
 
 - Normalize catalog records into tracked lightweight manifests.
 - Preserve archive provenance, hashes, Nexus IDs, and known installed versions.
@@ -184,6 +184,8 @@ Status: In progress
   source links without guessing identities from folder names.
 - Reconcile loose mods whose original downloads are missing.
 - Preview catalog changes before writing `03_Mod_Library/catalog.json`.
+- Track reviewed component ownership separately from Nexus/install identities.
+- Create metadata-only catalog records for staging-only PAK mods.
 
 ### Sprint 4.3 - Conflicts and compatibility rules
 
