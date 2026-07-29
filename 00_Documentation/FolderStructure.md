@@ -32,9 +32,29 @@ directly in the Palworld installation.
 Archive -> Stage -> Library -> Deploy -> Validate -> Inventory
 
 `02_Staging` is now treated as the active working tree for the current mod
-setup. In practice, that means it may hold the current UE4SS scripts, `~mods`
-and `LogicMods` PAK content, and any other files you are actively reconciling
-before they are promoted into the curated library or deployment bundles.
+setup. In practice, that means it should mirror the live game-shaped layout you
+are working toward:
+
+```text
+02_Staging\
+└─ Pal\
+   ├─ Binaries\
+   │  └─ Win64\
+   │     └─ ue4ss\
+   │        └─ Mods\
+   │           ├─ PalMiniMap\
+   │           ├─ AntiWaste\
+   │           └─ ...
+   └─ Content\
+      └─ Paks\
+         ├─ ~mods\
+         │  └─ *.pak / *.utoc / *.ucas
+         └─ LogicMods\
+            └─ *.pak / *.utoc / *.ucas
+```
+
+That keeps the current working copy aligned with the files you are actually
+testing before they are promoted into the curated library or deployment bundles.
 ```
 
 Git stores source and lightweight metadata. External 7z archives preserve

@@ -69,8 +69,8 @@ The command:
 
 1. inspects the ZIP or 7z archive;
 2. copies the original archive into `01_Archives`;
-3. extracts only validated files into the current staging tree beneath
-   `02_Staging\<Name>\<Version>\Source`;
+3. extracts only validated files into the game-shaped staging tree beneath
+   `02_Staging\Pal\...`;
 4. verifies every extracted SHA-256 hash; and
 5. creates a normalized maximum-compression `package.7z`; and
 6. writes `manifest.json` with metadata, hashes, and deployment mappings.
@@ -166,10 +166,11 @@ The later numbered directories are not additional unpacking stages:
 Curated compressed packages remain authoritative in `03_Mod_Library`.
 
 If `02_Staging` is being used as the live working copy of your current setup,
-keep the repository-level staging mirror aligned with the actual `ue4ss\Mods`,
-`Pal\Content\Paks\~mods`, and `Pal\Content\Paks\LogicMods` content you are
-testing. That lets the workshop redownload missing archives while still
-reflecting the real in-game layout you are maintaining locally.
+keep the repository-level staging mirror aligned with the actual
+`Pal\Binaries\Win64\ue4ss\Mods`, `Pal\Content\Paks\~mods`, and
+`Pal\Content\Paks\LogicMods` content you are testing. That lets the workshop
+redownload missing archives while still reflecting the real in-game layout you
+are maintaining locally.
 
 ## Complete validation and clean temporary files
 

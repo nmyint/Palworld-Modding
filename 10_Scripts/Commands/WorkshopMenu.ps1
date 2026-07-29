@@ -1517,7 +1517,7 @@ function Start-PwWorkshop {
                     }
 
                     $modSetChoice = Read-Host (
-                        '[N] New set, [V] Preview active set, [B] Back, or Q to quit'
+                        '[1-#] Edit set, [N] New set, [V] Preview active set, [B] Back, or Q to quit'
                     )
 
                     if (Test-PwWorkshopQuitSelection $modSetChoice) {
@@ -1593,6 +1593,102 @@ function Start-PwWorkshop {
                                 -Description $description `
                                 -CatalogKeys $selectedKeys `
                                 -Activate:($activate -match '^(?i:A)$') |
+                            Select-Object Name, Description, IsActive, CatalogKeys |
+                                Format-List
+                        }
+                    }
+                    elseif ($modSetChoice -match '^\d+$') {
+                        $modSetIndex = [int]$modSetChoice - 1
+
+                        if (
+                            $modSetIndex -lt 0 -or
+                            $modSetIndex -ge $modSets.Count
+                        ) {
+                            Write-Host 'Invalid set number.' -ForegroundColor Yellow
+                            continue
+                        }
+
+                        $selectedSet = $modSets[$modSetIndex]
+                        $editedName = Read-Host (
+                            "Set name [$($selectedSet.Name)] (or B to back)"
+                        )
+
+                        if (Test-PwWorkshopQuitSelection $editedName) {
+                            $quitRequested = $true
+                            break
+                        }
+
+                        if (Test-PwWorkshopBackSelection $editedName) {
+                            continue
+                        }
+
+                        if ([string]::IsNullOrWhiteSpace($editedName)) {
+                            $editedName = $selectedSet.Name
+                        }
+
+                        $editedDescription = Read-Host (
+                            "Description [$($selectedSet.Description)] (or B to back)"
+                        )
+
+                        if (Test-PwWorkshopQuitSelection $editedDescription) {
+                            $quitRequested = $true
+                            break
+                        }
+
+                        if (Test-PwWorkshopBackSelection $editedDescription) {
+                            continue
+                        }
+
+                        if ([string]::IsNullOrWhiteSpace($editedDescription)) {
+                            $editedDescription = $selectedSet.Description
+                        }
+
+                        $editedCatalogKeys = Read-Host (
+                            "Catalog keys, comma-separated " +
+                                "[{0}] (or B to back)" -f (
+                                    @($selectedSet.CatalogKeys) -join ', '
+                                )
+                        )
+
+                        if (Test-PwWorkshopQuitSelection $editedCatalogKeys) {
+                            $quitRequested = $true
+                            break
+                        }
+
+                        if (Test-PwWorkshopBackSelection $editedCatalogKeys) {
+                            continue
+                        }
+
+                        if ([string]::IsNullOrWhiteSpace($editedCatalogKeys)) {
+                            $editedCatalogKeys = @($selectedSet.CatalogKeys) -join ', '
+                        }
+
+                        $editedActivate = Read-Host (
+                            '[A] Save and activate this mod set, [S] Save only, [B] Back, or Q to quit'
+                        )
+
+                        if (Test-PwWorkshopQuitSelection $editedActivate) {
+                            $quitRequested = $true
+                            break
+                        }
+
+                        if (Test-PwWorkshopBackSelection $editedActivate) {
+                            continue
+                        }
+
+                        if ($editedActivate -match '^(?i:[AS])$') {
+                            $editedKeys = @(
+                                $editedCatalogKeys -split ',' |
+                                    ForEach-Object { $_.Trim() } |
+                                    Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+                            )
+
+                            Set-PwProfileModSet `
+                                -Name $profileName `
+                                -SetName $editedName `
+                                -Description $editedDescription `
+                                -CatalogKeys $editedKeys `
+                                -Activate:($editedActivate -match '^(?i:A)$') |
                                 Select-Object Name, Description, IsActive, CatalogKeys |
                                 Format-List
                         }
