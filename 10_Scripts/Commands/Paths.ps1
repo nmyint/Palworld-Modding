@@ -1,3 +1,19 @@
+<#
+.SYNOPSIS
+    Provides resolved workshop paths.
+.DESCRIPTION
+    Defines commands that translate configured relative paths into absolute paths
+    beneath the Palworld workshop root.
+#>
+
+Set-StrictMode -Version Latest
+
+<#
+.SYNOPSIS
+    Gets the absolute paths used by the workshop.
+.OUTPUTS
+    PSCustomObject containing the workshop root and named workshop directories.
+#>
 function Get-PwPaths {
 
     [CmdletBinding()]

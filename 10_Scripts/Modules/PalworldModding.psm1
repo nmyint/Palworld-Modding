@@ -1,6 +1,9 @@
 <#
 .SYNOPSIS
     Palworld Modding Workshop PowerShell Module
+.DESCRIPTION
+    Loads workshop configuration, context, diagnostic, path, deployment, and tool
+    commands and exports the supported public API.
 #>
 
 Set-StrictMode -Version Latest

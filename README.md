@@ -1,20 +1,46 @@
-Palworld Modding Workshop
+# Palworld Modding Workshop
 
-Purpose
+This repository is the authoritative development workspace for a personal
+Palworld installation. It keeps development, testing, deployment, and archival
+work separate from the live game installation.
 
-This repository is the authoritative development workspace for my personal
-Palworld installation.
+## Goals
 
-Goals
+- Maintain a stable modded installation.
+- Develop and test compatibility patches.
+- Archive every mod update.
+- Document reproducible issues and solutions.
+- Automate repetitive maintenance safely.
+- Keep experiments isolated from deployment-ready work.
 
-• Maintain a stable modded installation.
+## Workflow
 
-• Develop compatibility patches.
+```text
+Workshop -> Test -> Deploy -> Commit
+```
 
-• Archive every mod update.
+See [FolderStructure.md](00_Documentation/FolderStructure.md) for the role of each
+workshop directory.
 
-• Document every issue.
+## PowerShell module
 
-• Automate repetitive maintenance.
+Workshop automation is provided by the `PalworldModding` module:
 
-• Keep experimental work isolated.
+```powershell
+Import-Module ./10_Scripts/Modules/PalworldModding.psd1 -Force
+Initialize-PwWorkshop
+Get-PwWorkshopInfo
+```
+
+PowerShell conventions are documented in
+[PowerShellStandards.md](00_Documentation/PowerShellStandards.md).
+
+## Tests
+
+Run the automated checks from the repository root:
+
+```powershell
+pwsh -NoProfile -Command "Invoke-Pester -Path './10_Scripts/Tests' -EnableExit"
+```
+
+In VS Code, run the default test task: `PwTools: Test`.

@@ -6,9 +6,9 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.2.0'
+ModuleVersion = '0.3.0'
 
-GUID = 'YOUR-GUID-HERE'
+GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
 Author = 'Noel Myint'
 
@@ -57,7 +57,7 @@ FunctionsToExport = @(
 
 CmdletsToExport = @()
 
-VariablesToExport = '*'
+VariablesToExport = @()
 
 AliasesToExport = @()
 
@@ -80,7 +80,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 2 Complete'
+        ReleaseNotes = 'Sprint 3.1 module stabilization and automated tests'
 
     }
 

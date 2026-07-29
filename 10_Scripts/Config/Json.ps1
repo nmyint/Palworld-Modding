@@ -5,6 +5,14 @@
 
 Set-StrictMode -Version Latest
 
+<#
+.SYNOPSIS
+    Resolves and validates the path to a JSON file.
+.PARAMETER Path
+    Path to an existing JSON file.
+.OUTPUTS
+    System.String containing the absolute file path.
+#>
 function Resolve-PwJsonPath {
 
     [CmdletBinding()]
@@ -24,6 +32,14 @@ function Resolve-PwJsonPath {
     (Resolve-Path -LiteralPath $Path).Path
 }
 
+<#
+.SYNOPSIS
+    Reads and deserializes a JSON file.
+.PARAMETER Path
+    Path to an existing JSON file.
+.OUTPUTS
+    PSCustomObject containing the deserialized JSON data.
+#>
 function Read-PwJson {
 
     [CmdletBinding()]
@@ -39,6 +55,16 @@ function Read-PwJson {
         ConvertFrom-Json
 }
 
+<#
+.SYNOPSIS
+    Serializes an object and writes it to a JSON file.
+.PARAMETER InputObject
+    Object to serialize.
+.PARAMETER Path
+    Destination JSON file path.
+.PARAMETER Depth
+    Maximum serialization depth.
+#>
 function Write-PwJson {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -79,6 +105,14 @@ function Write-PwJson {
 
 }
 
+<#
+.SYNOPSIS
+    Tests whether a file contains readable JSON.
+.PARAMETER Path
+    Path to the JSON file to test.
+.OUTPUTS
+    System.Boolean indicating whether the file can be read and deserialized.
+#>
 function Test-PwJson {
 
     [CmdletBinding()]

@@ -1,4 +1,12 @@
 {
+    "inputs": [
+        {
+            "id": "token",
+            "type": "promptString",
+            "description": "",
+            "password": true
+        }
+    ],
     "servers": {
         "PalWorldWorkshop": {
             "type": "stdio",
@@ -8,7 +16,10 @@
                 "@modelcontextprotocol/server-filesystem",
                 "D:\\Projects\\Palworld-Modding"
             ]
+        },
+        "github": {
+            "type": "http",
+            "url": "https://api.githubcopilot.com/mcp/"
         }
-    },
-    "inputs": []
+    }
 }

@@ -5,10 +5,16 @@
 
 Set-StrictMode -Version Latest
 
-# Always load required libraries
+# Load required configuration helpers when this file is dot-sourced independently.
 . "$PSScriptRoot\..\Config\Json.ps1"
 . "$PSScriptRoot\..\Config\WorkshopConfig.ps1"
 
+<#
+.SYNOPSIS
+    Initializes the workshop context.
+.OUTPUTS
+    PSCustomObject containing the workshop root, configuration, and start time.
+#>
 function Initialize-PwWorkshop {
 
     [CmdletBinding()]
@@ -33,6 +39,14 @@ function Initialize-PwWorkshop {
     return $script:PwContext
 }
 
+<#
+.SYNOPSIS
+    Gets the current workshop context.
+.DESCRIPTION
+    Initializes the context on first use and returns the cached context thereafter.
+.OUTPUTS
+    PSCustomObject containing the current workshop context.
+#>
 function Get-PwContext {
 
     [CmdletBinding()]
@@ -45,6 +59,10 @@ function Get-PwContext {
     return $script:PwContext
 }
 
+<#
+.SYNOPSIS
+    Clears the cached workshop context.
+#>
 function Reset-PwContext {
 
     [CmdletBinding()]
