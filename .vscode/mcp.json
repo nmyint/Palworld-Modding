@@ -1,0 +1,14 @@
+{
+    "servers": {
+        "PalWorldWorkshop": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-filesystem",
+                "D:\\Projects\\Palworld-Modding"
+            ]
+        }
+    },
+    "inputs": []
+}

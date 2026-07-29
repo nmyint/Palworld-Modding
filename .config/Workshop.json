@@ -1,75 +1,65 @@
 {
-  "Workshop": {
-    "Name": "Palworld Modding Workshop",
-    "Version": "0.1.0",
-    "Owner": "Noel",
-    "Created": "2026-07-28",
-    "Description": "Personal Palworld mod development and deployment workshop."
-  },
-
-  "Paths": {
-    "Root": "D:\\Projects\\Palworld-Modding",
-
-    "Archives": "01_Archives",
-    "Staging": "02_Staging",
-    "ModLibrary": "03_Mod_Library",
-    "Projects": "04_Projects",
-    "Deployment": "05_Deployment",
-    "CurrentInstallation": "06_Current_Installation",
-    "Testing": "07_Testing",
-    "Tools": "08_Tools",
-    "Logs": "09_Logs",
-    "Scripts": "10_Scripts",
-    "Utilities": "11_Utilities",
-    "Research": "12_Research",
-    "Backups": "13_Backups",
-    "Templates": "14_Templates",
-    "Sandbox": "15_Sandbox",
-    "Profiles": "16_Profiles"
-  },
-
-  "Game": {
-    "Name": "Palworld",
-    "Platform": "Steam",
-
-    "InstallPath": "",
-    "SavePath": "",
-    "Executable": "Palworld-Win64-Shipping.exe"
-  },
-
-  "Deployment": {
-    "ActiveProfile": "Stable",
-    "MirrorGameStructure": true,
-    "CleanDeploymentBeforeBuild": false
-  },
-
-  "Tools": {
-    "PowerShell": {
-      "RequiredVersion": "7.6.4"
+    "Workshop": {
+        "Name": "Palworld Modding Workshop",
+        "Version": "0.2.0",
+        "Owner": "Noel",
+        "Created": "2026-07-28",
+        "Description": "Personal Palworld mod development and deployment workshop."
     },
-
+    "Paths": {
+        "Root": "D:\\Projects\\Palworld-Modding",
+        "Archives": "01_Archives",
+        "Staging": "02_Staging",
+        "ModLibrary": "03_Mod_Library",
+        "Projects": "04_Projects",
+        "Deployment": "05_Deployment",
+        "CurrentInstallation": "06_Current_Installation",
+        "Testing": "07_Testing",
+        "Tools": "08_Tools",
+        "Logs": "09_Logs",
+        "Scripts": "10_Scripts",
+        "Utilities": "11_Utilities",
+        "Research": "12_Research",
+        "Backups": "13_Backups",
+        "Templates": "14_Templates",
+        "Sandbox": "15_Sandbox",
+        "Profiles": "16_Profiles"
+    },
+    "Game": {
+        "Name": "Palworld",
+        "Platform": "Steam",
+        "InstallRoot": "",
+        "SavePath": "",
+        "Executable": "Palworld-Win64-Shipping.exe"
+    },
+    "Deployment": {
+        "TargetRoot": "D:\\Projects\\Palworld-Modding\\05_Deployment\\Pal",
+        "ActiveProfile": "Stable",
+        "MirrorGameStructure": true,
+        "CleanDeploymentBeforeBuild": false
+    },
+    "Tools": {
+        "PowerShell": {
+            "RequiredVersion": "7.6.4"
+        },
+        "Git": {
+            "Required": true
+        },
+        "UE4SS": {
+            "Version": ""
+        },
+        "WinMerge": {
+            "Enabled": true
+        }
+    },
     "Git": {
-      "Required": true
+        "DefaultBranch": "main",
+        "CommitConvention": "Conventional"
     },
-
-    "UE4SS": {
-      "Version": ""
-    },
-
-    "WinMerge": {
-      "Enabled": true
+    "Preferences": {
+        "AutoArchiveLogs": true,
+        "CreateBackupsBeforeDeployment": true,
+        "VerboseOutput": false,
+        "ConfirmDestructiveOperations": true
     }
-  },
-
-  "Git": {
-    "DefaultBranch": "main",
-    "CommitConvention": "Conventional"
-  },
-
-  "Preferences": {
-    "AutoArchiveLogs": true,
-    "CreateBackupsBeforeDeployment": true,
-    "VerboseOutput": false,
-    "ConfirmDestructiveOperations": true
-  }
 }

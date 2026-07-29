@@ -1,20 +1,109 @@
 Folder PATH listing for volume Data
-Volume serial number is 000000AD 34A6:06E2
-D:.
+Volume serial number is 000001A6 34A6:06E2
+D:\PROJECTS\PALWORLD-MODDING
 |   .gitattributes
 |   .gitignore
+|   CONTRIBUTING.md
+|   Palworld-Modding.code-workspace
+|   Palworld-Modding.zip
+|   README.md
 |   
++---.config
+|       Workshop.json
+|       
++---.vscode
+|       extensions.json
+|       PowerShellEditorServices.json
+|       settings.json
+|       tasks.json
+|       
 +---00_Documentation
 |       FolderStructure.txt
 |       
-+---01_Game
-+---02_Mod_Archives
-+---03Current_Installation
-+---04_Working
-+---05_Custom_Patches
-+---06_Testing
-+---07_Logs
++---01_Archives
+|       .gitkeep
+|       
++---02_Staging
+|       .gitkeep
+|       
++---03_Mod_Library
++---04_Projects
+|       .gitkeep
+|       
++---05_Deployment
+|   |   .gitkeep
+|   |   
+|   \---Pal
+|       +---Binaries
+|       |   \---Win64
+|       |       \---ue4ss
+|       |           \---Mods
+|       +---Content
+|       |   \---Paks
+|       |       +---LogicMods
+|       |       \---~mods
+|       \---Mods
++---06_Current_Installation
+|       .gitkeep
+|       
++---07_Testing
+|   |   .gitkeep
+|   |   
+|   +---Compatibility
+|   +---Performance
+|   +---Plans
+|   +---Regression
+|   \---Results
 +---08_Tools
-+---09_Backups
+|   |   .gitkeep
+|   |   
+|   +---Git
+|   +---Lua
+|   +---PowerShell
+|   +---Save_Editors
+|   +---UE4SS
+|   \---WinMerge
++---09_Logs
+|   |   .gitkeep
+|   |   
+|   \---2026
+|       \---07
 +---10_Scripts
-\---11_Utilities
+|   +---Commands
+|   |       Deployment.ps1
+|   |       Environment.ps1
+|   |       Paths.ps1
+|   |       Tools.ps1
+|   |       WorkshopInfo.ps1
+|   |       
+|   +---Config
+|   |       Json.ps1
+|   |       WorkshopConfig.ps1
+|   |       
+|   +---Core
+|   |       Bootstrap.ps1
+|   |       
+|   +---Modules
+|   |       PalworldModding.psd1
+|   |       PalworldModding.psm1
+|   |       
+|   +---Output
+|   \---Tests
++---11_Utilities
+|       .gitkeep
+|       
++---12_Research
+|       .gitkeep
+|       
++---13_Backups
+|       .gitkeep
+|       
++---14_Templates
+|       .gitkeep
+|       
++---15_Sandbox
+|       .gitkeep
+|       
+\---16_Profiles
+        .gitkeep
+        

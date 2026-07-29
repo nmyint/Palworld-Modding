@@ -1,38 +1,89 @@
 @{
-    RootModule        = 'PalworldModding.psm1'
 
-    ModuleVersion     = '0.2.0'
+# ============================================================
+# Module Information
+# ============================================================
 
-    GUID              = '6950fd47-10f2-48e0-a75b-81f01cb06ea7'
+RootModule = 'PalworldModding.psm1'
 
-    Author            = 'Noel Myint'
+ModuleVersion = '0.2.0'
 
-    CompanyName       = 'Personal'
+GUID = 'YOUR-GUID-HERE'
 
-    Copyright         = '(c) 2026 Noel Myint'
+Author = 'Noel Myint'
 
-    Description       = 'Palworld Modding Workshop'
+CompanyName = ''
 
-    PowerShellVersion = '7.0'
+Copyright = '(c) Noel Myint'
 
-    FunctionsToExport = @(
-        'Initialize-PwWorkshop',
-        'Get-PwContext',
-        'Get-PwWorkshopConfig',
-        'Save-PwWorkshopConfig',
-        'Test-PwWorkshopConfig'
-    )
+Description = 'Palworld Modding Workshop PowerShell Module'
 
-    CmdletsToExport   = @()
+PowerShellVersion = '7.0'
 
-    VariablesToExport = '*'
+# ============================================================
+# Functions
+# ============================================================
 
-    AliasesToExport   = @()
+FunctionsToExport = @(
 
-    PrivateData       = @{
-        PSData = @{
-            Tags       = @('Palworld', 'Workshop', 'PowerShell')
-            ProjectUri = 'https://github.com/nmyint/Palworld-Modding'
-        }
+    # Core
+    'Initialize-PwWorkshop',
+    'Get-PwContext',
+    'Reset-PwContext',
+
+    # Configuration
+    'Get-PwWorkshopConfig',
+    'Save-PwWorkshopConfig',
+    'Test-PwWorkshopConfig',
+
+    # Workshop
+    'Get-PwVersion',
+    'Get-PwWorkshopInfo',
+
+    # Environment
+    'Test-PwEnvironment',
+
+    # Paths
+    'Get-PwPaths',
+
+    # Deployment
+    'Get-PwDeployment',
+
+    # Tools
+    'Get-PwTool',
+    'Get-PwTools'
+
+)
+
+CmdletsToExport = @()
+
+VariablesToExport = '*'
+
+AliasesToExport = @()
+
+# ============================================================
+# Private Data
+# ============================================================
+
+PrivateData = @{
+
+    PSData = @{
+
+        Tags = @(
+            'Palworld'
+            'Workshop'
+            'Modding'
+            'PowerShell'
+        )
+
+        ProjectUri = 'https://github.com/nmyint/Palworld-Modding'
+
+        LicenseUri = ''
+
+        ReleaseNotes = 'Sprint 2 Complete'
+
     }
+
+}
+
 }
