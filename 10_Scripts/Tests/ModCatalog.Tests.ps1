@@ -61,6 +61,12 @@ Describe 'PalworldModding mod catalog' {
             $trickyContent,
             $global:PwCatalogTrickyArchive
         )
+        $global:PwCatalogLegacyArchive = Join-Path `
+            $global:PwCatalogPaths.Archives `
+            'RotateIt_beta-684-1-17-1-1738046580.7z'
+        Set-Content `
+            -LiteralPath $global:PwCatalogLegacyArchive `
+            -Value 'legacy filename fixture'
 
         $stagedMod = Join-Path `
             $global:PwCatalogPaths.Staging `
@@ -115,6 +121,10 @@ Describe 'PalworldModding mod catalog' {
             PwCatalogTrickyArchive `
             -Scope Global `
             -ErrorAction SilentlyContinue
+        Remove-Variable `
+            PwCatalogLegacyArchive `
+            -Scope Global `
+            -ErrorAction SilentlyContinue
     }
 
     It 'parses Nexus metadata fields from the right side of filenames' {
@@ -139,6 +149,21 @@ Describe 'PalworldModding mod catalog' {
         $result.IsSafe | Should Be $true
         @($result.InstallNames) -contains 'ExampleInstall' | Should Be $true
         @($result.Categories) -contains 'Lua' | Should Be $true
+    }
+
+    It 'parses legacy hyphenated Nexus archive metadata' {
+        $result = Get-PwNexusArchiveMetadata `
+            -Path $global:PwCatalogLegacyArchive `
+            -SkipContentInspection
+
+        $result.IsParsed | Should Be $true
+        $result.FilenamePattern | Should Be 'NexusLegacyHyphen'
+        $result.Name | Should Be 'RotateIt_beta'
+        $result.NexusModId | Should Be 684
+        $result.ArchiveVersion | Should Be '1.17.1'
+        $result.DownloadedAt.ToString('u') |
+            Should Be '2025-01-28 06:43:00Z'
+        $result.TimestampSource | Should Be 'NexusFileUploadedAt'
     }
 
     It 'inventories marker and legacy enablement without writing files' {
@@ -186,7 +211,7 @@ Describe 'PalworldModding mod catalog' {
         $result = Start-PwWorkshop -Action Catalog
 
         $result.ModCount | Should Be 2
-        $result.ArchiveCount | Should Be 2
+        $result.ArchiveCount | Should Be 3
     }
 
     It 'renders the main menu responsively within terminal dimensions' {
@@ -216,6 +241,15 @@ Describe 'PalworldModding mod catalog' {
             foreach ($line in $wideLayout) {
                 $line.Text.Length | Should Be 110
             }
+        }
+    }
+
+    It 'recognizes global quit input case-insensitively' {
+        InModuleScope PalworldModding {
+            Test-PwWorkshopQuitSelection 'q' | Should Be $true
+            Test-PwWorkshopQuitSelection ' Q ' | Should Be $true
+            Test-PwWorkshopQuitSelection '' | Should Be $false
+            Test-PwWorkshopQuitSelection '1' | Should Be $false
         }
     }
 }

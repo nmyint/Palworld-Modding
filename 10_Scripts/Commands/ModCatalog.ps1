@@ -126,6 +126,132 @@ function Get-PwArchiveInstallNames {
     @($names | Sort-Object)
 }
 
+function Get-PwNexusFilenameMetadata {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$FileName
+    )
+
+    $modernMatch = [regex]::Match(
+        $FileName,
+        '^(?<name>.+)\s+(?<modId>\d+)\s+' +
+            '(?<version>\S+)\s+' +
+            '(?<downloaded>\d{4}-\d{2}-\d{2}T\d{2}-\d{2}Z)\s+' +
+            '(?<token>[A-Za-z0-9]+)\.(?<format>zip|7z)$',
+        [System.Text.RegularExpressions.RegexOptions]::IgnoreCase
+    )
+
+    if ($modernMatch.Success) {
+        try {
+            $timestamp = [datetime]::ParseExact(
+                $modernMatch.Groups['downloaded'].Value,
+                'yyyy-MM-ddTHH-mmZ',
+                [System.Globalization.CultureInfo]::InvariantCulture,
+                [System.Globalization.DateTimeStyles]::AssumeUniversal
+            ).ToUniversalTime()
+
+            return [PSCustomObject]@{
+                Success = $true
+                Pattern = 'NexusDownload'
+                Name = $modernMatch.Groups['name'].Value.Trim()
+                ModId = [int]$modernMatch.Groups['modId'].Value
+                Version = $modernMatch.Groups['version'].Value
+                Timestamp = $timestamp
+                TimestampSource = 'DownloadedAt'
+                Token = $modernMatch.Groups['token'].Value
+                Error = ''
+            }
+        }
+        catch {
+            return [PSCustomObject]@{
+                Success = $false
+                Pattern = 'NexusDownload'
+                Name = ''
+                ModId = $null
+                Version = ''
+                Timestamp = $null
+                TimestampSource = ''
+                Token = ''
+                Error = 'Download timestamp could not be parsed.'
+            }
+        }
+    }
+
+    $legacyMatch = [regex]::Match(
+        $FileName,
+        '^(?<prefix>.+)-(?<timestamp>\d{9,10})\.(?<format>zip|7z)$',
+        [System.Text.RegularExpressions.RegexOptions]::IgnoreCase
+    )
+
+    if ($legacyMatch.Success) {
+        $segments = @($legacyMatch.Groups['prefix'].Value.Split('-'))
+        $numericRunStart = $segments.Count
+
+        for ($index = $segments.Count - 1; $index -ge 0; $index--) {
+            if ($segments[$index] -notmatch '^\d+$') {
+                break
+            }
+
+            $numericRunStart = $index
+        }
+
+        if (
+            $numericRunStart -gt 0 -and
+            $segments.Count - $numericRunStart -ge 3
+        ) {
+            try {
+                $timestamp = [datetimeoffset]::FromUnixTimeSeconds(
+                    [long]$legacyMatch.Groups['timestamp'].Value
+                ).UtcDateTime
+                $versionSegments = @(
+                    $segments[($numericRunStart + 1)..($segments.Count - 1)]
+                )
+
+                return [PSCustomObject]@{
+                    Success = $true
+                    Pattern = 'NexusLegacyHyphen'
+                    Name = (
+                        $segments[0..($numericRunStart - 1)] -join '-'
+                    )
+                    ModId = [int]$segments[$numericRunStart]
+                    Version = $versionSegments -join '.'
+                    Timestamp = $timestamp
+                    TimestampSource = 'NexusFileUploadedAt'
+                    Token = ''
+                    Error = ''
+                }
+            }
+            catch {
+                return [PSCustomObject]@{
+                    Success = $false
+                    Pattern = 'NexusLegacyHyphen'
+                    Name = ''
+                    ModId = $null
+                    Version = ''
+                    Timestamp = $null
+                    TimestampSource = ''
+                    Token = ''
+                    Error = 'Legacy Nexus timestamp could not be parsed.'
+                }
+            }
+        }
+    }
+
+    [PSCustomObject]@{
+        Success = $false
+        Pattern = 'Unrecognized'
+        Name = ''
+        ModId = $null
+        Version = ''
+        Timestamp = $null
+        TimestampSource = ''
+        Token = ''
+        Error = 'Filename does not match a supported Nexus archive pattern.'
+    }
+}
+
 <#
 .SYNOPSIS
     Parses and inspects Nexus-style archives in 01_Archives.
@@ -164,33 +290,13 @@ function Get-PwNexusArchiveMetadata {
 
     @(
         foreach ($archive in $archives) {
-            $match = [regex]::Match(
-                $archive.Name,
-                '^(?<name>.+)\s+(?<modId>\d+)\s+' +
-                    '(?<version>\S+)\s+' +
-                    '(?<downloaded>\d{4}-\d{2}-\d{2}T\d{2}-\d{2}Z)\s+' +
-                    '(?<token>[A-Za-z0-9]+)\.(?<format>zip|7z)$',
-                [System.Text.RegularExpressions.RegexOptions]::IgnoreCase
-            )
-            $parsed = $match.Success
-            $downloadedAt = $null
+            $filenameMetadata = Get-PwNexusFilenameMetadata `
+                -FileName $archive.Name
+            $parsed = $filenameMetadata.Success
             $parseErrors = [System.Collections.Generic.List[string]]::new()
 
-            if ($parsed) {
-                try {
-                    $downloadedAt = [datetime]::ParseExact(
-                        $match.Groups['downloaded'].Value,
-                        'yyyy-MM-ddTHH-mmZ',
-                        [System.Globalization.CultureInfo]::InvariantCulture,
-                        [System.Globalization.DateTimeStyles]::AssumeUniversal
-                    ).ToUniversalTime()
-                }
-                catch {
-                    $parseErrors.Add('Download timestamp could not be parsed.')
-                }
-            }
-            else {
-                $parseErrors.Add('Filename does not match the Nexus archive pattern.')
+            if (-not $parsed) {
+                $parseErrors.Add($filenameMetadata.Error)
             }
 
             $inspection = $null
@@ -207,25 +313,25 @@ function Get-PwNexusArchiveMetadata {
             }
 
             $name = if ($parsed) {
-                $match.Groups['name'].Value.Trim()
+                $filenameMetadata.Name
             }
             else {
                 [System.IO.Path]::GetFileNameWithoutExtension($archive.Name)
             }
             $modId = if ($parsed) {
-                [int]$match.Groups['modId'].Value
+                $filenameMetadata.ModId
             }
             else {
                 $null
             }
             $version = if ($parsed) {
-                $match.Groups['version'].Value
+                $filenameMetadata.Version
             }
             else {
                 ''
             }
             $token = if ($parsed) {
-                $match.Groups['token'].Value
+                $filenameMetadata.Token
             }
             else {
                 ''
@@ -254,8 +360,10 @@ function Get-PwNexusArchiveMetadata {
                     ''
                 }
                 ArchiveVersion = $version
-                DownloadedAt = $downloadedAt
+                DownloadedAt = $filenameMetadata.Timestamp
+                TimestampSource = $filenameMetadata.TimestampSource
                 DownloadToken = $token
+                FilenamePattern = $filenameMetadata.Pattern
                 OriginalFileName = $archive.Name
                 ArchivePath = $archive.FullName
                 ArchiveFormat = $archive.Extension.TrimStart('.').ToUpperInvariant()

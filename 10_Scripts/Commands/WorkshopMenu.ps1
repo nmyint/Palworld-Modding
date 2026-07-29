@@ -315,6 +315,24 @@ function Read-PwWorkshopMenuSelection {
     }
 }
 
+function Test-PwWorkshopQuitSelection {
+
+    [CmdletBinding()]
+    param(
+        [AllowEmptyString()]
+        [AllowNull()]
+        [string]$Selection
+    )
+
+    (
+        -not [string]::IsNullOrWhiteSpace($Selection) -and
+        $Selection.Trim().Equals(
+            'Q',
+            [System.StringComparison]::OrdinalIgnoreCase
+        )
+    )
+}
+
 function Show-PwCatalogSummary {
 
     [CmdletBinding()]
@@ -456,6 +474,8 @@ function Start-PwWorkshop {
     $running = $true
 
     while ($running) {
+        $quitRequested = $false
+
         if (-not $NoClear) {
             Clear-Host
         }
@@ -499,11 +519,13 @@ function Start-PwWorkshop {
                     )
                     Show-PwUpdateReport -Updates $updates
                     $selectedId = Read-Host (
-                        'Enter a Nexus mod ID for download options, or Enter ' +
-                        'to return'
+                        'Enter a Nexus mod ID, Enter to return, or Q to quit'
                     )
 
-                    if ($selectedId -match '^\d+$') {
+                    if (Test-PwWorkshopQuitSelection $selectedId) {
+                        $quitRequested = $true
+                    }
+                    elseif ($selectedId -match '^\d+$') {
                         $selected = $updates |
                             Where-Object NexusModId -eq ([int]$selectedId) |
                             Select-Object -First 1
@@ -514,10 +536,13 @@ function Start-PwWorkshop {
                         }
                         else {
                             $mode = Read-Host (
-                                '[M]anual browser or [D]irect Premium download'
+                                '[M]anual, [D]irect Premium, or [Q]uit'
                             )
 
-                            if ($mode -match '^[Mm]') {
+                            if (Test-PwWorkshopQuitSelection $mode) {
+                                $quitRequested = $true
+                            }
+                            elseif ($mode -match '^[Mm]') {
                                 Open-PwNexusModPage `
                                     -ModId $selected.NexusModId `
                                     -Launch |
@@ -566,9 +591,20 @@ function Start-PwWorkshop {
             }
         }
 
+        if ($quitRequested) {
+            $running = $false
+            continue
+        }
+
         if ($running) {
             Write-Host ''
-            Read-Host 'Press Enter to return to the menu' | Out-Null
+            $returnSelection = Read-Host (
+                'Press Enter to return to the menu, or Q to quit'
+            )
+
+            if (Test-PwWorkshopQuitSelection $returnSelection) {
+                $running = $false
+            }
         }
     }
 }

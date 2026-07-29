@@ -24,6 +24,8 @@ The menu measures the active terminal while it is waiting for input. It redraws
 after a window resize, adjusts between compact and full-height layouts, and
 truncates long labels inside the frame instead of allowing them to wrap.
 Selections `1` through `7` and `Q` respond immediately without requiring Enter.
+At result screens and nested Nexus update prompts, entering `Q` exits the entire
+workshop instead of returning to the main menu.
 
 The menu will become the primary workshop interface as later Sprint 4 actions
 are reviewed. Existing PowerShell commands remain available for automation and
@@ -37,6 +39,18 @@ from right to left:
 ```text
 <Name> <NexusModId> <Version> <UTC download time> <token>.zip
 ```
+
+It also recognizes the older hyphenated Nexus format:
+
+```text
+<Name>-<NexusModId>-<hyphenated version>-<Unix upload time>.7z
+```
+
+For example, `RotateIt_beta-684-1-17-1-1738046580.7z` becomes mod name
+`RotateIt_beta`, Nexus ID `684`, version `1.17.1`, and upload timestamp
+`2025-01-28 06:43 UTC`. Because hyphenated names ending in numeric components
+can be inherently ambiguous, unfamiliar patterns remain flagged for manual
+metadata rather than being guessed.
 
 The original filename, SHA-256 hash, Nexus mod ID and URL, archive version, and
 download time are retained in memory. Archive inspection also discovers common
