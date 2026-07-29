@@ -104,7 +104,7 @@ function Get-PwWorkshopMenuLayout {
             -Color Cyan `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text 'Sprint 4 - Catalog and Library Management' `
+            -Text 'Sprint 4 - Catalog, Library, and Compatibility' `
             -Alignment Center `
             -Color DarkCyan `
             -Width $Width
@@ -127,19 +127,19 @@ function Get-PwWorkshopMenuLayout {
             -Color Yellow `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [1] View catalog and version matches' `
+            -Text '  [1] View catalog overview and version matches' `
             -Width $Width
         New-PwWorkshopMenuLine `
             -Text '  [2] View Nexus archive metadata' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [3] View loose staging snapshot' `
+            -Text '  [3] View loose staging and ownership snapshot' `
             -Width $Width
         New-PwWorkshopMenuLine `
             -Text '  [4] Check mod and tool updates' `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text '  [H] Compatibility report' `
+            -Text '  [H] View compatibility and conflict report' `
             -Width $Width
         New-PwWorkshopMenuLine -Width $Width
         New-PwWorkshopMenuLine `
@@ -186,19 +186,19 @@ function Get-PwWorkshopMenuLayout {
                 -Color Yellow `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text '  [1] Catalog and versions' `
+                -Text '  [1] Catalog overview and version matches' `
                 -Width $Width
             New-PwWorkshopMenuLine `
                 -Text '  [2] Nexus archive metadata' `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text '  [3] Loose staging snapshot' `
+                -Text '  [3] Loose staging and ownership snapshot' `
                 -Width $Width
             New-PwWorkshopMenuLine `
                 -Text '  [4] Check mod and tool updates' `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text '  [H] Compatibility report' `
+                -Text '  [H] Compatibility and conflict report' `
                 -Width $Width
             New-PwWorkshopMenuLine `
                 -Text 'WORKSHOP HEALTH' `
@@ -312,7 +312,7 @@ function Read-PwWorkshopMenuSelection {
             $key = [Console]::ReadKey($true)
             $selection = $key.KeyChar.ToString().ToUpperInvariant()
 
-            if ($selection -in @('1', '2', '3', '4', '5', '6', '7', 'Q')) {
+            if ($selection -in @('1', '2', '3', '4', '5', '6', '7', 'H', 'Q', 'U')) {
                 return $selection
             }
         }
@@ -576,6 +576,7 @@ function Start-PwWorkshop {
 
     while ($running) {
         $quitRequested = $false
+        $skipReturnPrompt = $false
 
         if (-not $NoClear) {
             Clear-Host
@@ -596,6 +597,7 @@ function Start-PwWorkshop {
 
         switch ($selection.ToUpperInvariant()) {
             '1' {
+                $skipReturnPrompt = $true
                 $catalogMenuActive = $true
 
                 while ($catalogMenuActive) {
@@ -684,7 +686,7 @@ function Start-PwWorkshop {
                                     Status |
                                 Format-Table -AutoSize
                             $applyMetadata = Read-Host (
-                                '[A] Store metadata, [V] Verify ReviewIdentity, ' +
+                                '[A] Store metadata, [V] Verify review item, ' +
                                     '[B] Back, or Q to quit'
                             )
 
@@ -732,7 +734,7 @@ function Start-PwWorkshop {
                                             RemoteVersion |
                                         Format-Table -AutoSize
                                     $reviewKey = Read-Host (
-                                        'Review # to verify, [B] Back, ' +
+                                        'Review # to inspect, [B] Back, ' +
                                             'or Q to quit'
                                     )
 
@@ -789,8 +791,7 @@ function Start-PwWorkshop {
                                             }
 
                                             $verify = Read-Host (
-                                                '[A] Approve this Nexus name as ' +
-                                                    'an identity alias, [B] Back, ' +
+                                                '[A] Approve this as a reviewed alias, [B] Back, ' +
                                                     'or Q to quit'
                                             )
 
@@ -879,15 +880,15 @@ function Start-PwWorkshop {
                                 else {
                                     $record = $catalogEntries[$catalogIndex]
                                     $nexusId = Read-Host (
-                                        'Nexus mod ID (Enter to retain current, ' +
+                                        'Nexus mod ID (Enter to keep current, ' +
                                             '[B] Back)'
                                     )
                                     $displayName = Read-Host (
-                                        'Display name (Enter to retain current, ' +
+                                        'Display name (Enter to keep current, ' +
                                             '[B] Back)'
                                     )
                                     $installedVersion = Read-Host (
-                                        'Installed version (Enter to retain current, ' +
+                                        'Installed version (Enter to keep current, ' +
                                             '[B] Back)'
                                     )
                                     $identity = $null
@@ -930,7 +931,7 @@ function Start-PwWorkshop {
                                     }
 
                                     $confirmIdentity = Read-Host (
-                                        '[A] Apply entered identity fields, ' +
+                                        '[A] Apply reviewed identity fields, ' +
                                             '[B] Back, or Q to quit'
                                     )
 
@@ -1091,6 +1092,7 @@ function Start-PwWorkshop {
                 }
             }
             '2' {
+                $skipReturnPrompt = $true
                 $archiveMenuActive = $true
 
                 while ($archiveMenuActive) {
@@ -1125,7 +1127,7 @@ function Start-PwWorkshop {
                     if ($archiveChoice -match '^(?i:I)$') {
                         try {
                             $archivePath = Read-Host (
-                                'Archive path, filename from 01_Archives, or Q'
+                                'Archive path or filename from 01_Archives, or Q'
                             )
 
                             if (Test-PwWorkshopQuitSelection $archivePath) {
@@ -1248,10 +1250,32 @@ function Start-PwWorkshop {
                 }
             }
             '3' {
-                Invoke-PwWorkshopMenuAction -Action Staging |
-                    Format-Table Name, Enabled, EnabledSource, Types, FileCount
+                $skipReturnPrompt = $true
+                $stagingMenuActive = $true
+
+                while ($stagingMenuActive) {
+                    Invoke-PwWorkshopMenuAction -Action Staging |
+                        Format-Table Name, Enabled, EnabledSource, Types, FileCount
+                    $stagingChoice = Read-Host (
+                        '[B] Back, or Enter to return to the menu'
+                    )
+
+                    if (Test-PwWorkshopQuitSelection $stagingChoice) {
+                        $quitRequested = $true
+                        break
+                    }
+
+                    if (
+                        [string]::IsNullOrWhiteSpace($stagingChoice) -or
+                        (Test-PwWorkshopBackSelection $stagingChoice)
+                    ) {
+                        $stagingMenuActive = $false
+                        break
+                    }
+                }
             }
             '4' {
+                $skipReturnPrompt = $true
                 $updatesMenuActive = $true
 
                 while ($updatesMenuActive) {
@@ -1274,8 +1298,8 @@ function Start-PwWorkshop {
                                 Status |
                             Format-Table -AutoSize
                         $selectedId = Read-Host (
-                            'Enter Nexus mod ID, [B] record UE4SS baseline, ' +
-                                'Enter to return, or Q to quit'
+                            'Enter Nexus mod ID, [U] record UE4SS baseline, ' +
+                                'or Enter to return, or Q to quit'
                         )
 
                         if (Test-PwWorkshopQuitSelection $selectedId) {
@@ -1288,7 +1312,7 @@ function Start-PwWorkshop {
                             break
                         }
 
-                        if ($selectedId -match '^(?i:B)$') {
+                        if ($selectedId -match '^(?i:U)$') {
                             $ue4ss = $sourceUpdates |
                                 Where-Object Key -eq 'UE4SS' |
                                 Select-Object -First 1
@@ -1306,10 +1330,10 @@ function Start-PwWorkshop {
                                         Status,
                                         DownloadUrl |
                                     Format-List
-                                $baseline = Read-Host (
-                                    '[A] Confirm this exact build is installed and ' +
-                                        'validated, [B] Back, or Q to quit'
-                                )
+                                    $baseline = Read-Host (
+                                        '[A] Confirm this exact build is installed and ' +
+                                            'validated, [B] Back, or Q to quit'
+                                    )
 
                                 if (Test-PwWorkshopQuitSelection $baseline) {
                                     $quitRequested = $true
@@ -1375,26 +1399,142 @@ function Start-PwWorkshop {
                 }
             }
             '5' {
-                Invoke-PwWorkshopMenuAction -Action Diagnostics |
-                    Format-List
+                $skipReturnPrompt = $true
+                $diagnosticsMenuActive = $true
+
+                while ($diagnosticsMenuActive) {
+                    Invoke-PwWorkshopMenuAction -Action Diagnostics |
+                        Format-List
+                    $diagnosticsChoice = Read-Host (
+                        '[B] Back, or Enter to return to the menu'
+                    )
+
+                    if (Test-PwWorkshopQuitSelection $diagnosticsChoice) {
+                        $quitRequested = $true
+                        break
+                    }
+
+                    if (
+                        [string]::IsNullOrWhiteSpace($diagnosticsChoice) -or
+                        (Test-PwWorkshopBackSelection $diagnosticsChoice)
+                    ) {
+                        $diagnosticsMenuActive = $false
+                        break
+                    }
+                }
             }
             '6' {
-                Invoke-PwWorkshopMenuAction -Action Inventory |
-                    Format-Table `
-                        Name,
-                        Version,
-                        Profile,
-                        Status,
-                        FileCount
+                $skipReturnPrompt = $true
+                $inventoryMenuActive = $true
+
+                while ($inventoryMenuActive) {
+                    Invoke-PwWorkshopMenuAction -Action Inventory |
+                        Format-Table `
+                            Name,
+                            Version,
+                            Profile,
+                            Status,
+                            FileCount
+                    $inventoryChoice = Read-Host (
+                        '[B] Back, or Enter to return to the menu'
+                    )
+
+                    if (Test-PwWorkshopQuitSelection $inventoryChoice) {
+                        $quitRequested = $true
+                        break
+                    }
+
+                    if (
+                        [string]::IsNullOrWhiteSpace($inventoryChoice) -or
+                        (Test-PwWorkshopBackSelection $inventoryChoice)
+                    ) {
+                        $inventoryMenuActive = $false
+                        break
+                    }
+                }
             }
             '7' {
-                Invoke-PwWorkshopMenuAction -Action History |
-                    Format-Table `
-                        Timestamp,
-                        Type,
-                        Profile,
-                        Status,
-                        FileCount
+                $skipReturnPrompt = $true
+                $historyMenuActive = $true
+
+                while ($historyMenuActive) {
+                    Invoke-PwWorkshopMenuAction -Action History |
+                        Format-Table `
+                            Timestamp,
+                            Type,
+                            Profile,
+                            Status,
+                            FileCount
+                    $historyChoice = Read-Host (
+                        '[B] Back, or Enter to return to the menu'
+                    )
+
+                    if (Test-PwWorkshopQuitSelection $historyChoice) {
+                        $quitRequested = $true
+                        break
+                    }
+
+                    if (
+                        [string]::IsNullOrWhiteSpace($historyChoice) -or
+                        (Test-PwWorkshopBackSelection $historyChoice)
+                    ) {
+                        $historyMenuActive = $false
+                        break
+                    }
+                }
+            }
+            'H' {
+                $skipReturnPrompt = $true
+                $compatibility = Get-PwCompatibilityReport
+                $compatibility |
+                    Select-Object `
+                        ConflictCount,
+                        ReviewCount,
+                        GeneratedAt |
+                    Format-List
+
+                if ($compatibility.DuplicateArchives.Count -gt 0) {
+                    Write-Host 'Duplicate archive hashes:' `
+                        -ForegroundColor Yellow
+                    $compatibility.DuplicateArchives |
+                        Select-Object `
+                            ArchiveHash,
+                            CatalogKeys,
+                            Versions |
+                        Format-Table -AutoSize -Wrap
+                }
+
+                if ($compatibility.MixedPackages.Count -gt 0) {
+                    Write-Host 'Mixed package groups:' `
+                        -ForegroundColor Yellow
+                    $compatibility.MixedPackages |
+                        Select-Object `
+                            CatalogKey,
+                            DisplayName,
+                            PackageTypes,
+                            ComponentCount |
+                        Format-Table -AutoSize -Wrap
+                }
+
+                if ($compatibility.VariantWarnings.Count -gt 0) {
+                    Write-Host 'Variant warnings:' `
+                        -ForegroundColor Yellow
+                    $compatibility.VariantWarnings |
+                        Select-Object `
+                            CatalogKey,
+                            DisplayName,
+                            Platforms,
+                            PlayModes |
+                        Format-Table -AutoSize -Wrap
+                }
+                $compatibilityChoice = Read-Host (
+                    '[B] Back, or Enter to return to the menu'
+                )
+
+                if (Test-PwWorkshopQuitSelection $compatibilityChoice) {
+                    $running = $false
+                    continue
+                }
             }
             'Q' {
                 $running = $false
@@ -1410,7 +1550,7 @@ function Start-PwWorkshop {
             continue
         }
 
-        if ($running) {
+        if ($running -and -not $skipReturnPrompt) {
             Write-Host ''
             $returnSelection = Read-Host (
                 'Press Enter to return to the menu, or Q to quit'
