@@ -21,7 +21,7 @@ Describe 'PalworldModding module' {
     }
 
     It 'reports the Sprint 4.2 module version' {
-        Get-PwVersion | Should Be ([version]'0.4.4')
+        Get-PwVersion | Should Be ([version]'0.4.5')
     }
 
     It 'exports the expected public commands' {
@@ -33,6 +33,8 @@ Describe 'PalworldModding module' {
             'Get-PwModCatalog'
             'Get-PwModCatalogSyncPlan'
             'Get-PwModUpdateReport'
+            'Get-PwNexusCatalogMetadataReport'
+            'Get-PwGitHubSourcesFromText'
             'Get-PwSourceUpdateReport'
             'Get-PwUpdateSources'
             'Get-PwNexusApiIdentity'
@@ -74,6 +76,7 @@ Describe 'PalworldModding module' {
             'Test-PwProfile'
             'Test-PwWorkshopConfig'
             'Update-PwModCatalog'
+            'Update-PwNexusCatalogMetadata'
         )
 
         $actualCommands = Get-Command -Module PalworldModding |

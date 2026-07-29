@@ -180,6 +180,8 @@ Status: In progress
 - Preserve archive provenance, hashes, Nexus IDs, and known installed versions.
 - Check optional, explicitly selected Nexus and GitHub release providers while
   treating discovered upstream links as advisory metadata.
+- Enrich missing-archive records from reviewed Nexus IDs and discover GitHub
+  source links without guessing identities from folder names.
 - Reconcile loose mods whose original downloads are missing.
 - Preview catalog changes before writing `03_Mod_Library/catalog.json`.
 

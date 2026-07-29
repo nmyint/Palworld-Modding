@@ -142,7 +142,8 @@ function Get-PwGitHubLinksFromText {
             $Text,
             'https?://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+' +
                 '(?:/releases(?:/tag/[A-Za-z0-9_.-]+)?)?'
-        ).Value |
+        ) |
+            ForEach-Object { $_.Value } |
             ForEach-Object { $_.TrimEnd('.', ',', ')', ']', '"', "'") } |
             Sort-Object -Unique
     )

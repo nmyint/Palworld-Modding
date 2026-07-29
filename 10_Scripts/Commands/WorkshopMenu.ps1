@@ -396,6 +396,7 @@ function Invoke-PwWorkshopMenuAction {
             'Summary',
             'Catalog',
             'CatalogPlan',
+            'CatalogMetadata',
             'Archives',
             'Staging',
             'Updates',
@@ -416,6 +417,9 @@ function Invoke-PwWorkshopMenuAction {
         }
         'CatalogPlan' {
             return Get-PwModCatalogSyncPlan
+        }
+        'CatalogMetadata' {
+            return @(Get-PwNexusCatalogMetadataReport)
         }
         'Archives' {
             return @(Get-PwNexusArchiveMetadata)
@@ -462,6 +466,7 @@ function Start-PwWorkshop {
             'Summary',
             'Catalog',
             'CatalogPlan',
+            'CatalogMetadata',
             'Archives',
             'Staging',
             'Updates',
@@ -508,8 +513,8 @@ function Start-PwWorkshop {
                 $catalog = Invoke-PwWorkshopMenuAction -Action Catalog
                 Show-PwCatalogSummary -Catalog $catalog
                 $catalogChoice = Read-Host (
-                    '[S] Preview persistent catalog sync, Enter to return, ' +
-                        'or Q to quit'
+                    '[S] Preview persistent catalog sync, [R] Remote metadata, ' +
+                        'Enter to return, or Q to quit'
                 )
 
                 if (Test-PwWorkshopQuitSelection $catalogChoice) {
@@ -541,6 +546,43 @@ function Start-PwWorkshop {
                                 ProposedModCount,
                                 NeedsMetadataCount |
                             Format-List
+                    }
+                }
+                elseif ($catalogChoice -match '^(?i:R)$') {
+                    try {
+                        $metadata = @(
+                            Invoke-PwWorkshopMenuAction `
+                                -Action CatalogMetadata
+                        )
+                        $metadata |
+                            Select-Object `
+                                CatalogKey,
+                                NexusModId,
+                                RemoteName,
+                                RemoteVersion,
+                                NameMatch,
+                                Status |
+                            Format-Table -AutoSize
+                        $applyMetadata = Read-Host (
+                            '[A] Store available metadata, Enter to cancel, ' +
+                                'or Q to quit'
+                        )
+
+                        if (Test-PwWorkshopQuitSelection $applyMetadata) {
+                            $quitRequested = $true
+                        }
+                        elseif ($applyMetadata -match '^(?i:A)$') {
+                            Update-PwNexusCatalogMetadata -Confirm:$false |
+                                Select-Object `
+                                    CatalogKey,
+                                    NexusModId,
+                                    NameMatch,
+                                    Status |
+                                Format-Table -AutoSize
+                        }
+                    }
+                    catch {
+                        Write-Host $_.Exception.Message -ForegroundColor Red
                     }
                 }
             }

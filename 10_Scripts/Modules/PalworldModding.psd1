@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.4.4'
+ModuleVersion = '0.4.5'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -81,6 +81,9 @@ FunctionsToExport = @(
     'Get-PwUpdateSources',
     'Get-PwSourceUpdateReport',
     'Set-PwGitHubSourceBaseline',
+    'Get-PwNexusCatalogMetadataReport',
+    'Get-PwGitHubSourcesFromText',
+    'Update-PwNexusCatalogMetadata',
 
     # Recovery and diagnostics
     'Test-PwBackup',
@@ -127,7 +130,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 4.2 optional Nexus and GitHub update providers'
+        ReleaseNotes = 'Sprint 4.2 remote catalog metadata discovery'
 
     }
 

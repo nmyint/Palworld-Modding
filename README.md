@@ -60,6 +60,10 @@ Optional tools and dependencies can also use explicit Nexus or GitHub release
 providers without silently changing sources. See
 [UpdateSources.md](00_Documentation/UpdateSources.md).
 
+Missing-archive entries can be enriched through their reviewed Nexus IDs, with
+GitHub sources discovered from page descriptions. See
+[CatalogMetadata.md](00_Documentation/CatalogMetadata.md).
+
 ## Profiles
 
 Installation and deployment settings are stored in JSON profiles under

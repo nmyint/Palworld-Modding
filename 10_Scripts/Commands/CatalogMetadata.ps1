@@ -1,0 +1,261 @@
+<#
+.SYNOPSIS
+    Enriches missing-archive catalog records with remote Nexus metadata.
+.DESCRIPTION
+    Uses reviewed Nexus IDs whenever available and compares the Nexus page name
+    with local install-folder names. Records without an ID are reported for
+    manual search because the supported personal-key API has no general
+    name-search endpoint.
+#>
+
+Set-StrictMode -Version Latest
+
+function ConvertTo-PwComparableModName {
+
+    [CmdletBinding()]
+    param(
+        [AllowEmptyString()]
+        [string]$Value
+    )
+
+    $normalized = (
+        $Value -replace '[^a-zA-Z0-9]', ''
+    ).ToLowerInvariant()
+
+    $normalized -replace '^palworld', '' -replace 'palworld$', '' -replace 'mod$', ''
+}
+
+function Get-PwModNameMatch {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string[]]$InstallNames,
+
+        [Parameter(Mandatory)]
+        [string]$RemoteName
+    )
+
+    $remote = ConvertTo-PwComparableModName -Value $RemoteName
+    $best = 'Review'
+
+    foreach ($installName in $InstallNames) {
+        $local = ConvertTo-PwComparableModName -Value $installName
+
+        if ($local -eq $remote) {
+            return 'Exact'
+        }
+
+        if (
+            $local.Length -ge 5 -and
+            ($remote.Contains($local) -or $local.Contains($remote))
+        ) {
+            $best = 'Strong'
+        }
+    }
+
+    $best
+}
+
+function ConvertTo-PwGitHubSource {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Url
+    )
+
+    $match = [regex]::Match(
+        $Url,
+        '^https?://github\.com/(?<owner>[A-Za-z0-9_.-]+)/' +
+            '(?<repo>[A-Za-z0-9_.-]+?)(?:\.git)?' +
+            '(?:/releases(?:/tag/(?<tag>[A-Za-z0-9_.-]+))?)?/?$'
+    )
+
+    if (-not $match.Success) {
+        return $null
+    }
+
+    $repository = (
+        "$($match.Groups['owner'].Value)/$($match.Groups['repo'].Value)"
+    )
+    $tag = [string]$match.Groups['tag'].Value
+
+    [PSCustomObject]@{
+        Repository = $repository
+        RepositoryUrl = "https://github.com/$repository"
+        ReleasesUrl = "https://github.com/$repository/releases"
+        ReleaseTag = $tag
+        SourceUrl = $Url
+    }
+}
+
+function Get-PwGitHubSourcesFromText {
+
+    [CmdletBinding()]
+    param(
+        [AllowEmptyString()]
+        [string]$Text
+    )
+
+    @(
+        Get-PwGitHubLinksFromText `
+            -Text ([System.Net.WebUtility]::HtmlDecode($Text)) |
+            ForEach-Object { ConvertTo-PwGitHubSource -Url $_ } |
+            Where-Object { $null -ne $_ } |
+            Sort-Object Repository, ReleaseTag -Unique
+    )
+}
+
+function Get-PwNexusCatalogMetadataReport {
+
+    [CmdletBinding()]
+    param(
+        [string]$ApiKey,
+
+        [object]$Catalog = (Get-PwPersistentModCatalog)
+    )
+
+    $records = @(
+        $Catalog.Mods |
+            Where-Object {
+                $_.Source -ne 'UE4SSBundled' -and
+                @($_.Versions | Where-Object ArchivePresent).Count -eq 0
+            }
+    )
+
+    foreach ($record in $records) {
+        $ids = @($record.NexusModIds)
+        $searchTerm = @($record.InstallNames)[0]
+
+        if ($ids.Count -eq 0) {
+            [PSCustomObject]@{
+                CatalogKey = [string]$record.CatalogKey
+                InstallNames = @($record.InstallNames)
+                SearchTerm = [string]$searchTerm
+                NexusModId = $null
+                RemoteName = ''
+                RemoteVersion = ''
+                Summary = ''
+                NameMatch = 'Unavailable'
+                GitSources = @()
+                Status = 'NeedsNexusId'
+                Error = ''
+            }
+            continue
+        }
+
+        foreach ($id in $ids) {
+            try {
+                $mod = Invoke-PwNexusApi `
+                    -Path "games/palworld/mods/$id.json" `
+                    -ApiKey $ApiKey
+
+                if (-not $mod.PSObject.Properties['name']) {
+                    $message = if ($mod.PSObject.Properties['message']) {
+                        [string]$mod.message
+                    }
+                    else {
+                        'Nexus returned no mod metadata.'
+                    }
+                    throw $message
+                }
+            }
+            catch {
+                [PSCustomObject]@{
+                    CatalogKey = [string]$record.CatalogKey
+                    InstallNames = @($record.InstallNames)
+                    SearchTerm = [string]$searchTerm
+                    NexusModId = [int]$id
+                    RemoteName = ''
+                    RemoteVersion = ''
+                    Summary = ''
+                    NameMatch = 'Unavailable'
+                    GitSources = @()
+                    Status = 'ApiUnavailable'
+                    Error = $_.Exception.Message
+                }
+                continue
+            }
+
+            $nameMatch = Get-PwModNameMatch `
+                -InstallNames @($record.InstallNames) `
+                -RemoteName ([string]$mod.name)
+
+            [PSCustomObject]@{
+                CatalogKey = [string]$record.CatalogKey
+                InstallNames = @($record.InstallNames)
+                SearchTerm = [string]$searchTerm
+                NexusModId = [int]$id
+                RemoteName = [string]$mod.name
+                RemoteVersion = [string]$mod.version
+                Summary = [string]$mod.summary
+                NameMatch = $nameMatch
+                GitSources = @(
+                    Get-PwGitHubSourcesFromText -Text ([string]$mod.description)
+                )
+                Status = if ($nameMatch -eq 'Review') {
+                    'ReviewIdentity'
+                }
+                else {
+                    'MetadataFound'
+                }
+                Error = ''
+            }
+        }
+    }
+}
+
+function Update-PwNexusCatalogMetadata {
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param(
+        [string]$ApiKey,
+
+        [string]$Path = (Get-PwCatalogManifestPath)
+    )
+
+    $catalog = Get-PwPersistentModCatalog -Path $Path
+    $report = @(
+        Get-PwNexusCatalogMetadataReport `
+            -ApiKey $ApiKey `
+            -Catalog $catalog
+    )
+    $retrievedAt = (Get-Date).ToUniversalTime().ToString('o')
+
+    foreach ($result in $report) {
+        if ($result.Status -notin @('MetadataFound', 'ReviewIdentity')) {
+            continue
+        }
+
+        $record = $catalog.Mods |
+            Where-Object CatalogKey -eq $result.CatalogKey |
+            Select-Object -First 1
+        $metadata = [PSCustomObject]@{
+            Provider = 'NexusMods'
+            NexusModId = $result.NexusModId
+            Name = $result.RemoteName
+            Version = $result.RemoteVersion
+            Summary = $result.Summary
+            NameMatch = $result.NameMatch
+            GitSources = @($result.GitSources)
+            RetrievedAt = $retrievedAt
+        }
+
+        if ($record.PSObject.Properties['RemoteMetadata']) {
+            $record.RemoteMetadata = $metadata
+        }
+        else {
+            $record | Add-Member `
+                -NotePropertyName RemoteMetadata `
+                -NotePropertyValue $metadata
+        }
+    }
+
+    if ($PSCmdlet.ShouldProcess($Path, 'Update remote Nexus catalog metadata')) {
+        $catalog.UpdatedAt = $retrievedAt
+        Write-PwJson -InputObject $catalog -Path $Path -Depth 20
+    }
+
+    $report
+}

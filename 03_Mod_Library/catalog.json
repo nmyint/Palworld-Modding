@@ -1,6 +1,6 @@
 {
   "SchemaVersion": "1.0",
-  "UpdatedAt": "2026-07-29T09:00:57.1451241Z",
+  "UpdatedAt": "2026-07-29T09:20:01.5234062Z",
   "Mods": [
     {
       "CatalogKey": "antiphat",
@@ -26,6 +26,7 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "SP-2.0.5",
@@ -70,6 +71,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "2.1",
@@ -133,6 +135,16 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 4416,
+        "Name": "Base Pal Visibility",
+        "Version": "0.2.3",
+        "Summary": "This mod allows you to make base pals invisible anytime you want to lessen the FPS impact.",
+        "NameMatch": "Exact",
+        "GitSources": [],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -157,6 +169,7 @@
         ]
       },
       "ReconciliationStatus": "BundledDependency",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -181,6 +194,7 @@
         ]
       },
       "ReconciliationStatus": "BundledDependency",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -209,6 +223,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "0.10.4",
@@ -253,6 +268,7 @@
         ]
       },
       "ReconciliationStatus": "BundledDependency",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -279,6 +295,7 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -303,6 +320,7 @@
         ]
       },
       "ReconciliationStatus": "BundledDependency",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -327,6 +345,7 @@
         ]
       },
       "ReconciliationStatus": "BundledDependency",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -353,6 +372,31 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 577,
+        "Name": "Mod Config Menu (UI)",
+        "Version": "1.9",
+        "Summary": "A menu for configuring mods &lt;3",
+        "NameMatch": "Review",
+        "GitSources": [
+          {
+            "Repository": "dekita/palworld-modconfig-devhelp",
+            "RepositoryUrl": "https://github.com/dekita/palworld-modconfig-devhelp",
+            "ReleasesUrl": "https://github.com/dekita/palworld-modconfig-devhelp/releases",
+            "ReleaseTag": "",
+            "SourceUrl": "https://github.com/dekita/palworld-modconfig-devhelp"
+          },
+          {
+            "Repository": "UE4SS-RE/RE-UE4SS",
+            "RepositoryUrl": "https://github.com/UE4SS-RE/RE-UE4SS",
+            "ReleasesUrl": "https://github.com/UE4SS-RE/RE-UE4SS/releases",
+            "ReleaseTag": "",
+            "SourceUrl": "https://github.com/UE4SS-RE/RE-UE4SS/releases"
+          }
+        ],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -379,6 +423,24 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 4001,
+        "Name": "Existing Pal Editor - Creative Menu Add-on",
+        "Version": "1.0.4",
+        "Summary": "Edit the Pals you already own without leaving the game. IVs, passive skills, star level, enhancements, and a few other things. Requires Creative Menu.",
+        "NameMatch": "Strong",
+        "GitSources": [
+          {
+            "Repository": "Okaetsu/RE-UE4SS",
+            "RepositoryUrl": "https://github.com/Okaetsu/RE-UE4SS",
+            "ReleasesUrl": "https://github.com/Okaetsu/RE-UE4SS/releases",
+            "ReleaseTag": "experimental-palworld",
+            "SourceUrl": "https://github.com/Okaetsu/RE-UE4SS/releases/tag/experimental-palworld"
+          }
+        ],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -405,6 +467,31 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 3954,
+        "Name": "Field Boss Defeat Marker",
+        "Version": "1.1.1",
+        "Summary": "Field Boss Defeat Marker is a client-side UE4SS Lua mod for Palworld that makes field bosses waiting for their next daily respawn easy to identify on the world map.",
+        "NameMatch": "Exact",
+        "GitSources": [
+          {
+            "Repository": "Okaetsu/RE-UE4SS",
+            "RepositoryUrl": "https://github.com/Okaetsu/RE-UE4SS",
+            "ReleasesUrl": "https://github.com/Okaetsu/RE-UE4SS/releases",
+            "ReleaseTag": "experimental-palworld",
+            "SourceUrl": "https://github.com/Okaetsu/RE-UE4SS/releases/tag/experimental-palworld"
+          },
+          {
+            "Repository": "UE4SS-RE/RE-UE4SS",
+            "RepositoryUrl": "https://github.com/UE4SS-RE/RE-UE4SS",
+            "ReleasesUrl": "https://github.com/UE4SS-RE/RE-UE4SS/releases",
+            "ReleaseTag": "",
+            "SourceUrl": "https://github.com/UE4SS-RE/RE-UE4SS"
+          }
+        ],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -431,6 +518,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "1.0",
@@ -477,6 +565,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "1.0.2",
@@ -536,6 +625,7 @@
         ]
       },
       "ReconciliationStatus": "BundledDependency",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -556,6 +646,7 @@
         "Lua"
       ],
       "ReconciliationStatus": "ArchiveOnly",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "1",
@@ -600,6 +691,31 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 98,
+        "Name": "Less Restrictive Building (for 1.0)",
+        "Version": "1.5.4",
+        "Summary": "Allows building over water and in thin air, without collisions or a build cap.",
+        "NameMatch": "Strong",
+        "GitSources": [
+          {
+            "Repository": "caites/Palworld-Mods",
+            "RepositoryUrl": "https://github.com/caites/Palworld-Mods",
+            "ReleasesUrl": "https://github.com/caites/Palworld-Mods/releases",
+            "ReleaseTag": "",
+            "SourceUrl": "https://github.com/caites/Palworld-Mods"
+          },
+          {
+            "Repository": "UE4SS-RE/RE-UE4SS",
+            "RepositoryUrl": "https://github.com/UE4SS-RE/RE-UE4SS",
+            "ReleasesUrl": "https://github.com/UE4SS-RE/RE-UE4SS/releases",
+            "ReleaseTag": "",
+            "SourceUrl": "https://github.com/UE4SS-RE/RE-UE4SS/releases"
+          }
+        ],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -624,6 +740,7 @@
         ]
       },
       "ReconciliationStatus": "BundledDependency",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -650,6 +767,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "1",
@@ -694,6 +812,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "2.1",
@@ -738,6 +857,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "4",
@@ -782,6 +902,7 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -808,6 +929,24 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 4408,
+        "Name": "Mod Options Framework",
+        "Version": "0.1.3",
+        "Summary": "Adds one shared Mod Options menu to Palworld. Compatible UE4SS mods receive localized settings pages with saved values and no duplicate Esc-menu buttons.",
+        "NameMatch": "Review",
+        "GitSources": [
+          {
+            "Repository": "Elvlin/Mod-Options-Framework",
+            "RepositoryUrl": "https://github.com/Elvlin/Mod-Options-Framework",
+            "ReleasesUrl": "https://github.com/Elvlin/Mod-Options-Framework/releases",
+            "ReleaseTag": "",
+            "SourceUrl": "https://github.com/Elvlin/Mod-Options-Framework"
+          }
+        ],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -834,6 +973,24 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 3037,
+        "Name": "PalSchema (Okaetsu)",
+        "Version": "260719",
+        "Summary": "Vortex packed upload of PalSchema by Okaetsu.",
+        "NameMatch": "Strong",
+        "GitSources": [
+          {
+            "Repository": "Okaetsu/PalSchema",
+            "RepositoryUrl": "https://github.com/Okaetsu/PalSchema",
+            "ReleasesUrl": "https://github.com/Okaetsu/PalSchema/releases",
+            "ReleaseTag": "",
+            "SourceUrl": "https://github.com/Okaetsu/PalSchema/releases"
+          }
+        ],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -860,6 +1017,16 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 4240,
+        "Name": "Pal Wellbeing 0.2.1",
+        "Version": "0.2.1",
+        "Summary": "Vanilla pals work themselves miserable before resting - breaks only trigger at 65 sanity on a slow dice roll, one step from tantrums and sickness. This mod sends pals on breaks while still healthy and lets you read any pal's sanity from its nameplate. Nothing persisted, remove anytime.",
+        "NameMatch": "Strong",
+        "GitSources": [],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -886,6 +1053,16 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 3739,
+        "Name": "Gameplay Spawns and Combat Tuner",
+        "Version": "6",
+        "Summary": "One configurator to finetune the whole game: carry weight, tech points and base range on your side, plus enemy HP, damage, boss scaling and aggression on theirs. Tune --&gt; Set game install location --&gt; 1-Click to install.",
+        "NameMatch": "Strong",
+        "GitSources": [],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     },
     {
@@ -904,6 +1081,7 @@
         "Pak"
       ],
       "ReconciliationStatus": "ArchiveOnly",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "1.17.1",
@@ -948,6 +1126,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "1.0",
@@ -994,6 +1173,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "1.2.0",
@@ -1036,6 +1216,7 @@
         ]
       },
       "ReconciliationStatus": "BundledDependency",
+      "RemoteMetadata": null,
       "Versions": []
     },
     {
@@ -1062,6 +1243,7 @@
         ]
       },
       "ReconciliationStatus": "Matched",
+      "RemoteMetadata": null,
       "Versions": [
         {
           "Version": "0.4.2",
@@ -1107,6 +1289,24 @@
         ]
       },
       "ReconciliationStatus": "ManuallyReconciled",
+      "RemoteMetadata": {
+        "Provider": "NexusMods",
+        "NexusModId": 606,
+        "Name": "Waypoint Teleportation",
+        "Version": "v2.2",
+        "Summary": "Teleport directly to your custom map markers using a keybind or by Shift + Clicking them. works on SP/MP Client-side only(updated for Palworld v1.0)",
+        "NameMatch": "Strong",
+        "GitSources": [
+          {
+            "Repository": "Okaetsu/RE-UE4SS",
+            "RepositoryUrl": "https://github.com/Okaetsu/RE-UE4SS",
+            "ReleasesUrl": "https://github.com/Okaetsu/RE-UE4SS/releases",
+            "ReleaseTag": "experimental-palworld",
+            "SourceUrl": "https://github.com/Okaetsu/RE-UE4SS/releases/tag/experimental-palworld"
+          }
+        ],
+        "RetrievedAt": "2026-07-29T09:19:22.60141Z"
+      },
       "Versions": []
     }
   ]

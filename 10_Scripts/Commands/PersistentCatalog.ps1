@@ -362,6 +362,15 @@ function Get-PwModCatalogSyncPlan {
             else {
                 'Matched'
             }
+            RemoteMetadata = if (
+                $null -ne $prior -and
+                $prior.PSObject.Properties['RemoteMetadata']
+            ) {
+                $prior.RemoteMetadata
+            }
+            else {
+                $null
+            }
             Versions = @(
                 Merge-PwCatalogVersions `
                     -Existing $priorVersions `
@@ -389,6 +398,15 @@ function Get-PwModCatalogSyncPlan {
             Enabled = $null
             Types = @($archive.Categories)
             ReconciliationStatus = 'ArchiveOnly'
+            RemoteMetadata = if (
+                $null -ne $prior -and
+                $prior.PSObject.Properties['RemoteMetadata']
+            ) {
+                $prior.RemoteMetadata
+            }
+            else {
+                $null
+            }
             Versions = @(
                 Merge-PwCatalogVersions `
                     -Existing $(if ($null -ne $prior) {
