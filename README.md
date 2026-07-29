@@ -22,6 +22,9 @@ Workshop -> Test -> Deploy -> Commit
 See [FolderStructure.md](00_Documentation/FolderStructure.md) for the role of each
 workshop directory.
 
+The completed milestones and forward plan are tracked in
+[Roadmap.md](00_Documentation/Roadmap.md).
+
 ## PowerShell module
 
 Workshop automation is provided by the `PalworldModding` module:
