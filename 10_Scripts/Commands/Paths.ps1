@@ -21,7 +21,7 @@ function Get-PwPaths {
 
     $cfg = Get-PwWorkshopConfig
 
-    $root = $cfg.Paths.Root
+    $root = Get-PwWorkshopRoot
 
     [PSCustomObject]@{
 

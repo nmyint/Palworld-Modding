@@ -19,25 +19,45 @@ function Get-PwDeployment {
     [CmdletBinding()]
     param()
 
-    $cfg = Get-PwWorkshopConfig
+    $configuration = Get-PwWorkshopConfig
+    $profileName = $configuration.Deployment.ActiveProfile
+    $profile = Get-PwProfile -Name $profileName
+    $validation = Test-PwProfile -Name $profileName
+
+    if (-not $validation.IsValid) {
+        throw "Active profile '$profileName' is not valid: $($validation.Errors -join ' ')"
+    }
+
+    $gameInstallRoot = Resolve-PwProfilePath -Path $profile.Game.InstallRoot
+    $savedRoot = Resolve-PwProfilePath -Path $profile.Game.SavedRoot
+    $targetRoot = Resolve-PwProfilePath -Path $profile.Deployment.TargetRoot
+    $gameExecutable = ''
+
+    if (-not [string]::IsNullOrWhiteSpace($gameInstallRoot)) {
+        $gameExecutable = Join-Path `
+            $gameInstallRoot `
+            "Pal\Binaries\Win64\$($profile.Game.Executable)"
+    }
 
     [PSCustomObject]@{
 
-        TargetRoot                   = $cfg.Deployment.TargetRoot
+        TargetRoot                   = $targetRoot
 
-        ActiveProfile                = $cfg.Deployment.ActiveProfile
+        ActiveProfile                = $profileName
 
-        MirrorGameStructure          = $cfg.Deployment.MirrorGameStructure
+        MirrorGameStructure          = $profile.Deployment.MirrorGameStructure
 
-        CleanDeploymentBeforeBuild   = $cfg.Deployment.CleanDeploymentBeforeBuild
+        CleanDeploymentBeforeBuild   = $profile.Deployment.CleanDeploymentBeforeBuild
 
-        GameInstallRoot              = $cfg.Game.InstallRoot
+        GameInstallRoot              = $gameInstallRoot
 
-        GameExecutable               = Join-Path `
-                                        $cfg.Game.InstallRoot `
-                                        "Pal\Binaries\Win64\$($cfg.Game.Executable)"
+        GameExecutable               = $gameExecutable
 
-        SavePath                     = $cfg.Game.SavePath
+        SavedRoot                    = $savedRoot
+
+        IsReady                      = $validation.IsReady
+
+        Warnings                     = $validation.Warnings
 
     }
 

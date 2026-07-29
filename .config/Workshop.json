@@ -1,13 +1,13 @@
 {
     "Workshop": {
         "Name": "Palworld Modding Workshop",
-        "Version": "0.3.0",
+        "Version": "0.3.2",
         "Owner": "Noel",
         "Created": "2026-07-28",
         "Description": "Personal Palworld mod development and deployment workshop."
     },
     "Paths": {
-        "Root": "D:\\Projects\\Palworld-Modding",
+        "Root": ".",
         "Archives": "01_Archives",
         "Staging": "02_Staging",
         "ModLibrary": "03_Mod_Library",
@@ -25,18 +25,8 @@
         "Sandbox": "15_Sandbox",
         "Profiles": "16_Profiles"
     },
-    "Game": {
-        "Name": "Palworld",
-        "Platform": "Steam",
-        "InstallRoot": "",
-        "SavePath": "",
-        "Executable": "Palworld-Win64-Shipping.exe"
-    },
     "Deployment": {
-        "TargetRoot": "D:\\Projects\\Palworld-Modding\\05_Deployment\\Pal",
-        "ActiveProfile": "Stable",
-        "MirrorGameStructure": true,
-        "CleanDeploymentBeforeBuild": false
+        "ActiveProfile": "Stable"
     },
     "Tools": {
         "PowerShell": {

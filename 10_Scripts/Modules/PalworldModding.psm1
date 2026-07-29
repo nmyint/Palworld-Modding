@@ -28,6 +28,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\WorkshopInfo.ps1"
 . "$PSScriptRoot\..\Commands\Environment.ps1"
 . "$PSScriptRoot\..\Commands\Paths.ps1"
+. "$PSScriptRoot\..\Commands\Profiles.ps1"
 . "$PSScriptRoot\..\Commands\Deployment.ps1"
 . "$PSScriptRoot\..\Commands\Tools.ps1"
 
@@ -56,6 +57,13 @@ Export-ModuleMember -Function @(
 
     # Paths
     'Get-PwPaths',
+
+    # Profiles
+    'Get-PwProfile',
+    'Get-PwProfiles',
+    'New-PwProfile',
+    'Test-PwProfile',
+    'Set-PwActiveProfile',
 
     # Deployment
     'Get-PwDeployment',

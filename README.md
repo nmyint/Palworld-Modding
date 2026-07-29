@@ -35,6 +35,12 @@ Get-PwWorkshopInfo
 PowerShell conventions are documented in
 [PowerShellStandards.md](00_Documentation/PowerShellStandards.md).
 
+## Profiles
+
+Installation and deployment settings are stored in JSON profiles under
+`16_Profiles`. See [Profiles.md](00_Documentation/Profiles.md) for the schema,
+commands, and readiness rules.
+
 ## Tests
 
 Run the automated checks from the repository root:

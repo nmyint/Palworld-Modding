@@ -1,0 +1,16 @@
+{
+    "SchemaVersion": "1.0",
+    "Name": "Stable",
+    "Description": "Primary stable Palworld installation and mod deployment profile.",
+    "Game": {
+        "Platform": "Steam",
+        "InstallRoot": "D:\\Games\\Palworld",
+        "SavedRoot": "%LOCALAPPDATA%\\Pal\\Saved",
+        "Executable": "Palworld-Win64-Shipping.exe"
+    },
+    "Deployment": {
+        "TargetRoot": "05_Deployment\\Pal",
+        "MirrorGameStructure": true,
+        "CleanDeploymentBeforeBuild": false
+    }
+}

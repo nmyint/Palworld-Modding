@@ -19,6 +19,21 @@
                 "clear": true,
                 "reveal": "always"
             }
+        },
+        {
+            "label": "PwTools: Validate Profiles",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "Import-Module './10_Scripts/Modules/PalworldModding.psd1' -Force; $results = Get-PwProfiles | ForEach-Object { Test-PwProfile -Name $_.Name }; $results | Format-List; if ($results | Where-Object { -not $_.IsValid }) { exit 1 }"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
         }
     ]
 }

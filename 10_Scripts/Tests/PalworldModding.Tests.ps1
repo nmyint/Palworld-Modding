@@ -20,8 +20,8 @@ Describe 'PalworldModding module' {
             Should Not Throw
     }
 
-    It 'reports the Sprint 3 module version' {
-        Get-PwVersion | Should Be ([version]'0.3.0')
+    It 'reports the Sprint 3.2 module version' {
+        Get-PwVersion | Should Be ([version]'0.3.2')
     }
 
     It 'exports the expected public commands' {
@@ -29,15 +29,20 @@ Describe 'PalworldModding module' {
             'Get-PwContext'
             'Get-PwDeployment'
             'Get-PwPaths'
+            'Get-PwProfile'
+            'Get-PwProfiles'
             'Get-PwTool'
             'Get-PwTools'
             'Get-PwVersion'
             'Get-PwWorkshopConfig'
             'Get-PwWorkshopInfo'
             'Initialize-PwWorkshop'
+            'New-PwProfile'
             'Reset-PwContext'
             'Save-PwWorkshopConfig'
+            'Set-PwActiveProfile'
             'Test-PwEnvironment'
+            'Test-PwProfile'
             'Test-PwWorkshopConfig'
         )
 
@@ -68,7 +73,7 @@ Describe 'PalworldModding module' {
         Test-PwWorkshopConfig | Should Be $true
 
         $configuration = Get-PwWorkshopConfig
-        $configuration.Paths.Root | Should Be $workshopRoot
+        $configuration.Paths.Root | Should Be '.'
         $configuration.Git.DefaultBranch | Should Be 'main'
     }
 
