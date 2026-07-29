@@ -4,6 +4,12 @@ Desktop.ini
 
 # Logs
 *.log
+/09_Logs/*
+!/09_Logs/.gitkeep
+
+# Generated backups
+/13_Backups/*
+!/13_Backups/.gitkeep
 
 # Crash dumps
 *.dmp

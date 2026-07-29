@@ -12,7 +12,7 @@ Set-StrictMode -Version Latest
 .SYNOPSIS
     Gets the resolved deployment configuration for the workshop.
 .OUTPUTS
-    PSCustomObject containing deployment, game, executable, and save paths.
+    PSCustomObject containing deployment, game, executable, and Saved-root paths.
 #>
 function Get-PwDeployment {
 
@@ -39,6 +39,11 @@ function Get-PwDeployment {
             "Pal\Binaries\Win64\$($profile.Game.Executable)"
     }
 
+    $canDeploy = (
+        (Test-Path -LiteralPath $gameInstallRoot -PathType Container) -and
+        (Test-Path -LiteralPath $gameExecutable -PathType Leaf)
+    )
+
     [PSCustomObject]@{
 
         TargetRoot                   = $targetRoot
@@ -56,6 +61,8 @@ function Get-PwDeployment {
         SavedRoot                    = $savedRoot
 
         IsReady                      = $validation.IsReady
+
+        CanDeploy                    = $canDeploy
 
         Warnings                     = $validation.Warnings
 

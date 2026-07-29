@@ -34,6 +34,21 @@
                 "clear": true,
                 "reveal": "always"
             }
+        },
+        {
+            "label": "PwTools: Preview Deployment",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "Import-Module './10_Scripts/Modules/PalworldModding.psd1' -Force; $plan = Get-PwDeploymentPlan; $plan | Format-List; $plan.Files | Format-Table Action, RelativePath, DestinationPath"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
         }
     ]
 }

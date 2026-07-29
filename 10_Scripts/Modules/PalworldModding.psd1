@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.3.2'
+ModuleVersion = '0.3.3'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -55,6 +55,9 @@ FunctionsToExport = @(
 
     # Deployment
     'Get-PwDeployment',
+    'Get-PwDeploymentPlan',
+    'Backup-PwDeployment',
+    'Invoke-PwDeployment',
 
     # Tools
     'Get-PwTool',
@@ -87,7 +90,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 3.2 profile management and deployment integration'
+        ReleaseNotes = 'Sprint 3.3 safe deployment planning, backups, and apply workflow'
 
     }
 

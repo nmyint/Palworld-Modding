@@ -41,6 +41,12 @@ Installation and deployment settings are stored in JSON profiles under
 `16_Profiles`. See [Profiles.md](00_Documentation/Profiles.md) for the schema,
 commands, and readiness rules.
 
+## Deployment
+
+Deployment is preview-first and backs up overwritten files before applying changes.
+See [Deployment.md](00_Documentation/Deployment.md) for the safety model and
+commands.
+
 ## Tests
 
 Run the automated checks from the repository root:

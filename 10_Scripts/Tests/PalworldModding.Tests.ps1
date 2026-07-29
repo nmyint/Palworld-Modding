@@ -20,14 +20,15 @@ Describe 'PalworldModding module' {
             Should Not Throw
     }
 
-    It 'reports the Sprint 3.2 module version' {
-        Get-PwVersion | Should Be ([version]'0.3.2')
+    It 'reports the Sprint 3.3 module version' {
+        Get-PwVersion | Should Be ([version]'0.3.3')
     }
 
     It 'exports the expected public commands' {
         $expectedCommands = @(
             'Get-PwContext'
             'Get-PwDeployment'
+            'Get-PwDeploymentPlan'
             'Get-PwPaths'
             'Get-PwProfile'
             'Get-PwProfiles'
@@ -37,7 +38,9 @@ Describe 'PalworldModding module' {
             'Get-PwWorkshopConfig'
             'Get-PwWorkshopInfo'
             'Initialize-PwWorkshop'
+            'Invoke-PwDeployment'
             'New-PwProfile'
+            'Backup-PwDeployment'
             'Reset-PwContext'
             'Save-PwWorkshopConfig'
             'Set-PwActiveProfile'
