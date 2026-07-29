@@ -50,6 +50,11 @@ Deployment is preview-first and backs up overwritten files before applying chang
 See [Deployment.md](00_Documentation/Deployment.md) for the safety model and
 commands.
 
+## Mod intake
+
+Downloaded ZIP archives can be inspected, staged, validated, and promoted without
+touching the live game. See [ModIntake.md](00_Documentation/ModIntake.md).
+
 ## Tests
 
 Run the automated checks from the repository root:

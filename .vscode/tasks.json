@@ -51,6 +51,23 @@
             }
         },
         {
+            "label": "PwTools: Inspect Mod Archive",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Inspect-ModArchive.ps1",
+                "-Path",
+                "${input:modArchivePath}"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
             "label": "PwTools: Preview Deployment",
             "type": "shell",
             "command": "pwsh",
@@ -64,6 +81,49 @@
                 "clear": true,
                 "reveal": "always"
             }
+        },
+        {
+            "label": "PwTools: Complete Mod Validation",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Complete-ModValidation.ps1",
+                "-Name",
+                "${input:validatedModName}",
+                "-Version",
+                "${input:validatedModVersion}",
+                "-Notes",
+                "${input:validationNotes}"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "modArchivePath",
+            "type": "promptString",
+            "description": "Full path to a mod ZIP or 7z archive"
+        },
+        {
+            "id": "validatedModName",
+            "type": "promptString",
+            "description": "Validated mod name"
+        },
+        {
+            "id": "validatedModVersion",
+            "type": "promptString",
+            "description": "Validated mod version"
+        },
+        {
+            "id": "validationNotes",
+            "type": "promptString",
+            "description": "Optional in-game validation notes"
         }
     ]
 }

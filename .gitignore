@@ -11,6 +11,14 @@ Desktop.ini
 /13_Backups/*
 !/13_Backups/.gitkeep
 
+# Generated staging and deployment output
+/02_Staging/**/*
+!/02_Staging/**/
+!/02_Staging/**/.gitkeep
+/05_Deployment/**/*
+!/05_Deployment/**/
+!/05_Deployment/**/.gitkeep
+
 # Crash dumps
 *.dmp
 

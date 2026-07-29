@@ -9,6 +9,7 @@ installation. It is not intended to be a redistributable PowerShell package.
 - PowerShell 7.6.4
 - Git
 - Node.js and npm for the filesystem MCP server
+- 7-Zip with `7z.exe`
 - VS Code with the recommended PowerShell extension
 - Pester 3.4.0
 
@@ -27,7 +28,7 @@ deliberate future task rather than an incidental dependency update.
 2. Install the required software.
 3. Open `Palworld-Modding.code-workspace` in VS Code.
 4. Update `16_Profiles\Stable.json` with the new game and Saved-directory paths.
-5. Update `.config\Workshop.json` if the required PowerShell version changes.
+5. Update `.config\Workshop.json` if PowerShell or 7-Zip uses a different path.
 6. Run `PwTools: Validate Environment`.
 7. Run `PwTools: Test`.
 8. Run `PwTools: Preview Deployment` before applying anything.
@@ -43,6 +44,7 @@ The following settings currently affect behavior:
 - `Preferences.CreateBackupsBeforeDeployment`
 - configured workshop paths
 - configured tool information
+- `Tools.SevenZip`
 
 The following settings are reserved for later sprints:
 

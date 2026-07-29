@@ -31,6 +31,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\Profiles.ps1"
 . "$PSScriptRoot\..\Commands\Deployment.ps1"
 . "$PSScriptRoot\..\Commands\DeploymentActions.ps1"
+. "$PSScriptRoot\..\Commands\ModIntake.ps1"
 . "$PSScriptRoot\..\Commands\Tools.ps1"
 
 # ============================================================
@@ -71,6 +72,13 @@ Export-ModuleMember -Function @(
     'Get-PwDeploymentPlan',
     'Backup-PwDeployment',
     'Invoke-PwDeployment',
+
+    # Mod intake
+    'Get-PwModArchiveInfo',
+    'Import-PwModArchive',
+    'Test-PwModPackage',
+    'Publish-PwModPackage',
+    'Complete-PwModInstallation',
 
     # Tools
     'Get-PwTool',

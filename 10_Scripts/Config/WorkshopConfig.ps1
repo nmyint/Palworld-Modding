@@ -248,6 +248,39 @@ function Test-PwWorkshopConfig {
             $errors.Add("Configured Git property 'Required' must be Boolean.")
         }
 
+        if (-not $configurationValue.Tools.PSObject.Properties['SevenZip']) {
+            $errors.Add("Missing required Tools property 'SevenZip'.")
+        }
+        else {
+            foreach ($property in @('Enabled', 'Path')) {
+                if (
+                    -not $configurationValue.Tools.SevenZip.PSObject.Properties[
+                        $property
+                    ]
+                ) {
+                    $errors.Add(
+                        "Missing required SevenZip property '$property'."
+                    )
+                }
+            }
+
+            if (
+                $configurationValue.Tools.SevenZip.PSObject.Properties['Enabled'] -and
+                $configurationValue.Tools.SevenZip.Enabled -isnot [bool]
+            ) {
+                $errors.Add("SevenZip property 'Enabled' must be Boolean.")
+            }
+
+            if (
+                $configurationValue.Tools.SevenZip.PSObject.Properties['Path'] -and
+                [string]::IsNullOrWhiteSpace(
+                    $configurationValue.Tools.SevenZip.Path
+                )
+            ) {
+                $errors.Add("SevenZip property 'Path' cannot be empty.")
+            }
+        }
+
         foreach ($property in @('DefaultBranch', 'CommitConvention')) {
             if (-not $configurationValue.Git.PSObject.Properties[$property]) {
                 $errors.Add("Missing required Git property '$property'.")

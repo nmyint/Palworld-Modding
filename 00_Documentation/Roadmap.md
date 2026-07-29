@@ -100,7 +100,7 @@ Status: Complete
 
 ### Sprint 3.4 - Hardening and streamlining
 
-Status: In progress
+Status: Complete
 
 - Strengthen configuration and environment validation.
 - Revalidate deployment plans immediately before applying them.
@@ -112,15 +112,21 @@ Status: In progress
 
 ### Sprint 3.5 - Mod intake foundation
 
-Status: Planned
+Status: In progress
 
 - Import downloaded archives into `02_Staging`.
+- Support original ZIP and 7z downloads.
 - Inspect archive layout without writing to the live game.
 - Detect path traversal, unsupported layouts, and suspicious files.
 - Capture source, version, author, and download metadata.
 - Classify common Palworld mod types and installation targets.
 - Promote approved packages into `03_Mod_Library`.
+- Create maximum-compression library and portable deployment 7z packages.
 - Generate deterministic content under `05_Deployment`.
+- Record a hash-verified known-good installation after successful in-game
+  testing.
+- Clean matching staging and generated deployment artifacts only after the
+  installation record is safely written.
 - Test the workflow with isolated fixtures.
 
 ### Sprint 3.6 - Recovery and diagnostics
@@ -130,6 +136,7 @@ Status: Planned
 - Validate deployment and backup manifests.
 - Add explicit, preview-first restoration.
 - Add installation inventory and deployment history commands.
+- Expand known-good manifests into a complete installation inventory.
 - Improve structured diagnostics and troubleshooting output.
 - Complete the core workshop command palette.
 

@@ -39,6 +39,8 @@ function Test-PwEnvironment {
             PowerShellVersion = $PSVersionTable.PSVersion
             RequiredPowerShellVersion = $null
             MeetsPowerShellRequirement = $false
+            SevenZipAvailable = $false
+            SevenZipPath = ''
             ModuleLoaded = ($null -ne (Get-Module PalworldModding))
             IsReady = $false
         }
@@ -66,6 +68,15 @@ function Test-PwEnvironment {
     $meetsPowerShellRequirement = (
         $PSVersionTable.PSVersion -ge $requiredPowerShellVersion
     )
+    $sevenZipPath = ''
+
+    try {
+        $sevenZipPath = Get-Pw7ZipExecutable
+    }
+    catch {
+        $sevenZipPath = ''
+    }
+    $sevenZipAvailable = -not [string]::IsNullOrWhiteSpace($sevenZipPath)
 
     [PSCustomObject]@{
 
@@ -89,13 +100,18 @@ function Test-PwEnvironment {
 
         MeetsPowerShellRequirement = $meetsPowerShellRequirement
 
+        SevenZipAvailable = $sevenZipAvailable
+
+        SevenZipPath      = $sevenZipPath
+
         ModuleLoaded       = ($null -ne (Get-Module PalworldModding))
 
         IsReady            = (
             $configurationValidation.IsValid -and
             $missingPaths.Count -eq 0 -and
             $gitAvailable -and
-            $meetsPowerShellRequirement
+            $meetsPowerShellRequirement -and
+            $sevenZipAvailable
         )
 
     }

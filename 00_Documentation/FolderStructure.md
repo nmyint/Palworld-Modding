@@ -11,11 +11,11 @@ directly in the Palworld installation.
 | `00_Documentation` | Architecture, standards, and operating notes |
 | `01_Archives` | Original downloaded mod archives |
 | `02_Staging` | Temporary preparation area |
-| `03_Mod_Library` | Curated reusable mod collection |
+| `03_Mod_Library` | Curated, compressed mod packages and manifests |
 | `04_Projects` | Active mod and compatibility projects |
-| `05_Deployment` | Game-structure deployment output |
-| `06_Current_Installation` | Installation inventory and snapshots |
-| `07_Testing` | Test plans, results, and regression data |
+| `05_Deployment` | Loose game-layout output and portable deployment packages |
+| `06_Current_Installation` | Known-good installation manifests and inventories |
+| `07_Testing` | Test plans, results, compatibility notes, and regression data |
 | `08_Tools` | Workshop-managed development tools |
 | `09_Logs` | Structured workshop and deployment logs |
 | `10_Scripts` | PowerShell module, commands, and tests |

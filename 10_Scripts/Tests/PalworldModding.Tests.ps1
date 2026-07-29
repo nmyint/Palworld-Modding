@@ -20,8 +20,8 @@ Describe 'PalworldModding module' {
             Should Not Throw
     }
 
-    It 'reports the Sprint 3.4 module version' {
-        Get-PwVersion | Should Be ([version]'0.3.4')
+    It 'reports the Sprint 3.5 module version' {
+        Get-PwVersion | Should Be ([version]'0.3.5')
     }
 
     It 'exports the expected public commands' {
@@ -29,6 +29,7 @@ Describe 'PalworldModding module' {
             'Get-PwContext'
             'Get-PwDeployment'
             'Get-PwDeploymentPlan'
+            'Get-PwModArchiveInfo'
             'Get-PwPaths'
             'Get-PwProfile'
             'Get-PwProfiles'
@@ -38,13 +39,17 @@ Describe 'PalworldModding module' {
             'Get-PwWorkshopConfig'
             'Get-PwWorkshopInfo'
             'Initialize-PwWorkshop'
+            'Import-PwModArchive'
             'Invoke-PwDeployment'
             'New-PwProfile'
             'Backup-PwDeployment'
+            'Publish-PwModPackage'
+            'Complete-PwModInstallation'
             'Reset-PwContext'
             'Save-PwWorkshopConfig'
             'Set-PwActiveProfile'
             'Test-PwEnvironment'
+            'Test-PwModPackage'
             'Test-PwProfile'
             'Test-PwWorkshopConfig'
         )
@@ -117,6 +122,10 @@ Describe 'PalworldModding module' {
         $environment.PowerShellVersion.Major | Should BeGreaterThan 6
         $environment.ConfigValid | Should Be $true
         $environment.MeetsPowerShellRequirement | Should Be $true
+        $environment.SevenZipAvailable | Should Be $true
+        $environment.SevenZipPath | Should Be (
+            'C:\Program Files\7-Zip\7z.exe'
+        )
         @($environment.MissingPaths).Count | Should Be 0
         $environment.ModuleLoaded | Should Be $true
         $environment.IsReady | Should Be $true
