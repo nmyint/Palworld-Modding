@@ -184,8 +184,41 @@ Describe 'PalworldModding mod intake' {
         $result.Staged | Should Be $true
         Test-Path -LiteralPath $result.OriginalArchive | Should Be $true
         Test-Path -LiteralPath $result.PackageArchive | Should Be $true
+        $manifest = Get-Content -LiteralPath $result.ManifestPath -Raw |
+            ConvertFrom-Json
+        $manifest.SchemaVersion | Should Be '1.1'
+        (
+            $manifest.Entries |
+                Where-Object Category -eq 'Pak' |
+                Select-Object -ExpandProperty StagedRelativePath
+        ) | Should Be 'Pal/Content/Paks/~mods/WorkshopTest.pak'
+        Test-Path -LiteralPath (
+            Join-Path `
+                $result.SourceRoot `
+                'Pal\Content\Paks\~mods\WorkshopTest.pak'
+        ) | Should Be $true
         (Test-PwModPackage -Name 'WorkshopTest' -Version '1.0').IsValid |
             Should Be $true
+    }
+
+    It 'normalizes common bare UE4SS and LogicMods layouts' {
+        InModuleScope PalworldModding {
+            Get-PwModDeploymentRelativePath `
+                -Path 'ExampleMod/Scripts/main.lua' `
+                -Category Lua |
+                Should Be (
+                    'Pal\Binaries\Win64\ue4ss\Mods\' +
+                        'ExampleMod\Scripts\main.lua'
+                )
+            Get-PwModDeploymentRelativePath `
+                -Path 'LogicMods/ExampleMod.pak' `
+                -Category Pak |
+                Should Be 'Pal\Content\Paks\LogicMods\ExampleMod.pak'
+            Get-PwModDeploymentRelativePath `
+                -Path '~mods/ExampleMod_P.pak' `
+                -Category Pak |
+                Should Be 'Pal\Content\Paks\~mods\ExampleMod_P.pak'
+        }
     }
 
     It 'archives and stages a verified 7z package' {

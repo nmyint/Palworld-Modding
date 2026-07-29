@@ -68,12 +68,45 @@ The command:
 
 1. inspects the ZIP or 7z archive;
 2. copies the original archive into `01_Archives`;
-3. extracts only validated paths into `02_Staging`;
+3. extracts only validated files into a normalized game-relative tree beneath
+   `02_Staging\<Name>\<Version>\Source`;
 4. verifies every extracted SHA-256 hash; and
 5. creates a normalized maximum-compression `package.7z`; and
 6. writes `manifest.json` with metadata, hashes, and deployment mappings.
 
+Common archive layouts are normalized automatically:
+
+- `<ModName>\Scripts\...` becomes
+  `Pal\Binaries\Win64\ue4ss\Mods\<ModName>\Scripts\...`;
+- root-level PAK files become `Pal\Content\Paks\~mods\...`;
+- `~mods\...` and `LogicMods\...` retain their distinct PAK destinations; and
+- archives containing both UE4SS and PAK components retain both beneath the
+  same package version.
+
+Files without a safe, recognizable game destination are retained beneath
+`Source\_Review` and are not deployed automatically. This covers malformed,
+unusually nested, or otherwise ambiguous archives without discarding their
+contents.
+
 Use `-WhatIf` to preview the staging location without writing files.
+
+## Reconcile an existing installation capture
+
+The staging reconciliation report understands both the older top-level UE4SS
+folders and captured game-relative PAK content:
+
+```powershell
+$report = Get-PwStagingReconciliation
+$report.Groups |
+    Format-Table DisplayName, PackageTypes, ComponentCount, IsMixedPackage
+$report.ReviewItems |
+    Format-Table OwnerName, SourceArea, PackageType, RelativePath
+```
+
+The report is read-only. It groups components only when a filename or UE4SS
+folder matches a reviewed catalog identity. Unmatched files remain review items
+instead of being silently assigned to an unrelated mod. In the workshop menu,
+open **Catalog and versions**, then choose **Staging groups**.
 
 ## Validate a staged package
 

@@ -266,6 +266,7 @@ Describe 'PalworldModding mod catalog' {
         $record = Set-PwModCatalogMetadata `
             -CatalogKey 'orphanmod' `
             -DisplayName 'Orphan Mod' `
+            -InstallName 'Remote Orphan Name' `
             -NexusModId 999 `
             -InstalledVersion '1.0.0' `
             -Confirm:$false
@@ -273,6 +274,8 @@ Describe 'PalworldModding mod catalog' {
         $record.ReconciliationStatus | Should Be 'ManuallyReconciled'
         $record.InstalledVersion | Should Be '1.0.0'
         @($record.NexusModIds) -contains 999 | Should Be $true
+        @($record.InstallNames) -contains 'Remote Orphan Name' |
+            Should Be $true
         (Get-FileHash -LiteralPath $orphanPath).Hash | Should Be $beforeHash
     }
 

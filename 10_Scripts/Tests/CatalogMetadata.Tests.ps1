@@ -76,6 +76,31 @@ Describe 'PalworldModding remote catalog metadata' {
         }
     }
 
+    It 'ignores the normalized Pal staging container' {
+        InModuleScope PalworldModding {
+            Mock Invoke-PwNexusApi { throw 'API should not be called.' }
+            $catalog = [PSCustomObject]@{
+                Mods = @(
+                    [PSCustomObject]@{
+                        CatalogKey = 'pal'
+                        InstallNames = @('Pal')
+                        Source = 'NexusMods'
+                        NexusModIds = @()
+                        Versions = @()
+                    }
+                )
+            }
+            $result = @(
+                Get-PwNexusCatalogMetadataReport `
+                    -ApiKey 'fixture-key' `
+                    -Catalog $catalog
+            )
+
+            $result.Count | Should Be 0
+            Assert-MockCalled Invoke-PwNexusApi -Times 0 -Scope It
+        }
+    }
+
     It 'normalizes repository and tagged-release links' {
         InModuleScope PalworldModding {
             $sources = @(
@@ -119,4 +144,27 @@ Describe 'PalworldModding remote catalog metadata' {
             $result[0].Error | Should Match 'hidden'
         }
     }
+
+    It 'inspects an entered Nexus ID before catalog assignment' {
+        InModuleScope PalworldModding {
+            Mock Invoke-PwNexusApi {
+                [PSCustomObject]@{
+                    name = 'Folder Mod'
+                    version = '1.2.3'
+                    summary = 'Reviewed identity'
+                    description = 'https://github.com/Owner/FolderMod'
+                }
+            }
+
+            $identity = Get-PwNexusModIdentity `
+                -ModId 1234 `
+                -InstallNames @('FolderMod') `
+                -ApiKey 'fixture-key'
+
+            $identity.NameMatch | Should Be 'Exact'
+            $identity.Version | Should Be '1.2.3'
+            $identity.GitSources[0].Repository | Should Be 'Owner/FolderMod'
+        }
+    }
+
 }

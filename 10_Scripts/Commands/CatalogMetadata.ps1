@@ -120,6 +120,7 @@ function Get-PwNexusCatalogMetadataReport {
         $Catalog.Mods |
             Where-Object {
                 $_.Source -ne 'UE4SSBundled' -and
+                $_.CatalogKey -ne 'pal' -and
                 @($_.Versions | Where-Object ArchivePresent).Count -eq 0
             }
     )
@@ -203,6 +204,55 @@ function Get-PwNexusCatalogMetadataReport {
                 Error = ''
             }
         }
+    }
+}
+
+function Get-PwNexusModIdentity {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateRange(1, [int]::MaxValue)]
+        [int]$ModId,
+
+        [string[]]$InstallNames = @(),
+
+        [string]$ApiKey
+    )
+
+    $mod = Invoke-PwNexusApi `
+        -Path "games/palworld/mods/$ModId.json" `
+        -ApiKey $ApiKey
+
+    if (-not $mod.PSObject.Properties['name']) {
+        $message = if ($mod.PSObject.Properties['message']) {
+            [string]$mod.message
+        }
+        else {
+            'Nexus returned no mod metadata.'
+        }
+        throw $message
+    }
+
+    $gitSources = @(
+        Get-PwGitHubSourcesFromText -Text ([string]$mod.description)
+    )
+
+    [PSCustomObject]@{
+        NexusModId = $ModId
+        Name = [string]$mod.name
+        Version = [string]$mod.version
+        Summary = [string]$mod.summary
+        NameMatch = if ($InstallNames.Count -gt 0) {
+            Get-PwModNameMatch `
+                -InstallNames $InstallNames `
+                -RemoteName ([string]$mod.name)
+        }
+        else {
+            'NotCompared'
+        }
+        GitSources = $gitSources
+        NexusUrl = "https://www.nexusmods.com/palworld/mods/$ModId"
     }
 }
 

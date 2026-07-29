@@ -440,6 +440,7 @@ function Get-PwStagedModSnapshot {
     @(
         foreach (
             $directory in Get-ChildItem -LiteralPath $root -Directory |
+                Where-Object Name -ne 'Pal' |
                 Sort-Object Name
         ) {
             $enabledMarker = Join-Path $directory.FullName 'enabled.txt'

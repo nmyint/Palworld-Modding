@@ -227,11 +227,71 @@ function Get-PwModDeploymentRelativePath {
         return "Pal\Binaries\Win64\$($normalized.Replace('/', '\'))"
     }
 
+    if ($normalized.StartsWith(
+        '~mods/',
+        [System.StringComparison]::OrdinalIgnoreCase
+    )) {
+        return "Pal\Content\Paks\$($normalized.Replace('/', '\'))"
+    }
+
+    if ($normalized.StartsWith(
+        'LogicMods/',
+        [System.StringComparison]::OrdinalIgnoreCase
+    )) {
+        return "Pal\Content\Paks\$($normalized.Replace('/', '\'))"
+    }
+
     if ($Category -eq 'Pak' -and -not $normalized.Contains('/')) {
         return "Pal\Content\Paks\~mods\$normalized"
     }
 
+    # UE4SS archives commonly contain only <ModName>\Scripts rather than the
+    # complete game-relative path. Preserve that accepted folder name while
+    # normalizing the package into the live UE4SS Mods layout.
+    $segments = @(
+        $normalized.Split(
+            '/',
+            [System.StringSplitOptions]::RemoveEmptyEntries
+        )
+    )
+    if (
+        $segments.Count -ge 2 -and
+        (
+            $Category -in @('Lua', 'Native') -or
+            (
+                $segments.Count -eq 2 -and
+                $segments[1] -match '^(?i:enabled|disabled)\.txt$'
+            )
+        )
+    ) {
+        return (
+            "Pal\Binaries\Win64\ue4ss\Mods\" +
+                $normalized.Replace('/', '\')
+        )
+    }
+
     $null
+}
+
+function Get-PwModStagingRelativePath {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Entry
+    )
+
+    if (
+        -not [string]::IsNullOrWhiteSpace(
+            [string]$Entry.DeploymentRelativePath
+        )
+    ) {
+        return [string]$Entry.DeploymentRelativePath
+    }
+
+    # Keep review-only material available without pretending it has a safe
+    # game destination.
+    Join-Path '_Review' $Entry.ArchivePath.Replace('/', '\')
 }
 
 function Get-PwStreamHash {
@@ -938,6 +998,7 @@ function Import-PwModArchive {
         Split-Path -Leaf $inspection.Path
     )
     $sourceRoot = Join-Path $packageRoot 'Source'
+    $extractedRoot = Join-Path $packageRoot '_Extracted'
     $manifestPath = Join-Path $packageRoot 'manifest.json'
     $sourceUriValue = if ($null -eq $SourceUri) {
         ''
@@ -951,20 +1012,21 @@ function Import-PwModArchive {
     )) {
         New-Item -ItemType Directory -Path $archiveRoot -Force | Out-Null
         New-Item -ItemType Directory -Path $sourceRoot -Force | Out-Null
+        New-Item -ItemType Directory -Path $extractedRoot -Force | Out-Null
         Copy-Item `
             -LiteralPath $inspection.Path `
             -Destination $archivePath `
             -ErrorAction Stop
         Expand-PwSafeModArchive `
             -Inspection $inspection `
-            -DestinationRoot $sourceRoot
+            -DestinationRoot $extractedRoot
         $manifestEntries = @(
             foreach ($entry in $inspection.Entries) {
                 if ($entry.IsDirectory) {
                     continue
                 }
 
-                $extractedPath = Join-Path $sourceRoot (
+                $extractedPath = Join-Path $extractedRoot (
                     $entry.ArchivePath.Replace('/', '\')
                 )
                 $extractedHash = (
@@ -979,8 +1041,32 @@ function Import-PwModArchive {
                         $entry.ArchivePath
                 }
 
+                $stagedRelativePath = Get-PwModStagingRelativePath `
+                    -Entry $entry
+                $stagedRelativePath = $stagedRelativePath.Replace('\', '/')
+                $stagedPath = Join-Path $sourceRoot $stagedRelativePath
+                $stagedDirectory = Split-Path -Parent $stagedPath
+                New-Item `
+                    -ItemType Directory `
+                    -Path $stagedDirectory `
+                    -Force |
+                    Out-Null
+
+                if (Test-Path -LiteralPath $stagedPath) {
+                    throw (
+                        'Multiple archive files normalize to the same staging ' +
+                            "path: $stagedRelativePath"
+                    )
+                }
+
+                Copy-Item `
+                    -LiteralPath $extractedPath `
+                    -Destination $stagedPath `
+                    -ErrorAction Stop
+
                 [PSCustomObject]@{
                     ArchivePath = $entry.ArchivePath
+                    StagedRelativePath = $stagedRelativePath
                     Length = $entry.Length
                     Hash = $extractedHash
                     Category = $entry.Category
@@ -989,12 +1075,13 @@ function Import-PwModArchive {
                 }
             }
         )
+        Remove-Item -LiteralPath $extractedRoot -Recurse -Force
         $stagingArchivePath = Join-Path $packageRoot 'package.7z'
         $stagingArchiveHash = New-Pw7ZipArchive `
             -SourceRoot $sourceRoot `
             -DestinationPath $stagingArchivePath
         $manifest = [PSCustomObject]@{
-            SchemaVersion = '1.0'
+            SchemaVersion = '1.1'
             Name = $Name
             Version = $Version
             Author = $Author
@@ -1095,7 +1182,7 @@ function Test-PwModPackage {
     }
 
     if ($errors.Count -eq 0) {
-        if ($manifest.SchemaVersion -ne '1.0') {
+        if ($manifest.SchemaVersion -notin @('1.0', '1.1')) {
             $errors.Add("Unsupported manifest schema '$($manifest.SchemaVersion)'.")
         }
 
@@ -1128,13 +1215,34 @@ function Test-PwModPackage {
                 continue
             }
 
+            $stagedRelativePath = if (
+                $entry.PSObject.Properties['StagedRelativePath'] -and
+                -not [string]::IsNullOrWhiteSpace(
+                    [string]$entry.StagedRelativePath
+                )
+            ) {
+                [string]$entry.StagedRelativePath
+            }
+            else {
+                [string]$entry.ArchivePath
+            }
+
             if (-not (Test-PwArchiveEntryPath -Path $entry.ArchivePath)) {
                 $errors.Add("Unsafe manifest entry path: $($entry.ArchivePath)")
                 continue
             }
 
-            if (-not $manifestPaths.Add($entry.ArchivePath)) {
-                $errors.Add("Duplicate manifest entry path: $($entry.ArchivePath)")
+            if (-not (Test-PwArchiveEntryPath -Path $stagedRelativePath)) {
+                $errors.Add(
+                    "Unsafe staged entry path: $stagedRelativePath"
+                )
+                continue
+            }
+
+            if (-not $manifestPaths.Add($stagedRelativePath)) {
+                $errors.Add(
+                    "Duplicate staged entry path: $stagedRelativePath"
+                )
             }
 
             if (
@@ -1153,11 +1261,11 @@ function Test-PwModPackage {
 
             if ($Area -eq 'Staging') {
                 $filePath = Join-Path $sourceRoot (
-                    $entry.ArchivePath.Replace('/', '\')
+                    $stagedRelativePath.Replace('/', '\')
                 )
 
                 if (-not (Test-Path -LiteralPath $filePath -PathType Leaf)) {
-                    $errors.Add("Package file not found: $($entry.ArchivePath)")
+                    $errors.Add("Package file not found: $stagedRelativePath")
                     continue
                 }
 
@@ -1166,7 +1274,7 @@ function Test-PwModPackage {
                 ).Hash
 
                 if ($hash -ne $entry.Hash) {
-                    $errors.Add("Package file hash mismatch: $($entry.ArchivePath)")
+                    $errors.Add("Package file hash mismatch: $stagedRelativePath")
                 }
             }
         }
@@ -1288,9 +1396,20 @@ function New-PwModPublishPlan {
                 continue
             }
 
+            $stagedPathValue = if (
+                $entry.PSObject.Properties['StagedRelativePath'] -and
+                -not [string]::IsNullOrWhiteSpace(
+                    [string]$entry.StagedRelativePath
+                )
+            ) {
+                $entry.StagedRelativePath.Replace('/', '\')
+            }
+            else {
+                $entry.ArchivePath.Replace('/', '\')
+            }
             $sourcePath = Join-Path (
                 Join-Path $stagingRoot 'Source'
-            ) $entry.ArchivePath.Replace('/', '\')
+            ) $stagedPathValue
             $destinationPath = Join-Path `
                 $deploymentRoot `
                 $entry.DeploymentRelativePath

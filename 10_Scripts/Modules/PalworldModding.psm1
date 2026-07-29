@@ -34,6 +34,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\ModIntake.ps1"
 . "$PSScriptRoot\..\Commands\ModCatalog.ps1"
 . "$PSScriptRoot\..\Commands\PersistentCatalog.ps1"
+. "$PSScriptRoot\..\Commands\StagingReconciliation.ps1"
 . "$PSScriptRoot\..\Commands\NexusUpdates.ps1"
 . "$PSScriptRoot\..\Commands\SourceUpdates.ps1"
 . "$PSScriptRoot\..\Commands\CatalogMetadata.ps1"
@@ -96,6 +97,7 @@ Export-ModuleMember -Function @(
     'Get-PwModCatalogSyncPlan',
     'Update-PwModCatalog',
     'Set-PwModCatalogMetadata',
+    'Get-PwStagingReconciliation',
     'Get-PwNexusApiIdentity',
     'Get-PwModUpdateReport',
     'Open-PwNexusModPage',
@@ -104,6 +106,7 @@ Export-ModuleMember -Function @(
     'Get-PwSourceUpdateReport',
     'Set-PwGitHubSourceBaseline',
     'Get-PwNexusCatalogMetadataReport',
+    'Get-PwNexusModIdentity',
     'Get-PwGitHubSourcesFromText',
     'Update-PwNexusCatalogMetadata',
 

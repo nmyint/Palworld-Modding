@@ -27,7 +27,12 @@ Update-PwNexusCatalogMetadata
 ```
 
 The same preview-and-apply workflow is available from the main menu under
-**Catalog → Remote metadata**.
+**Catalog → Remote metadata**. Use **Catalog → Edit identity** to select a
+catalog record, enter a Nexus ID, inspect the returned Nexus identity and
+GitHub sources, and then apply reviewed display-name or installed-version
+fields. GitHub URLs embedded in the Nexus description's BBCode are parsed into
+normalized repository and release sources. Entering a replacement Nexus ID
+replaces the record's previous ID after confirmation.
 
 This adds `RemoteMetadata` containing the remote name, current page version,
 summary, match quality, discovered GitHub sources, and retrieval time. It does

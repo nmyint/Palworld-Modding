@@ -513,8 +513,12 @@ function Set-PwModCatalogMetadata {
 
         [string]$DisplayName,
 
+        [string]$InstallName,
+
         [ValidateRange(1, [int]::MaxValue)]
         [int]$NexusModId,
+
+        [switch]$ReplaceNexusModIds,
 
         [string]$InstalledVersion,
 
@@ -549,11 +553,26 @@ function Set-PwModCatalogMetadata {
         $record.DisplayName = $DisplayName
     }
 
-    if ($PSBoundParameters.ContainsKey('NexusModId')) {
-        $record.NexusModIds = @(
-            @($record.NexusModIds) + $NexusModId |
+    if ($PSBoundParameters.ContainsKey('InstallName')) {
+        $record.InstallNames = @(
+            @($record.InstallNames) + $InstallName |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace([string]$_)
+                } |
                 Select-Object -Unique
         )
+    }
+
+    if ($PSBoundParameters.ContainsKey('NexusModId')) {
+        $record.NexusModIds = if ($ReplaceNexusModIds) {
+            @($NexusModId)
+        }
+        else {
+            @(
+                @($record.NexusModIds) + $NexusModId |
+                    Select-Object -Unique
+            )
+        }
         $record.Source = 'NexusMods'
     }
 
@@ -568,6 +587,7 @@ function Set-PwModCatalogMetadata {
     if (
         @($record.NexusModIds).Count -gt 0 -or
         -not [string]::IsNullOrWhiteSpace($record.InstalledVersion) -or
+        $PSBoundParameters.ContainsKey('InstallName') -or
         $PSBoundParameters.ContainsKey('Source')
     ) {
         $record.ReconciliationStatus = if (

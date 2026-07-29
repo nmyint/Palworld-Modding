@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.4.5'
+ModuleVersion = '0.4.6'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -74,6 +74,7 @@ FunctionsToExport = @(
     'Get-PwModCatalogSyncPlan',
     'Update-PwModCatalog',
     'Set-PwModCatalogMetadata',
+    'Get-PwStagingReconciliation',
     'Get-PwNexusApiIdentity',
     'Get-PwModUpdateReport',
     'Open-PwNexusModPage',
@@ -82,6 +83,7 @@ FunctionsToExport = @(
     'Get-PwSourceUpdateReport',
     'Set-PwGitHubSourceBaseline',
     'Get-PwNexusCatalogMetadataReport',
+    'Get-PwNexusModIdentity',
     'Get-PwGitHubSourcesFromText',
     'Update-PwNexusCatalogMetadata',
 
@@ -130,7 +132,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 4.2 remote catalog metadata discovery'
+        ReleaseNotes = 'Sprint 4.2 consolidated menu identity workflows'
 
     }
 

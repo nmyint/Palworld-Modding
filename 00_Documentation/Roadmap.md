@@ -237,6 +237,38 @@ Planned outcomes:
 - Mod-update monitoring and maintenance reports.
 - Documentation synchronization and long-term repository health checks.
 
+## Deferred future directions
+
+These items are intentionally outside the current sprint sequence. They should
+not be implemented until the PowerShell workflow is stable and a separate
+review explicitly brings them into scope.
+
+### Hybrid application architecture
+
+- Keep PowerShell as the primary workshop platform, launcher, and Windows
+  automation layer.
+- Continue separating menu, catalog, intake, deployment, provider, and recovery
+  responsibilities so they can remain maintainable in PowerShell.
+- Preserve language-neutral JSON manifests and configuration contracts.
+- Reconsider a gradual C#/.NET core or interface only if application complexity
+  later exceeds what is comfortable to maintain in PowerShell.
+- Avoid a full rewrite; any hybrid migration should move one tested subsystem at
+  a time while retaining the one-command workshop entry point.
+
+### Experimental PAK editing
+
+- Begin with read-only PAK inspection, file listing, hashing, and comparison.
+- Evaluate external tools such as `repak`, UnrealPak, FModel, UAssetGUI, and the
+  Palworld Modding Kit instead of implementing a PAK parser in PowerShell.
+- Extract only into isolated working copies and never modify original PAK files
+  in place.
+- Preserve mount points, companion Unreal assets, source hashes, and before/after
+  manifests.
+- Treat patch PAKs, LogicMods, and IoStore `.pak`/`.utoc`/`.ucas` sets as
+  distinct formats with separate validation requirements.
+- Require explicit experimental status, rebuilding validation, and in-game
+  testing before a modified PAK can become a known-good version.
+
 ## Delivery rules
 
 Every sprint or sub-sprint should:

@@ -105,6 +105,12 @@ version, and reconciliation status. Each installed record also carries an
 records carry the same dimensions so Steam/GamePass,
 singleplayer/dedicated/multiplayer, and UE4SS/PAK releases can coexist.
 
+`Get-PwStagingReconciliation` also reports when one installed mod owns multiple
+deployment components. For example, a single catalog identity may contain a
+UE4SS Lua folder plus files under `Pal\Content\Paks\~mods` or
+`Pal\Content\Paks\LogicMods`. Configuration files remain attached to their
+component but do not create a separate package type.
+
 After confirming missing information from Nexus or the installed mod, record it
 without changing any mod files:
 
