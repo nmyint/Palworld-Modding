@@ -75,6 +75,7 @@ FunctionsToExport = @(
     'Update-PwModCatalog',
     'Set-PwModCatalogMetadata',
     'Get-PwStagingReconciliation',
+    'Get-PwCompatibilityReport',
     'Get-PwNexusApiIdentity',
     'Get-PwModUpdateReport',
     'Open-PwNexusModPage',

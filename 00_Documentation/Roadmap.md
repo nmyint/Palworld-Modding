@@ -185,13 +185,17 @@ Status: In progress
 - Reconcile loose mods whose original downloads are missing.
 - Preview catalog changes before writing `03_Mod_Library/catalog.json`.
 
-### Sprint 4.3 - Conflicts, dependencies, and load order
+### Sprint 4.3 - Conflicts and compatibility rules
 
-Status: Planned
+Status: In progress
 
 - Detect path-level file conflicts before assembly.
-- Model dependencies, incompatibilities, and load-order requirements.
+- Model practical compatibility rules for Palworld and UE4SS mods.
+- Track dependency hints, mutually exclusive mod pairs, and variant
+  requirements.
 - Present conflicts and required decisions through the menu.
+- Avoid inventing a formal Palworld load-order system where the game does not
+  support one.
 
 ### Sprint 4.4 - Profile mod sets and deterministic assembly
 

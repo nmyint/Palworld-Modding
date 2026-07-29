@@ -81,4 +81,57 @@ Describe 'PalworldModding staging reconciliation' {
         $review.PackageType | Should Be 'Pak'
         $review.OwnershipStatus | Should Be 'Unmatched'
     }
+
+    It 'surfaces compatibility hints from staging and catalog metadata' {
+        InModuleScope PalworldModding {
+            Mock Get-PwStagingReconciliation {
+                [PSCustomObject]@{
+                    ReviewItemCount = 1
+                    Groups = @(
+                        [PSCustomObject]@{
+                            CatalogKey = 'mixedmod'
+                            DisplayName = 'MixedMod'
+                            PackageTypes = @('UE4SSLua', 'LogicMods')
+                            ComponentCount = 2
+                            IsMixedPackage = $true
+                        }
+                    )
+                    ReviewItems = @()
+                }
+            }
+
+            Mock Get-PwPersistentModCatalog {
+                [PSCustomObject]@{
+                    Mods = @(
+                        [PSCustomObject]@{
+                            CatalogKey = 'example'
+                            DisplayName = 'Example'
+                            Versions = @(
+                                [PSCustomObject]@{
+                                    ArchiveHash = 'abc'
+                                    Version = '1.0'
+                                    Platform = 'Steam'
+                                    PlayMode = 'Universal'
+                                }
+                                [PSCustomObject]@{
+                                    ArchiveHash = 'abc'
+                                    Version = '1.1'
+                                    Platform = 'GamePass'
+                                    PlayMode = 'DedicatedServer'
+                                }
+                            )
+                        }
+                    )
+                }
+            }
+
+            $result = Get-PwCompatibilityReport -Path $global:PwReconcileRoot
+
+            $result.ConflictCount | Should Be 2
+            $result.ReviewCount | Should Be 2
+            $result.DuplicateArchives.Count | Should Be 1
+            $result.MixedPackages.Count | Should Be 1
+            $result.VariantWarnings.Count | Should Be 1
+        }
+    }
 }

@@ -136,6 +136,9 @@ Set-PwModCatalogMetadata `
 The catalog does not guess an authoritative installed version when loose files
 contain no version metadata. Such records remain marked for reconciliation.
 Conflict detection, dependencies, and mod sets are later Sprint 4 work.
+Palworld itself does not appear to expose a general user-facing load-order
+system, so Sprint 4.3 focuses on practical compatibility rules, file conflicts,
+and dependency hints instead of a classic ordered-load manager.
 
 Authenticated update checks and manual or Premium direct downloads are
 documented in [NexusUpdates.md](NexusUpdates.md).

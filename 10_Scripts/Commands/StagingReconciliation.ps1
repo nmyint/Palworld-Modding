@@ -312,3 +312,94 @@ function Get-PwStagingReconciliation {
         Components = @($components)
     }
 }
+
+function Get-PwCompatibilityReport {
+
+    [CmdletBinding()]
+    param(
+        [string]$Path = (Get-PwPaths).Staging
+    )
+
+    $staging = Get-PwStagingReconciliation -Path $Path
+    $catalog = Get-PwPersistentModCatalog
+    $mods = @($catalog.Mods)
+
+    $archiveEntries = @(
+        foreach ($mod in $mods) {
+            foreach ($version in @($mod.Versions)) {
+                if ([string]::IsNullOrWhiteSpace([string]$version.ArchiveHash)) {
+                    continue
+                }
+
+                [PSCustomObject]@{
+                    ArchiveHash = [string]$version.ArchiveHash
+                    CatalogKey = [string]$mod.CatalogKey
+                    DisplayName = [string]$mod.DisplayName
+                    Version = [string]$version.Version
+                }
+            }
+        }
+    )
+    $duplicateArchives = @(
+        $archiveEntries |
+            Group-Object ArchiveHash |
+            Where-Object Count -gt 1 |
+            ForEach-Object {
+                [PSCustomObject]@{
+                    ArchiveHash = $_.Name
+                    CatalogKeys = @(
+                        $_.Group.CatalogKey |
+                            Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+                            Sort-Object -Unique
+                    )
+                    Versions = @(
+                        $_.Group.Version |
+                            Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+                            Sort-Object -Unique
+                    )
+                }
+            }
+    )
+
+    $mixedPackages = @(
+        $staging.Groups |
+            Where-Object IsMixedPackage
+    )
+    $variantWarnings = @(
+        $mods |
+            ForEach-Object {
+                $platforms = @(
+                    @($_.Versions) |
+                        ForEach-Object { [string]$_.Platform } |
+                        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+                        Select-Object -Unique
+                )
+                $playModes = @(
+                    @($_.Versions) |
+                        ForEach-Object { [string]$_.PlayMode } |
+                        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+                        Select-Object -Unique
+                )
+
+                if ($platforms.Count -gt 1 -or $playModes.Count -gt 1) {
+                    [PSCustomObject]@{
+                        CatalogKey = [string]$_.CatalogKey
+                        DisplayName = [string]$_.DisplayName
+                        Platforms = $platforms
+                        PlayModes = $playModes
+                    }
+                }
+            } |
+            Where-Object { $null -ne $_ }
+    )
+
+    [PSCustomObject]@{
+        GeneratedAt = (Get-Date).ToUniversalTime()
+        Staging = $staging
+        DuplicateArchives = $duplicateArchives
+        MixedPackages = $mixedPackages
+        VariantWarnings = $variantWarnings
+        ConflictCount = $duplicateArchives.Count + $mixedPackages.Count
+        ReviewCount = $staging.ReviewItemCount + $variantWarnings.Count
+    }
+}

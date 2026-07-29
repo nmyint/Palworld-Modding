@@ -138,6 +138,9 @@ function Get-PwWorkshopMenuLayout {
         New-PwWorkshopMenuLine `
             -Text '  [4] Check mod and tool updates' `
             -Width $Width
+        New-PwWorkshopMenuLine `
+            -Text '  [H] Compatibility report' `
+            -Width $Width
         New-PwWorkshopMenuLine -Width $Width
         New-PwWorkshopMenuLine `
             -Text 'WORKSHOP HEALTH' `
@@ -193,6 +196,9 @@ function Get-PwWorkshopMenuLayout {
                 -Width $Width
             New-PwWorkshopMenuLine `
                 -Text '  [4] Check mod and tool updates' `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text '  [H] Compatibility report' `
                 -Width $Width
             New-PwWorkshopMenuLine `
                 -Text 'WORKSHOP HEALTH' `
@@ -1031,6 +1037,53 @@ function Start-PwWorkshop {
                                     PackageType,
                                     RelativePath |
                                 Format-Table -AutoSize
+                        }
+
+                        continue
+                    }
+
+                    if ($catalogChoice -match '^(?i:H)$') {
+                        $compatibility = Get-PwCompatibilityReport
+                        $compatibility |
+                            Select-Object `
+                                ConflictCount,
+                                ReviewCount,
+                                GeneratedAt |
+                            Format-List
+
+                        if ($compatibility.DuplicateArchives.Count -gt 0) {
+                            Write-Host 'Duplicate archive hashes:' `
+                                -ForegroundColor Yellow
+                            $compatibility.DuplicateArchives |
+                                Select-Object `
+                                    ArchiveHash,
+                                    CatalogKeys,
+                                    Versions |
+                                Format-Table -AutoSize -Wrap
+                        }
+
+                        if ($compatibility.MixedPackages.Count -gt 0) {
+                            Write-Host 'Mixed package groups:' `
+                                -ForegroundColor Yellow
+                            $compatibility.MixedPackages |
+                                Select-Object `
+                                    CatalogKey,
+                                    DisplayName,
+                                    PackageTypes,
+                                    ComponentCount |
+                                Format-Table -AutoSize -Wrap
+                        }
+
+                        if ($compatibility.VariantWarnings.Count -gt 0) {
+                            Write-Host 'Variant warnings:' `
+                                -ForegroundColor Yellow
+                            $compatibility.VariantWarnings |
+                                Select-Object `
+                                    CatalogKey,
+                                    DisplayName,
+                                    Platforms,
+                                    PlayModes |
+                                Format-Table -AutoSize -Wrap
                         }
 
                         continue
