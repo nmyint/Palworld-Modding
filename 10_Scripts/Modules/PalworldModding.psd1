@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.3.5'
+ModuleVersion = '0.3.6'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -66,6 +66,14 @@ FunctionsToExport = @(
     'Publish-PwModPackage',
     'Complete-PwModInstallation',
 
+    # Recovery and diagnostics
+    'Test-PwBackup',
+    'Get-PwRestorePlan',
+    'Restore-PwDeployment',
+    'Get-PwDeploymentHistory',
+    'Get-PwInstallationInventory',
+    'Get-PwDiagnostics',
+
     # Tools
     'Get-PwTool',
     'Get-PwTools'
@@ -97,7 +105,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 3.5 mod intake, promotion, and validated cleanup'
+        ReleaseNotes = 'Sprint 3.6 recovery, inventory, history, and diagnostics'
 
     }
 

@@ -16,7 +16,7 @@ work separate from the live game installation.
 ## Workflow
 
 ```text
-Archive -> Stage -> Develop -> Test -> Deploy -> Commit
+Archive -> Stage -> Library -> Deploy -> Validate -> Inventory
 ```
 
 See [FolderStructure.md](00_Documentation/FolderStructure.md) for the role of each
@@ -54,6 +54,12 @@ commands.
 
 Downloaded ZIP archives can be inspected, staged, validated, and promoted without
 touching the live game. See [ModIntake.md](00_Documentation/ModIntake.md).
+
+## Recovery and diagnostics
+
+Deployment backups can be validated and restored through an explicit,
+preview-first workflow. See [Recovery.md](00_Documentation/Recovery.md) for
+restoration, known-good inventory, history, and diagnostics.
 
 ## Tests
 

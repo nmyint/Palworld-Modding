@@ -17,11 +17,11 @@ directly in the Palworld installation.
 | `06_Current_Installation` | Known-good installation manifests and inventories |
 | `07_Testing` | Test plans, results, compatibility notes, and regression data |
 | `08_Tools` | Workshop-managed development tools |
-| `09_Logs` | Structured workshop and deployment logs |
+| `09_Logs` | Structured deployment, restoration, and workshop logs |
 | `10_Scripts` | PowerShell module, commands, and tests |
 | `11_Utilities` | Supporting utilities |
 | `12_Research` | Technical research and investigation notes |
-| `13_Backups` | Workshop-created backups |
+| `13_Backups` | Deployment and pre-restore safety backups |
 | `14_Templates` | Reusable project and configuration templates |
 | `15_Sandbox` | Isolated experiments |
 | `16_Profiles` | Installation and mod-set profiles |
@@ -29,5 +29,5 @@ directly in the Palworld installation.
 ## Workflow
 
 ```text
-Archive -> Stage -> Develop -> Test -> Deploy -> Commit
+Archive -> Stage -> Library -> Deploy -> Validate -> Inventory
 ```

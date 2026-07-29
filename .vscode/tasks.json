@@ -102,6 +102,102 @@
                 "clear": true,
                 "reveal": "always"
             }
+        },
+        {
+            "label": "PwTools: Validate Backup",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Test-Backup.ps1",
+                "-Path",
+                "${input:backupPath}"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "PwTools: Preview Restore",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Show-RestorePreview.ps1",
+                "-Path",
+                "${input:backupPath}"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "PwTools: Restore Backup",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Restore-Backup.ps1",
+                "-Path",
+                "${input:backupPath}"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "PwTools: Installation Inventory",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Show-InstallationInventory.ps1"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "PwTools: Deployment History",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Show-DeploymentHistory.ps1"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "PwTools: Diagnostics",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Show-WorkshopDiagnostics.ps1"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
         }
     ],
     "inputs": [
@@ -124,6 +220,11 @@
             "id": "validationNotes",
             "type": "promptString",
             "description": "Optional in-game validation notes"
+        },
+        {
+            "id": "backupPath",
+            "type": "promptString",
+            "description": "Deployment backup folder or manifest.json path"
         }
     ]
 }

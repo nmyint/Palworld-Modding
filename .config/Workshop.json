@@ -2,7 +2,7 @@
     "SchemaVersion": "1.0",
     "Workshop": {
         "Name": "Palworld Modding Workshop",
-        "Version": "0.3.5",
+        "Version": "0.3.6",
         "Owner": "Noel",
         "Created": "2026-07-28",
         "Description": "Personal Palworld mod development and deployment workshop."

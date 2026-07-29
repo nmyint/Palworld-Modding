@@ -55,5 +55,6 @@ Successful logs include the verified hash for every copied file. If an operation
 fails after approval, a failure log records the error, backup information, planned
 files, and any files copied before the failure.
 
-Sprint 3.4 does not automate restoration. Restore operations remain manual until
-Sprint 3.6 adds explicit validation and confirmation.
+Sprint 3.6 adds validated, preview-first restoration. See
+[Recovery.md](Recovery.md) for backup validation, restore planning, pre-restore
+safety copies, history, inventory, and diagnostics.

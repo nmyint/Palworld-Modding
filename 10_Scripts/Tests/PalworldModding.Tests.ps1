@@ -20,8 +20,8 @@ Describe 'PalworldModding module' {
             Should Not Throw
     }
 
-    It 'reports the Sprint 3.5 module version' {
-        Get-PwVersion | Should Be ([version]'0.3.5')
+    It 'reports the Sprint 3.6 module version' {
+        Get-PwVersion | Should Be ([version]'0.3.6')
     }
 
     It 'exports the expected public commands' {
@@ -45,6 +45,12 @@ Describe 'PalworldModding module' {
             'Backup-PwDeployment'
             'Publish-PwModPackage'
             'Complete-PwModInstallation'
+            'Get-PwDeploymentHistory'
+            'Get-PwDiagnostics'
+            'Get-PwInstallationInventory'
+            'Get-PwRestorePlan'
+            'Restore-PwDeployment'
+            'Test-PwBackup'
             'Reset-PwContext'
             'Save-PwWorkshopConfig'
             'Set-PwActiveProfile'

@@ -112,7 +112,7 @@ Status: Complete
 
 ### Sprint 3.5 - Mod intake foundation
 
-Status: In progress
+Status: Complete
 
 - Import downloaded archives into `02_Staging`.
 - Support original ZIP and 7z downloads.
@@ -131,13 +131,13 @@ Status: In progress
 
 ### Sprint 3.6 - Recovery and diagnostics
 
-Status: Planned
+Status: Complete
 
-- Validate deployment and backup manifests.
-- Add explicit, preview-first restoration.
-- Add installation inventory and deployment history commands.
+- Validate deployment backup manifests and hashes.
+- Add explicit, preview-first restoration with pre-restore safety copies.
+- Add hash-verified installation inventory and deployment history commands.
 - Expand known-good manifests into a complete installation inventory.
-- Improve structured diagnostics and troubleshooting output.
+- Add structured recovery and workshop diagnostics.
 - Complete the core workshop command palette.
 
 ## Sprint 4 - Mod library and compatibility
