@@ -91,3 +91,12 @@ downloads for eligible large files, so manual browser download remains the
 preferred fallback. See [Nexus resumable downloads][resumable].
 
 [resumable]: https://help.nexusmods.com/article/170-resumable-downloads
+# Variant-aware update checks
+
+The update checker treats filename/version markers as separate release
+branches. `SP`/Singleplayer, `DS`/Dedicated Server, and `MP`/Multiplayer-host
+files are compared only within the same branch. If the installed branch cannot
+be found remotely, the report returns `VariantNotFound` instead of suggesting a
+different build.
+
+For example, AntiPhat `SP-2.0.5` is never compared with `DS-2.0.17`.

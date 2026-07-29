@@ -38,6 +38,34 @@ Describe 'PalworldModding Nexus updates' {
                             )
                         }
                     }
+                    'mods/3799\.json$' {
+                        return [PSCustomObject]@{
+                            name = 'AntiPhat - Pal Resize'
+                            version = 'SP-2.0.6'
+                        }
+                    }
+                    'mods/3799/files\.json$' {
+                        return [PSCustomObject]@{
+                            files = @(
+                                [PSCustomObject]@{
+                                    file_id = 100
+                                    file_name = 'AntiPhat Dedicated'
+                                    version = 'DS-2.0.17'
+                                    category_id = 1
+                                    category_name = 'MAIN'
+                                    uploaded_timestamp = 1785200000
+                                }
+                                [PSCustomObject]@{
+                                    file_id = 101
+                                    file_name = 'AntiPhat Singleplayer'
+                                    version = 'SP-2.0.6'
+                                    category_id = 1
+                                    category_name = 'MAIN'
+                                    uploaded_timestamp = 1785100000
+                                }
+                            )
+                        }
+                    }
                     default {
                         throw "Unexpected mocked API path: $Path"
                     }
@@ -81,6 +109,32 @@ Describe 'PalworldModding Nexus updates' {
         $result | Should Be (
             'https://www.nexusmods.com/palworld/mods/1234?tab=files'
         )
+    }
+
+    It 'compares a singleplayer archive only with singleplayer files' {
+        $archives = @(
+            [PSCustomObject]@{
+                IsParsed = $true
+                NexusModId = 3799
+                Name = 'AntiPhat'
+                OriginalFileName = (
+                    'AntiPhat (Singleplayer) 3799 SP-2.0.5.zip'
+                )
+                ArchiveVersion = 'SP-2.0.5'
+                DownloadedAt = [datetime]'2026-07-26T02:09:00Z'
+            }
+        )
+        $result = @(
+            Get-PwModUpdateReport `
+                -ApiKey 'fixture-key' `
+                -ArchiveMetadata $archives
+        )
+
+        $result[0].LocalVariant | Should Be 'SinglePlayer'
+        $result[0].RemoteVariant | Should Be 'SinglePlayer'
+        $result[0].RemoteVersion | Should Be 'SP-2.0.6'
+        $result[0].RemoteFileId | Should Be 101
+        $result[0].RemoteVersion | Should Not Match '^DS-'
     }
 
     It 'refuses direct downloads for a non-Premium account' {

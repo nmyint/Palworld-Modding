@@ -75,7 +75,9 @@ function Get-PwLatestNexusFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [object]$Response
+        [object]$Response,
+
+        [string]$Variant
     )
 
     $files = if ($Response.PSObject.Properties['files']) {
@@ -98,6 +100,25 @@ function Get-PwLatestNexusFile {
         $files
     }
 
+    if (-not [string]::IsNullOrWhiteSpace($Variant)) {
+        $variantCandidates = @(
+            $candidates |
+                Where-Object {
+                    (
+                        Get-PwNexusFileVariant `
+                            -FileName ([string]$_.file_name) `
+                            -Version ([string]$_.version)
+                    ) -eq $Variant
+                }
+        )
+
+        if ($variantCandidates.Count -eq 0) {
+            return $null
+        }
+
+        $candidates = $variantCandidates
+    }
+
     $candidates |
         Sort-Object {
             if ($_.PSObject.Properties['uploaded_timestamp']) {
@@ -108,6 +129,41 @@ function Get-PwLatestNexusFile {
             }
         } |
         Select-Object -Last 1
+}
+
+function Get-PwNexusFileVariant {
+
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+
+        [string]$Version
+    )
+
+    $identity = "$FileName $Version"
+
+    if (
+        $identity -match '(?i)(^|[\s_.()\-])SP(?:[\s_.\-]|$)' -or
+        $identity -match '(?i)Single[\s_-]*player'
+    ) {
+        return 'SinglePlayer'
+    }
+
+    if (
+        $identity -match '(?i)(^|[\s_.()\-])DS(?:[\s_.\-]|$)' -or
+        $identity -match '(?i)Dedicated(?:[\s_-]*Server)?'
+    ) {
+        return 'DedicatedServer'
+    }
+
+    if (
+        $identity -match '(?i)(^|[\s_.()\-])MP(?:[\s_.\-]|$)' -or
+        $identity -match '(?i)Multi[\s_-]*player'
+    ) {
+        return 'MultiplayerHost'
+    }
+
+    ''
 }
 
 <#
@@ -161,6 +217,17 @@ function Get-PwModUpdateReport {
     foreach ($group in $groups) {
         $id = [int]$group.Name
         $local = @($group.Group | Sort-Object DownloadedAt)[-1]
+        $localFileName = if (
+            $local.PSObject.Properties['OriginalFileName']
+        ) {
+            [string]$local.OriginalFileName
+        }
+        else {
+            [string]$local.Name
+        }
+        $localVariant = Get-PwNexusFileVariant `
+            -FileName $localFileName `
+            -Version ([string]$local.ArchiveVersion)
 
         try {
             $mod = Invoke-PwNexusApi `
@@ -169,7 +236,9 @@ function Get-PwModUpdateReport {
             $fileResponse = Invoke-PwNexusApi `
                 -Path "games/palworld/mods/$id/files.json" `
                 -ApiKey $ApiKey
-            $latestFile = Get-PwLatestNexusFile -Response $fileResponse
+            $latestFile = Get-PwLatestNexusFile `
+                -Response $fileResponse `
+                -Variant $localVariant
             $remoteUploadedAt = if (
                 $latestFile -and
                 $latestFile.PSObject.Properties['uploaded_timestamp']
@@ -181,7 +250,13 @@ function Get-PwModUpdateReport {
             else {
                 $null
             }
-            $status = if (-not $latestFile) {
+            $status = if (
+                -not $latestFile -and
+                -not [string]::IsNullOrWhiteSpace($localVariant)
+            ) {
+                'VariantNotFound'
+            }
+            elseif (-not $latestFile) {
                 'NoRemoteFiles'
             }
             elseif (
@@ -224,6 +299,15 @@ function Get-PwModUpdateReport {
                 else {
                     ''
                 }
+                LocalVariant = $localVariant
+                RemoteVariant = if ($latestFile) {
+                    Get-PwNexusFileVariant `
+                        -FileName ([string]$latestFile.file_name) `
+                        -Version ([string]$latestFile.version)
+                }
+                else {
+                    ''
+                }
                 Status = $status
                 ManualUrl = (
                     "https://www.nexusmods.com/palworld/mods/${id}?tab=files"
@@ -241,6 +325,8 @@ function Get-PwModUpdateReport {
                 RemoteUploadedAt = $null
                 RemoteFileId = 0
                 RemoteFileName = ''
+                LocalVariant = $localVariant
+                RemoteVariant = ''
                 Status = 'CheckFailed'
                 ManualUrl = (
                     "https://www.nexusmods.com/palworld/mods/${id}?tab=files"
