@@ -17,6 +17,7 @@ Desktop.ini
 !/03_Mod_Library/**/
 !/03_Mod_Library/**/.gitkeep
 !/03_Mod_Library/**/manifest.json
+!/03_Mod_Library/catalog.json
 
 # Project source stays in Git; generated Unreal output does not
 /04_Projects/**/Binaries/

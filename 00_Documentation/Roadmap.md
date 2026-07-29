@@ -174,11 +174,12 @@ Status: Complete
 
 ### Sprint 4.2 - Persistent metadata and version history
 
-Status: Planned
+Status: In progress
 
 - Normalize catalog records into tracked lightweight manifests.
 - Preserve archive provenance, hashes, Nexus IDs, and known installed versions.
 - Reconcile loose mods whose original downloads are missing.
+- Preview catalog changes before writing `03_Mod_Library/catalog.json`.
 
 ### Sprint 4.3 - Conflicts, dependencies, and load order
 

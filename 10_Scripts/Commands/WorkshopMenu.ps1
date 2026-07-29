@@ -395,6 +395,7 @@ function Invoke-PwWorkshopMenuAction {
         [ValidateSet(
             'Summary',
             'Catalog',
+            'CatalogPlan',
             'Archives',
             'Staging',
             'Updates',
@@ -411,6 +412,9 @@ function Invoke-PwWorkshopMenuAction {
         }
         'Catalog' {
             return Get-PwModCatalog
+        }
+        'CatalogPlan' {
+            return Get-PwModCatalogSyncPlan
         }
         'Archives' {
             return @(Get-PwNexusArchiveMetadata)
@@ -453,6 +457,7 @@ function Start-PwWorkshop {
             'Menu',
             'Summary',
             'Catalog',
+            'CatalogPlan',
             'Archives',
             'Staging',
             'Updates',
@@ -495,9 +500,44 @@ function Start-PwWorkshop {
 
         switch ($selection.ToUpperInvariant()) {
             '1' {
-                Show-PwCatalogSummary -Catalog (
-                    Invoke-PwWorkshopMenuAction -Action Catalog
+                $catalog = Invoke-PwWorkshopMenuAction -Action Catalog
+                Show-PwCatalogSummary -Catalog $catalog
+                $catalogChoice = Read-Host (
+                    '[S] Preview persistent catalog sync, Enter to return, ' +
+                        'or Q to quit'
                 )
+
+                if (Test-PwWorkshopQuitSelection $catalogChoice) {
+                    $quitRequested = $true
+                }
+                elseif ($catalogChoice -match '^(?i:S)$') {
+                    $plan = Invoke-PwWorkshopMenuAction -Action CatalogPlan
+                    $plan |
+                        Select-Object `
+                            Path,
+                            HasChanges,
+                            ExistingModCount,
+                            ProposedModCount,
+                            NeedsMetadataCount |
+                        Format-List
+                    $apply = Read-Host (
+                        '[A] Apply this catalog sync, Enter to cancel, ' +
+                            'or Q to quit'
+                    )
+
+                    if (Test-PwWorkshopQuitSelection $apply) {
+                        $quitRequested = $true
+                    }
+                    elseif ($apply -match '^(?i:A)$') {
+                        Update-PwModCatalog -Confirm:$false |
+                            Select-Object `
+                                Path,
+                                HasChanges,
+                                ProposedModCount,
+                                NeedsMetadataCount |
+                            Format-List
+                    }
+                }
             }
             '2' {
                 Invoke-PwWorkshopMenuAction -Action Archives |

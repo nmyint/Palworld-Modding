@@ -74,12 +74,47 @@ Archive-only items, duplicate hashes, and malformed `mods.json` are reported as
 warnings. Matching by an internal UE4SS folder name is important because the
 Nexus page name and the folder accepted by UE4SS may differ.
 
+## Persistent catalog and version history
+
+Sprint 4.2 stores portable metadata in `03_Mod_Library/catalog.json`. It records
+catalog identity, install names, Nexus IDs, installed content hashes, and
+archive versions with their SHA-256 hashes and provenance. It contains no
+absolute workshop or game paths.
+
+Preview changes without writing:
+
+```powershell
+Get-PwModCatalogSyncPlan
+```
+
+Apply the reviewed plan:
+
+```powershell
+Update-PwModCatalog
+```
+
+The workshop menu exposes the same flow under **Catalog and versions**: press
+`S` to preview and `A` to apply. Removed or externally backed-up archives are
+not erased from history; their version records remain with
+`ArchivePresent = false`. Loose mods without a matching archive are marked
+`NeedsMetadata` for later reconciliation.
+
+After confirming missing information from Nexus or the installed mod, record it
+without changing any mod files:
+
+```powershell
+Set-PwModCatalogMetadata `
+    -CatalogKey 'orphanmod' `
+    -DisplayName 'Orphan Mod' `
+    -NexusModId 1234 `
+    -InstalledVersion '1.0.0'
+```
+
 ## Current limitations
 
-The catalog does not yet choose an authoritative installed version when the
-loose files contain no version metadata. It reports candidates rather than
-guessing. Persistent normalized manifests, conflict detection, dependencies,
-mod sets, and menu-driven changes are later Sprint 4 work.
+The catalog does not guess an authoritative installed version when loose files
+contain no version metadata. Such records remain marked for reconciliation.
+Conflict detection, dependencies, and mod sets are later Sprint 4 work.
 
 Authenticated update checks and manual or Premium direct downloads are
 documented in [NexusUpdates.md](NexusUpdates.md).

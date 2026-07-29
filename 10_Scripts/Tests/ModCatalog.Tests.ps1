@@ -18,6 +18,7 @@ Describe 'PalworldModding mod catalog' {
             Root = $global:PwCatalogRoot
             Archives = Join-Path $global:PwCatalogRoot '01_Archives'
             Staging = Join-Path $global:PwCatalogRoot '02_Staging'
+            ModLibrary = Join-Path $global:PwCatalogRoot '03_Mod_Library'
         }
         New-Item `
             -ItemType Directory `
@@ -27,6 +28,11 @@ Describe 'PalworldModding mod catalog' {
         New-Item `
             -ItemType Directory `
             -Path $global:PwCatalogPaths.Staging `
+            -Force |
+            Out-Null
+        New-Item `
+            -ItemType Directory `
+            -Path $global:PwCatalogPaths.ModLibrary `
             -Force |
             Out-Null
 
@@ -212,6 +218,62 @@ Describe 'PalworldModding mod catalog' {
 
         $result.ModCount | Should Be 2
         $result.ArchiveCount | Should Be 3
+    }
+
+    It 'previews a portable persistent catalog without writing it' {
+        $catalogPath = Join-Path `
+            $global:PwCatalogPaths.ModLibrary `
+            'catalog.json'
+        $plan = Get-PwModCatalogSyncPlan
+
+        $plan.HasChanges | Should Be $true
+        $plan.ProposedModCount | Should Be 4
+        $plan.NeedsMetadataCount | Should Be 1
+        Test-Path -LiteralPath $catalogPath | Should Be $false
+        ($plan.Catalog | ConvertTo-Json -Depth 20) |
+            Should Not Match [regex]::Escape($global:PwCatalogRoot)
+    }
+
+    It 'writes only when catalog synchronization is explicitly invoked' {
+        $catalogPath = Join-Path `
+            $global:PwCatalogPaths.ModLibrary `
+            'catalog.json'
+        Update-PwModCatalog -Confirm:$false | Out-Null
+
+        Test-Path -LiteralPath $catalogPath | Should Be $true
+        $saved = Get-PwPersistentModCatalog
+        @($saved.Mods).Count | Should Be 4
+    }
+
+    It 'retains version history when a known archive is no longer present' {
+        Update-PwModCatalog -Confirm:$false | Out-Null
+        Remove-Item -LiteralPath $global:PwCatalogLegacyArchive
+        $plan = Get-PwModCatalogSyncPlan
+        $rotate = $plan.Catalog.Mods |
+            Where-Object DisplayName -eq 'RotateIt_beta'
+
+        @($rotate.Versions).Count | Should Be 1
+        $rotate.Versions[0].ArchivePresent | Should Be $false
+        $rotate.ReconciliationStatus | Should Be 'NotCurrentlyDiscovered'
+    }
+
+    It 'reconciles missing metadata without modifying mod content' {
+        Update-PwModCatalog -Confirm:$false | Out-Null
+        $orphanPath = Join-Path `
+            $global:PwCatalogPaths.Staging `
+            'OrphanMod\Scripts\main.lua'
+        $beforeHash = (Get-FileHash -LiteralPath $orphanPath).Hash
+        $record = Set-PwModCatalogMetadata `
+            -CatalogKey 'orphanmod' `
+            -DisplayName 'Orphan Mod' `
+            -NexusModId 999 `
+            -InstalledVersion '1.0.0' `
+            -Confirm:$false
+
+        $record.ReconciliationStatus | Should Be 'ManuallyReconciled'
+        $record.InstalledVersion | Should Be '1.0.0'
+        @($record.NexusModIds) -contains 999 | Should Be $true
+        (Get-FileHash -LiteralPath $orphanPath).Hash | Should Be $beforeHash
     }
 
     It 'renders the main menu responsively within terminal dimensions' {
