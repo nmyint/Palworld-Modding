@@ -2,6 +2,52 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "PwTools: Workshop Menu",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./PwWorkshop.ps1"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "PwTools: Mod Catalog",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Show-ModCatalog.ps1"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "PwTools: Check Mod Updates",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-NoProfile",
+                "-File",
+                "./10_Scripts/Tasks/Show-ModUpdates.ps1"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true,
+                "reveal": "always"
+            }
+        },
+        {
             "label": "PwTools: Test",
             "type": "shell",
             "command": "pwsh",

@@ -6,7 +6,7 @@
 
 RootModule = 'PalworldModding.psm1'
 
-ModuleVersion = '0.3.7'
+ModuleVersion = '0.4.2'
 
 GUID = 'cc6f28da-6a41-4b18-a3b8-a2b21ad21d47'
 
@@ -66,6 +66,15 @@ FunctionsToExport = @(
     'Publish-PwModPackage',
     'Complete-PwModInstallation',
 
+    # Mod catalog
+    'Get-PwNexusArchiveMetadata',
+    'Get-PwStagedModSnapshot',
+    'Get-PwModCatalog',
+    'Get-PwNexusApiIdentity',
+    'Get-PwModUpdateReport',
+    'Open-PwNexusModPage',
+    'Save-PwNexusModUpdate',
+
     # Recovery and diagnostics
     'Test-PwBackup',
     'Get-PwRestorePlan',
@@ -76,6 +85,9 @@ FunctionsToExport = @(
 
     # External workshop backup
     'New-PwWorkshopBackup',
+
+    # Interactive interface
+    'Start-PwWorkshop',
 
     # Tools
     'Get-PwTool',
@@ -108,7 +120,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Workshop backup policy and external 7z backups'
+        ReleaseNotes = 'Sprint 4.1 Nexus update checks and downloads'
 
     }
 

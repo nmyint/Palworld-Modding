@@ -32,8 +32,11 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\Deployment.ps1"
 . "$PSScriptRoot\..\Commands\DeploymentActions.ps1"
 . "$PSScriptRoot\..\Commands\ModIntake.ps1"
+. "$PSScriptRoot\..\Commands\ModCatalog.ps1"
+. "$PSScriptRoot\..\Commands\NexusUpdates.ps1"
 . "$PSScriptRoot\..\Commands\Recovery.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopBackup.ps1"
+. "$PSScriptRoot\..\Commands\WorkshopMenu.ps1"
 . "$PSScriptRoot\..\Commands\Tools.ps1"
 
 # ============================================================
@@ -82,6 +85,15 @@ Export-ModuleMember -Function @(
     'Publish-PwModPackage',
     'Complete-PwModInstallation',
 
+    # Mod catalog
+    'Get-PwNexusArchiveMetadata',
+    'Get-PwStagedModSnapshot',
+    'Get-PwModCatalog',
+    'Get-PwNexusApiIdentity',
+    'Get-PwModUpdateReport',
+    'Open-PwNexusModPage',
+    'Save-PwNexusModUpdate',
+
     # Recovery and diagnostics
     'Test-PwBackup',
     'Get-PwRestorePlan',
@@ -92,6 +104,9 @@ Export-ModuleMember -Function @(
 
     # External workshop backup
     'New-PwWorkshopBackup',
+
+    # Interactive interface
+    'Start-PwWorkshop',
 
     # Tools
     'Get-PwTool',

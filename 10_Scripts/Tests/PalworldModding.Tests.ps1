@@ -20,8 +20,8 @@ Describe 'PalworldModding module' {
             Should Not Throw
     }
 
-    It 'reports the workshop backup module version' {
-        Get-PwVersion | Should Be ([version]'0.3.7')
+    It 'reports the Sprint 4.1 module version' {
+        Get-PwVersion | Should Be ([version]'0.4.2')
     }
 
     It 'exports the expected public commands' {
@@ -30,6 +30,10 @@ Describe 'PalworldModding module' {
             'Get-PwDeployment'
             'Get-PwDeploymentPlan'
             'Get-PwModArchiveInfo'
+            'Get-PwModCatalog'
+            'Get-PwModUpdateReport'
+            'Get-PwNexusApiIdentity'
+            'Get-PwNexusArchiveMetadata'
             'Get-PwPaths'
             'Get-PwProfile'
             'Get-PwProfiles'
@@ -43,6 +47,7 @@ Describe 'PalworldModding module' {
             'Invoke-PwDeployment'
             'New-PwProfile'
             'New-PwWorkshopBackup'
+            'Open-PwNexusModPage'
             'Backup-PwDeployment'
             'Publish-PwModPackage'
             'Complete-PwModInstallation'
@@ -50,11 +55,14 @@ Describe 'PalworldModding module' {
             'Get-PwDiagnostics'
             'Get-PwInstallationInventory'
             'Get-PwRestorePlan'
+            'Get-PwStagedModSnapshot'
             'Restore-PwDeployment'
             'Test-PwBackup'
             'Reset-PwContext'
             'Save-PwWorkshopConfig'
+            'Save-PwNexusModUpdate'
             'Set-PwActiveProfile'
+            'Start-PwWorkshop'
             'Test-PwEnvironment'
             'Test-PwModPackage'
             'Test-PwProfile'

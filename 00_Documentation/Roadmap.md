@@ -24,7 +24,7 @@ should describe what was actually delivered.
 | 1 | Workshop foundation | Complete |
 | 2 | PowerShell module and integrated development tooling | Complete |
 | 3 | Safe workshop automation | In progress |
-| 4 | Mod intake, library management, and validation | Planned |
+| 4 | Mod intake, library management, and validation | In progress |
 | 5 | Mod development, testing, and diagnostics | Planned |
 | 6 | Packaging, releases, restoration, and maintenance | Planned |
 
@@ -156,6 +156,52 @@ Planned outcomes:
 - Enable and disable mod sets through profiles.
 - Deterministic deployment assembly from the curated library.
 - Upgrade and removal plans that preserve rollback information.
+
+### Sprint 4.1 - Catalog discovery and menu foundation
+
+Status: In progress
+
+- Parse offline Nexus archive metadata from surviving download filenames.
+- Inspect archives for internal UE4SS installation names.
+- Inventory loose staging files and legacy enablement metadata without writes.
+- Match staging folders to candidate archives and report anomalies.
+- Establish `PwWorkshop.ps1` as the one-command, menu-driven interface.
+- Check known Nexus IDs for updates through the supported authenticated API.
+- Offer normal browser downloads and validated Premium direct downloads.
+- Keep initial menu actions read-only while later actions are designed and
+  reviewed.
+
+### Sprint 4.2 - Persistent metadata and version history
+
+Status: Planned
+
+- Normalize catalog records into tracked lightweight manifests.
+- Preserve archive provenance, hashes, Nexus IDs, and known installed versions.
+- Reconcile loose mods whose original downloads are missing.
+
+### Sprint 4.3 - Conflicts, dependencies, and load order
+
+Status: Planned
+
+- Detect path-level file conflicts before assembly.
+- Model dependencies, incompatibilities, and load-order requirements.
+- Present conflicts and required decisions through the menu.
+
+### Sprint 4.4 - Profile mod sets and deterministic assembly
+
+Status: Planned
+
+- Enable and disable reviewed mod sets through profiles.
+- Assemble deployments deterministically from the curated library.
+- Preserve preview, backup, rollback, and explicit-approval safeguards.
+
+### Sprint 4.5 - Upgrade and removal workflow
+
+Status: Planned
+
+- Compare installed and available versions.
+- Build safe upgrade and removal plans.
+- Preserve provenance and rollback information throughout each change.
 
 ## Sprint 5 - Development and testing
 

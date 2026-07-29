@@ -38,6 +38,23 @@ Get-PwWorkshopInfo
 PowerShell conventions are documented in
 [PowerShellStandards.md](00_Documentation/PowerShellStandards.md).
 
+## One-command menu
+
+Start the menu-driven workshop from the repository root:
+
+```powershell
+pwsh -NoProfile -File ./PwWorkshop.ps1
+```
+
+Sprint 4.1 provides read-only catalog, archive, staging, diagnostic, inventory,
+and history views. See
+[ModCatalog.md](00_Documentation/ModCatalog.md).
+
+Cataloged Nexus mods can be checked for updates through the supported API.
+Manual browser downloads work for normal accounts; validated direct downloads
+are available when Nexus permits them. See
+[NexusUpdates.md](00_Documentation/NexusUpdates.md).
+
 ## Profiles
 
 Installation and deployment settings are stored in JSON profiles under
@@ -52,8 +69,9 @@ commands.
 
 ## Mod intake
 
-Downloaded ZIP archives can be inspected, staged, validated, and promoted without
-touching the live game. See [ModIntake.md](00_Documentation/ModIntake.md).
+Downloaded ZIP and 7z archives can be inspected, staged, validated, and promoted
+without touching the live game. See
+[ModIntake.md](00_Documentation/ModIntake.md).
 
 ## Recovery and diagnostics
 
