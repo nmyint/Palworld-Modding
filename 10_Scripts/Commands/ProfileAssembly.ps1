@@ -124,9 +124,76 @@ function Get-PwProfileAssemblyPlan {
             Where-Object { $_ -notin $assembledKeys } |
             Sort-Object -Unique
     )
-    $conflicts = @(
+    $packageConflicts = @(
         $packages |
             Where-Object Action -eq 'Conflict'
+    )
+
+    $deploymentEntries = @(
+        foreach ($package in $packages) {
+            foreach ($component in @($package.Components)) {
+                $deploymentRelativePath = (
+                    [string]$component.RelativePath
+                ).Replace('/', '\')
+
+                if (
+                    $deploymentRelativePath -match
+                        '^(?i:Pal)\\(.+)$'
+                ) {
+                    $deploymentRelativePath = $Matches[1]
+                }
+
+                [PSCustomObject]@{
+                    CatalogKey = [string]$package.CatalogKey
+                    DisplayName = [string]$package.DisplayName
+                    RelativePath = $deploymentRelativePath
+                    NormalizedPath = (
+                        $deploymentRelativePath
+                    ).ToLowerInvariant()
+                    Hash = [string]$component.Hash
+                }
+            }
+        }
+    )
+
+    $pathConflicts = @(
+        $deploymentEntries |
+            Group-Object NormalizedPath |
+            Where-Object {
+                @(
+                    $_.Group.CatalogKey |
+                        Sort-Object -Unique
+                ).Count -gt 1
+            } |
+            ForEach-Object {
+                [PSCustomObject]@{
+                    RelativePath = (
+                        $_.Group |
+                            Select-Object -First 1
+                    ).RelativePath
+                    CatalogKeys = @(
+                        $_.Group.CatalogKey |
+                            Sort-Object -Unique
+                    )
+                    DisplayNames = @(
+                        $_.Group.DisplayName |
+                            Sort-Object -Unique
+                    )
+                    Hashes = @(
+                        $_.Group.Hash |
+                            Where-Object {
+                                -not [string]::IsNullOrWhiteSpace($_)
+                            } |
+                            Sort-Object -Unique
+                    )
+                }
+            } |
+            Sort-Object RelativePath
+    )
+
+    $conflictCount = (
+        $packageConflicts.Count +
+        $pathConflicts.Count
     )
 
     [PSCustomObject]@{
@@ -143,13 +210,17 @@ function Get-PwProfileAssemblyPlan {
         CreateCount = @($packages | Where-Object Action -eq 'Create').Count
         RefreshCount = @($packages | Where-Object Action -eq 'Refresh').Count
         ReuseCount = @($packages | Where-Object Action -eq 'Reuse').Count
-        ConflictCount = $conflicts.Count
+        PackageConflictCount = $packageConflicts.Count
+        PackageConflicts = $packageConflicts
+        PathConflictCount = $pathConflicts.Count
+        PathConflicts = $pathConflicts
+        ConflictCount = $conflictCount
         ReviewItemCount = $reconciliation.ReviewItemCount
         MissingCatalogKeys = $missingKeys
         CanBuild = (
             $reconciliation.ReviewItemCount -eq 0 -and
             $missingKeys.Count -eq 0 -and
-            $conflicts.Count -eq 0
+            $conflictCount -eq 0
         )
         Packages = $packages
     }
@@ -175,7 +246,8 @@ function Build-PwProfileDeployment {
     if (-not $plan.CanBuild) {
         throw (
             'Profile assembly is blocked by unresolved ownership, missing ' +
-            'catalog selections, or conflicting library packages.'
+            'catalog selections, conflicting library packages, or deployment ' +
+            'path conflicts.'
         )
     }
 
