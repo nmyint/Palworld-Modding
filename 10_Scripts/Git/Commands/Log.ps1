@@ -11,11 +11,13 @@ function Invoke-PwGitLog {
 
     Write-PwGitSection -Title 'Repository History'
 
+    $argumentList = @($Arguments)
     $count = 15
-    if ($Arguments.Count -gt 0) {
+
+    if ($argumentList.Count -gt 0) {
         $parsedCount = 0
-        if (-not [int]::TryParse($Arguments[0], [ref]$parsedCount)) {
-            throw "Log count must be an integer. Received: '$($Arguments[0])'."
+        if (-not [int]::TryParse($argumentList[0], [ref]$parsedCount)) {
+            throw "Log count must be an integer. Received: '$($argumentList[0])'."
         }
 
         if ($parsedCount -lt 1 -or $parsedCount -gt 100) {
