@@ -1,0 +1,134 @@
+<#
+.SYNOPSIS
+    Interactive menu for pw-git.
+#>
+
+Set-StrictMode -Version Latest
+
+function Invoke-PwGitMenuCommand {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Name,
+
+        [Parameter(Mandatory)]
+        [object]$Context,
+
+        [string[]]$Arguments
+    )
+
+    $definition = Get-PwGitCommandDefinition -Name $Name
+    if ($null -eq $definition) {
+        throw "Unsupported pw-git menu command: $Name"
+    }
+
+    $commandPath = Join-Path $script:PwGitCommandsRoot $definition.File
+    if (-not (Test-Path -LiteralPath $commandPath -PathType Leaf)) {
+        throw "The pw-git '$Name' command has not been implemented. Expected: $commandPath"
+    }
+
+    . $commandPath
+
+    $commandFunction = Get-Command $definition.Function -CommandType Function -ErrorAction SilentlyContinue
+    if ($null -eq $commandFunction) {
+        throw "Command file '$commandPath' did not define '$($definition.Function)'."
+    }
+
+    & $definition.Function -Context $Context -Arguments @($Arguments)
+}
+
+function Show-PwGitMenu {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Context
+    )
+
+    while ($true) {
+        Write-PwGitSection -Title 'pw-git'
+        Write-Host "Repository : $($Context.WorkshopRoot)"
+        Write-Host "Branch     : $(Get-PwGitBranch)"
+        Write-Host ''
+        Write-Host '1. Check repository health'
+        Write-Host '2. Show repository status'
+        Write-Host '3. Compare local and repository'
+        Write-Host '4. Pull from repository'
+        Write-Host '5. Push all local changes'
+        Write-Host '6. Push selected files'
+        Write-Host '7. Create local commit from staged files'
+        Write-Host '8. Show repository history'
+        Write-Host '9. Show command help'
+        Write-Host '0. Exit'
+        Write-Host ''
+
+        $choice = Read-Host 'Choose an action'
+        $shouldPause = $true
+
+        try {
+            switch ($choice.Trim()) {
+                '1' {
+                    Invoke-PwGitMenuCommand -Name 'check' -Context $Context
+                }
+                '2' {
+                    Invoke-PwGitMenuCommand -Name 'status' -Context $Context
+                }
+                '3' {
+                    Invoke-PwGitMenuCommand -Name 'compare' -Context $Context
+                }
+                '4' {
+                    Invoke-PwGitMenuCommand -Name 'pull' -Context $Context
+                }
+                '5' {
+                    Invoke-PwGitMenuCommand -Name 'push' -Context $Context
+                }
+                '6' {
+                    $selectedFiles = @(Select-PwGitFiles)
+                    if ($selectedFiles.Count -eq 0) {
+                        Write-Host '[INFO] No files were selected.'
+                    }
+                    else {
+                        Invoke-PwGitMenuCommand `
+                            -Name 'push' `
+                            -Context $Context `
+                            -Arguments $selectedFiles
+                    }
+                }
+                '7' {
+                    Invoke-PwGitMenuCommand -Name 'commit' -Context $Context
+                }
+                '8' {
+                    $countText = Read-Host 'Number of commits to show [15]'
+                    $logArguments = @()
+
+                    if (-not [string]::IsNullOrWhiteSpace($countText)) {
+                        $logArguments = @($countText.Trim())
+                    }
+
+                    Invoke-PwGitMenuCommand `
+                        -Name 'log' `
+                        -Context $Context `
+                        -Arguments $logArguments
+                }
+                '9' {
+                    Show-PwGitHelp
+                }
+                '0' {
+                    $shouldPause = $false
+                    return
+                }
+                default {
+                    Write-Warning "Unknown menu choice: '$choice'."
+                }
+            }
+        }
+        catch {
+            Write-Host ''
+            Write-Error $_
+        }
+
+        if ($shouldPause) {
+            Write-Host ''
+            [void](Read-Host 'Press Enter to return to the menu')
+        }
+    }
+}
