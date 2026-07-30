@@ -11,13 +11,16 @@ function Invoke-PwGitPush {
 
     Write-PwGitSection -Title 'Commit and Push Changes'
 
-    $status = Get-PwGitStatusLines
+    $status = @(Get-PwGitStatusLines)
     if ($status.Count -eq 0) {
         Write-Host '[INFO] No local changes were found.'
         return
     }
 
-    $paths = @($Arguments | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $paths = @(
+        @($Arguments) |
+            Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) }
+    )
 
     if ($paths.Count -gt 0) {
         Write-Host 'Files selected for staging:'
@@ -51,12 +54,13 @@ function Invoke-PwGitPush {
 
     Write-Host ''
     Write-Host "Branch         : $(Get-PwGitBranch)"
-    Write-Host "Upstream       : $(Get-PwGitUpstream)"
+    $upstream = Get-PwGitUpstream
+    Write-Host "Upstream       : $(if ($upstream) { $upstream } else { '<not configured>' })"
     Write-Host "Commit message : $message"
     Write-Host ''
     Write-Host 'Staged changes:'
 
-    Invoke-PwGitNative -Arguments @('diff', '--cached', '--stat') |
+    @(Invoke-PwGitNative -Arguments @('diff', '--cached', '--stat')) |
         ForEach-Object { Write-Host "  $_" }
 
     Write-Host ''
@@ -69,7 +73,6 @@ function Invoke-PwGitPush {
         ForEach-Object { Write-Host $_ }
 
     $branch = Get-PwGitBranch
-    $upstream = Get-PwGitUpstream
 
     if ([string]::IsNullOrWhiteSpace($upstream)) {
         Invoke-PwGitNative -Arguments @('push', '--set-upstream', 'origin', $branch) |
