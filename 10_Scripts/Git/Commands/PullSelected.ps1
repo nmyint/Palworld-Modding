@@ -12,6 +12,7 @@ function Select-PwGitUpstreamFiles {
     }
 
     Write-Host 'Select files by number. Use commas or ranges (example: 1,3-5).'
+    Write-Host 'Enter Q to quit pw-git.'
     Write-Host ''
 
     for ($index = 0; $index -lt $Items.Count; $index++) {
@@ -20,6 +21,10 @@ function Select-PwGitUpstreamFiles {
 
     Write-Host ''
     $selection = Read-Host 'Selection'
+    if (Test-PwGitQuitInput -Value $selection) {
+        Stop-PwGitUx
+    }
+
     if ([string]::IsNullOrWhiteSpace($selection)) {
         return @()
     }
@@ -198,7 +203,7 @@ function Invoke-PwGitPullSelected {
     )
 
     Write-Host ''
-    Write-Host "Selected files will be restored from $upstream:"
+    Write-Host "Selected files will be restored from ${upstream}:"
     $selectedPaths | ForEach-Object { Write-Host "  $_" }
 
     if ($overwrittenChanges.Count -gt 0) {
