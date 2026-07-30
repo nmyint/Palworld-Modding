@@ -53,11 +53,12 @@ function Show-PwGitMenu {
         Write-Host '2. Show repository status'
         Write-Host '3. Compare local and repository'
         Write-Host '4. Pull from repository'
-        Write-Host '5. Push all local changes'
-        Write-Host '6. Push selected files'
-        Write-Host '7. Create local commit from staged files'
-        Write-Host '8. Show repository history'
-        Write-Host '9. Show command help'
+        Write-Host '5. Pull selected files'
+        Write-Host '6. Push all local changes'
+        Write-Host '7. Push selected files'
+        Write-Host '8. Create local commit from staged files'
+        Write-Host '9. Show repository history'
+        Write-Host 'H. Show command help'
         Write-Host '0. Exit'
         Write-Host ''
 
@@ -65,7 +66,7 @@ function Show-PwGitMenu {
         $shouldPause = $true
 
         try {
-            switch ($choice.Trim()) {
+            switch ($choice.Trim().ToUpperInvariant()) {
                 '1' {
                     Invoke-PwGitMenuCommand -Name 'check' -Context $Context
                 }
@@ -79,9 +80,12 @@ function Show-PwGitMenu {
                     Invoke-PwGitMenuCommand -Name 'pull' -Context $Context
                 }
                 '5' {
-                    Invoke-PwGitMenuCommand -Name 'push' -Context $Context
+                    Invoke-PwGitMenuCommand -Name 'pull-selected' -Context $Context
                 }
                 '6' {
+                    Invoke-PwGitMenuCommand -Name 'push' -Context $Context
+                }
+                '7' {
                     $selectedFiles = @(Select-PwGitFiles)
                     if ($selectedFiles.Count -eq 0) {
                         Write-Host '[INFO] No files were selected.'
@@ -93,10 +97,10 @@ function Show-PwGitMenu {
                             -Arguments $selectedFiles
                     }
                 }
-                '7' {
+                '8' {
                     Invoke-PwGitMenuCommand -Name 'commit' -Context $Context
                 }
-                '8' {
+                '9' {
                     $countText = Read-Host 'Number of commits to show [15]'
                     $logArguments = @()
 
@@ -109,7 +113,7 @@ function Show-PwGitMenu {
                         -Context $Context `
                         -Arguments $logArguments
                 }
-                '9' {
+                'H' {
                     Show-PwGitHelp
                 }
                 '0' {
