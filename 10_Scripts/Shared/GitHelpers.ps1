@@ -74,7 +74,7 @@ function Test-PwGitClean {
     [CmdletBinding()]
     param()
 
-    (Get-PwGitStatusLines).Count -eq 0
+    @(Get-PwGitStatusLines).Count -eq 0
 }
 
 function Test-PwGitStagedChanges {
