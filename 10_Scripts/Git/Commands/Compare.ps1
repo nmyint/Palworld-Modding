@@ -12,7 +12,7 @@ function Invoke-PwGitCompare {
     Write-PwGitSection -Title 'Local and Repository Comparison'
 
     Invoke-PwGitNative -Arguments @('fetch', '--prune') | ForEach-Object {
-        if (-not [string]::IsNullOrWhiteSpace($_)) {
+        if (-not [string]::IsNullOrWhiteSpace([string]$_)) {
             Write-Host $_
         }
     }
@@ -27,7 +27,7 @@ function Invoke-PwGitCompare {
     Write-Host "Behind       : $($comparison.Behind) commit(s)"
     Write-Host ''
 
-    $status = Get-PwGitStatusLines
+    $status = @(Get-PwGitStatusLines)
     if ($status.Count -eq 0) {
         Write-Host '[ OK ] No uncommitted local changes.'
     }
