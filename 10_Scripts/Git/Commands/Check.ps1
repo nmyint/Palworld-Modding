@@ -55,7 +55,7 @@ function Invoke-PwGitCheck {
     }
 
     Write-Host ''
-    $status = Get-PwGitStatusLines
+    $status = @(Get-PwGitStatusLines)
     if ($status.Count -eq 0) {
         Write-Host '[ OK ] Working tree is clean.'
     }
