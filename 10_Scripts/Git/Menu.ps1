@@ -44,95 +44,115 @@ function Show-PwGitMenu {
         [object]$Context
     )
 
-    while ($true) {
-        Write-PwGitSection -Title 'pw-git'
-        Write-Host "Repository : $($Context.WorkshopRoot)"
-        Write-Host "Branch     : $(Get-PwGitBranch)"
-        Write-Host ''
-        Write-Host '1. Check repository health'
-        Write-Host '2. Show repository status'
-        Write-Host '3. Compare local and repository'
-        Write-Host '4. Pull from repository'
-        Write-Host '5. Pull selected files'
-        Write-Host '6. Push all local changes'
-        Write-Host '7. Push selected files'
-        Write-Host '8. Create local commit from staged files'
-        Write-Host '9. Show repository history'
-        Write-Host 'H. Show command help'
-        Write-Host '0. Exit'
-        Write-Host ''
+    try {
+        while ($true) {
+            Write-PwGitSection -Title 'pw-git'
+            Write-Host "Repository : $($Context.WorkshopRoot)"
+            Write-Host "Branch     : $(Get-PwGitBranch)"
+            Write-Host ''
+            Write-Host '1. Check repository health'
+            Write-Host '2. Show repository status'
+            Write-Host '3. Compare local and repository'
+            Write-Host '4. Pull from repository'
+            Write-Host '5. Pull selected files'
+            Write-Host '6. Push all local changes'
+            Write-Host '7. Push selected files'
+            Write-Host '8. Create local commit from staged files'
+            Write-Host '9. Show repository history'
+            Write-Host 'H. Show command help'
+            Write-Host 'Q. Quit'
+            Write-Host ''
 
-        $choice = Read-Host 'Choose an action'
-        $shouldPause = $true
+            $choice = Read-Host 'Choose an action'
+            if (Test-PwGitQuitInput -Value $choice) {
+                return
+            }
 
-        try {
-            switch ($choice.Trim().ToUpperInvariant()) {
-                '1' {
-                    Invoke-PwGitMenuCommand -Name 'check' -Context $Context
-                }
-                '2' {
-                    Invoke-PwGitMenuCommand -Name 'status' -Context $Context
-                }
-                '3' {
-                    Invoke-PwGitMenuCommand -Name 'compare' -Context $Context
-                }
-                '4' {
-                    Invoke-PwGitMenuCommand -Name 'pull' -Context $Context
-                }
-                '5' {
-                    Invoke-PwGitMenuCommand -Name 'pull-selected' -Context $Context
-                }
-                '6' {
-                    Invoke-PwGitMenuCommand -Name 'push' -Context $Context
-                }
-                '7' {
-                    $selectedFiles = @(Select-PwGitFiles)
-                    if ($selectedFiles.Count -eq 0) {
-                        Write-Host '[INFO] No files were selected.'
+            $shouldPause = $true
+
+            try {
+                switch ($choice.Trim().ToUpperInvariant()) {
+                    '1' {
+                        Invoke-PwGitMenuCommand -Name 'check' -Context $Context
                     }
-                    else {
+                    '2' {
+                        Invoke-PwGitMenuCommand -Name 'status' -Context $Context
+                    }
+                    '3' {
+                        Invoke-PwGitMenuCommand -Name 'compare' -Context $Context
+                    }
+                    '4' {
+                        Invoke-PwGitMenuCommand -Name 'pull' -Context $Context
+                    }
+                    '5' {
+                        Invoke-PwGitMenuCommand -Name 'pull-selected' -Context $Context
+                    }
+                    '6' {
+                        Invoke-PwGitMenuCommand -Name 'push' -Context $Context
+                    }
+                    '7' {
+                        $selectedFiles = @(Select-PwGitFiles)
+                        if ($selectedFiles.Count -eq 0) {
+                            Write-Host '[INFO] No files were selected.'
+                        }
+                        else {
+                            Invoke-PwGitMenuCommand `
+                                -Name 'push' `
+                                -Context $Context `
+                                -Arguments $selectedFiles
+                        }
+                    }
+                    '8' {
+                        Invoke-PwGitMenuCommand -Name 'commit' -Context $Context
+                    }
+                    '9' {
+                        $countText = Read-Host 'Number of commits to show [15, Q to quit]'
+                        if (Test-PwGitQuitInput -Value $countText) {
+                            Stop-PwGitUx
+                        }
+
+                        $logArguments = @()
+                        if (-not [string]::IsNullOrWhiteSpace($countText)) {
+                            $logArguments = @($countText.Trim())
+                        }
+
                         Invoke-PwGitMenuCommand `
-                            -Name 'push' `
+                            -Name 'log' `
                             -Context $Context `
-                            -Arguments $selectedFiles
+                            -Arguments $logArguments
+                    }
+                    'H' {
+                        Show-PwGitHelp
+                    }
+                    default {
+                        Write-Warning "Unknown menu choice: '$choice'."
                     }
                 }
-                '8' {
-                    Invoke-PwGitMenuCommand -Name 'commit' -Context $Context
-                }
-                '9' {
-                    $countText = Read-Host 'Number of commits to show [15]'
-                    $logArguments = @()
-
-                    if (-not [string]::IsNullOrWhiteSpace($countText)) {
-                        $logArguments = @($countText.Trim())
-                    }
-
-                    Invoke-PwGitMenuCommand `
-                        -Name 'log' `
-                        -Context $Context `
-                        -Arguments $logArguments
-                }
-                'H' {
-                    Show-PwGitHelp
-                }
-                '0' {
-                    $shouldPause = $false
+            }
+            catch [System.OperationCanceledException] {
+                if ($_.Exception.Message -eq 'PWGIT_QUIT') {
                     return
                 }
-                default {
-                    Write-Warning "Unknown menu choice: '$choice'."
+
+                throw
+            }
+            catch {
+                Write-Host ''
+                Write-Error $_
+            }
+
+            if ($shouldPause) {
+                Write-Host ''
+                $pauseInput = Read-Host 'Press Enter to return to the menu, or Q to quit'
+                if (Test-PwGitQuitInput -Value $pauseInput) {
+                    return
                 }
             }
         }
-        catch {
-            Write-Host ''
-            Write-Error $_
-        }
-
-        if ($shouldPause) {
-            Write-Host ''
-            [void](Read-Host 'Press Enter to return to the menu')
+    }
+    catch [System.OperationCanceledException] {
+        if ($_.Exception.Message -ne 'PWGIT_QUIT') {
+            throw
         }
     }
 }
