@@ -15,8 +15,9 @@ function Invoke-PwGitCommit {
         throw 'No staged changes were found. Stage files before running pw-git commit.'
     }
 
-    $message = if ($Arguments.Count -gt 0) {
-        ($Arguments -join ' ').Trim()
+    $argumentList = @($Arguments)
+    $message = if ($argumentList.Count -gt 0) {
+        ($argumentList -join ' ').Trim()
     }
     else {
         Read-PwGitCommitMessage
@@ -31,7 +32,7 @@ function Invoke-PwGitCommit {
     Write-Host ''
     Write-Host 'Staged changes:'
 
-    Invoke-PwGitNative -Arguments @('diff', '--cached', '--stat') |
+    @(Invoke-PwGitNative -Arguments @('diff', '--cached', '--stat')) |
         ForEach-Object { Write-Host "  $_" }
 
     Write-Host ''
