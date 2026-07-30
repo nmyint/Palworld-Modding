@@ -5,6 +5,24 @@
 
 Set-StrictMode -Version Latest
 
+function Stop-PwGitUx {
+    [CmdletBinding()]
+    param()
+
+    throw [System.OperationCanceledException]::new('PWGIT_QUIT')
+}
+
+function Test-PwGitQuitInput {
+    [CmdletBinding()]
+    param(
+        [AllowNull()]
+        [string]$Value
+    )
+
+    -not [string]::IsNullOrWhiteSpace($Value) -and
+        $Value.Trim().Equals('Q', [System.StringComparison]::OrdinalIgnoreCase)
+}
+
 function Invoke-PwGitNative {
     [CmdletBinding()]
     param(
@@ -114,7 +132,11 @@ function Confirm-PwGitAction {
         [string]$Prompt
     )
 
-    $answer = Read-Host "$Prompt [y/N]"
+    $answer = Read-Host "$Prompt [y/N/Q]"
+    if (Test-PwGitQuitInput -Value $answer) {
+        Stop-PwGitUx
+    }
+
     $answer -match '^(?i:y|yes)$'
 }
 
@@ -148,7 +170,11 @@ function Read-PwGitCommitMessage {
     param()
 
     while ($true) {
-        $message = Read-Host 'Commit message'
+        $message = Read-Host 'Commit message [Q to quit]'
+        if (Test-PwGitQuitInput -Value $message) {
+            Stop-PwGitUx
+        }
+
         if (-not [string]::IsNullOrWhiteSpace($message)) {
             return $message.Trim()
         }
@@ -193,6 +219,7 @@ function Select-PwGitFiles {
     }
 
     Write-Host 'Select files by number. Use commas or ranges (example: 1,3-5).'
+    Write-Host 'Enter Q to quit pw-git.'
     Write-Host ''
 
     for ($index = 0; $index -lt $items.Count; $index++) {
@@ -201,6 +228,10 @@ function Select-PwGitFiles {
 
     Write-Host ''
     $selection = Read-Host 'Selection'
+    if (Test-PwGitQuitInput -Value $selection) {
+        Stop-PwGitUx
+    }
+
     if ([string]::IsNullOrWhiteSpace($selection)) {
         return @()
     }
