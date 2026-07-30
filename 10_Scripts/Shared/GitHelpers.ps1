@@ -156,3 +156,94 @@ function Read-PwGitCommitMessage {
         Write-Warning 'A commit message is required.'
     }
 }
+
+function Get-PwGitSelectableFiles {
+    [CmdletBinding()]
+    param()
+
+    $items = [System.Collections.Generic.List[object]]::new()
+
+    foreach ($line in @(Get-PwGitStatusLines)) {
+        $text = [string]$line
+        if ([string]::IsNullOrWhiteSpace($text) -or $text.Length -lt 4) {
+            continue
+        }
+
+        $path = $text.Substring(3).Trim()
+        if ($path -match ' -> ') {
+            $path = ($path -split ' -> ', 2)[1]
+        }
+
+        $items.Add([pscustomobject]@{
+            Status = $text.Substring(0, 2)
+            Path   = $path
+        })
+    }
+
+    @($items)
+}
+
+function Select-PwGitFiles {
+    [CmdletBinding()]
+    param()
+
+    $items = @(Get-PwGitSelectableFiles)
+    if ($items.Count -eq 0) {
+        return @()
+    }
+
+    Write-Host 'Select files by number. Use commas or ranges (example: 1,3-5).'
+    Write-Host ''
+
+    for ($index = 0; $index -lt $items.Count; $index++) {
+        Write-Host ('{0,3}. [{1}] {2}' -f ($index + 1), $items[$index].Status, $items[$index].Path)
+    }
+
+    Write-Host ''
+    $selection = Read-Host 'Selection'
+    if ([string]::IsNullOrWhiteSpace($selection)) {
+        return @()
+    }
+
+    $selectedIndexes = [System.Collections.Generic.HashSet[int]]::new()
+
+    foreach ($token in ($selection -split ',')) {
+        $trimmedToken = $token.Trim()
+
+        if ($trimmedToken -match '^(\d+)-(\d+)$') {
+            $start = [int]$Matches[1]
+            $end = [int]$Matches[2]
+
+            if ($start -gt $end) {
+                $temporary = $start
+                $start = $end
+                $end = $temporary
+            }
+
+            foreach ($number in $start..$end) {
+                if ($number -ge 1 -and $number -le $items.Count) {
+                    [void]$selectedIndexes.Add($number - 1)
+                }
+            }
+
+            continue
+        }
+
+        if ($trimmedToken -match '^\d+$') {
+            $number = [int]$trimmedToken
+            if ($number -ge 1 -and $number -le $items.Count) {
+                [void]$selectedIndexes.Add($number - 1)
+            }
+
+            continue
+        }
+
+        throw "Invalid file selection token: '$trimmedToken'."
+    }
+
+    @(
+        $selectedIndexes |
+            Sort-Object |
+            ForEach-Object { $items[$_].Path }
+    )
+}
