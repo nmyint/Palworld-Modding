@@ -7,27 +7,12 @@
     loads the requested command module, and executes it from the repository
     root. This file is intentionally a thin dispatcher; Git behavior belongs
     in Commands\*.ps1 and shared behavior belongs in ..\Shared\GitHelpers.ps1.
-
-.EXAMPLE
-    .\10_Scripts\Git\pw-git.ps1 check
-
-.EXAMPLE
-    .\10_Scripts\Git\pw-git.ps1 compare
 #>
 
 [CmdletBinding()]
 param(
     [Parameter(Position = 0)]
-    [ValidateSet(
-        'check',
-        'compare',
-        'pull',
-        'push',
-        'status',
-        'commit',
-        'log',
-        'help'
-    )]
+    [ValidateSet('check','compare','pull','push','status','commit','log','help')]
     [string]$Command = 'help',
 
     [Parameter(Position = 1, ValueFromRemainingArguments)]
@@ -72,43 +57,19 @@ Examples:
 
 function Get-PwGitCommandDefinition {
     [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
-        [string]$Name
-    )
+    param([Parameter(Mandatory)][string]$Name)
 
     $definitions = @{
-        check = [pscustomobject]@{
-            File = 'Check.ps1'
-            Function = 'Invoke-PwGitCheck'
-        }
-        compare = [pscustomobject]@{
-            File = 'Compare.ps1'
-            Function = 'Invoke-PwGitCompare'
-        }
-        pull = [pscustomobject]@{
-            File = 'Pull.ps1'
-            Function = 'Invoke-PwGitPull'
-        }
-        push = [pscustomobject]@{
-            File = 'Push.ps1'
-            Function = 'Invoke-PwGitPush'
-        }
-        status = [pscustomobject]@{
-            File = 'Status.ps1'
-            Function = 'Invoke-PwGitStatus'
-        }
-        commit = [pscustomobject]@{
-            File = 'Commit.ps1'
-            Function = 'Invoke-PwGitCommit'
-        }
-        log = [pscustomobject]@{
-            File = 'Log.ps1'
-            Function = 'Invoke-PwGitLog'
-        }
+        check   = [pscustomobject]@{ File = 'Check.ps1';   Function = 'Invoke-PwGitCheck' }
+        compare = [pscustomobject]@{ File = 'Compare.ps1'; Function = 'Invoke-PwGitCompare' }
+        pull    = [pscustomobject]@{ File = 'Pull.ps1';    Function = 'Invoke-PwGitPull' }
+        push    = [pscustomobject]@{ File = 'Push.ps1';    Function = 'Invoke-PwGitPush' }
+        status  = [pscustomobject]@{ File = 'Status.ps1';  Function = 'Invoke-PwGitStatus' }
+        commit  = [pscustomobject]@{ File = 'Commit.ps1';  Function = 'Invoke-PwGitCommit' }
+        log     = [pscustomobject]@{ File = 'Log.ps1';     Function = 'Invoke-PwGitLog' }
     }
 
-    return $definitions[$Name]
+    $definitions[$Name]
 }
 
 if ($Command -eq 'help') {
@@ -120,9 +81,15 @@ if (-not (Test-Path -LiteralPath $bootstrapPath -PathType Leaf)) {
     throw "Workshop bootstrap was not found: $bootstrapPath"
 }
 
+if (-not (Test-Path -LiteralPath $sharedHelpersPath -PathType Leaf)) {
+    throw "pw-git shared helpers were not found: $sharedHelpersPath"
+}
+
 . $bootstrapPath
+. $sharedHelpersPath
+
 $context = Initialize-PwWorkshop
-$repositoryRoot = $context.WorkshopRoot
+$repositoryRoot = [string]$context.WorkshopRoot
 
 if ([string]::IsNullOrWhiteSpace($repositoryRoot)) {
     throw 'Initialize-PwWorkshop did not return a workshop root.'
@@ -132,10 +99,6 @@ if (-not (Test-Path -LiteralPath (Join-Path $repositoryRoot '.git'))) {
     throw "Workshop root is not a Git repository: $repositoryRoot"
 }
 
-if (Test-Path -LiteralPath $sharedHelpersPath -PathType Leaf) {
-    . $sharedHelpersPath
-}
-
 $definition = Get-PwGitCommandDefinition -Name $Command
 if ($null -eq $definition) {
     throw "Unsupported pw-git command: $Command"
@@ -143,25 +106,19 @@ if ($null -eq $definition) {
 
 $commandPath = Join-Path $commandsRoot $definition.File
 if (-not (Test-Path -LiteralPath $commandPath -PathType Leaf)) {
-    throw (
-        "The pw-git '$Command' command has not been implemented yet. " +
-        "Expected command file: $commandPath"
-    )
+    throw "The pw-git '$Command' command has not been implemented yet. Expected command file: $commandPath"
 }
 
 . $commandPath
 
 $commandFunction = Get-Command $definition.Function -CommandType Function -ErrorAction SilentlyContinue
 if ($null -eq $commandFunction) {
-    throw (
-        "Command file '$commandPath' did not define the expected function " +
-        "'$($definition.Function)'."
-    )
+    throw "Command file '$commandPath' did not define '$($definition.Function)'."
 }
 
 Push-Location $repositoryRoot
 try {
-    & $definition.Function -Context $context -Arguments $CommandArguments
+    & $definition.Function -Context $context -Arguments @($CommandArguments)
 }
 finally {
     Pop-Location
