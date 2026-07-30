@@ -77,13 +77,19 @@ function Get-PwGitUpstreamChangedFiles {
         [string]$Upstream
     )
 
+    $mergeBaseOutput = Invoke-PwGitNative -Arguments @('merge-base', 'HEAD', $Upstream)
+    $mergeBase = ($mergeBaseOutput | Select-Object -First 1).ToString().Trim()
+
+    if ([string]::IsNullOrWhiteSpace($mergeBase)) {
+        throw "Could not determine the merge base between HEAD and $Upstream."
+    }
+
     $items = [System.Collections.Generic.List[object]]::new()
     $lines = @(
         Invoke-PwGitNative -Arguments @(
             'diff',
-            '--no-renames',
             '--name-status',
-            'HEAD',
+            $mergeBase,
             $Upstream,
             '--'
         )
@@ -95,14 +101,22 @@ function Get-PwGitUpstreamChangedFiles {
             continue
         }
 
-        $parts = $text -split "`t", 2
-        if ($parts.Count -ne 2) {
+        $parts = $text -split "`t"
+        if ($parts.Count -lt 2) {
             continue
         }
 
+        $status = $parts[0]
+        $path = if ($status -match '^[RC]' -and $parts.Count -ge 3) {
+            $parts[2]
+        }
+        else {
+            $parts[1]
+        }
+
         $items.Add([pscustomobject]@{
-            Status = $parts[0]
-            Path   = $parts[1]
+            Status = $status
+            Path   = $path
         })
     }
 
@@ -122,7 +136,6 @@ function Invoke-PwGitPullSelected {
 
     $upstream = Assert-PwGitUpstream
     Write-Host "Refreshing $upstream before file selection."
-
     Invoke-PwGitNative -Arguments @('fetch', '--prune') |
         ForEach-Object {
             if (-not [string]::IsNullOrWhiteSpace([string]$_)) {
@@ -130,9 +143,13 @@ function Invoke-PwGitPullSelected {
             }
         }
 
+    $comparison = Get-PwGitAheadBehind -Upstream $upstream
+    Write-Host "Local branch is $($comparison.Ahead) commit(s) ahead and $($comparison.Behind) commit(s) behind $upstream."
+    Write-Host ''
+
     $availableItems = @(Get-PwGitUpstreamChangedFiles -Upstream $upstream)
     if ($availableItems.Count -eq 0) {
-        Write-Host '[ OK ] No files differ between local HEAD and the upstream branch.'
+        Write-Host '[ OK ] The upstream branch introduces no selectable file changes.'
         return
     }
 
@@ -144,10 +161,9 @@ function Invoke-PwGitPullSelected {
 
     $selectedPaths = if ($requestedPaths.Count -gt 0) {
         $availablePaths = @($availableItems.Path)
-
         foreach ($path in $requestedPaths) {
             if ($availablePaths -notcontains $path) {
-                throw "'$path' does not differ between local HEAD and $upstream."
+                throw "'$path' is not among the changes introduced by $upstream."
             }
         }
 
@@ -161,11 +177,6 @@ function Invoke-PwGitPullSelected {
         Write-Host '[INFO] No files were selected.'
         return
     }
-
-    $selectedItems = @(
-        $availableItems |
-            Where-Object { $selectedPaths -contains $_.Path }
-    )
 
     $localChanges = @(Get-PwGitStatusLines)
     $overwrittenChanges = @(
@@ -187,10 +198,8 @@ function Invoke-PwGitPullSelected {
     )
 
     Write-Host ''
-    Write-Host "Selected files will be updated from $upstream:"
-    $selectedItems | ForEach-Object {
-        Write-Host ('  [{0}] {1}' -f $_.Status, $_.Path)
-    }
+    Write-Host "Selected files will be restored from $upstream:"
+    $selectedPaths | ForEach-Object { Write-Host "  $_" }
 
     if ($overwrittenChanges.Count -gt 0) {
         Write-Host ''
@@ -199,33 +208,24 @@ function Invoke-PwGitPullSelected {
     }
 
     Write-Host ''
-    Write-Warning 'This updates only the selected working-tree files. It does not merge, stage changes, or advance the current branch.'
+    Write-Warning 'This updates only the selected files. It does not merge or advance the current branch.'
+    Write-Warning 'The selected upstream versions will be placed in both the index and working tree.'
 
-    if (-not (Confirm-PwGitAction -Prompt "Update the selected files from $upstream?")) {
+    if (-not (Confirm-PwGitAction -Prompt "Replace the selected files with their versions from $upstream?")) {
         Write-Host '[INFO] Pull selected files cancelled. No files were changed.'
         return
     }
 
-    foreach ($item in $selectedItems) {
-        if ($item.Status -eq 'D') {
-            if (Test-Path -LiteralPath $item.Path) {
-                Remove-Item -LiteralPath $item.Path -Force
-            }
+    $restoreArguments = @(
+        'restore',
+        "--source=$upstream",
+        '--staged',
+        '--worktree',
+        '--'
+    ) + @($selectedPaths)
 
-            continue
-        }
+    Invoke-PwGitNative -Arguments $restoreArguments | Out-Null
 
-        $restoreArguments = @(
-            'restore',
-            "--source=$upstream",
-            '--worktree',
-            '--',
-            $item.Path
-        )
-
-        Invoke-PwGitNative -Arguments $restoreArguments | Out-Null
-    }
-
-    Write-Host '[ OK ] Selected working-tree files were updated from the upstream branch.'
-    Write-Host '[INFO] Review the resulting changes with pw-git status before committing.'
+    Write-Host '[ OK ] Selected files were updated from the upstream branch.'
+    Write-Host '[INFO] The branch commit history was not changed.'
 }
