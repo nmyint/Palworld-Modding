@@ -12,7 +12,18 @@
 [CmdletBinding()]
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('menu','check','compare','pull','push','status','commit','log','help')]
+    [ValidateSet(
+        'menu',
+        'check',
+        'compare',
+        'pull',
+        'pull-selected',
+        'push',
+        'status',
+        'commit',
+        'log',
+        'help'
+    )]
     [string]$Command = 'menu',
 
     [Parameter(Position = 1, ValueFromRemainingArguments)]
@@ -41,21 +52,23 @@ Usage:
   pw-git <command> [arguments]
 
 Commands:
-  menu       Open the interactive menu
-  check      Verify Git, repository, branch, remote, and workshop health
-  compare    Compare the local working copy with its upstream repository branch
-  pull       Safely pull repository changes into the local working copy
-  push       Review, commit, and push local changes
-  status     Show concise local and repository status
-  commit     Create a reviewed local commit
-  log        Show recent repository history
-  help       Show this help
+  menu           Open the interactive menu
+  check          Verify Git, repository, branch, remote, and workshop health
+  compare        Compare the local working copy with its upstream branch
+  pull           Safely pull repository changes into the local working copy
+  pull-selected  Update selected working-tree files from the upstream branch
+  push           Review, commit, and push local changes
+  status         Show concise local and repository status
+  commit         Create a reviewed local commit
+  log            Show recent repository history
+  help           Show this help
 
 Examples:
   pw-git
   pw-git check
   pw-git compare
   pw-git pull
+  pw-git pull-selected
   pw-git push
 '@ | Write-Host
 }
@@ -65,13 +78,38 @@ function Get-PwGitCommandDefinition {
     param([Parameter(Mandatory)][string]$Name)
 
     $definitions = @{
-        check   = [pscustomobject]@{ File = 'Check.ps1';   Function = 'Invoke-PwGitCheck' }
-        compare = [pscustomobject]@{ File = 'Compare.ps1'; Function = 'Invoke-PwGitCompare' }
-        pull    = [pscustomobject]@{ File = 'Pull.ps1';    Function = 'Invoke-PwGitPull' }
-        push    = [pscustomobject]@{ File = 'Push.ps1';    Function = 'Invoke-PwGitPush' }
-        status  = [pscustomobject]@{ File = 'Status.ps1';  Function = 'Invoke-PwGitStatus' }
-        commit  = [pscustomobject]@{ File = 'Commit.ps1';  Function = 'Invoke-PwGitCommit' }
-        log     = [pscustomobject]@{ File = 'Log.ps1';     Function = 'Invoke-PwGitLog' }
+        check = [pscustomobject]@{
+            File = 'Check.ps1'
+            Function = 'Invoke-PwGitCheck'
+        }
+        compare = [pscustomobject]@{
+            File = 'Compare.ps1'
+            Function = 'Invoke-PwGitCompare'
+        }
+        pull = [pscustomobject]@{
+            File = 'Pull.ps1'
+            Function = 'Invoke-PwGitPull'
+        }
+        'pull-selected' = [pscustomobject]@{
+            File = 'PullSelected.ps1'
+            Function = 'Invoke-PwGitPullSelected'
+        }
+        push = [pscustomobject]@{
+            File = 'Push.ps1'
+            Function = 'Invoke-PwGitPush'
+        }
+        status = [pscustomobject]@{
+            File = 'Status.ps1'
+            Function = 'Invoke-PwGitStatus'
+        }
+        commit = [pscustomobject]@{
+            File = 'Commit.ps1'
+            Function = 'Invoke-PwGitCommit'
+        }
+        log = [pscustomobject]@{
+            File = 'Log.ps1'
+            Function = 'Invoke-PwGitLog'
+        }
     }
 
     $definitions[$Name]
