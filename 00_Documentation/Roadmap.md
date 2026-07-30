@@ -291,3 +291,21 @@ Every sprint or sub-sprint should:
 5. Update user documentation and command help.
 6. Leave the repository in a working, reviewable state.
 7. Be reviewed before its final commit and push.
+
+## Sprint 5 — Workshop Experience and Automation
+
+### 5.1 — Guided Workshop Experience
+
+Status: In Progress
+
+Scope:
+- Establish the workshop runtime/session model.
+- Add a structured dashboard model over existing commands.
+- Integrate the model into the current workshop entry point without changing existing command behavior.
+- Preserve Pester 3.4.0 compatibility and the existing module conventions.
+
+Completion criteria:
+- Existing workshop commands continue to operate.
+- Session and dashboard models return structured objects without unintended pipeline output.
+- Tests cover initialization and backward compatibility.
+- Full workshop test suite passes.
