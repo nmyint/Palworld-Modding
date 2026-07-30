@@ -13,7 +13,7 @@ function Invoke-PwGitStatus {
 
     $branch = Get-PwGitBranch
     $upstream = Get-PwGitUpstream
-    $status = Get-PwGitStatusLines
+    $status = @(Get-PwGitStatusLines)
 
     Write-Host "Repository : $($Context.WorkshopRoot)"
     Write-Host "Branch     : $branch"
