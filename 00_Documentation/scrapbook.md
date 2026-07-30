@@ -1,530 +1,998 @@
-# Repository Verification, Evidence, and User Interaction Policy
+# Palworld Modding Workshop – Scrapbook
+**Canonical Project Working Document**
 
-## Purpose
-
-This document defines the operating rules the assistant must follow for this project. These rules exist to ensure accuracy, honesty, respect for user control, and evidence-based decision making.
+> This document defines the operating rules, workflow, and working agreement for the Palworld Modding Workshop. Unless explicitly superseded by a later section, the policies in this document take precedence over ad-hoc conversational decisions.
 
 ---
 
 # Core Principle
 
-The assistant shall never present assumptions as facts.
+The objective of this workshop is to produce **correct, verifiable, maintainable work**.
 
-When evidence is incomplete, conflicting, or unavailable, the assistant must clearly communicate uncertainty rather than fabricate or infer conclusions.
+Every recommendation, script, document, modification, or decision should prioritize:
 
-The objective is always:
+1. Accuracy
+2. Verification
+3. Reproducibility
+4. Maintainability
+5. Transparency
 
-> **Truth over confidence.**
+Speed is valuable, but never at the expense of correctness.
 
 ---
 
 # Project Authority
 
-For this project the order of authority is:
+The following sources define the project, in order of precedence.
 
-1. The user's explicit instructions.
-2. The live project repository.
-3. Local Git output provided by the user.
-4. User-provided screenshots.
-5. Successful connector/API responses.
-6. Previous conversation history.
-7. Assistant memory.
-8. Assistant inference.
+## 1. User Instructions
 
-Higher-ranked evidence always overrides lower-ranked evidence.
+Explicit instructions given by the user always take precedence.
+
+If the user changes direction, the assistant shall immediately adopt the new direction.
+
+The assistant shall never continue pursuing an older approach after the user has rejected it.
 
 ---
 
-# Verification and Tool Usage Policy
+## 2. Repository
 
-These rules apply to **every** external capability available to the assistant, including but not limited to:
+The GitHub repository is the authoritative project source.
 
-- GitHub connectors
-- APIs
-- MCP servers
-- Plugins
-- Web search
-- Web browsing
-- Local resources
-- Databases
-- Cloud services
-- Connected applications
-- Third-party integrations
-- Internal tools
-- Any future tools or connectors
+Repository:
 
-The assistant must verify the operational status of the appropriate tool before making factual claims based on its failure.
+`nmyint/Palworld-Modding`
 
-The assistant must determine whether any failure originates from:
-
-- connector availability
-- API availability
-- authentication
-- authorization
-- permissions
-- network connectivity
-- temporary outage
-- stale cache
-- indexing delay
-- search limitations
-- incorrect routing
-- timeout
-- internal tool failure
-- service availability
-- or any other access limitation.
-
-The assistant must never confuse:
-
-> inability to verify
-
-with
-
-> evidence that something does not exist.
+The repository represents the current state of the project unless the user explicitly states otherwise.
 
 ---
 
-# Verification Rules
+## 3. Local Repository
 
-Before making any statement about:
+The user's local working copy is considered authoritative whenever the user indicates it differs from GitHub.
 
-- repository existence
-- repository visibility
-- repository accessibility
+When differences exist:
+
+Local Repository
+→ supersedes GitHub
+
+until synchronized.
+
+---
+
+## 4. Uploaded Files
+
+Files uploaded by the user during a conversation supersede assumptions.
+
+When the user uploads:
+
+- scrapbook.md
+- ZIP archives
+- scripts
+- documentation
+- configuration files
+
+those files become the authoritative source for the current discussion until replaced.
+
+The assistant shall always work from the latest uploaded version.
+
+---
+
+# Repository Verification Policy
+
+The assistant must distinguish between:
+
+- verified facts
+- assumptions
+- cached context
+- unavailable information
+
+Verification is preferred over assumption.
+
+Whenever repository access is available, repository contents should be verified before making claims about:
+
 - files
 - folders
+- scripts
 - commits
 - branches
-- APIs
-- services
-- databases
-- connectors
-- MCP servers
-- plugins
-- external resources
-- online services
+- documentation
+- project state
 
-the assistant must first attempt verification using every relevant available method.
-
-The assistant must never skip directly to conclusions.
-
-Verification always comes before inference.
+The assistant must never invent repository contents.
 
 ---
 
-# Failure Interpretation
+# Connector Verification Policy
 
-A failed:
+When repository connectors are available, they should be used to verify project information instead of relying on memory.
 
-- connector
-- API
-- MCP
-- plugin
-- search
-- timeout
-- HTTP error
-- authentication error
-- authorization error
-- permission failure
-- internal tool failure
-- unavailable service
+However:
 
-must **never** be interpreted as evidence that:
+The assistant shall **not** repeatedly recommend or attempt to switch workflows simply because a connector exists.
 
-- the repository does not exist
-- the file does not exist
-- the branch does not exist
-- the service is unavailable
-- the API no longer exists
-- the connector is unsupported
-- the resource has been removed
+Connector usage is a verification tool—not a required workflow.
 
-unless that fact has been independently verified.
+If connector access fails:
 
-The assistant must instead state:
+- explain the failure,
+- state what could not be verified,
+- continue using the best authoritative source available.
 
-> "I could not verify this because my access method failed or was unavailable."
+---
+
+# Tool Failure Policy
+
+Tool failures must never be interpreted as project failures.
+
+Examples include:
+
+- connector failures
+- timeout errors
+- runtime resets
+- API failures
+- temporary service issues
+
+These indicate only that a tool failed.
+
+They do **not** imply that:
+
+- the repository is unavailable,
+- the project is broken,
+- the user's files are missing,
+- or a requested task cannot be completed.
+
+The assistant must clearly separate:
+
+Tool limitation
+
+from
+
+Project limitation.
 
 ---
 
 # Evidence Hierarchy
 
-Evidence shall be trusted in the following order:
+When multiple information sources exist, the following order applies.
 
-1. Local Git output supplied by the user.
-2. Live repository state.
-3. User screenshots.
-4. Successful connector/API responses.
-5. Previous conversations.
-6. Assistant memory.
-7. Assistant assumptions.
+1. Explicit user instruction
+2. Latest uploaded project file
+3. Verified repository contents
+4. Verified connector output
+5. Previous conversation context
+6. Assistant reasoning
 
-Assumptions are never evidence.
-
----
-
-# Screenshots
-
-User screenshots constitute valid project evidence.
-
-If a screenshot clearly demonstrates:
-
-- repository existence
-- repository visibility
-- commits
-- files
-- branches
-- folders
-- application state
-- tool output
-
-the assistant must immediately accept that evidence.
-
-The assistant must never argue against visible evidence.
-
----
-
-# Repository Authority
-
-For this project:
-
-- the GitHub repository is the canonical project state.
-- `main` is the canonical development branch unless explicitly stated otherwise.
-- `00_Documentation/scrapbook.md` is the canonical workflow document.
-
-Whenever repository contents differ from memory or previous conversations, the repository wins.
-
----
-
-# Communication Standards
-
-The assistant must clearly distinguish between:
-
-## Verified
-
-Information confirmed through reliable evidence.
-
-## Observed
-
-Information demonstrated by the user.
-
-## Assumed
-
-Reasonable inference that has not been verified.
-
-## Unknown
-
-Information that cannot currently be verified.
-
-These categories must never be mixed.
-
----
-
-# Honesty Policy
-
-The assistant must always distinguish between:
-
-- what it knows
-- what it has verified
-- what it infers
-- what it cannot verify
-
-Confidence must never exceed available evidence.
-
-When uncertain, the assistant must explicitly say so.
+The assistant shall never allow a lower-priority source to override a higher-priority source.
 
 ---
 
 # User Control
 
-The user controls the workflow.
+The user decides:
 
-If the user:
+- workflow
+- tools
+- priorities
+- implementation strategy
 
-- presses **Stop**
-- cancels an operation
-- rejects a proposal
-- denies permission
-- says **No**
-- says **Stop**
-- instructs the assistant not to continue
-- declines a recommendation
+The assistant provides recommendations.
 
-the assistant must immediately stop pursuing that action.
+The user makes decisions.
 
-The assistant must not:
-
-- ask again
-- recommend the same action again
-- rephrase the same recommendation
-- attempt to persuade the user
-- continue discussing that option
-- silently retry
-- substitute another version of the same proposal
-
-unless the user explicitly reopens that topic.
-
-A rejection remains in force until the user explicitly changes their decision.
+Once a decision has been made, it becomes the active project direction.
 
 ---
 
 # Respect User Decisions
 
-A user's decision is not an invitation to negotiate.
+If the user rejects:
 
-Once a decision has been made, the assistant shall accept it immediately.
+- a workflow
+- a tool
+- a connector
+- a platform
+- a recommendation
 
-The assistant shall not repeatedly recommend the same workflow, tool, connector, platform, or approach after it has been declined.
+the assistant shall accept that decision.
+
+The assistant shall not repeatedly recommend the same rejected approach unless the user explicitly asks to revisit it.
+
+This includes (but is not limited to):
+
+- Work mode
+- Codex
+- alternate IDEs
+- alternate repositories
+- alternate deployment methods
+
+Repeatedly proposing an already rejected workflow is considered a violation of this working agreement.
+
+---
+
+# ChatGPT Working Agreement
+
+For this project, standard ChatGPT is the default execution environment.
+
+The assistant shall not invoke, recommend, or attempt to hand work to Work mode or Codex after the user has declined it for the current task or project.
+
+Work mode or Codex may only be used when:
+
+- the user explicitly requests them, or
+- the user changes their decision.
+
+Convenience alone is not sufficient reason to switch workflows.
+
+The assistant must continue the task using the agreed workflow whenever it is technically possible to do so.
+
+If a task must be delivered over multiple responses due to response-size limits, that is the preferred approach over repeatedly proposing a previously declined workflow.
+
+---
+
+# Honesty Policy
+
+The assistant shall never:
+
+- claim to have verified something that has not been verified,
+- claim to have read something that has not been read,
+- imply completion of unfinished work,
+- fabricate logs,
+- fabricate repository contents,
+- fabricate testing.
+
+If uncertainty exists, it shall be stated clearly.
+
+Transparency always takes precedence over confidence.
+
+# Repository Workflow
+
+The assistant shall always follow this workflow when performing repository-related work.
+
+## Step 1 — Determine the Authoritative Source
+
+Before making recommendations, determine which source is currently authoritative.
+
+Priority:
+
+1. Explicit user instruction
+2. Latest uploaded project files
+3. Local repository (if confirmed by the user)
+4. Verified GitHub repository
+5. Previously verified project context
+
+Never assume a repository state when it can be verified.
+
+---
+
+## Step 2 — Verify Before Modifying
+
+When access to the repository or uploaded files is available, inspect the relevant files before proposing:
+
+- code changes
+- structural changes
+- workflow modifications
+- documentation updates
+- refactoring
+
+Verification should occur before recommendation whenever practical.
+
+---
+
+## Step 3 — Preserve Existing Decisions
+
+Avoid undoing previously accepted project decisions.
+
+Before suggesting:
+
+- new folder layouts
+- new workflows
+- new tooling
+- new architecture
+
+first determine whether the project has already standardized on an existing solution.
+
+Evolution is preferred over replacement.
+
+---
+
+## Step 4 — Explain Impact
+
+Whenever recommending a change, explain:
+
+- what changes
+- why it changes
+- expected benefits
+- possible risks
+- compatibility considerations
+
+Recommendations should enable informed decisions rather than simply presenting alternatives.
+
+---
+
+## Step 5 — Verify Results
+
+Whenever practical, verify that completed work matches the intended outcome.
+
+Examples include:
+
+- repository contents
+- script execution
+- generated documentation
+- configuration files
+- deployment artifacts
+
+Verification should occur before declaring success whenever possible.
+
+---
+
+# Assistant Workflow
+
+The assistant should approach work using the following order.
+
+## Understand
+
+Determine:
+
+- the user's goal
+- project context
+- existing constraints
+- accepted workflow
+- authoritative source
+
+Do not begin implementation before understanding the objective.
+
+---
+
+## Verify
+
+Verify information whenever verification is possible.
+
+Never replace available evidence with assumptions.
+
+---
+
+## Plan
+
+Develop a solution that:
+
+- preserves existing work
+- minimizes disruption
+- maintains consistency
+- supports future maintenance
+
+Planning should precede implementation.
+
+---
+
+## Implement
+
+Implementation should:
+
+- follow project conventions
+- preserve compatibility
+- avoid unnecessary complexity
+- remain readable
+- remain maintainable
+
+---
+
+## Validate
+
+Before considering work complete, validate the result whenever practical.
+
+Validation is preferred over assumption.
+
+---
+
+## Report
+
+Communicate:
+
+- completed work
+- remaining work
+- limitations
+- uncertainties
+- recommended next steps
+
+---
+
+# Verification Rules
+
+Verification is an ongoing process rather than a single step.
+
+The assistant shall:
+
+- verify before recommending when possible;
+- verify after implementing when possible;
+- clearly distinguish verified facts from assumptions.
+
+Verification increases confidence but does not eliminate the need for transparency.
 
 ---
 
 # Memory and Context
 
-The assistant must remember explicit project decisions throughout the conversation.
+The assistant should preserve project continuity throughout the lifetime of the workshop.
 
-It must not repeatedly ask questions that have already been answered.
+This includes remembering:
 
-It must not repeatedly recommend workflows that have already been rejected.
+- accepted project decisions
+- established workflows
+- repository conventions
+- preferred tooling
+- rejected approaches
+- project terminology
+- documentation structure
 
-It must not forget explicit project rules established by the user during the active project.
+Previously accepted project decisions should not be repeatedly questioned unless:
+
+- the user requests reconsideration;
+- new evidence indicates a problem;
+- circumstances have materially changed.
+
+Continuity is an important project objective.
+
+---
+
+# Communication Standards
+
+Communication should be:
+
+- accurate;
+- concise;
+- technically correct;
+- transparent;
+- respectful;
+- evidence-based.
+
+The assistant should distinguish clearly between:
+
+Verified Fact
+
+Recommendation
+
+Opinion
+
+Assumption
+
+Speculation
+
+These should never be presented as equivalent.
 
 ---
 
 # Error Recovery
 
-If the assistant makes an incorrect statement it shall:
+Errors should be handled methodically.
 
-1. acknowledge the mistake;
-2. identify the incorrect assumption;
-3. identify the evidence that corrected it;
-4. update its understanding immediately;
-5. continue using the corrected understanding.
+When an error occurs:
 
-The assistant shall not defend an incorrect conclusion after stronger evidence has been presented.
+1. Identify the failure.
+2. Explain the cause if known.
+3. Explain the impact.
+4. Propose recovery.
+5. Continue from the latest verified state.
 
----
-
-# Guiding Principle
-
-The assistant must always prefer:
-
-- verified facts over assumptions;
-- evidence over inference;
-- user instructions over defaults;
-- truthful uncertainty over confident speculation;
-- explicit user decisions over repeated recommendations.
-
-The assistant exists to assist the user—not to override, persuade, or second-guess them.
-
-When in doubt:
-
-1. Verify.
-2. If verification fails, say so.
-3. Do not invent conclusions.
-4. Respect the user's decisions.
-5. Continue from the last confirmed state.
-
-
-
-
-
-Sprint 4 Closure Decision (Project Owner)
-Date: 2026-07-29
-Sprint 4 Status
-Status: ✅ Complete
-Sprint 4 feature development is considered complete. The remaining documentation verification work is intentionally deferred so development can proceed into Sprint 5.
-Deferred Items
-The following items are not considered blockers for Sprint 4 completion and have been deferred:
-Repository-wide documentation audit
-Final Pull & Test checkpoint
-Final documentation consistency verification
-Deferred Verification
-To be verified later with Codex (08/05).
-When that session occurs, the goals will be:
-Perform a complete repository documentation audit.
-Synchronize any remaining documentation.
-Execute the final Pull & Test checkpoint.
-Verify no regressions.
-Officially validate the Sprint 4 closure.
-Current Project State
-Sprint 4 implementation is accepted as complete, and the project may proceed with Sprint 5 planning and development. The deferred verification is recorded as planned follow-up work rather than outstanding implementation work.
-
+Errors should not result in unnecessary redesign.
 
 ---
 
-Workflow Guidance for Sprint 5 and Later
-Date: 2026-07-29
+# Failure Interpretation
 
-Assistant Workflow
+A failed tool call does not invalidate:
 
-The GitHub repository and the checked-out working tree are the authoritative
-sources for the project.
+- previous verification,
+- uploaded files,
+- repository contents,
+- completed work,
+- accepted project decisions.
 
-Work should proceed in small, complete changes using this sequence:
+Always distinguish:
 
-Workshop -> Test -> Deploy -> Commit
+Tool Failure
 
-The assistant should continue automatically until reaching one of these
-checkpoints:
+from
 
-- A Pull and Test checkpoint
-- A real design decision requiring project-owner input
-- An action requiring explicit approval
-- A tooling or access limitation
+Project Failure.
 
-The assistant must not imply that commands, tests, edits, commits, pushes, or
-deployments occurred unless they were actually performed and verified.
+---
 
-Repository files should be inspected before conclusions are made about their
-contents. Existing project conventions and formatting should be preserved.
+# Checkpoint Discipline
 
-PowerShell Else Caveats
+Long-running work should establish logical checkpoints.
 
-Prefer early returns and guard clauses when they make the control flow clearer.
+Each checkpoint should summarize:
 
-Avoid unnecessary else blocks after a branch that already returns, throws,
-continues, or otherwise terminates execution.
+- completed work;
+- pending work;
+- assumptions;
+- decisions;
+- verification status.
 
-Preferred:
+Checkpoint summaries reduce ambiguity and improve continuity across sessions.
 
-    if (-not $IsValid) {
-        return
-    }
+---
 
-    Invoke-NextStep
+# Guiding Principles
 
-Avoid:
+When uncertainty exists, follow these principles in order:
 
-    if (-not $IsValid) {
-        return
-    }
-    else {
-        Invoke-NextStep
-    }
+1. Follow explicit user instructions.
+2. Verify before assuming.
+3. Preserve existing project decisions.
+4. Prefer maintainability over novelty.
+5. Prefer transparency over certainty.
+6. Respect user workflow decisions.
+7. Preserve project continuity.
+8. Produce work that is reproducible.
+9. Minimize unnecessary disruption.
+10. Leave the project in a better state than it was found.
 
-Use else when the branches are genuinely mutually exclusive and retaining both
-branches makes the intent clearer. Do not remove else mechanically when doing so
-would make the logic harder to understand or change behavior.
+These principles should guide decisions whenever a specific rule does not already exist.
 
-Avoid deeply nested if/elseif/else structures. Extract validation or decision
-logic into focused functions when nesting becomes difficult to follow.
+# Workshop Development Standards
 
-PowerShell Pipeline Caveats
+This section documents the project conventions established for the Palworld Modding Workshop.
 
-Functions intended for pipeline use must emit only their intended result
-objects to the success output stream.
+These standards exist to improve consistency, maintainability, debugging, and long-term scalability.
 
-Unintended output can come from:
+---
 
-- Method calls that return values
-- Collection Add operations
-- Assignment expressions
-- Helper commands that write ordinary objects
-- Debugging expressions left in function bodies
+# Documentation Standards
 
-Suppress unintended output explicitly when necessary:
+Documentation should always be treated as part of the project rather than an afterthought.
 
-    $null = $Collection.Add($Item)
+Documentation should:
 
-or:
+- explain *why*, not only *what*;
+- reflect the current project state;
+- be updated alongside code changes;
+- avoid duplication whenever possible;
+- distinguish historical information from current guidance.
 
-    [void]$Collection.Add($Item)
+When existing documentation becomes obsolete, it should be revised rather than allowing contradictory instructions to accumulate.
 
-Use Write-Verbose, Write-Debug, Write-Warning, and Write-Error for diagnostic
-messages rather than mixing diagnostic text with pipeline output.
+---
 
-Do not use Format-Table, Format-List, or other Format-* commands inside reusable
-functions. Formatting should occur only at the presentation boundary.
+# Repository Organization
 
-Preserve pipeline formatting when editing existing code. Do not convert a
-readable pipeline into a dense single line unless there is a clear reason.
+Repository organization should favor predictability.
 
-Be cautious with return inside pipeline script blocks. It may not behave like a
-function-level early return in every context. Prefer clear filtering and
-transformation logic.
+New files should be placed within the established folder structure whenever possible.
 
-Pester 3.4.0 Caveats
+Avoid introducing new top-level directories unless they provide clear long-term value.
 
-Pester 3.4.0 is the supported test framework for the current workshop.
+Whenever adding documentation:
 
-Do not introduce Pester 5-only syntax, configuration objects, discovery
-features, or parameter conventions as incidental changes.
+- determine whether an existing document already covers the topic;
+- extend existing documentation before creating new documents;
+- avoid creating multiple sources of truth.
 
-New tests must follow the syntax and organization already used by the
-repository's existing tests.
+---
 
-Mock behavior and scope can differ between Pester versions. Verify mocks through
-the workshop test runner rather than assuming examples written for newer Pester
-versions are compatible.
+# Naming Conventions
 
-Avoid depending on test execution order or state left behind by another test.
-Each test should create and clean up its own state whenever practical.
+Names should be:
 
-Do not test formatted console output when the underlying structured object can
-be tested instead.
+- descriptive;
+- consistent;
+- searchable;
+- stable.
 
-Run the supported test entry point from the repository root:
+Avoid abbreviations unless they are already well established within the project.
 
-    pwsh -NoProfile -File ./10_Scripts/Tasks/Test-Workshop.ps1
+Prefer:
 
-Environment validation should be run separately when required:
+WorkshopConfig.ps1
 
-    pwsh -NoProfile -File ./10_Scripts/Tasks/Test-Environment.ps1
+instead of
 
-VS Code and Large Code-Block Caveats
+WC.ps1
 
-Large numbers of code blocks increase the chance of copying a block into the
-wrong file, omitting a section, or applying changes in the wrong order.
+---
 
-For substantial changes:
+# PowerShell Standards
 
-- Work on one file or one tightly related change set at a time.
-- Prefer a complete replacement file when many regions must change.
-- Clearly identify the destination path before every code block.
-- Avoid presenting several slightly different versions of the same file.
-- Verify the file immediately after writing it.
-- Run git diff before staging.
-- Run tests before committing.
+PowerShell is the primary automation language for this workshop.
 
-Small commands may be grouped when they form one safe, sequential operation.
-Large source files should not be fragmented across many separate chat code
-blocks unless the change is intentionally incremental.
+Scripts should prioritize:
 
-When a generated block is unusually long, use VS Code comparison tools or
-git diff to confirm that no existing functions, exports, comments, or formatting
-were accidentally removed.
+- readability;
+- maintainability;
+- compatibility;
+- predictable behavior.
 
-Checkpoint Discipline
+PowerShell code should be written so that another developer can understand it without requiring extensive explanation.
 
-At every Pull and Test checkpoint:
+---
 
-1. Confirm the intended branch.
-2. Confirm the working tree state.
-3. Pull with rebase when appropriate.
-4. Review the resulting history and diff.
-5. Run the supported workshop tests.
-6. Run environment validation when the change affects integration or tooling.
-7. Stop and report the actual results before beginning the next sprint phase.
+# PowerShell Best Practices
 
-## ChatGPT Working Agreement
+Prefer:
 
-- Execute implementation work continuously until reaching a genuine blocker or the agreed verification checkpoint.
-- Do not provide progress updates unless explicitly requested.
-- Do not stop to restate the plan or ask for confirmation once the implementation plan has been agreed.
-- Do not invoke Work mode/Codex unless explicitly requested by the user.
-- Complete implementation steps before reporting status.
-- Report only:
-  - completed work,
-  - remaining work,
-  - blockers,
-  - required local verification.
-- Treat this file as the project's standing operating instructions unless the user updates it.
-Understood.
-For this Palworld Modding project, from this point forward I will:
-Treat the SCRAPBOOK.md in the Git repository as the authoritative workflow document.
-Ignore any uploaded SCRAPBOOK.md in this conversation unless you explicitly instruct me otherwise.
-Continue implementation without progress updates or status reports.
-Only stop when I reach:a genuine technical blocker,
-a required verification checkpoint,
-or I need a decision or information that only you can provide.
+- small focused functions;
+- clear parameter names;
+- comment-based help where appropriate;
+- explicit return values;
+- consistent formatting.
 
-I can't persist this as global memory because it's specific to this project rather than a general user preference, but I'll follow it for the remainder of this project and future conversations about this repository where the repository context is available.
+Avoid unnecessary complexity.
+
+Simple, readable code is preferred over clever implementations.
+
+---
+
+# PowerShell Else Caveats
+
+Avoid deeply nested `if / else` chains whenever practical.
+
+Instead:
+
+- return early;
+- reduce nesting;
+- separate responsibilities into smaller functions.
+
+Example:
+
+Instead of:
+
+```powershell
+if (...) {
+    ...
+}
+else {
+    ...
+}
+```
+
+consider:
+
+```powershell
+if (-not (...)) {
+    return
+}
+
+...
+```
+
+when it improves readability.
+
+Readability is preferred over minimizing line count.
+
+---
+
+# PowerShell Pipeline Caveats
+
+Pipeline support should be implemented intentionally.
+
+Before enabling pipeline input, consider whether:
+
+- it improves usability;
+- it introduces ambiguity;
+- it complicates validation;
+- it affects maintainability.
+
+Pipeline support should exist because it provides value—not simply because it is available.
+
+---
+
+# Error Handling
+
+Errors should provide useful information.
+
+Prefer:
+
+- descriptive exceptions;
+- informative messages;
+- actionable guidance.
+
+Avoid silent failures.
+
+Suppressing errors should be an explicit design decision rather than the default behavior.
+
+---
+
+# Logging
+
+Logging should support troubleshooting without overwhelming the user.
+
+Good logs should answer:
+
+- What happened?
+- Why did it happen?
+- What is the current state?
+- What should happen next?
+
+Debug logging should be removable without affecting normal operation.
+
+---
+
+# Configuration Management
+
+Configuration should remain external whenever practical.
+
+Project behavior should be driven by configuration rather than requiring source code modification.
+
+Configuration files should be:
+
+- human-readable;
+- version controlled where appropriate;
+- validated before use.
+
+---
+
+# JSON Standards
+
+JSON files should:
+
+- use consistent formatting;
+- avoid duplicate information;
+- validate successfully before deployment.
+
+Helper functions should perform validation whenever practical.
+
+Invalid configuration should fail early rather than producing undefined behavior later.
+
+---
+
+# Pester Testing Standards
+
+Testing is intended to improve confidence—not merely increase coverage.
+
+Tests should verify:
+
+- expected behavior;
+- edge cases;
+- regression scenarios;
+- configuration loading;
+- helper functions.
+
+Tests should remain readable and maintainable.
+
+---
+
+# Pester 3.4.0 Caveats
+
+Because this workshop currently targets Pester 3.4.0:
+
+- avoid syntax requiring newer versions;
+- maintain compatibility with the existing testing environment;
+- document version-specific workarounds when necessary.
+
+Do not assume Pester 5 features are available unless the project explicitly upgrades.
+
+---
+
+# VS Code Standards
+
+VS Code is the preferred development environment for this workshop.
+
+Repository configuration should support:
+
+- consistent formatting;
+- predictable tasks;
+- shared settings;
+- reproducible development environments.
+
+Workspace configuration should remain under version control whenever appropriate.
+
+---
+
+# Script Design Principles
+
+Scripts should be:
+
+- modular;
+- reusable;
+- testable;
+- documented.
+
+Avoid scripts that depend upon hidden state or undocumented assumptions.
+
+Reusable functions are preferred over duplicated logic.
+
+---
+
+# Bootstrap Philosophy
+
+Initialization scripts should prepare the environment without performing unrelated work.
+
+Bootstrap code should:
+
+- discover project paths;
+- validate configuration;
+- establish context;
+- report useful status.
+
+Initialization should avoid modifying project state unless explicitly requested.
+
+---
+
+# Maintainability
+
+Future maintainers should be able to understand:
+
+- why code exists;
+- what problem it solves;
+- how it interacts with the rest of the project.
+
+Code that is difficult to understand is difficult to maintain.
+
+Maintainability should always outweigh unnecessary optimization.
+
+---
+
+# Continuous Improvement
+
+This workshop is expected to evolve.
+
+When improvements are identified:
+
+- preserve compatibility where practical;
+- document significant decisions;
+- avoid unnecessary redesign;
+- build upon existing work instead of replacing it without justification.
+
+Evolution should be deliberate rather than reactive.
+# Historical Project Notes
+
+The following sections preserve important historical decisions and project context.
+
+These notes remain valuable for understanding why certain architectural, workflow, or tooling decisions were made.
+
+Historical information should **not** override the policies defined earlier in this document.
+
+---
+
+# Sprint History
+
+This workshop has been developed incrementally using sprint-based planning.
+
+Each sprint represents a verified checkpoint in the evolution of the project.
+
+Historical sprint notes exist to preserve context rather than define current policy.
+
+Current work should always follow the latest verified project guidance.
+
+---
+
+# Sprint 4 Closure
+
+Sprint 4 established the workshop foundation.
+
+Major accomplishments included:
+
+- repository organization;
+- workshop configuration;
+- PowerShell bootstrap framework;
+- JSON helper functions;
+- Workshop configuration helpers;
+- project folder structure;
+- VS Code workspace configuration;
+- documentation framework;
+- verification workflow.
+
+Sprint 4 should be considered complete.
+
+Future work should build upon Sprint 4 rather than revisiting completed decisions unless new evidence justifies doing so.
+
+---
+
+# Deferred Items
+
+The following topics were intentionally deferred for later implementation.
+
+Examples include:
+
+- advanced automation;
+- expanded deployment tooling;
+- additional helper libraries;
+- future testing improvements;
+- optional workflow enhancements.
+
+Deferred items should be reviewed periodically and promoted into active work only when they provide meaningful value.
+
+Deferral is not abandonment.
+
+---
+
+# Workflow Guidance for Sprint 5
+
+Sprint 5 focuses on expanding the workshop while preserving the stability established during Sprint 4.
+
+Typical Sprint 5 work includes:
+
+- documentation refinement;
+- workflow improvements;
+- additional helper modules;
+- testing improvements;
+- deployment refinement;
+- repository maintenance;
+- automation enhancements.
+
+Sprint work should continue to emphasize:
+
+- verification;
+- maintainability;
+- reproducibility;
+- transparency.
+
+---
+
+# Assistant Workflow During Sprint Work
+
+When participating in sprint-based development, the assistant should:
+
+1. Understand the sprint objective.
+2. Review existing implementation.
+3. Verify the current project state.
+4. Propose incremental improvements.
+5. Implement only agreed changes.
+6. Verify completed work.
+7. Summarize progress.
+8. Establish the next checkpoint.
+
+Large refactors should be divided into smaller verified milestones whenever practical.
+
+---
+
+# Session Continuity
+
+When work spans multiple conversations, the assistant should preserve continuity by:
+
+- using the latest authoritative project documentation;
+- respecting previously accepted project decisions;
+- avoiding unnecessary repetition;
+- identifying the last completed checkpoint before beginning new work.
+
+Continuity reduces rework and improves long-term project consistency.
+
+---
+
+# Living Document Policy
+
+This scrapbook is intended to evolve alongside the project.
+
+When updates are required:
+
+- revise existing sections before creating duplicate guidance;
+- consolidate overlapping material;
+- archive obsolete information rather than allowing conflicting instructions to remain;
+- preserve important historical context without allowing it to obscure current policy.
+
+The goal is a document that remains concise, authoritative, and maintainable over time.
+
+---
+
+# Appendix
+
+The appendix contains reference material that supports the workshop but is not part of the core operating policies.
+
+Examples include:
+
+- historical implementation notes;
+- legacy workflow descriptions;
+- superseded recommendations retained for reference;
+- version-specific observations;
+- experimental findings.
+
+Appendix material should not override the policies defined earlier in this document.
+
+---
+
+# Revision Principles
+
+When editing this document in the future, follow these principles:
+
+1. Preserve the intent of existing policies unless the user explicitly changes them.
+2. Prefer refinement over expansion.
+3. Eliminate duplicate guidance where possible.
+4. Keep operational policies near the beginning of the document.
+5. Move historical information toward the end.
+6. Clearly distinguish current guidance from historical reference.
+7. Update the document whenever project decisions materially change.
+8. Treat this file as the authoritative handbook for assistant behavior within the Palworld Modding Workshop.
+
+---
+
+# End of Document
