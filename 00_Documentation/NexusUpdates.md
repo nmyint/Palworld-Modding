@@ -76,12 +76,35 @@ Open-PwNexusModPage -ModId 3968 -Launch
 Choose the desired file in the browser and save it into `01_Archives`. The next
 catalog scan will discover it.
 
-Nexus normally restricts direct API download links to Premium accounts. For a
-Premium account, the menu can download the selected remote file directly, or:
+Nexus normally restricts direct API download links to Premium accounts. The
+low-level downloader accepts an explicit Nexus mod ID and file ID:
 
 ```powershell
 Save-PwNexusModUpdate -ModId 3968 -FileId 123456
 ```
+
+For update-check workflows, use the guarded report handoff instead of manually
+copying IDs:
+
+```powershell
+$update = Get-PwModUpdateReport |
+    Where-Object Status -eq 'UpdateAvailable' |
+    Select-Object -First 1
+
+Save-PwModUpdateFromReport -Update $update
+```
+
+`Save-PwModUpdateFromReport` requires one exact `UpdateAvailable` row from the
+report. It refuses `Current`, `VariantNotFound`, `NoRemoteFiles`, `CheckFailed`,
+and rows without valid Nexus mod and remote file IDs. It supports `-WhatIf`,
+uses high-impact confirmation, and passes the exact selected remote file ID to
+the existing downloader.
+
+The result reports the downloaded archive path and SHA-256 hash and identifies
+the next workflow step: inspect and import the archive through menu option 2.
+The option 4 menu currently still calls the low-level downloader directly; the
+guarded function is the reviewed backend boundary for the next menu-wiring
+increment.
 
 The workshop uses the user-local `wget.exe` installation at
 `%LOCALAPPDATA%\Programs\Wget`, otherwise `curl.exe`, and finally PowerShell web
