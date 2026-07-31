@@ -18,11 +18,11 @@ $TxtOutput=Join-Path $OutputFolder 'RepositoryStructure.txt'
 $JsonOutput=Join-Path $OutputFolder 'RepositoryInventory.json'
 function Get-TraversalMode{param($Folder);if($TopLevelOnlyFolders -contains $Folder.Name){return 'TopLevelOnly'};return 'Recursive'}
 function Get-RepositoryItems{param($Path);Get-ChildItem -LiteralPath $Path -Force|Where-Object{if($_.PSIsContainer -and $IgnoreDirectories -contains $_.Name){return $false};if($_.PSIsContainer){return $true};if($IgnoreExtensions -contains $_.Extension){return $false};return $IncludeExtensions -contains $_.Extension}|Sort-Object @{Expression={$_.PSIsContainer};Descending=$true},Name}
-function New-RepositoryModel{param($Path);$Items=@();foreach($Item in Get-RepositoryItems $Path){if($Item.PSIsContainer){$mode=Get-TraversalMode $Item;$Items+=[PSCustomObject]@{Name=$Item.Name;Type='Directory';Traversal=$mode;Children=if($mode -eq 'Recursive'){@(New-RepositoryModel $Item.FullName)}else{@()}}}else{$Items+=[PSCustomObject]@{Name=$Item.Name;Type='File';Extension=$Item.Extension}}};return $Items}
-function Get-Stats{param($Items);$dirs=0;$files=0;$docs=0;$ps=0;foreach($Item in $Items){if($Item.Type -eq 'Directory'){$dirs++;$child=Get-Stats $Item.Children;$dirs+=$child.Directories;$files+=$child.Files;$docs+=$child.Documents;$ps+=$child.PowerShellScripts}else{$files++;if($IncludeExtensions -contains $Item.Extension){$docs++};if($Item.Extension -in '.ps1','.psm1'){$ps++}}};return [PSCustomObject]@{Directories=$dirs;Files=$files;Documents=$docs;PowerShellScripts=$ps}}
-function Write-Tree{param($Items,$Prefix='');foreach($Item in $Items){Add-Content -Path $TxtOutput -Value "$Prefix├── $($Item.Name)";if($Item.Type -eq 'Directory' -and $Item.Children.Count -gt 0){Write-Tree $Item.Children "$Prefix│   "}}}
+function New-RepositoryModel{param($Path);$Items=@();foreach($Item in @(Get-RepositoryItems $Path)){if($Item.PSIsContainer){$mode=Get-TraversalMode $Item;$children=if($mode -eq 'Recursive'){@(New-RepositoryModel $Item.FullName)}else{@()};$Items+=[PSCustomObject]@{Name=$Item.Name;Type='Directory';Traversal=$mode;Children=@($children)}}else{$Items+=[PSCustomObject]@{Name=$Item.Name;Type='File';Extension=$Item.Extension}}};return @($Items)}
+function Get-Stats{param($Items);$dirs=0;$files=0;$docs=0;$ps=0;foreach($Item in @($Items)){if($Item.Type -eq 'Directory'){$dirs++;$child=Get-Stats -Items @($Item.Children);$dirs+=$child.Directories;$files+=$child.Files;$docs+=$child.Documents;$ps+=$child.PowerShellScripts}else{$files++;if($IncludeExtensions -contains $Item.Extension){$docs++};if($Item.Extension -in '.ps1','.psm1'){$ps++}}};return [PSCustomObject]@{Directories=$dirs;Files=$files;Documents=$docs;PowerShellScripts=$ps}}
+function Write-Tree{param($Items,$Prefix='');foreach($Item in @($Items)){Add-Content -Path $TxtOutput -Value "$Prefix├── $($Item.Name)";$children=@($Item.Children);if($Item.Type -eq 'Directory' -and $children.Count -gt 0){Write-Tree -Items $children -Prefix "$Prefix│   "}}}
 $Model=@(New-RepositoryModel $Root)
-$Statistics=Get-Stats $Model
+$Statistics=Get-Stats -Items $Model
 $GitBranch=(git -C $Root branch --show-current 2>$null)
 $GitCommit=(git -C $Root rev-parse HEAD 2>$null)
 $Metadata=[PSCustomObject]@{Repository=Split-Path $Root -Leaf;Root='.';Branch=$GitBranch;CommitSHA=$GitCommit;Generated=(Get-Date)}
@@ -33,7 +33,7 @@ Add-Content $TxtOutput "Files: $($Statistics.Files)"
 Add-Content $TxtOutput "Documents: $($Statistics.Documents)"
 Add-Content $TxtOutput "PowerShell Scripts: $($Statistics.PowerShellScripts)"
 Add-Content $TxtOutput ''
-Write-Tree $Model
+Write-Tree -Items $Model
 [PSCustomObject]@{Metadata=$Metadata;Statistics=$Statistics;Structure=$Model}|ConvertTo-Json -Depth 50|Set-Content $JsonOutput
 Write-Host 'Repository structure exported:'
 Write-Host $TxtOutput
