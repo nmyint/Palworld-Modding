@@ -28,6 +28,7 @@ Before answering repository-specific questions, making recommendations, or modif
 3. Read the relevant documentation for the affected area.
 4. Use repository contents instead of assumptions or conversation memory.
 5. If uncertainty exists, inspect first, confirm second, answer third.
+6. Read applicable standards and environment documentation before creating or modifying code.
 
 AI assistants must not:
 
@@ -94,6 +95,34 @@ Before modifying files:
 3. Do not restructure folders without documentation updates.
 4. Update documentation when changing workflows.
 5. Prefer additive changes over destructive changes.
+
+## Code Creation Requirements
+
+Before creating or modifying code:
+
+1. Identify the language, runtime, and tooling requirements.
+2. Read the applicable standards documentation.
+3. Read the environment requirements for the affected toolchain.
+4. Inspect existing implementations before creating new ones.
+5. Follow repository-specific versions and conventions instead of general best practices.
+
+Examples:
+
+### PowerShell
+
+Before creating or modifying PowerShell scripts, read:
+
+- `00_Documentation/PowerShellStandards.md`
+- `00_Documentation/Environment.md`
+
+Verify:
+
+- supported PowerShell version
+- module/script organization
+- testing framework version
+- syntax compatibility requirements
+
+Do not assume the latest language or framework conventions are compatible with this repository.
 
 ## Documentation Authority
 
