@@ -59,7 +59,10 @@ Before overwriting an `Update` target, the command copies its current state into
 hashes, restores the files, verifies the resulting hashes, and writes a
 structured record beneath `09_Logs\Restores`.
 
-Restoration does not delete unlisted game files.
+> **Recovery boundary:** restoration reverts files that were present in the
+> selected backup. It does not remove files that were newly created by the
+> original deployment or any other unlisted game files. A restore is therefore
+> not a complete uninstall or a full-state rollback.
 
 ## Installation inventory
 
