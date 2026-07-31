@@ -7,13 +7,34 @@ Describe 'Repository structure exporter' {
         $singleChildDirectory = Join-Path $fixtureRoot 'Docs'
         $outputFolder = Join-Path $TestDrive 'generated-output'
         New-Item -ItemType Directory -Path $singleChildDirectory -Force | Out-Null
+        New-Item -ItemType Directory -Path $outputFolder -Force | Out-Null
         Set-Content -LiteralPath (Join-Path $singleChildDirectory 'Only.md') -Value '# Only child'
+        Set-Content -LiteralPath (Join-Path $outputFolder 'RepositoryStructure.txt') -Value 'stale structure'
+        Set-Content -LiteralPath (Join-Path $outputFolder 'RepositoryInventory.json') -Value '{"stale":true}'
         { & $exporterPath -Root $fixtureRoot -OutputFolder $outputFolder | Out-Null } | Should Not Throw
         $structurePath = Join-Path $outputFolder 'RepositoryStructure.txt'
         $inventoryPath = Join-Path $outputFolder 'RepositoryInventory.json'
         (Test-Path -LiteralPath $structurePath -PathType Leaf) | Should Be $true
         (Test-Path -LiteralPath $inventoryPath -PathType Leaf) | Should Be $true
-        ((Get-Content -LiteralPath $structurePath -Raw) -match 'Only.md') | Should Be $true
+        $structure = Get-Content -LiteralPath $structurePath -Raw
+        ($structure -match 'Only.md') | Should Be $true
+        ($structure -match 'stale structure') | Should Be $false
+        $inventory = Get-Content -LiteralPath $inventoryPath -Raw | ConvertFrom-Json
+        $docsDirectory = @($inventory.Structure | Where-Object { $_.Name -eq 'Docs' } | Select-Object -First 1)
+        $docsDirectory.Count | Should Be 1
+        @($docsDirectory[0].Children).Count | Should Be 1
+        [string]$docsDirectory[0].Children[0].Name | Should Be 'Only.md'
+        $temporaryArtifacts = @(Get-ChildItem -LiteralPath $outputFolder -Force -File | Where-Object {
+            $_.Name -match '^\.Repository(Structure|Inventory)\..*\.(tmp|bak)$'
+        })
+        $temporaryArtifacts.Count | Should Be 0
+    }
+    It 'writes temporary outputs before replacing tracked files' {
+        $source = Get-Content -LiteralPath $exporterPath -Raw
+        (($source -match '\$TxtTemp') -and
+            ($source -match '\$JsonTemp') -and
+            ($source -match 'Move-Item -LiteralPath \$TxtTemp -Destination \$TxtOutput') -and
+            ($source -match 'Move-Item -LiteralPath \$JsonTemp -Destination \$JsonOutput')) | Should Be $true
     }
 }
 Describe 'Repository structure documentation freshness' {
