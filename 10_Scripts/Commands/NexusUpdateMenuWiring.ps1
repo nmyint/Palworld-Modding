@@ -141,11 +141,12 @@ function Save-PwNexusModUpdate {
     ).Count -gt 0
 
     if (-not $fromWorkshopMenu) {
-        return Save-PwNexusModUpdateCore `
+        Save-PwNexusModUpdateCore `
             -ModId $ModId `
             -FileId $FileId `
             -ApiKey $ApiKey `
             -Destination $Destination
+        return
     }
 
     $reportRows = @(
@@ -153,11 +154,12 @@ function Save-PwNexusModUpdate {
     )
 
     if ($reportRows.Count -eq 0) {
-        return Save-PwNexusModUpdateCore `
+        Save-PwNexusModUpdateCore `
             -ModId $ModId `
             -FileId $FileId `
             -ApiKey $ApiKey `
             -Destination $Destination
+        return
     }
 
     $selected = $reportRows |
