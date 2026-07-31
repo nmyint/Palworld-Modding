@@ -44,6 +44,28 @@ When modifying large repository files:
 
 Do not repeatedly explain tooling limitations when the workflow can proceed. Continue with the established chunked fetch -> edit -> update -> commit process.
 
+## AI Change Scope Rules
+
+Before modifying files:
+
+1. Identify the smallest required file set.
+2. Avoid unrelated cleanup.
+3. Do not restructure folders without documentation updates.
+4. Update documentation when changing workflows.
+5. Prefer additive changes over destructive changes.
+
+## Documentation Authority
+
+Priority order:
+
+1. README.md
+2. AIRepositoryWorkflow.md
+3. RepositoryStructure.txt
+4. Individual documentation files
+5. Scrapbook.md
+
+Generated files describe the current repository state. They should not be manually edited unless specifically required.
+
 Avoid loading:
 
 - large logs
