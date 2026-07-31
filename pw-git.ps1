@@ -8,7 +8,22 @@
 [CmdletBinding()]
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('menu', 'check', 'compare', 'pull', 'pull-selected', 'push', 'status', 'commit', 'log', 'help')]
+    [ValidateSet(
+        'menu',
+        'check',
+        'compare',
+        'fetch',
+        'pull',
+        'pull-selected',
+        'push',
+        'status',
+        'stage',
+        'review-staged',
+        'refresh-structure',
+        'commit',
+        'log',
+        'help'
+    )]
     [string]$Command = 'menu',
     [Parameter(Position = 1, ValueFromRemainingArguments)]
     [string[]]$CommandArguments
