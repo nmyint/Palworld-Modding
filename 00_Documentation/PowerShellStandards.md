@@ -23,6 +23,24 @@ Workshop automation follows these conventions.
 4. Keep one blank line between logical blocks and avoid decorative whitespace
    inside simple expressions.
 
+## Script Organization
+
+Scripts should follow the repository structure:
+
+```text
+10_Scripts
+├── Commands
+├── Config
+├── Core
+├── Modules
+├── Tasks
+├── Tests
+└── Utilities
+```
+
+New scripts should be placed according to responsibility. Do not create new
+root-level scripts unless they are intentional user entry points.
+
 ## Functions
 
 1. Use approved PowerShell verbs and the `Pw` noun prefix.
