@@ -1,15 +1,15 @@
 Palworld Modding Workshop Repository Structure
-Generated: 07/31/2026 02:21:35
+Generated: 07/31/2026 05:41:48
 Repository: Palworld-Modding
 Root: .
 Branch: main
-CommitSHA: cfcea2173660e54d76d865d9e34c8ebd492e2c9d
+CommitSHA: 4ea9c4866fddb92e32a817b494fa37006629281b
 
 Statistics:
 Directories: 35
-Files: 113
-Documents: 113
-PowerShell Scripts: 75
+Files: 119
+Documents: 119
+PowerShell Scripts: 79
 
 ├── .config
 │   ├── UpdateSources.json
@@ -42,9 +42,11 @@ PowerShell Scripts: 75
 │   ├── NexusUpdates.md
 │   ├── PowerShellStandards.md
 │   ├── Profiles.md
+│   ├── Pw-Git.md
 │   ├── Recovery.md
 │   ├── RepositoryInventory.json
 │   ├── RepositoryStructure.txt
+│   ├── RepositoryStructureTool.md
 │   ├── Roadmap.md
 │   ├── Scrapbook.md
 │   ├── UpdateSources.md
@@ -90,10 +92,13 @@ PowerShell Scripts: 75
 │   │   │   ├── Check.ps1
 │   │   │   ├── Commit.ps1
 │   │   │   ├── Compare.ps1
+│   │   │   ├── Fetch.ps1
 │   │   │   ├── Log.ps1
 │   │   │   ├── Pull.ps1
 │   │   │   ├── PullSelected.ps1
 │   │   │   ├── Push.ps1
+│   │   │   ├── ReviewStaged.ps1
+│   │   │   ├── Stage.ps1
 │   │   │   ├── Status.ps1
 │   │   ├── Bootstrap.ps1
 │   │   ├── Menu.ps1
@@ -133,6 +138,7 @@ PowerShell Scripts: 75
 │   │   ├── PalworldModding.Tests.ps1
 │   │   ├── ProfileAssembly.Tests.ps1
 │   │   ├── Profiles.Tests.ps1
+│   │   ├── PwGit.Tests.ps1
 │   │   ├── Recovery.Tests.ps1
 │   │   ├── RepositoryStructure.Tests.ps1
 │   │   ├── SourceUpdates.Tests.ps1
