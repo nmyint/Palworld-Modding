@@ -15,7 +15,7 @@ function Invoke-PwGitStatus {
     $upstream = Get-PwGitUpstream
     $status = @(Get-PwGitStatusLines)
 
-    Write-Host "Repository : $($Context.WorkshopRoot)"
+    Write-Host "Repository : $($Context.RepositoryRoot)"
     Write-Host "Branch     : $branch"
     Write-Host "Upstream   : $(if ($upstream) { $upstream } else { '<not configured>' })"
     Write-Host ''
