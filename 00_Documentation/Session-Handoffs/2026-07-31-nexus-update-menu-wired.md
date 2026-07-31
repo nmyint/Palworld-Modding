@@ -47,31 +47,33 @@ filesystem mutation. It covers:
 - returning from the updates submenu and honoring global `Q`;
 - preserving the manual browser fallback without invoking the downloader.
 
-## Validation History
+## Validation Complete
 
-On 2026-07-31, the repository owner ran the original focused menu-wiring suite,
-the guarded download suite, and the complete repository test suite locally on
-the feature branch. All tests present at that point passed with no failures,
-skips, pending tests, or inconclusive results reported.
+On 2026-07-31, the repository owner validated the final feature-branch state
+locally with PowerShell 7.6.4 and Pester 3.4.0.
 
-Commands previously validated:
+Final results:
 
-```powershell
-Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuWiring.Tests.ps1
-Invoke-Pester ./10_Scripts/Tests/NexusUpdateDownloads.Tests.ps1
-Invoke-Pester ./10_Scripts/Tests
-```
+- option-4 interaction suite: 2 passed, 0 failed, 0 skipped, 0 pending,
+  0 inconclusive;
+- complete repository suite: 123 passed, 0 failed, 0 skipped, 0 pending,
+  0 inconclusive.
 
-## Current Validation Required
-
-The interaction-flow suite was added after the successful run above and must be
-validated before merge:
+Commands validated:
 
 ```powershell
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests
 ```
 
-A real Premium download is optional and must use the owner's own Nexus account.
-Do not merge to `main` until the new interaction suite and the complete suite
-pass.
+The earlier guarded-download and menu-wiring focused suites also passed before
+the final interaction tests were added.
+
+## Merge Readiness
+
+The automated implementation, command-boundary, menu-interaction, navigation,
+and complete regression suites are green. A real Nexus Premium download remains
+optional and must use the repository owner's own Nexus account.
+
+The branch is ready for pull-request review. Do not merge to `main` until the
+pull-request diff has been reviewed.
