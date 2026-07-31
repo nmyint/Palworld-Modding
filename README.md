@@ -6,7 +6,7 @@ When opening this repository, begin with:
 2. Read `00_Documentation/RepositoryStructure.txt` and strictly abide by it.
 3. Read `00_Documentation/RepositoryInventory.json` and strictly abide by it.
 4. Read `00_Documentation/AIRepositoryWorkflow.md` and strictly abide by it.
-5. Read '00_Documentation/AIRepositoryWorkflow_v2_Design.md' and strictly abide by it.
+5. Read '00_Documentation/AIRepositoryWorkflow_v2_Design.md'
 6. Review relevant operational documentation in `00_Documentation`
 7. Review `00_Documentation/Scrapbook.md` for historical context
 
