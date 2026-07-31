@@ -3,14 +3,14 @@
     "Repository": "Palworld-Modding",
     "Root": ".",
     "Branch": "main",
-    "CommitSHA": "4ea9c4866fddb92e32a817b494fa37006629281b",
-    "Generated": "2026-07-31T05:41:48.6869403-04:00"
+    "CommitSHA": "432b67cd72b12e38d5f410b92b374b565be9ca78",
+    "Generated": "2026-07-31T10:11:52.5774824-04:00"
   },
   "Statistics": {
     "Directories": 35,
-    "Files": 119,
-    "Documents": 119,
-    "PowerShellScripts": 79
+    "Files": 122,
+    "Documents": 122,
+    "PowerShellScripts": 80
   },
   "Structure": [
     {
@@ -71,11 +71,13 @@
           "Name": "MCP",
           "Type": "Directory",
           "Traversal": "Recursive",
-          "Children": {
-            "Name": "TODO.md",
-            "Type": "File",
-            "Extension": ".md"
-          }
+          "Children": [
+            {
+              "Name": "TODO.md",
+              "Type": "File",
+              "Extension": ".md"
+            }
+          ]
         },
         {
           "Name": "Session-Handoffs",
@@ -89,6 +91,16 @@
             },
             {
               "Name": "2026-07-30-shit.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-pw-git-v1.1-complete.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-pw-git-v1.2-implementation-checkpoint.md",
               "Type": "File",
               "Extension": ".md"
             },
@@ -225,55 +237,55 @@
       "Name": "01_Archives",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "02_Staging",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "03_Mod_Library",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "04_Projects",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "05_Deployment",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "06_Current_Installation",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "07_Testing",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "08_Tools",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "09_Logs",
       "Type": "Directory",
       "Traversal": "TopLevelOnly",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "10_Scripts",
@@ -408,11 +420,13 @@
           "Name": "Core",
           "Type": "Directory",
           "Traversal": "Recursive",
-          "Children": {
-            "Name": "Bootstrap.ps1",
-            "Type": "File",
-            "Extension": ".ps1"
-          }
+          "Children": [
+            {
+              "Name": "Bootstrap.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            }
+          ]
         },
         {
           "Name": "Git",
@@ -461,6 +475,11 @@
                 },
                 {
                   "Name": "Push.ps1",
+                  "Type": "File",
+                  "Extension": ".ps1"
+                },
+                {
+                  "Name": "RefreshStructure.ps1",
                   "Type": "File",
                   "Extension": ".ps1"
                 },
@@ -519,7 +538,7 @@
           "Name": "Output",
           "Type": "Directory",
           "Traversal": "Recursive",
-          "Children": null
+          "Children": []
         },
         {
           "Name": "Shared",
@@ -721,11 +740,13 @@
           "Name": "Utilities",
           "Type": "Directory",
           "Traversal": "Recursive",
-          "Children": {
-            "Name": "Export-PwRepositoryStructure.ps1",
-            "Type": "File",
-            "Extension": ".ps1"
-          }
+          "Children": [
+            {
+              "Name": "Export-PwRepositoryStructure.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            }
+          ]
         }
       ]
     },
@@ -738,11 +759,13 @@
           "Name": "pw-chat-archive",
           "Type": "Directory",
           "Traversal": "Recursive",
-          "Children": {
-            "Name": "pw-chat-archive.ps1",
-            "Type": "File",
-            "Extension": ".ps1"
-          }
+          "Children": [
+            {
+              "Name": "pw-chat-archive.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            }
+          ]
         },
         {
           "Name": "modman.ps1",
@@ -755,19 +778,19 @@
       "Name": "12_Research",
       "Type": "Directory",
       "Traversal": "Recursive",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "13_Backups",
       "Type": "Directory",
       "Traversal": "Recursive",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "14_Templates",
       "Type": "Directory",
       "Traversal": "Recursive",
-      "Children": null
+      "Children": []
     },
     {
       "Name": "15_Sandbox",
@@ -778,17 +801,19 @@
           "Name": "ProfileAssembly",
           "Type": "Directory",
           "Traversal": "Recursive",
-          "Children": null
+          "Children": []
         },
         {
           "Name": "pw-git-monolith",
           "Type": "Directory",
           "Traversal": "Recursive",
-          "Children": {
-            "Name": "pw-git.ps1",
-            "Type": "File",
-            "Extension": ".ps1"
-          }
+          "Children": [
+            {
+              "Name": "pw-git.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            }
+          ]
         }
       ]
     },
@@ -796,11 +821,13 @@
       "Name": "16_Profiles",
       "Type": "Directory",
       "Traversal": "Recursive",
-      "Children": {
-        "Name": "Stable.json",
-        "Type": "File",
-        "Extension": ".json"
-      }
+      "Children": [
+        {
+          "Name": "Stable.json",
+          "Type": "File",
+          "Extension": ".json"
+        }
+      ]
     },
     {
       "Name": "CONTRIBUTING.md",
