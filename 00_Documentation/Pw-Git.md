@@ -6,11 +6,11 @@
 **Status:** Complete  
 **Completed:** 2026-07-31  
 **v1.1 implementation baseline:** `4ea9c4866fddb92e32a817b494fa37006629281b`  
-**v1.2 repository-map publication:** `bcbfb2577780c87d3195fcc093b022afcf8a1389`
+**v1.2 final repository-map publication:** `2e93afcdaf48dcdb69bc4c6fd4391173f1fd3141`
 
 Pw-Git v1.2 is complete. Version 1.1 remains the preserved behavioral baseline, while v1.2 adds a narrowly scoped repository-maintenance action and fixes direct-command parity between the repository-root launcher and the authoritative modular dispatcher.
 
-Completion was authorized by the user after successful direct-command execution, passing focused regression suites, confirmation that generated files remained unstaged, and publication of the regenerated repository maps to `main`.
+Completion is supported by successful direct-command execution, passing focused regression suites, confirmation that generated files remained unstaged during refresh, creation of the dedicated completion handoff, and publication of the regenerated repository maps to `main`.
 
 ## Purpose
 
@@ -179,18 +179,27 @@ Delivered on `main`:
 - `b856072dbc8cbbe0148561289da3930837decc7d` — normalize scalar exporter collections
 - `9c34491e9c01ab91ef7b25a7406c71ca88dbc260` — make the exporter strict-mode safe and transactional
 - `fdb8c74247680cd9a0888667184a7372fac399e2` — harden exporter regression coverage
-- `bcbfb2577780c87d3195fcc093b022afcf8a1389` — publish regenerated repository maps
+- `0eb9fd70d5c3f0dad47c39f3f62ca90b16e6b68c` — create the dedicated v1.2 completion handoff
+- `9902af9ba7911325f3e03d2d5dea01c0a986844f` — supersede the implementation checkpoint
+- `2e93afcdaf48dcdb69bc4c6fd4391173f1fd3141` — publish final repository maps after adding the handoff
 
 Verified locally under PowerShell 7.6.4:
 
+- `fetch` completed with the repository neither ahead nor behind
+- `stage` was accepted and correctly reported no unstaged files
+- `review-staged` was accepted and correctly reported no staged changes
 - `refresh-structure` completed successfully
 - changed generated files and their Git status were reported
 - Git staging state remained unchanged
 - `RepositoryStructure.Tests.ps1`: 4 passed, 0 failed
 - `PwGit.Tests.ps1`: 13 passed, 0 failed
-- regenerated repository maps were reviewed, committed, and pushed to `main`
+- regenerated repository maps include the dedicated v1.2 handoff and were pushed to `main`
 
-The user explicitly authorized completion after reviewing the verified results. Pw-Git v1.2 is closed as a completed side-tooling release. Future feature work should be scoped as v1.3 or as separately defined maintenance.
+The authoritative session handoff is:
+
+- `00_Documentation/Session-Handoffs/2026-07-31-pw-git-v1.2-complete.md`
+
+Pw-Git v1.2 is closed as a completed side-tooling release. Future feature work must be scoped as v1.3 or as separately defined maintenance.
 
 ## v1.1 Completion Record
 
