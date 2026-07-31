@@ -1,3 +1,5 @@
+# Scrapbook
+
 ## Assistant and Contributor Guidance
 
 Before modifying this repository:
@@ -31,7 +33,8 @@ Large documentation files such as:
 should be treated as requiring chunked verification before modification.
 
 # Palworld Modding Workshop – Scrapbook
-**Canonical Project Working Document**
+
+# Canonical Project Working Document
 
 > This document defines the operating rules, workflow, and working agreement for the Palworld Modding Workshop. Unless explicitly superseded by a later section, the policies in this document take precedence over ad-hoc conversational decisions.
 
@@ -866,6 +869,7 @@ When improvements are identified:
 - build upon existing work instead of replacing it without justification.
 
 Evolution should be deliberate rather than reactive.
+
 # Historical Project Notes
 
 The following sections preserve important historical decisions and project context.
