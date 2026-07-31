@@ -6,7 +6,7 @@ When opening this repository, begin with:
 2. Read `00_Documentation/RepositoryStructure.txt` and strictly abide by it.
 3. Read `00_Documentation/RepositoryInventory.json` and strictly abide by it.
 4. Read `00_Documentation/AIRepositoryWorkflow.md` and strictly abide by it.
-5. Read '00_Documentation/AIRepositoryWorkflow_v2_Design.md'
+5. Read `00_Documentation/AIRepositoryWorkflow_v2_Design.md` as a design reference for the merged workflow guardrails.
 6. Review relevant operational documentation in `00_Documentation`
 7. Review `00_Documentation/Scrapbook.md` for historical context
 
@@ -50,6 +50,18 @@ Use the latest relevant handoff when continuing previous work.
 
 - `Scrapbook.md` contains project history and research context.
 - `Session-Handoffs/` contains continuation state from previous AI sessions.
+
+## AI Workflow Design Documents
+
+The active AI workflow is maintained in:
+
+- `00_Documentation/AIRepositoryWorkflow.md`
+
+The workflow guardrail design reference is maintained in:
+
+- `00_Documentation/AIRepositoryWorkflow_v2_Design.md`
+
+The v2 design has been reviewed and incorporated into the active workflow. It remains available as a design record.
 
 # Palworld Modding Workshop
 
