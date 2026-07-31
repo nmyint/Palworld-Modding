@@ -92,6 +92,9 @@ Desktop.ini
 !/15_Sandbox/**/
 !/15_Sandbox/**/.gitkeep
 
+# Local API metadata cache
+/.cache/
+
 # Crash dumps
 *.dmp
 
