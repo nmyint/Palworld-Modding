@@ -158,12 +158,11 @@ function Save-PwModUpdateFromReport {
             }
         }
         else {
-            $result = Save-PwNexusModUpdate `
+            $result = Save-PwNexusModUpdateCore `
                 -ModId $decision.NexusModId `
                 -FileId $decision.RemoteFileId `
                 -ApiKey $ApiKey `
-                -Destination $Destination `
-                -Confirm:$false
+                -Destination $Destination
 
             [PSCustomObject]@{
                 Name = $decision.Name
