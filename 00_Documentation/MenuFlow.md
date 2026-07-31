@@ -44,12 +44,26 @@ Actions:
 - `G` show staging reconciliation groups and assign component ownership
 - `H` show compatibility and conflict details
 
+Remote metadata behavior:
+
+- Opening `R` builds the persistent catalog-wide Nexus metadata snapshot when
+  it does not yet exist.
+- The Remote Catalog Metadata title shows the cache timestamp and ready-versus-
+  catalog mod count.
+- `R` inside the Remote Catalog Metadata screen explicitly refreshes the whole
+  Nexus snapshot and redraws the report in place.
+- Incomplete catalog identities with no install-name alias remain review items;
+  they use the display name or catalog key as a safe search term instead of
+  terminating the screen.
+- `A` stores the currently derived reviewed metadata in the tracked catalog.
+- `V` opens the identity-review flow.
+
 Back behavior:
 
 - `B` returns to the main menu from the catalog submenu.
 - `Enter` also returns to the main menu from the catalog submenu.
-- Prompts inside `R` and `E` now accept `B` to return to the catalog submenu
-  instead of dropping all the way back to the main menu.
+- Prompts inside `R` and `E` accept `B` to return to the catalog submenu instead
+  of dropping all the way back to the main menu.
 - `G` numbers unresolved PAK, LogicMods, and configuration components. A
   component can be assigned to an existing numbered catalog record or used to
   create a new metadata-only identity for a PAK-only mod.
@@ -97,19 +111,26 @@ Back behavior:
 
 ## Updates Submenu
 
-The updates submenu is a nested loop. Successful Nexus and GitHub metadata
-responses are reused for up to ten minutes within the current module session so
-reopening or navigating within the menu does not repeat identical API calls.
-Local archive and catalog state is still read normally.
+The updates submenu is a nested loop. Nexus-backed reads use the persistent
+catalog-wide snapshot at `.cache\NexusMetadata.json`; local archive and catalog
+state is still reread normally.
+
+On first use, the workshop fetches the full mod metadata and full file-list
+response for every reviewed Nexus ID known to the catalog, surviving archives,
+or configured Nexus sources. Later menu visits reuse that snapshot without an
+automatic time-based expiration. Newly reviewed IDs are added incrementally.
 
 Actions:
 
 - Enter a Nexus mod ID to open the manual or Premium update flow.
 - `U` records or inspects the UE4SS source baseline flow.
-- `R` clears the in-memory Nexus and GitHub metadata cache and reruns both
-  update reports.
+- `R` explicitly refreshes the complete Nexus snapshot, clears cached GitHub
+  source metadata, and reruns both update reports.
 - `B` returns to the main menu.
 - `Enter` also returns to the main menu.
+
+The Updates title shows the Nexus snapshot timestamp and ready-versus-catalog
+mod count so the user can decide whether a refresh is necessary.
 
 Manual-download behavior:
 
@@ -123,9 +144,11 @@ Manual-download behavior:
 
 Direct-download behavior:
 
-- The selected mod and file are refreshed immediately before approval.
+- The selected mod and complete file list are refreshed immediately before
+  approval.
 - A stale or non-actionable row is refused.
-- Nexus download-link responses are never cached.
+- Nexus account validation and download-link responses are always requested
+  live and are never written into the persistent snapshot.
 - Approved direct downloads are inspected before being moved into
   `01_Archives`.
 
