@@ -127,7 +127,7 @@ function Test-PwGitStagedChanges {
         1 { return $true }
         default {
             $message = (($result.Output | ForEach-Object { [string]$_ }) | Out-String).Trim()
-            throw "Unable to determine staged-change state. git diff exited with code $($result.ExitCode). $message".Trim()
+            throw ("Unable to determine staged-change state. git diff exited with code $($result.ExitCode). $message").Trim()
         }
     }
 }
@@ -207,11 +207,14 @@ function ConvertFrom-PwGitSelection {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string]$Selection,
-        [Parameter(Mandatory)][ValidateRange(1, [int]::MaxValue)][int]$Maximum
+        [Parameter(Mandatory)][ValidateRange(1, 2147483647)][int]$Maximum
     )
     $selectedIndexes = [System.Collections.Generic.HashSet[int]]::new()
     foreach ($token in ($Selection -split ',')) {
         $trimmedToken = $token.Trim()
+        if ([string]::IsNullOrWhiteSpace($trimmedToken)) {
+            throw 'File selections cannot contain empty entries.'
+        }
         if ($trimmedToken -match '^(\d+)-(\d+)$') {
             $start = [int]$Matches[1]
             $end = [int]$Matches[2]
