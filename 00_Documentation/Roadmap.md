@@ -12,7 +12,7 @@ should describe what was actually delivered.
 
 | Status | Meaning |
 | --- | --- |
-| Complete | Implemented, tested, committed, and pushed |
+| Complete | Implemented, tested, committed, pushed, and accepted at the milestone boundary |
 | In progress | The sprint has started but is not fully delivered |
 | Planned | Agreed direction; detailed scope can still be refined |
 
@@ -24,7 +24,7 @@ should describe what was actually delivered.
 | 1 | Workshop foundation | Complete |
 | 2 | PowerShell module and integrated development tooling | Complete |
 | 3 | Safe workshop automation | Complete |
-| 4 | Mod intake, library management, and validation | In progress |
+| 4 | Mod intake, library management, and validation | Complete |
 | 5 | Development, testing, workshop experience, and automation | In progress |
 | 6 | Packaging, releases, restoration, and maintenance | Planned |
 
@@ -102,13 +102,13 @@ Status: Complete
 
 Status: Complete
 
-- Strengthen configuration and environment validation.
-- Revalidate deployment plans immediately before applying them.
-- Verify copied files and record partial failures.
-- Preserve useful machine-specific integration checks while improving migration
+- Strengthened configuration and environment validation.
+- Revalidated deployment plans immediately before applying them.
+- Verified copied files and recorded partial failures.
+- Preserved useful machine-specific integration checks while improving migration
   guidance.
-- Simplify VS Code tasks and MCP configuration.
-- Document dependencies, reserved settings, and the canonical workflow.
+- Simplified VS Code tasks and MCP configuration.
+- Documented dependencies, reserved settings, and the canonical workflow.
 
 ### Sprint 3.5 - Mod intake foundation
 
@@ -143,19 +143,26 @@ Status: Complete
 
 ## Sprint 4 - Mod library and compatibility
 
+Status: Complete
+
 Manage multiple curated mods safely and assemble coherent installations. Archive
 intake and basic validation belong to Sprint 3.5; Sprint 4 begins after packages
 have entered the library.
 
-Planned outcomes:
+Sprint 4 feature development was accepted as complete by the project owner on
+2026-07-29. Repository-wide documentation verification and a later full test
+checkpoint were explicitly deferred as follow-up work rather than Sprint 4
+implementation blockers.
+
+Delivered outcomes:
 
 - Searchable mod catalog and normalized metadata schema.
 - Version history linked to original archives.
-- Duplicate and file-conflict detection.
-- Dependency, incompatibility, and load-order metadata.
+- Duplicate, variant, dependency-hint, and file-conflict reporting.
 - Enable and disable mod sets through profiles.
 - Deterministic deployment assembly from the curated library.
-- Upgrade and removal plans that preserve rollback information.
+- Preview-only upgrade and removal plans with ownership, SHA-256, backup, and
+  rollback information.
 
 ### Sprint 4.1 - Catalog discovery and menu foundation
 
@@ -187,17 +194,22 @@ Status: Complete
 - Track reviewed component ownership separately from Nexus/install identities.
 - Create metadata-only catalog records for staging-only PAK mods.
 
-### Sprint 4.3 - Conflicts and compatibility rules
+### Sprint 4.3 - Conflicts and compatibility reporting
 
-Status: In progress
+Status: Complete
 
-- Detect path-level file conflicts before assembly.
-- Model practical compatibility rules for Palworld and UE4SS mods.
-- Track dependency hints, mutually exclusive mod pairs, and variant
-  requirements.
-- Present conflicts and required decisions through the menu.
+- Detect package and path-level file conflicts before deterministic assembly.
+- Block profile assembly when unresolved ownership, missing selections, package
+  conflicts, or destination-path conflicts remain.
+- Report duplicate archives, mixed-package ownership, variant warnings, and
+  practical dependency hints for Palworld and UE4SS mods.
+- Present compatibility and conflict information through the workshop menu.
 - Avoid inventing a formal Palworld load-order system where the game does not
   support one.
+
+Persistent user-authored incompatibility policies, reviewed override records,
+and expanded compatibility decision automation are future enhancements. They do
+not reopen the accepted Sprint 4 milestone.
 
 ### Sprint 4.4 - Profile mod sets and deterministic assembly
 
@@ -209,15 +221,22 @@ Status: Complete
 - Capture the reconciled working staging snapshot into SHA-256 manifests.
 - Require assembly and live-game comparison verification before deployment.
 
-### Sprint 4.5 - Upgrade and removal workflow
+### Sprint 4.5 - Upgrade and removal planning
 
-Status: In progress
+Status: Complete
 
-- Compare installed and available versions.
-- Build safe upgrade and removal plans.
-- Preserve provenance and rollback information throughout each change.
-- Preview-only manifest and SHA-256 change plans are now available; applying
-  changes remains intentionally disabled until backup and rollback are complete.
+- Compare current and candidate curated package versions by deployment path and
+  SHA-256.
+- Build preview-only upgrade plans classifying Create, Update, Remove, and
+  Unchanged files.
+- Build preview-only removal plans that distinguish owned, modified, shared, and
+  missing files.
+- Preserve package provenance, ownership, backup requirements, and rollback
+  information in the plans.
+- Keep plan application intentionally outside the accepted Sprint 4 scope.
+
+Transactional application of upgrade and removal plans, including stale-plan
+protection and automatic rollback, requires a separately approved future scope.
 
 ## Sprint 5 - Development, testing, workshop experience, and automation
 
@@ -233,6 +252,8 @@ Planned outcomes:
 - Log collection and diagnostic bundles.
 - Game-launch helpers with selected profiles.
 - Compatibility patch workflow.
+- Expanded reviewed compatibility-rule and decision workflows over the existing
+  Sprint 4 reports.
 - Automated validation for project and deployment artifacts.
 - Repository-aware workshop navigation and health reporting.
 - Structured runtime/session and dashboard models.
@@ -247,7 +268,8 @@ commands without changing their established behavior or safety guarantees.
 
 #### Sprint 5.1.1 - Repository awareness and structure documentation
 
-Status: First priority
+Status: In progress  
+Priority: 1
 
 Scope:
 
@@ -346,6 +368,8 @@ Planned outcomes:
 - Git-integrated release preparation.
 - Checksums, manifests, and provenance records.
 - Tested backup restoration and disaster-recovery procedures.
+- Transactional application and rollback for curated mod upgrade and removal
+  plans, when separately approved.
 - Mod-update monitoring and maintenance reports.
 - Documentation synchronization and long-term repository health checks.
 
