@@ -152,31 +152,36 @@ function Invoke-PwGitPullSelected {
     Write-Host "Local branch is $($comparison.Ahead) commit(s) ahead and $($comparison.Behind) commit(s) behind $upstream."
     Write-Host ''
 
-    $availableItems = @(Get-PwGitUpstreamChangedFiles -Upstream $upstream)
+    [object[]]$availableItems = @(Get-PwGitUpstreamChangedFiles -Upstream $upstream)
     if ($availableItems.Count -eq 0) {
         Write-Host '[ OK ] The upstream branch introduces no selectable file changes.'
         return
     }
 
-    $requestedPaths = @(
+    [string[]]$requestedPaths = @(
         @($Arguments) |
             Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) } |
             ForEach-Object { ([string]$_).Trim() }
     )
 
-    $selectedPaths = if ($requestedPaths.Count -gt 0) {
-        $availablePaths = @($availableItems.Path)
-        foreach ($path in $requestedPaths) {
-            if ($availablePaths -notcontains $path) {
-                throw "'$path' is not among the changes introduced by $upstream."
+    # Capture the complete conditional output in an outer array. Without the
+    # outer capture, PowerShell unwraps a single selected path to a scalar under
+    # StrictMode, causing later .Count checks to fail.
+    [string[]]$selectedPaths = @(
+        if ($requestedPaths.Count -gt 0) {
+            $availablePaths = @($availableItems.Path)
+            foreach ($path in $requestedPaths) {
+                if ($availablePaths -notcontains $path) {
+                    throw "'$path' is not among the changes introduced by $upstream."
+                }
             }
-        }
 
-        @($requestedPaths)
-    }
-    else {
-        @(Select-PwGitUpstreamFiles -Items $availableItems)
-    }
+            $requestedPaths
+        }
+        else {
+            Select-PwGitUpstreamFiles -Items $availableItems
+        }
+    )
 
     if ($selectedPaths.Count -eq 0) {
         Write-Host '[INFO] No files were selected.'
