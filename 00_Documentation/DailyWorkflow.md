@@ -9,6 +9,23 @@ Start from the repository root:
 pwsh -NoProfile -File ./PwWorkshop.ps1
 ```
 
+## AI Assisted Troubleshooting
+
+When investigating problems:
+
+1. Start with logs and documentation.
+2. Confirm current repository state.
+3. Inspect relevant scripts.
+4. Reproduce the issue.
+5. Make the smallest possible change.
+6. Test before committing.
+
+Avoid:
+
+- changing multiple systems at once
+- replacing working code without analysis
+- modifying deployment files during investigation
+
 ## Choose an editor
 
 Use VS Code for Lua, JSON, INI, configuration, and PowerShell files. It provides
@@ -86,40 +103,14 @@ Use menu `7/E` for an isolated copy:
 Use menu `7/D` only after reviewing `V` and `R`:
 
 1. `V` verifies every assembled file against the assembly manifest.
-2. `R` compares deployment with the current game:
-   - `Identical` needs no copy;
-   - `DeploymentOnly` will be added;
-   - `Different` will overwrite the game copy;
-   - `CurrentGameOnly` remains installed and is never silently deleted;
-   - runtime/state files are reported separately.
+2. `R` compares deployment with the current game.
 3. Resolve unexpected current-game-only mods before deploying.
 4. Select `D`. Verification runs again.
-5. Read the create, update, and current-only counts.
-6. Type the exact word `DEPLOY`.
-7. Files being overwritten are backed up under `13_Backups\Deployments`.
-8. Create and Update files are copied and hashed again.
-9. A structured result is written under `09_Logs\Deployments`.
-10. Launch Palworld and test. Recording a known-good installation remains a
-    separate explicit step.
-
-## Adopt a mod found only in the current game
-
-Use menu `7/C`, for example when `LessBaseHud` appears in the game but not in
-staging:
-
-1. Select the numbered current-game-only candidate.
-2. Enter its known Nexus mod ID, or leave it blank for a manual identity.
-3. Review the Nexus name, version, and match confidence.
-4. Approve adoption only when the identity is correct.
-5. The workshop copies the live payload to its normalized `02_Staging\Pal`
-   path and verifies the copy hash.
-6. A catalog identity is created or updated.
-7. Select the correct Nexus file for download into `01_Archives`, or open the
-   Nexus page for manual download.
-8. Import the downloaded archive through menu `2`; compare it with the adopted
-   working copy before replacing custom settings.
-9. Add the catalog key to the profile mod set in menu `6`.
-10. Rebuild and review through menu `7/S`, `V`, and `R`.
+5. Type the exact word `DEPLOY`.
+6. Files being overwritten are backed up under `13_Backups\Deployments`.
+7. Create and Update files are copied and hashed again.
+8. A structured result is written under `09_Logs\Deployments`.
+9. Launch Palworld and test.
 
 ## After successful in-game testing
 
