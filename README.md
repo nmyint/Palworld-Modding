@@ -1,3 +1,40 @@
+## Repository Entry Point (AI / Developer Workflow)
+
+When opening this repository, begin with:
+
+1. Read `README.md`
+2. Read `00_Documentation/RepositoryStructure.txt`
+3. Read `00_Documentation/RepositoryInventory.json`
+4. Read `00_Documentation/AIRepositoryWorkflow.md`
+5. Review relevant operational documentation in `00_Documentation`
+6. Review `00_Documentation/Scrapbook.md` for historical context
+
+The generated repository structure files provide the authoritative map of:
+
+- folder responsibilities
+- script organization
+- documentation locations
+- project boundaries
+- deployment and testing areas
+
+Large files should not be loaded blindly. Review large documents, logs, generated files, and archives incrementally using logical sections or chunks.
+
+Prioritize:
+
+- documentation
+- configuration
+- scripts
+- tests
+
+Avoid scanning:
+
+- archives
+- deployment payloads
+- generated output
+- game binaries
+
+unless the task specifically requires them.
+
 ===== READ EVERY SINGLE DOCUMENT IN 00_Documentation/* =====
 
 # Palworld Modding Workshop
