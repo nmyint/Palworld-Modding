@@ -12,11 +12,11 @@ function Invoke-PwGitCompare {
     Write-PwGitSection -Title 'Local and Repository Comparison'
     Assert-PwGitWritableState
     $upstream = Assert-PwGitUpstream
-    Write-Host "Refreshing $upstream before comparison."
+    Write-Host "Refreshing ${upstream} before comparison."
     Write-PwGitOutput -InputObject @(Invoke-PwGitNative -Arguments @('fetch', '--prune'))
     $comparison = Get-PwGitAheadBehind -Upstream $upstream
     Write-Host "Local branch : $(Get-PwGitBranch)"
-    Write-Host "Repo branch  : $upstream"
+    Write-Host "Repo branch  : ${upstream}"
     Write-Host "Ahead        : $($comparison.Ahead) commit(s)"
     Write-Host "Behind       : $($comparison.Behind) commit(s)"
     Write-Host ''
@@ -31,12 +31,12 @@ function Invoke-PwGitCompare {
     if ($comparison.Ahead -gt 0) {
         Write-Host ''
         Write-Host 'Commits only in local:'
-        Write-PwGitOutput -InputObject @(Invoke-PwGitNative -Arguments @('log', '--oneline', "$upstream..HEAD"))
+        Write-PwGitOutput -InputObject @(Invoke-PwGitNative -Arguments @('log', '--oneline', "${upstream}..HEAD"))
     }
     if ($comparison.Behind -gt 0) {
         Write-Host ''
         Write-Host 'Commits only in repository:'
-        Write-PwGitOutput -InputObject @(Invoke-PwGitNative -Arguments @('log', '--oneline', "HEAD..$upstream"))
+        Write-PwGitOutput -InputObject @(Invoke-PwGitNative -Arguments @('log', '--oneline', "HEAD..${upstream}"))
     }
     if ($comparison.Ahead -gt 0 -and $comparison.Behind -gt 0) {
         Write-Host ''
