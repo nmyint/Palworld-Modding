@@ -43,6 +43,16 @@ unless the task specifically requires them.
 
 This repository is the authoritative development workspace for a personal Palworld installation. It keeps development, testing, deployment, and archival work separate from the live game installation.
 
+## Current milestone
+
+**Sprint 4 is complete and closed.** It delivered the persistent mod catalog,
+component ownership, compatibility and conflict reporting, profile mod sets,
+deterministic deployment assembly, and preview-only upgrade and removal
+planning. Sprint 5 workshop-experience and automation work is in progress.
+
+See [Roadmap.md](00_Documentation/Roadmap.md) for the accepted milestone boundary
+and future scope.
+
 ## Requirements
 
 Workshop automation is developed and tested for **PowerShell 7.6.4** (`pwsh`). Windows PowerShell 5.1 is not a supported runtime for the workshop scripts. Git must also be available on `PATH`.
@@ -123,7 +133,10 @@ Start the menu-driven workshop from the repository root:
 pwsh -NoProfile -File ./PwWorkshop.ps1
 ```
 
-The Sprint 4 menu provides catalog, archive, staging, component-ownership, compatibility, profile-set, diagnostic, inventory, history, and Nexus update workflows. The interface redraws automatically when its terminal window is resized.
+The workshop menu provides catalog, archive, staging, component-ownership,
+compatibility, profile-set, build, deployment, diagnostic, inventory, history,
+and Nexus update workflows. The interface redraws automatically when its
+terminal window is resized.
 
 ## Tests
 
