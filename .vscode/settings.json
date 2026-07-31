@@ -13,7 +13,17 @@
     "[powershell]": {
         "editor.defaultFormatter": "ms-vscode.powershell"
     },
-    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell 7": {
+            "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+            "overrideName": true,
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell 7",
+    "terminal.integrated.automationProfile.windows": {
+        "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+    },
     "git.autofetch": true,
     "git.confirmSync": false
 }
