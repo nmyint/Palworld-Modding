@@ -2,6 +2,18 @@
 
 Workshop automation follows these conventions.
 
+## Supported runtime
+
+1. The workshop scripts are developed and tested for **PowerShell 7.6.4** (`pwsh`).
+2. Windows PowerShell 5.1 is not a supported runtime.
+3. The authoritative configured version is stored in `.config/Workshop.json` at
+   `Tools.PowerShell.RequiredVersion`.
+4. Scripts may use PowerShell 7 behavior and must not claim Windows PowerShell 5.1
+   compatibility unless that compatibility has been explicitly implemented and
+   tested.
+5. Verify the active runtime with `$PSVersionTable.PSVersion` before diagnosing
+   version-sensitive behavior.
+
 ## File structure
 
 1. Start each `.ps1` or `.psm1` file with comment-based help containing at least
@@ -25,6 +37,6 @@ Workshop automation follows these conventions.
 1. Resolve and validate paths before filesystem changes.
 2. Keep destructive operations opt-in and compatible with `-WhatIf`.
 3. Add or update Pester coverage for every public behavior change.
-4. Run `PwTools: Test` before committing.
+4. Run `PwTools: Test` under PowerShell 7.6.4 before committing.
 5. Never commit credentials, access tokens, private keys, game saves, or generated
    deployment output.
