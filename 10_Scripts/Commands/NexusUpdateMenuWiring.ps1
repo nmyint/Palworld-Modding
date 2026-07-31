@@ -7,7 +7,7 @@ Set-StrictMode -Version Latest
 
 function Save-PwNexusModUpdateCore {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param(
         [Parameter(Mandatory)]
         [ValidateRange(1, [int]::MaxValue)]
@@ -74,6 +74,18 @@ function Save-PwNexusModUpdateCore {
 
     if (Test-Path -LiteralPath $destinationPath) {
         throw "Archive already exists: $destinationPath"
+    }
+
+    if (-not $PSCmdlet.ShouldProcess(
+        $destinationPath,
+        "Download Nexus mod $ModId file $FileId"
+    )) {
+        return [PSCustomObject]@{
+            Downloaded = $false
+            Path = $destinationPath
+            ModId = $ModId
+            FileId = $FileId
+        }
     }
 
     New-Item -ItemType Directory -Path $destinationRoot -Force | Out-Null
