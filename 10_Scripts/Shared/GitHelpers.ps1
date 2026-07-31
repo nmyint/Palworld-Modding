@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Shared runtime and UX helpers for pw-git.
+    Shared runtime and UX helpers for Pw-Git.
 #>
 Set-StrictMode -Version Latest
 function Stop-PwGitUx {
@@ -8,10 +8,20 @@ function Stop-PwGitUx {
     param()
     throw [System.OperationCanceledException]::new('PWGIT_QUIT')
 }
+function Stop-PwGitMenu {
+    [CmdletBinding()]
+    param()
+    throw [System.OperationCanceledException]::new('PWGIT_BACK')
+}
 function Test-PwGitQuitInput {
     [CmdletBinding()]
     param([AllowNull()][string]$Value)
     -not [string]::IsNullOrWhiteSpace($Value) -and $Value.Trim().Equals('Q', [System.StringComparison]::OrdinalIgnoreCase)
+}
+function Test-PwGitBackInput {
+    [CmdletBinding()]
+    param([AllowNull()][string]$Value)
+    -not [string]::IsNullOrWhiteSpace($Value) -and $Value.Trim().Equals('B', [System.StringComparison]::OrdinalIgnoreCase)
 }
 function Get-PwGitFirstOutputLine {
     [CmdletBinding()]
@@ -155,9 +165,15 @@ function Get-PwGitAheadBehind {
 function Confirm-PwGitAction {
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Prompt)
-    $answer = Read-Host "$Prompt [y/N/Q]"
+    $answer = Read-Host "$Prompt [Y/N, Enter cancel, B menu, Q quit]"
     if (Test-PwGitQuitInput -Value $answer) {
         Stop-PwGitUx
+    }
+    if (Test-PwGitBackInput -Value $answer) {
+        Stop-PwGitMenu
+    }
+    if ([string]::IsNullOrWhiteSpace($answer)) {
+        return $false
     }
     $answer.Trim().Equals('Y', [System.StringComparison]::OrdinalIgnoreCase) -or $answer.Trim().Equals('YES', [System.StringComparison]::OrdinalIgnoreCase)
 }
@@ -192,16 +208,14 @@ function Assert-PwGitUpstream {
 function Read-PwGitCommitMessage {
     [CmdletBinding()]
     param()
-    while ($true) {
-        $message = Read-Host 'Commit message [Q to quit]'
-        if (Test-PwGitQuitInput -Value $message) {
-            Stop-PwGitUx
-        }
-        if (-not [string]::IsNullOrWhiteSpace($message)) {
-            return $message.Trim()
-        }
-        Write-Warning 'A commit message is required.'
+    $message = Read-Host 'Commit message [Enter/B cancel, Q quit]'
+    if (Test-PwGitQuitInput -Value $message) {
+        Stop-PwGitUx
     }
+    if ([string]::IsNullOrWhiteSpace($message) -or (Test-PwGitBackInput -Value $message)) {
+        Stop-PwGitMenu
+    }
+    $message.Trim()
 }
 function ConvertFrom-PwGitSelection {
     [CmdletBinding()]
@@ -254,7 +268,7 @@ function Select-PwGitItems {
         return @()
     }
     Write-Host 'Select files by number. Use commas or ranges (example: 1,3-5).'
-    Write-Host 'Enter Q to quit pw-git.'
+    Write-Host 'Press Enter or B to return to the menu. Enter Q to quit Pw-Git.'
     Write-Host ''
     for ($index = 0; $index -lt $Items.Count; $index++) {
         Write-Host ('{0,3}. [{1}] {2}' -f ($index + 1), $Items[$index].$StatusProperty, $Items[$index].$PathProperty)
@@ -264,8 +278,8 @@ function Select-PwGitItems {
     if (Test-PwGitQuitInput -Value $selection) {
         Stop-PwGitUx
     }
-    if ([string]::IsNullOrWhiteSpace($selection)) {
-        return @()
+    if ([string]::IsNullOrWhiteSpace($selection) -or (Test-PwGitBackInput -Value $selection)) {
+        Stop-PwGitMenu
     }
     [int[]]$indexes = @(ConvertFrom-PwGitSelection -Selection $selection -Maximum $Items.Count)
     @($indexes | ForEach-Object { $Items[$_] })
