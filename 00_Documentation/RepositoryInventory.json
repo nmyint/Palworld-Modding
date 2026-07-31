@@ -3,13 +3,13 @@
     "Repository": "Palworld-Modding",
     "Root": ".",
     "Branch": "main",
-    "CommitSHA": "904132944bfe71048fcce59d1904b5962c12c397",
-    "Generated": "2026-07-31T11:07:24.1731473-04:00"
+    "CommitSHA": "7b1bef17b965563641f83c8536da316415a20e58",
+    "Generated": "2026-07-31T12:12:26.9820922-04:00"
   },
   "Statistics": {
     "Directories": 35,
-    "Files": 123,
-    "Documents": 123,
+    "Files": 127,
+    "Documents": 127,
     "PowerShellScripts": 80
   },
   "Structure": [
@@ -95,6 +95,21 @@
               "Extension": ".md"
             },
             {
+              "Name": "2026-07-31-ai-workflow-compliance-review.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-ai-workflow-readme-reference-review.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-pw-git-structure-review-handoff.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
               "Name": "2026-07-31-pw-git-v1.1-complete.md",
               "Type": "File",
               "Extension": ".md"
@@ -115,6 +130,11 @@
               "Extension": ".txt"
             }
           ]
+        },
+        {
+          "Name": "AIRepositoryWorkflow_v2_Design.md",
+          "Type": "File",
+          "Extension": ".md"
         },
         {
           "Name": "AIRepositoryWorkflow.md",
