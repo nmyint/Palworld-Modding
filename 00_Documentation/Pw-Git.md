@@ -1,17 +1,21 @@
 # Pw-Git Workflow Reference
 
-## Status
+## Current Status
 
-**Version:** 1.1  
-**Status:** Complete  
-**Completed:** 2026-07-31  
-**Implementation baseline:** `4ea9c4866fddb92e32a817b494fa37006629281b`
+**Version:** 1.2  
+**Status:** In progress  
+**Started:** 2026-07-31  
+**v1.1 implementation baseline:** `4ea9c4866fddb92e32a817b494fa37006629281b`
 
-Pw-Git v1.1 has been implemented, committed to `main`, and tested interactively by the user. It is the repository-safe Git workflow interface for the Palworld-Modding repository.
+Pw-Git v1.1 remains complete. Version 1.2 is a separately scoped release that adds one explicit repository-maintenance action and fixes direct-command parity between the repository-root launcher and the authoritative modular dispatcher.
+
+Version 1.2 must not be marked complete until the automated Pw-Git tests pass locally and the new direct-command and Advanced-menu workflows are verified interactively.
 
 ## Purpose
 
-Pw-Git is separate from PwWorkshop and handles Git operations only. It provides a guided, review-first interface for inspecting repository state, synchronizing changes, staging work, committing, pushing, and performing selected maintenance operations.
+Pw-Git is separate from PwWorkshop. Its primary responsibility remains safe, review-first Git operations for the Palworld-Modding repository.
+
+Version 1.2 introduces a narrow maintenance exception: manually refreshing the generated repository structure documentation. The exporter is invoked directly and Pw-Git does not load the PalworldModding module, PwWorkshop UX, profiles, deployment tooling, or other workshop commands.
 
 ## Runtime
 
@@ -62,11 +66,51 @@ The direct `push` command retains the guided review, commit, and push workflow f
 4. Restore stash
 5. Repository history
 6. Branch information
+7. Refresh repository structure
 B. Back
 Q. Quit
 ```
 
 The Advanced menu is opened with `H`. Pressing `B` or Enter returns to the main menu.
+
+## Repository Structure Refresh
+
+Run from the repository root:
+
+```powershell
+pwsh -NoProfile -File ./pw-git.ps1 refresh-structure
+```
+
+The command:
+
+1. Invokes `10_Scripts/Utilities/Export-PwRepositoryStructure.ps1` directly.
+2. Regenerates:
+   - `00_Documentation/RepositoryStructure.txt`
+   - `00_Documentation/RepositoryInventory.json`
+3. Compares pre-refresh and post-refresh SHA-256 hashes.
+4. Reports which generated files changed.
+5. Shows Git status for the generated files.
+6. Verifies that the Git staging set was not changed.
+
+The refresh command does not stage, commit, or push generated files. Review and staging remain explicit user actions.
+
+The exporter is not run automatically during fetch, pull, commit, or push because it writes tracked files and would otherwise modify the working tree implicitly.
+
+## Direct Command Parity
+
+The repository-root `pw-git.ps1` wrapper and `10_Scripts/Git/pw-git.ps1` must expose the same command set.
+
+Version 1.2 fixes the root wrapper so it includes the previously omitted commands:
+
+- `fetch`
+- `stage`
+- `review-staged`
+
+It also registers:
+
+- `refresh-structure`
+
+`10_Scripts/Tests/PwGit.Tests.ps1` now compares both launcher `ValidateSet` declarations so future command drift is reported as a regression.
 
 ## Supported Workflow
 
@@ -89,6 +133,12 @@ Fetch -> Status -> Compare -> Pull
                        Push
 ```
 
+Repository-map maintenance is intentionally separate from the core Git sequence:
+
+```text
+Advanced -> Refresh repository structure -> Review generated changes -> Stage manually
+```
+
 Staged review is available through the direct `review-staged` command. The commit workflow also displays a staged summary and requires confirmation before creating a commit.
 
 ## Safety Model
@@ -103,6 +153,8 @@ Pw-Git follows a review-first approach:
 - keep untracked files out of the discard workflow
 - keep stash entries after restore by using `stash apply --index`
 - leave staged changes intact when commit or push confirmation is cancelled
+- keep repository-structure refresh manual
+- leave refresh-generated files unstaged unless they were already staged before the command
 - keep repository operations separate from mod-management workflows
 
 ## Controls
@@ -113,9 +165,29 @@ Pw-Git follows a review-first approach:
 - Ctrl-C: immediate interruption
 - terminal resize: redraw the responsive menu automatically
 
+## v1.2 Implementation Record
+
+Implemented on `main`:
+
+- `58c5e82c383173c340a370c4abd31e2dc981a74f` — add `RefreshStructure.ps1`
+- `78001927df2c753302adfaa31792e04940fbc4ce` — synchronize root launcher commands
+- `4c8ed8e65d5c50274478cbea132edacec6a4afe1` — register `refresh-structure`
+- `338438d49bad8cfd4db241817e93d3fead09e0ef` — add Advanced option 7
+- `b18dfcd436805b58c2822daaa97623d0a97e0ce6` — add parity and refresh regression coverage
+
+Pending completion checks:
+
+- run `10_Scripts/Tests/PwGit.Tests.ps1` locally under PowerShell 7.6.4
+- test `./pw-git.ps1 fetch`
+- test `./pw-git.ps1 stage`
+- test `./pw-git.ps1 review-staged`
+- test `./pw-git.ps1 refresh-structure`
+- test Advanced menu option 7 and return navigation
+- confirm generated files remain under explicit user staging control
+
 ## v1.1 Completion Record
 
-Delivered:
+Version 1.1 delivered:
 
 - dedicated Pw-Git bootstrap and dispatcher
 - responsive full and compact menu layouts
@@ -127,4 +199,4 @@ Delivered:
 - PowerShell parser and Pw-Git regression coverage in the repository test suite
 - interactive user verification of the completed main and Advanced menus
 
-Pw-Git v1.1 is closed as a completed side-tooling milestone. Future changes should be treated as a new version or separately scoped maintenance work.
+Pw-Git v1.1 remains closed as a completed milestone. Version 1.2 is not complete until its pending validation checks are satisfied.
