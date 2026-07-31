@@ -100,19 +100,20 @@ case now exercises the real core with mocked Nexus responses and verifies that
 `Save-PwRemoteFile` and `Get-PwModArchiveInfo` are not called under `-WhatIf`.
 No production code changed in this correction.
 
-## Current Validation Required
+## Final Validation
 
-Validate the isolated safety suite and complete repository suite before merge:
+The repository owner validated the current executable branch head locally under
+PowerShell 7.6.4 with Pester 3.4.0 on 2026-07-31:
 
-```powershell
-Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1
-Invoke-Pester ./10_Scripts/Tests
-```
+- `NexusUpdateMenuSafety.Tests.ps1`: 2 passed, 0 failed, 0 skipped, 0 pending,
+  0 inconclusive;
+- complete `10_Scripts/Tests` suite: 125 passed, 0 failed, 0 skipped, 0 pending,
+  0 inconclusive.
 
-The focused safety suite should contain 2 tests. The complete suite should
-contain 125 tests if no other tests are added before the run.
+The validation covered the final production code and isolated safety tests at
+commit `9baa746bab6054e1445a1de8fc9aefa1ba398af7`. This handoff update is
+documentation-only and does not alter the validated implementation.
 
 A real Nexus Premium download remains optional and must use the repository
-owner's own Nexus account. Keep pull request #2 in draft and do not merge to
-`main` until the isolated safety suite and complete suite pass on the current
-head.
+owner's own Nexus account. Pull request #2 may now proceed to final review, but
+must not be merged to `main` without the repository owner's explicit approval.
