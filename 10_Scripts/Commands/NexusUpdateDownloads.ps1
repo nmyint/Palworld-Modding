@@ -144,7 +144,7 @@ function Save-PwModUpdateFromReport {
         )
 
         if (-not $PSCmdlet.ShouldProcess($target, $action)) {
-            return [PSCustomObject]@{
+            [PSCustomObject]@{
                 Name = $decision.Name
                 NexusModId = $decision.NexusModId
                 FileId = $decision.RemoteFileId
@@ -157,25 +157,26 @@ function Save-PwModUpdateFromReport {
                 NextStep = 'Inspect and import the archive through menu option 2.'
             }
         }
+        else {
+            $result = Save-PwNexusModUpdate `
+                -ModId $decision.NexusModId `
+                -FileId $decision.RemoteFileId `
+                -ApiKey $ApiKey `
+                -Destination $Destination `
+                -Confirm:$false
 
-        $result = Save-PwNexusModUpdate `
-            -ModId $decision.NexusModId `
-            -FileId $decision.RemoteFileId `
-            -ApiKey $ApiKey `
-            -Destination $Destination `
-            -Confirm:$false
-
-        [PSCustomObject]@{
-            Name = $decision.Name
-            NexusModId = $decision.NexusModId
-            FileId = $decision.RemoteFileId
-            LocalVersion = $decision.LocalVersion
-            RemoteVersion = $decision.RemoteVersion
-            RemoteFileName = $decision.RemoteFileName
-            Downloaded = [bool]$result.Downloaded
-            Path = [string]$result.Path
-            Hash = [string]$result.Hash
-            NextStep = 'Inspect and import the archive through menu option 2.'
+            [PSCustomObject]@{
+                Name = $decision.Name
+                NexusModId = $decision.NexusModId
+                FileId = $decision.RemoteFileId
+                LocalVersion = $decision.LocalVersion
+                RemoteVersion = $decision.RemoteVersion
+                RemoteFileName = $decision.RemoteFileName
+                Downloaded = [bool]$result.Downloaded
+                Path = [string]$result.Path
+                Hash = [string]$result.Hash
+                NextStep = 'Inspect and import the archive through menu option 2.'
+            }
         }
     }
 }
