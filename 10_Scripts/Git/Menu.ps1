@@ -144,10 +144,11 @@ function Get-PwGitAdvancedMenuLayout {
         New-PwGitMenuLine -Text '  [4] Restore stash' -Width $Width
         New-PwGitMenuLine -Text '  [5] Repository history' -Width $Width
         New-PwGitMenuLine -Text '  [6] Branch information' -Width $Width
+        New-PwGitMenuLine -Text '  [7] Refresh repository structure' -Width $Width
         New-PwGitMenuLine -Text '  [B] Back' -Color Yellow -Width $Width
         New-PwGitMenuLine -Text '  [Q] Quit' -Color Yellow -Width $Width
         New-PwGitMenuLine -Width $Width
-        New-PwGitMenuLine -Text 'Press 1-6, B, Enter, or Q.' -Color DarkGray -Width $Width
+        New-PwGitMenuLine -Text 'Press 1-7, B, Enter, or Q.' -Color DarkGray -Width $Width
     )
     if ($Height -lt 22) {
         $content = @(
@@ -156,8 +157,9 @@ function Get-PwGitAdvancedMenuLayout {
             New-PwGitMenuLine -Text $divider -Color DarkGray -Width $Width
             New-PwGitMenuLine -Text ' [1] Unstage    [2] Discard    [3] Stash' -Width $Width
             New-PwGitMenuLine -Text ' [4] Restore    [5] History    [6] Branch info' -Width $Width
+            New-PwGitMenuLine -Text ' [7] Refresh structure' -Width $Width
             New-PwGitMenuLine -Text ' [B] Back       [Q] Quit' -Color Yellow -Width $Width
-            New-PwGitMenuLine -Text 'Press 1-6, B, Enter, or Q.' -Color DarkGray -Width $Width
+            New-PwGitMenuLine -Text 'Press 1-7, B, Enter, or Q.' -Color DarkGray -Width $Width
         )
     }
     New-PwGitMenuLayout -Content $content -Width $Width -Height $Height
@@ -423,7 +425,7 @@ function Show-PwGitAdvancedMenu {
         Clear-Host
         $renderedTerminal = Get-PwGitTerminalSize
         Write-PwGitMenu -Context $Context -Terminal $renderedTerminal -Page Advanced
-        $choice = Read-PwGitMenuSelection -RenderedTerminal $renderedTerminal -ValidSelections @('1', '2', '3', '4', '5', '6', 'B', 'Q') -EnterSelection 'B'
+        $choice = Read-PwGitMenuSelection -RenderedTerminal $renderedTerminal -ValidSelections @('1', '2', '3', '4', '5', '6', '7', 'B', 'Q') -EnterSelection 'B'
         if ($choice -eq '__RESIZE__') {
             continue
         }
@@ -442,6 +444,7 @@ function Show-PwGitAdvancedMenu {
                 '4' { Invoke-PwGitRestoreStash }
                 '5' { Invoke-PwGitHistoryPrompt -Context $Context }
                 '6' { Show-PwGitBranchInformation }
+                '7' { Invoke-PwGitMenuCommand -Name 'refresh-structure' -Context $Context }
             }
         }
         catch [System.OperationCanceledException] {
