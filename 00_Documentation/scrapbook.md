@@ -1,3 +1,35 @@
+## Assistant and Contributor Guidance
+
+Before modifying this repository:
+
+1. Read the relevant documents in `00_Documentation/`.
+2. Treat `00_Documentation/scrapbook.md` as the canonical working agreement.
+3. Verify repository state before claiming work is complete.
+4. Preserve the separation between PwWorkshop and pw-git.
+5. scrapbook.md is the working agreement and overrides ad-hoc assumptions.
+6. Changes should follow the existing script/module conventions.
+7. Do not claim completion until the result is verified.
+
+# Large File Retrieval/Reading by assistant Guidance
+
+When repository files are large, connector responses may be truncated in the
+conversation interface.
+
+Before modifying large files:
+
+- Fetch the file in chunks using line ranges when necessary.
+- Use full blob retrieval when available to obtain the complete source.
+- Never reconstruct missing sections from memory or assumptions.
+- Confirm the complete file contents before performing replacement updates.
+
+Large documentation files such as:
+
+- Roadmap.md
+- scrapbook.md
+- architecture documents
+
+should be treated as requiring chunked verification before modification.
+
 # Palworld Modding Workshop – Scrapbook
 **Canonical Project Working Document**
 

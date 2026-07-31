@@ -1,3 +1,5 @@
+===== READ EVERY SINGLE DOCUMENT IN 00_Documentation/* =====
+
 # Palworld Modding Workshop
 
 This repository is the authoritative development workspace for a personal
@@ -138,3 +140,5 @@ This is a personal learning and backup workspace. Machine-specific integration
 checks and the `Stable` profile are intentional. See
 [Environment.md](00_Documentation/Environment.md) before moving the workshop to
 another computer.
+
+===== READ EVERY SINGLE DOCUMENT IN 00_Documentation/* =====
