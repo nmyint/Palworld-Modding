@@ -55,6 +55,7 @@ root-level scripts unless they are intentional user entry points.
 1. Resolve and validate paths before filesystem changes.
 2. Keep destructive operations opt-in and compatible with `-WhatIf`.
 3. Add or update Pester coverage for every public behavior change.
+   The supported Pester version is defined in Environment.md.
 4. Run `PwTools: Test` under PowerShell 7.6.4 before committing.
 5. Never commit credentials, access tokens, private keys, game saves, or generated
    deployment output.
