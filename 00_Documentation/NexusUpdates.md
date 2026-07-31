@@ -1,7 +1,8 @@
 # Nexus Mod Update Checks
 
-Sprint 4.1 can check Nexus Mods for newer files associated with the Nexus IDs
-parsed from surviving downloads in `01_Archives`.
+The workshop can check Nexus Mods for newer files associated with reviewed Nexus
+IDs stored in the persistent catalog and discovered from surviving downloads in
+`01_Archives`.
 
 ## Safety and account model
 
@@ -28,8 +29,8 @@ $key = Read-Host 'Nexus API key' -MaskInput
 Remove-Variable key
 ```
 
-Restart Codex, VS Code, or the terminal after setting a persistent variable.
-The value is stored in the Windows user environment, not in this repository.
+Restart VS Code or the terminal after setting a persistent variable. The value
+is stored in the Windows user environment, not in this repository.
 
 Validate the connection:
 
@@ -43,24 +44,26 @@ configuration file.
 
 ## Check for updates
 
-Use menu option **Check Nexus for updates**, run the VS Code task
+Use menu option **Check mod and tool updates**, run the VS Code task
 `PwTools: Check Mod Updates`, or call:
 
 ```powershell
 Get-PwModUpdateReport
 ```
 
-The check queries only unique, parsed Nexus IDs. It compares the newest remote
-main file with the latest surviving local download. Results are:
+The check queries unique reviewed Nexus IDs. It compares the newest compatible
+remote main file with the recorded installed or surviving local version.
+Results include:
 
 - `Current`;
 - `UpdateAvailable`;
+- `VariantNotFound`;
 - `NoRemoteFiles`;
 - `CheckFailed`.
 
-Mods whose original archives were deleted do not yet have a durable Nexus ID,
-so they cannot be checked automatically until Sprint 4.2 metadata reconciliation
-records those IDs.
+A mod without a reviewed Nexus ID remains visible in the catalog but cannot be
+checked automatically. Add or correct its identity through **Catalog → Edit
+identity** after verifying the Nexus page.
 
 ## Download an update
 
@@ -107,7 +110,8 @@ downloads for eligible large files, so manual browser download remains the
 preferred fallback. See [Nexus resumable downloads][resumable].
 
 [resumable]: https://help.nexusmods.com/article/170-resumable-downloads
-# Variant-aware update checks
+
+## Variant-aware update checks
 
 The update checker treats filename/version markers as separate release
 branches. `SP`/Singleplayer, `DS`/Dedicated Server, and `MP`/Multiplayer-host
