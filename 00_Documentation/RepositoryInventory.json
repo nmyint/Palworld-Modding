@@ -1,25 +1,32 @@
 {
   "Repository": "Palworld-Modding",
-  "Generated": "2026-07-30T23:09:56.2079451-04:00",
+  "Generated": "2026-07-31T01:26:45.6361363-04:00",
   "Root": "D:\\Projects\\Palworld-Modding",
   "Statistics": {
     "Directories": 265,
-    "Documents": 236,
+    "Documents": 242,
     "PowerShellScripts": 74
   },
   "Structure": [
     {
       "Name": "00_Documentation",
       "Type": "Directory",
+      "Traversal": "Recursive",
       "Children": [
         {
           "Name": "MCP",
           "Type": "Directory",
-          "Children": []
+          "Traversal": "Recursive",
+          "Children": {
+            "Name": "TODO.md",
+            "Type": "File",
+            "Extension": ".md"
+          }
         },
         {
           "Name": "Session-Handoffs",
           "Type": "Directory",
+          "Traversal": "Recursive",
           "Children": [
             {
               "Name": "2026-07-30-pw-git-kickoff.md",
@@ -30,11 +37,26 @@
               "Name": "2026-07-30-shit.md",
               "Type": "File",
               "Extension": ".md"
+            },
+            {
+              "Name": "Codex.txt",
+              "Type": "File",
+              "Extension": ".txt"
             }
           ]
         },
         {
+          "Name": "AIRepositoryWorkflow.md",
+          "Type": "File",
+          "Extension": ".md"
+        },
+        {
           "Name": "CatalogMetadata.md",
+          "Type": "File",
+          "Extension": ".md"
+        },
+        {
+          "Name": "ChangeManagement.md",
           "Type": "File",
           "Extension": ".md"
         },
@@ -45,6 +67,11 @@
         },
         {
           "Name": "Deployment.md",
+          "Type": "File",
+          "Extension": ".md"
+        },
+        {
+          "Name": "DocumentationAudit.md",
           "Type": "File",
           "Extension": ".md"
         },
@@ -128,532 +155,66 @@
     {
       "Name": "01_Archives",
       "Type": "Directory",
-      "Children": []
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "02_Staging",
       "Type": "Directory",
-      "Children": [
-        {
-          "Name": "Pal",
-          "Type": "Directory",
-          "Children": []
-        }
-      ]
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "03_Mod_Library",
       "Type": "Directory",
-      "Children": [
-        {
-          "Name": "antiphat-SP-2.0.5",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "antiwaste-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "basepalvisibility-0.2.3",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "bpmlgenericfunctions-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "bpmodloadermod-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "buildflightcamera-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "cheatmanagerenablermod-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "concealedcarry-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "consolecommandsmod-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "consoleenablermod-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "creativemenu-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "dekmodconfigmenu-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "existingpaleditor-1.0.4",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "fieldbossdefeatmarker-1.1.1",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "infinitemod-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "instantpalboxsearch-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "keybinds-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "lessrestrictivebuilding-1.2",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "linetracemod-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "mapcollectablesmod-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "mercymode-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "minibuilds-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "nopaldeposit-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "palminimap-1.2.5",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "palmodoptions-0.1.3",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "palschema-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "palwellbeing-0.2.1",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "palworldtuner-1.9.0",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "remotepalbox-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "rotateitbeta-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "smartpause-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "splitscreenmod-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "stacksize999999999zeroweight-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "stutterfixpack-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "waypointteleport-working",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "manifest.json",
-              "Type": "File",
-              "Extension": ".json"
-            }
-          ]
-        },
-        {
-          "Name": "catalog.json",
-          "Type": "File",
-          "Extension": ".json"
-        }
-      ]
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "04_Projects",
       "Type": "Directory",
-      "Children": []
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "05_Deployment",
       "Type": "Directory",
-      "Children": [
-        {
-          "Name": "Pal",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "assembly-manifest.json",
-          "Type": "File",
-          "Extension": ".json"
-        }
-      ]
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "06_Current_Installation",
       "Type": "Directory",
-      "Children": []
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "07_Testing",
       "Type": "Directory",
-      "Children": [
-        {
-          "Name": "Compatibility",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "Performance",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "Plans",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "Regression",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "Results",
-          "Type": "Directory",
-          "Children": []
-        }
-      ]
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "08_Tools",
       "Type": "Directory",
-      "Children": [
-        {
-          "Name": "Git",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "Lua",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "PowerShell",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "Save_Editors",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "UE4SS",
-          "Type": "Directory",
-          "Children": []
-        },
-        {
-          "Name": "WinMerge",
-          "Type": "Directory",
-          "Children": []
-        }
-      ]
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "09_Logs",
       "Type": "Directory",
-      "Children": [
-        {
-          "Name": "2026",
-          "Type": "Directory",
-          "Children": [
-            {
-              "Name": "07",
-              "Type": "Directory",
-              "Children": []
-            }
-          ]
-        }
-      ]
+      "Traversal": "TopLevelOnly",
+      "Children": null
     },
     {
       "Name": "10_Scripts",
       "Type": "Directory",
+      "Traversal": "Recursive",
       "Children": [
         {
           "Name": "Commands",
           "Type": "Directory",
+          "Traversal": "Recursive",
           "Children": [
             {
               "Name": "CatalogMetadata.ps1",
@@ -760,6 +321,7 @@
         {
           "Name": "Config",
           "Type": "Directory",
+          "Traversal": "Recursive",
           "Children": [
             {
               "Name": "Json.ps1",
@@ -776,21 +338,22 @@
         {
           "Name": "Core",
           "Type": "Directory",
-          "Children": [
-            {
-              "Name": "Bootstrap.ps1",
-              "Type": "File",
-              "Extension": ".ps1"
-            }
-          ]
+          "Traversal": "Recursive",
+          "Children": {
+            "Name": "Bootstrap.ps1",
+            "Type": "File",
+            "Extension": ".ps1"
+          }
         },
         {
           "Name": "Git",
           "Type": "Directory",
+          "Traversal": "Recursive",
           "Children": [
             {
               "Name": "Commands",
               "Type": "Directory",
+              "Traversal": "Recursive",
               "Children": [
                 {
                   "Name": "Check.ps1",
@@ -854,7 +417,13 @@
         {
           "Name": "Modules",
           "Type": "Directory",
+          "Traversal": "Recursive",
           "Children": [
+            {
+              "Name": "PalworldModding.psd1",
+              "Type": "File",
+              "Extension": ".psd1"
+            },
             {
               "Name": "PalworldModding.psm1",
               "Type": "File",
@@ -865,11 +434,13 @@
         {
           "Name": "Output",
           "Type": "Directory",
-          "Children": []
+          "Traversal": "Recursive",
+          "Children": null
         },
         {
           "Name": "Shared",
           "Type": "Directory",
+          "Traversal": "Recursive",
           "Children": [
             {
               "Name": "GitHelpers.ps1",
@@ -886,6 +457,7 @@
         {
           "Name": "Tasks",
           "Type": "Directory",
+          "Traversal": "Recursive",
           "Children": [
             {
               "Name": "Backup-Workshop.ps1",
@@ -982,6 +554,7 @@
         {
           "Name": "Tests",
           "Type": "Directory",
+          "Traversal": "Recursive",
           "Children": [
             {
               "Name": "CatalogMetadata.Tests.ps1",
@@ -1053,30 +626,29 @@
         {
           "Name": "Utilities",
           "Type": "Directory",
-          "Children": [
-            {
-              "Name": "Export-PwRepositoryStructure.ps1",
-              "Type": "File",
-              "Extension": ".ps1"
-            }
-          ]
+          "Traversal": "Recursive",
+          "Children": {
+            "Name": "Export-PwRepositoryStructure.ps1",
+            "Type": "File",
+            "Extension": ".ps1"
+          }
         }
       ]
     },
     {
       "Name": "11_Utilities",
       "Type": "Directory",
+      "Traversal": "Recursive",
       "Children": [
         {
           "Name": "pw-chat-archive",
           "Type": "Directory",
-          "Children": [
-            {
-              "Name": "pw-chat-archive.ps1",
-              "Type": "File",
-              "Extension": ".ps1"
-            }
-          ]
+          "Traversal": "Recursive",
+          "Children": {
+            "Name": "pw-chat-archive.ps1",
+            "Type": "File",
+            "Extension": ".ps1"
+          }
         },
         {
           "Name": "modman.ps1",
@@ -1088,50 +660,53 @@
     {
       "Name": "12_Research",
       "Type": "Directory",
-      "Children": []
+      "Traversal": "Recursive",
+      "Children": null
     },
     {
       "Name": "13_Backups",
       "Type": "Directory",
-      "Children": []
+      "Traversal": "Recursive",
+      "Children": null
     },
     {
       "Name": "14_Templates",
       "Type": "Directory",
-      "Children": []
+      "Traversal": "Recursive",
+      "Children": null
     },
     {
       "Name": "15_Sandbox",
       "Type": "Directory",
+      "Traversal": "Recursive",
       "Children": [
         {
           "Name": "ProfileAssembly",
           "Type": "Directory",
-          "Children": []
+          "Traversal": "Recursive",
+          "Children": null
         },
         {
           "Name": "pw-git-monolith",
           "Type": "Directory",
-          "Children": [
-            {
-              "Name": "pw-git.ps1",
-              "Type": "File",
-              "Extension": ".ps1"
-            }
-          ]
+          "Traversal": "Recursive",
+          "Children": {
+            "Name": "pw-git.ps1",
+            "Type": "File",
+            "Extension": ".ps1"
+          }
         }
       ]
     },
     {
       "Name": "16_Profiles",
       "Type": "Directory",
-      "Children": [
-        {
-          "Name": "Stable.json",
-          "Type": "File",
-          "Extension": ".json"
-        }
-      ]
+      "Traversal": "Recursive",
+      "Children": {
+        "Name": "Stable.json",
+        "Type": "File",
+        "Extension": ".json"
+      }
     },
     {
       "Name": "CONTRIBUTING.md",

@@ -1,22 +1,27 @@
 Palworld Modding Workshop Repository Structure
-Generated: 07/30/2026 23:09:53
+Generated: 07/31/2026 01:26:44
 Repository: Palworld-Modding
 Root: D:\Projects\Palworld-Modding
 
 Statistics:
 Directories: 265
-Documents: 236
+Documents: 242
 PowerShell Scripts: 74
 
 D:\Projects\Palworld-Modding
 ├── 00_Documentation
 │   ├── MCP
+│   │   └── TODO.md
 │   ├── Session-Handoffs
 │   │   ├── 2026-07-30-pw-git-kickoff.md
-│   │   └── 2026-07-30-shit.md
+│   │   ├── 2026-07-30-shit.md
+│   │   └── Codex.txt
+│   ├── AIRepositoryWorkflow.md
 │   ├── CatalogMetadata.md
+│   ├── ChangeManagement.md
 │   ├── DailyWorkflow.md
 │   ├── Deployment.md
+│   ├── DocumentationAudit.md
 │   ├── Environment.md
 │   ├── FolderStructure.md
 │   ├── MenuFlow.md
@@ -34,100 +39,13 @@ D:\Projects\Palworld-Modding
 │   └── WorkshopBackup.md
 ├── 01_Archives
 ├── 02_Staging
-│   └── Pal
 ├── 03_Mod_Library
-│   ├── antiphat-SP-2.0.5
-│   │   └── manifest.json
-│   ├── antiwaste-working
-│   │   └── manifest.json
-│   ├── basepalvisibility-0.2.3
-│   │   └── manifest.json
-│   ├── bpmlgenericfunctions-working
-│   │   └── manifest.json
-│   ├── bpmodloadermod-working
-│   │   └── manifest.json
-│   ├── buildflightcamera-working
-│   │   └── manifest.json
-│   ├── cheatmanagerenablermod-working
-│   │   └── manifest.json
-│   ├── concealedcarry-working
-│   │   └── manifest.json
-│   ├── consolecommandsmod-working
-│   │   └── manifest.json
-│   ├── consoleenablermod-working
-│   │   └── manifest.json
-│   ├── creativemenu-working
-│   │   └── manifest.json
-│   ├── dekmodconfigmenu-working
-│   │   └── manifest.json
-│   ├── existingpaleditor-1.0.4
-│   │   └── manifest.json
-│   ├── fieldbossdefeatmarker-1.1.1
-│   │   └── manifest.json
-│   ├── infinitemod-working
-│   │   └── manifest.json
-│   ├── instantpalboxsearch-working
-│   │   └── manifest.json
-│   ├── keybinds-working
-│   │   └── manifest.json
-│   ├── lessrestrictivebuilding-1.2
-│   │   └── manifest.json
-│   ├── linetracemod-working
-│   │   └── manifest.json
-│   ├── mapcollectablesmod-working
-│   │   └── manifest.json
-│   ├── mercymode-working
-│   │   └── manifest.json
-│   ├── minibuilds-working
-│   │   └── manifest.json
-│   ├── nopaldeposit-working
-│   │   └── manifest.json
-│   ├── palminimap-1.2.5
-│   │   └── manifest.json
-│   ├── palmodoptions-0.1.3
-│   │   └── manifest.json
-│   ├── palschema-working
-│   │   └── manifest.json
-│   ├── palwellbeing-0.2.1
-│   │   └── manifest.json
-│   ├── palworldtuner-1.9.0
-│   │   └── manifest.json
-│   ├── remotepalbox-working
-│   │   └── manifest.json
-│   ├── rotateitbeta-working
-│   │   └── manifest.json
-│   ├── smartpause-working
-│   │   └── manifest.json
-│   ├── splitscreenmod-working
-│   │   └── manifest.json
-│   ├── stacksize999999999zeroweight-working
-│   │   └── manifest.json
-│   ├── stutterfixpack-working
-│   │   └── manifest.json
-│   ├── waypointteleport-working
-│   │   └── manifest.json
-│   └── catalog.json
 ├── 04_Projects
 ├── 05_Deployment
-│   ├── Pal
-│   └── assembly-manifest.json
 ├── 06_Current_Installation
 ├── 07_Testing
-│   ├── Compatibility
-│   ├── Performance
-│   ├── Plans
-│   ├── Regression
-│   └── Results
 ├── 08_Tools
-│   ├── Git
-│   ├── Lua
-│   ├── PowerShell
-│   ├── Save_Editors
-│   ├── UE4SS
-│   └── WinMerge
 ├── 09_Logs
-│   └── 2026
-│       └── 07
 ├── 10_Scripts
 │   ├── Commands
 │   │   ├── CatalogMetadata.ps1
@@ -169,6 +87,7 @@ D:\Projects\Palworld-Modding
 │   │   ├── Menu.ps1
 │   │   └── pw-git.ps1
 │   ├── Modules
+│   │   ├── PalworldModding.psd1
 │   │   └── PalworldModding.psm1
 │   ├── Output
 │   ├── Shared
