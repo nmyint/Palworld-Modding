@@ -97,19 +97,44 @@ Back behavior:
 
 ## Updates Submenu
 
-The updates submenu is a nested loop.
+The updates submenu is a nested loop. Successful Nexus and GitHub metadata
+responses are reused for up to ten minutes within the current module session so
+reopening or navigating within the menu does not repeat identical API calls.
+Local archive and catalog state is still read normally.
 
 Actions:
 
-- Enter a Nexus mod ID to open the manual or premium update flow.
+- Enter a Nexus mod ID to open the manual or Premium update flow.
 - `U` records or inspects the UE4SS source baseline flow.
+- `R` clears the in-memory Nexus and GitHub metadata cache and reruns both
+  update reports.
+- `B` returns to the main menu.
+- `Enter` also returns to the main menu.
+
+Manual-download behavior:
+
+- The browser page opens after the menu displays the resolved `01_Archives`
+  location.
+- The user must save the completed ZIP or 7z file into that directory.
+- Browser completion is not monitored automatically.
+- After the download finishes, use `R` to rescan local archives and refresh
+  remote metadata.
+- Use menu option `2` to inspect and import the downloaded archive.
+
+Direct-download behavior:
+
+- The selected mod and file are refreshed immediately before approval.
+- A stale or non-actionable row is refused.
+- Nexus download-link responses are never cached.
+- Approved direct downloads are inspected before being moved into
+  `01_Archives`.
 
 Back behavior:
 
-- `Enter` returns to the main menu from the updates submenu.
-- `U` runs the UE4SS baseline action; `B` returns to the main menu.
-- Nested prompts inside the update flow accept `B` to step back to the updates
+- `B` and `Enter` return to the main menu from the update report.
+- Nested manual, direct, and UE4SS prompts accept `B` to return to the updates
   submenu.
+- `Q` exits the workshop.
 
 ## Profile Mod Sets Submenu (`6`)
 
