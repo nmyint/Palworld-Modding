@@ -3,13 +3,14 @@
 ## Current Status
 
 **Version:** 1.2  
-**Status:** In progress  
-**Started:** 2026-07-31  
-**v1.1 implementation baseline:** `4ea9c4866fddb92e32a817b494fa37006629281b`
+**Status:** Complete  
+**Completed:** 2026-07-31  
+**v1.1 implementation baseline:** `4ea9c4866fddb92e32a817b494fa37006629281b`  
+**v1.2 repository-map publication:** `bcbfb2577780c87d3195fcc093b022afcf8a1389`
 
-Pw-Git v1.1 remains complete. Version 1.2 is a separately scoped release that adds one explicit repository-maintenance action and fixes direct-command parity between the repository-root launcher and the authoritative modular dispatcher.
+Pw-Git v1.2 is complete. Version 1.1 remains the preserved behavioral baseline, while v1.2 adds a narrowly scoped repository-maintenance action and fixes direct-command parity between the repository-root launcher and the authoritative modular dispatcher.
 
-Version 1.2 must not be marked complete until the automated Pw-Git tests pass locally and the new direct-command and Advanced-menu workflows are verified interactively.
+Completion was authorized by the user after successful direct-command execution, passing focused regression suites, confirmation that generated files remained unstaged, and publication of the regenerated repository maps to `main`.
 
 ## Purpose
 
@@ -98,9 +99,9 @@ The exporter is not run automatically during fetch, pull, commit, or push becaus
 
 ## Direct Command Parity
 
-The repository-root `pw-git.ps1` wrapper and `10_Scripts/Git/pw-git.ps1` must expose the same command set.
+The repository-root `pw-git.ps1` wrapper and `10_Scripts/Git/pw-git.ps1` expose the same command set.
 
-Version 1.2 fixes the root wrapper so it includes the previously omitted commands:
+Version 1.2 fixed the root wrapper so it includes the previously omitted commands:
 
 - `fetch`
 - `stage`
@@ -110,7 +111,7 @@ It also registers:
 
 - `refresh-structure`
 
-`10_Scripts/Tests/PwGit.Tests.ps1` now compares both launcher `ValidateSet` declarations so future command drift is reported as a regression.
+`10_Scripts/Tests/PwGit.Tests.ps1` compares both launcher `ValidateSet` declarations so future command drift is reported as a regression.
 
 ## Supported Workflow
 
@@ -155,6 +156,7 @@ Pw-Git follows a review-first approach:
 - leave staged changes intact when commit or push confirmation is cancelled
 - keep repository-structure refresh manual
 - leave refresh-generated files unstaged unless they were already staged before the command
+- replace generated structure files transactionally so a failed export does not leave partial tracked output
 - keep repository operations separate from mod-management workflows
 
 ## Controls
@@ -165,25 +167,30 @@ Pw-Git follows a review-first approach:
 - Ctrl-C: immediate interruption
 - terminal resize: redraw the responsive menu automatically
 
-## v1.2 Implementation Record
+## v1.2 Completion Record
 
-Implemented on `main`:
+Delivered on `main`:
 
 - `58c5e82c383173c340a370c4abd31e2dc981a74f` — add `RefreshStructure.ps1`
 - `78001927df2c753302adfaa31792e04940fbc4ce` — synchronize root launcher commands
 - `4c8ed8e65d5c50274478cbea132edacec6a4afe1` — register `refresh-structure`
 - `338438d49bad8cfd4db241817e93d3fead09e0ef` — add Advanced option 7
 - `b18dfcd436805b58c2822daaa97623d0a97e0ce6` — add parity and refresh regression coverage
+- `b856072dbc8cbbe0148561289da3930837decc7d` — normalize scalar exporter collections
+- `9c34491e9c01ab91ef7b25a7406c71ca88dbc260` — make the exporter strict-mode safe and transactional
+- `fdb8c74247680cd9a0888667184a7372fac399e2` — harden exporter regression coverage
+- `bcbfb2577780c87d3195fcc093b022afcf8a1389` — publish regenerated repository maps
 
-Pending completion checks:
+Verified locally under PowerShell 7.6.4:
 
-- run `10_Scripts/Tests/PwGit.Tests.ps1` locally under PowerShell 7.6.4
-- test `./pw-git.ps1 fetch`
-- test `./pw-git.ps1 stage`
-- test `./pw-git.ps1 review-staged`
-- test `./pw-git.ps1 refresh-structure`
-- test Advanced menu option 7 and return navigation
-- confirm generated files remain under explicit user staging control
+- `refresh-structure` completed successfully
+- changed generated files and their Git status were reported
+- Git staging state remained unchanged
+- `RepositoryStructure.Tests.ps1`: 4 passed, 0 failed
+- `PwGit.Tests.ps1`: 13 passed, 0 failed
+- regenerated repository maps were reviewed, committed, and pushed to `main`
+
+The user explicitly authorized completion after reviewing the verified results. Pw-Git v1.2 is closed as a completed side-tooling release. Future feature work should be scoped as v1.3 or as separately defined maintenance.
 
 ## v1.1 Completion Record
 
@@ -199,4 +206,4 @@ Version 1.1 delivered:
 - PowerShell parser and Pw-Git regression coverage in the repository test suite
 - interactive user verification of the completed main and Advanced menus
 
-Pw-Git v1.1 remains closed as a completed milestone. Version 1.2 is not complete until its pending validation checks are satisfied.
+Pw-Git v1.1 remains closed as a completed milestone.
