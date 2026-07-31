@@ -65,6 +65,35 @@ A mod without a reviewed Nexus ID remains visible in the catalog but cannot be
 checked automatically. Add or correct its identity through **Catalog → Edit
 identity** after verifying the Nexus page.
 
+## Remote metadata cache
+
+Successful Nexus and GitHub metadata responses are cached in memory for ten
+minutes within the current PowerShell module session. The cache is shared by:
+
+- menu option 4 update reports;
+- remote catalog metadata and identity review;
+- current-game adoption identity and file-list checks;
+- profile archive download plans; and
+- configured Nexus and GitHub source checks.
+
+This prevents repeated menu navigation from requesting the same endpoint again.
+Local files are not cached: `01_Archives`, the persistent catalog, profiles, and
+configuration are reread by their normal commands so local changes remain
+visible.
+
+Cache entries are separated by provider, endpoint, and an in-memory credential
+fingerprint. The API key or GitHub token is never written into a cache entry,
+file, log, or tracked configuration. Failed requests are not cached.
+
+The following data is always requested live:
+
+- Nexus direct-download links, because they can expire;
+- the selected mod update report immediately before an approved menu download.
+
+Inside menu option 4, use **R — Refresh** to clear both the Nexus and GitHub
+metadata caches and rerun the reports. Reimporting the module or starting a new
+PowerShell process also starts with an empty cache.
+
 ## Download an update
 
 Manual download works for any normal Nexus account:
@@ -73,8 +102,19 @@ Manual download works for any normal Nexus account:
 Open-PwNexusModPage -ModId 3968 -Launch
 ```
 
-Choose the desired file in the browser and save it into `01_Archives`. The next
-catalog scan will discover it.
+The command displays the resolved archive directory before opening the browser.
+You can also display it directly:
+
+```powershell
+(Get-PwPaths).Archives
+```
+
+Save the completed ZIP or 7z file directly into that `01_Archives` directory.
+The workshop does not monitor browser download completion and does not scan the
+normal Windows Downloads directory. Wait until the browser has finished and no
+partial-download extension remains, then return to menu option 4 and press `R`.
+The update report rescans `01_Archives`; a supported Nexus filename is then
+included as local archive metadata. Use menu option 2 to inspect and import it.
 
 Nexus normally restricts direct API download links to Premium accounts. The
 low-level downloader accepts an explicit Nexus mod ID and file ID:
@@ -100,7 +140,7 @@ and rows without valid Nexus mod and remote file IDs. It supports `-WhatIf`,
 uses high-impact confirmation, and passes the exact selected remote file ID to
 the existing downloader.
 
-Menu option 4 now refreshes and matches the selected report row before a direct
+Menu option 4 refreshes and matches the selected report row before a direct
 download. It displays the selected mod, local and remote versions, variant,
 remote filename, file ID, and status; refuses stale or non-actionable rows; and
 requires deliberate confirmation before calling the guarded report command.
