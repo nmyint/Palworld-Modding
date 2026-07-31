@@ -154,4 +154,45 @@ Describe 'PalworldModding guarded Nexus update downloads' {
             Assert-MockCalled Save-PwNexusModUpdate -Times 0 -Scope It
         }
     }
+
+    It 'returns one preview result for every actionable pipeline row' {
+        InModuleScope PalworldModding {
+            Mock Save-PwNexusModUpdate {
+                throw 'The downloader should not be called.'
+            }
+
+            $updates = @(
+                [PSCustomObject]@{
+                    Name = 'Example One'
+                    NexusModId = 1234
+                    LocalVersion = '1.0'
+                    RemoteVersion = '2.0'
+                    RemoteFileId = 42
+                    RemoteFileName = 'Example-One-2.0.zip'
+                    Status = 'UpdateAvailable'
+                }
+                [PSCustomObject]@{
+                    Name = 'Example Two'
+                    NexusModId = 5678
+                    LocalVersion = '3.0'
+                    RemoteVersion = '4.0'
+                    RemoteFileId = 84
+                    RemoteFileName = 'Example-Two-4.0.7z'
+                    Status = 'UpdateAvailable'
+                }
+            )
+            $results = @(
+                $updates |
+                    Save-PwModUpdateFromReport `
+                        -ApiKey 'fixture-key' `
+                        -Destination $TestDrive `
+                        -WhatIf
+            )
+
+            $results.Count | Should Be 2
+            $results[0].FileId | Should Be 42
+            $results[1].FileId | Should Be 84
+            Assert-MockCalled Save-PwNexusModUpdate -Times 0 -Scope It
+        }
+    }
 }
