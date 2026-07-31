@@ -48,4 +48,58 @@ Describe 'PalworldModding Nexus update menu safety' {
             Assert-MockCalled Save-PwModUpdateFromReport -Times 0 -Scope It
         }
     }
+
+    It 'preserves non-mutating WhatIf for explicit-ID callers outside the menu' {
+        InModuleScope PalworldModding {
+            Mock Get-PSCallStack {
+                @([PSCustomObject]@{ FunctionName = 'Invoke-ExternalCaller' })
+            }
+            Mock Get-PwNexusApiIdentity {
+                [PSCustomObject]@{
+                    is_premium = $true
+                }
+            }
+            Mock Invoke-PwNexusApi {
+                param($Path)
+
+                if ($Path -like '*/download_link.json') {
+                    return @(
+                        [PSCustomObject]@{
+                            URI = 'https://example.invalid/Example-2.0.zip'
+                        }
+                    )
+                }
+
+                if ($Path -like '*/files/42.json') {
+                    return [PSCustomObject]@{
+                        file_name = 'Example-2.0.zip'
+                        version = '2.0'
+                    }
+                }
+
+                [PSCustomObject]@{
+                    name = 'Example Mod'
+                }
+            }
+            Mock Save-PwRemoteFile {
+                throw 'WhatIf must not download a file.'
+            }
+            Mock Get-PwModArchiveInfo {
+                throw 'WhatIf must not inspect a downloaded file.'
+            }
+
+            $result = Save-PwNexusModUpdate `
+                -ModId 1234 `
+                -FileId 42 `
+                -ApiKey 'fixture-key' `
+                -Destination $TestDrive `
+                -WhatIf
+
+            $result.Downloaded | Should Be $false
+            $result.ModId | Should Be 1234
+            $result.FileId | Should Be 42
+            Assert-MockCalled Save-PwRemoteFile -Times 0 -Scope It
+            Assert-MockCalled Get-PwModArchiveInfo -Times 0 -Scope It
+        }
+    }
 }
