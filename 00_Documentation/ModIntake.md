@@ -1,8 +1,8 @@
 # Mod Intake
 
-Sprint 3.5 introduces a preview-first path from downloaded ZIP and 7z archives into the
-workshop's staging area, curated mod library, and generated deployment output. It
-never writes to the live Palworld installation.
+The workshop provides a preview-first path from downloaded ZIP and 7z archives
+into the staging area, curated mod library, and generated deployment output. It
+never writes to the live Palworld installation during intake or publication.
 
 ## Workflow
 
@@ -71,7 +71,7 @@ The command:
 2. copies the original archive into `01_Archives`;
 3. extracts only validated files into the game-shaped staging tree beneath
    `02_Staging\Pal\...`;
-4. verifies every extracted SHA-256 hash; and
+4. verifies every extracted SHA-256 hash;
 5. creates a normalized maximum-compression `package.7z`; and
 6. writes `manifest.json` with metadata, hashes, and deployment mappings.
 
@@ -122,7 +122,7 @@ $report.ReviewItems |
 The report is read-only. It groups components only when a filename or UE4SS
 folder matches a reviewed catalog identity. Unmatched files remain review items
 instead of being silently assigned to an unrelated mod. In the workshop menu,
-open **Catalog and versions**, then choose **Staging groups**.
+open **Catalog**, then choose **Staging groups**.
 
 ## Validate a staged package
 
@@ -172,8 +172,8 @@ preview before making any change to Palworld.
 
 The later numbered directories are not additional unpacking stages:
 
-- `06_Current_Installation` will record the known-good installed mod set, file
-  hashes, and validation status. It will not duplicate all mod files.
+- `06_Current_Installation` records the known-good installed mod set, file
+  hashes, and validation status. It does not duplicate all mod files.
 - `07_Testing` stores test plans, compatibility notes, regression results, and
   logs. It does not deploy files.
 - `13_Backups` stores recovery copies of live files overwritten during deployment.
@@ -217,9 +217,15 @@ It then writes
 `06_Current_Installation\Mods\<Name>\<Version>.json`. Only after that record is
 readable does it remove:
 
-- `02_Staging\<Name>\<Version>`;
+- the legacy per-package staging path `02_Staging\<Name>\<Version>`, when that
+  path exists;
 - `05_Deployment\Packages\<Name>-<Version>.7z`; and
 - matching, unchanged loose files under `05_Deployment`.
+
+The completion command does not currently remove files from the active
+game-shaped staging mirror under `02_Staging\Pal`. That working tree remains
+operator-managed so unrelated or shared staged content is not deleted by a
+legacy per-package cleanup rule.
 
 It never removes the original download, curated library package, installed game
 files, or deployment backups. Cleanup never removes the established
