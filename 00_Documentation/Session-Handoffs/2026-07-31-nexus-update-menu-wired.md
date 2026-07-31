@@ -22,7 +22,10 @@ guarded Nexus update-report workflow without reopening Sprint 4.
   mutation.
 - The menu displays the selected mod, local and remote versions, variant,
   filename, file ID, and status before confirmation.
-- High-impact `ShouldProcess` confirmation is required.
+- High-impact `ShouldProcess` confirmation is required for guarded menu and
+  report-based downloads.
+- The original medium-impact `ShouldProcess` and `-WhatIf` behavior remains on
+  the low-level explicit-ID downloader.
 - The guarded report command performs the download and returns the archive path,
   SHA-256 hash, and option-2 import next step.
 - Manual browser download remains unchanged.
@@ -48,9 +51,11 @@ filesystem mutation. It covers:
 - returning from the updates submenu and honoring global `Q`;
 - preserving the manual browser fallback without invoking the downloader.
 
-`10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1` covers fail-closed behavior
-when the refreshed update report returns no row for the selected mod. It verifies
-that neither the low-level downloader nor the guarded report downloader runs.
+`10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1` covers:
+
+- fail-closed behavior when the refreshed update report returns no row;
+- preservation of non-mutating `-WhatIf` behavior for explicit-ID callers
+  outside the menu.
 
 ## Validation History
 
@@ -62,25 +67,41 @@ with PowerShell 7.6.4 and Pester 3.4.0:
 - complete repository suite: 123 passed, 0 failed, 0 skipped, 0 pending,
   0 inconclusive.
 
-During pull-request diff review, a fail-open edge case was found: when the menu
-refreshed the selected Nexus mod and the report returned no rows, the wrapper
-fell back to the low-level explicit-ID downloader. Commit
-`bcf8f8d1a149a5f09c07741aa2073cf8c8d227ac` removes that fallback and blocks the
-operation. Commit `da773fd6fdd6a23841f111d3c30906a760003fd7` adds focused regression
-coverage.
+## Pull-Request Review Fixes
+
+The pull-request diff review found and corrected two safety regressions:
+
+1. An empty refreshed menu report fell back to the low-level explicit-ID
+   downloader. Commit `bcf8f8d1a149a5f09c07741aa2073cf8c8d227ac` removes the
+   fallback and blocks the operation.
+2. Moving the original downloader into a core function omitted its original
+   `ShouldProcess` block, so an explicit-ID `-WhatIf` call could reach mutation
+   code. Commit `dd2e6481c7f5e14f043203fbf3cbd5e504d5b118` restores the
+   medium-impact preview boundary, and commit
+   `c4148ecae7682c2a9d080966ffa29aef150cfa6e` prevents duplicate confirmation
+   after the guarded high-impact boundary has already been approved.
+
+Focused regression coverage was added and expanded in commits
+`da773fd6fdd6a23841f111d3c30906a760003fd7` and
+`7c447afc370aeb5c1c3645deb4f8812aa9e52790`.
 
 ## Current Validation Required
 
-Because the safety fix changed executable code after the 123-test run, validate
-the new head before merge:
+Because executable code changed after the 123-test run, validate the new head
+before merge:
 
 ```powershell
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1
+Invoke-Pester ./10_Scripts/Tests/NexusUpdateDownloads.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuWiring.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests
 ```
 
+The focused safety suite should contain 2 tests. The complete suite should
+contain 125 tests if no other tests are added before the run.
+
 A real Nexus Premium download remains optional and must use the repository
 owner's own Nexus account. Keep pull request #2 in draft and do not merge to
-`main` until the safety test and complete suite pass on the current head.
+`main` until the focused safety suite and complete suite pass on the current
+head.
