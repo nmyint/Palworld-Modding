@@ -47,7 +47,7 @@ function Show-PwGitMenu {
     try {
         while ($true) {
             Write-PwGitSection -Title 'pw-git'
-            Write-Host "Repository : $($Context.WorkshopRoot)"
+            Write-Host "Repository : $($Context.RepositoryRoot)"
             Write-Host "Branch     : $(Get-PwGitBranch)"
             Write-Host ''
             Write-Host '1. Check repository health'
@@ -72,69 +72,33 @@ function Show-PwGitMenu {
 
             try {
                 switch ($choice.Trim().ToUpperInvariant()) {
-                    '1' {
-                        Invoke-PwGitMenuCommand -Name 'check' -Context $Context
-                    }
-                    '2' {
-                        Invoke-PwGitMenuCommand -Name 'status' -Context $Context
-                    }
-                    '3' {
-                        Invoke-PwGitMenuCommand -Name 'compare' -Context $Context
-                    }
-                    '4' {
-                        Invoke-PwGitMenuCommand -Name 'pull' -Context $Context
-                    }
-                    '5' {
-                        Invoke-PwGitMenuCommand -Name 'pull-selected' -Context $Context
-                    }
-                    '6' {
-                        Invoke-PwGitMenuCommand -Name 'push' -Context $Context
-                    }
+                    '1' { Invoke-PwGitMenuCommand -Name 'check' -Context $Context }
+                    '2' { Invoke-PwGitMenuCommand -Name 'status' -Context $Context }
+                    '3' { Invoke-PwGitMenuCommand -Name 'compare' -Context $Context }
+                    '4' { Invoke-PwGitMenuCommand -Name 'pull' -Context $Context }
+                    '5' { Invoke-PwGitMenuCommand -Name 'pull-selected' -Context $Context }
+                    '6' { Invoke-PwGitMenuCommand -Name 'push' -Context $Context }
                     '7' {
                         $selectedFiles = @(Select-PwGitFiles)
                         if ($selectedFiles.Count -eq 0) {
                             Write-Host '[INFO] No files were selected.'
                         }
                         else {
-                            Invoke-PwGitMenuCommand `
-                                -Name 'push' `
-                                -Context $Context `
-                                -Arguments $selectedFiles
+                            Invoke-PwGitMenuCommand -Name 'push' -Context $Context -Arguments $selectedFiles
                         }
                     }
-                    '8' {
-                        Invoke-PwGitMenuCommand -Name 'commit' -Context $Context
-                    }
+                    '8' { Invoke-PwGitMenuCommand -Name 'commit' -Context $Context }
                     '9' {
                         $countText = Read-Host 'Number of commits to show [15, Q to quit]'
                         if (Test-PwGitQuitInput -Value $countText) {
-                            Stop-PwGitUx
+                            return
                         }
 
-                        $logArguments = @()
-                        if (-not [string]::IsNullOrWhiteSpace($countText)) {
-                            $logArguments = @($countText.Trim())
-                        }
-
-                        Invoke-PwGitMenuCommand `
-                            -Name 'log' `
-                            -Context $Context `
-                            -Arguments $logArguments
+                        Invoke-PwGitMenuCommand -Name 'log' -Context $Context -Arguments @($countText.Trim())
                     }
-                    'H' {
-                        Show-PwGitHelp
-                    }
-                    default {
-                        Write-Warning "Unknown menu choice: '$choice'."
-                    }
+                    'H' { Show-PwGitHelp }
+                    default { Write-Warning "Unknown menu choice: '$choice'." }
                 }
-            }
-            catch [System.OperationCanceledException] {
-                if ($_.Exception.Message -eq 'PWGIT_QUIT') {
-                    return
-                }
-
-                throw
             }
             catch {
                 Write-Host ''
