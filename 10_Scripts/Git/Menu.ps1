@@ -1,8 +1,153 @@
 <#
 .SYNOPSIS
-    Provides the interactive pw-git menu.
+    Provides the responsive interactive Pw-Git menu.
 #>
 Set-StrictMode -Version Latest
+function Get-PwGitTerminalSize {
+    [CmdletBinding()]
+    param()
+    try {
+        $terminalWidth = [Console]::WindowWidth
+        $terminalHeight = [Console]::WindowHeight
+    }
+    catch {
+        $terminalWidth = 80
+        $terminalHeight = 24
+    }
+    if ($terminalWidth -lt 1) {
+        $terminalWidth = 80
+    }
+    if ($terminalHeight -lt 1) {
+        $terminalHeight = 24
+    }
+    [pscustomobject]@{
+        Width = [math]::Max(44, [math]::Min(110, $terminalWidth - 1))
+        Height = [math]::Max(18, [math]::Min(40, $terminalHeight))
+    }
+}
+function New-PwGitMenuLine {
+    [CmdletBinding()]
+    param(
+        [AllowNull()][string]$Text = '',
+        [ValidateSet('Left', 'Center')][string]$Alignment = 'Left',
+        [ConsoleColor]$Color = [ConsoleColor]::Gray,
+        [Parameter(Mandatory)][ValidateRange(44, 110)][int]$Width
+    )
+    $contentWidth = $Width - 4
+    $content = if ($null -eq $Text) { '' } else { $Text }
+    if ($content.Length -gt $contentWidth) {
+        $content = $content.Substring(0, $contentWidth - 3) + '...'
+    }
+    $leftPadding = if ($Alignment -eq 'Center') { [math]::Floor(($contentWidth - $content.Length) / 2) } else { 0 }
+    $rightPadding = $contentWidth - $content.Length - $leftPadding
+    [pscustomobject]@{
+        Text = '| ' + (' ' * $leftPadding) + $content + (' ' * $rightPadding) + ' |'
+        Color = $Color
+    }
+}
+function Get-PwGitMenuLayout {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][object]$Context,
+        [ValidateRange(44, 110)][int]$Width = 80,
+        [ValidateRange(18, 40)][int]$Height = 24
+    )
+    $branch = Get-PwGitBranch
+    $upstream = Get-PwGitUpstream
+    $state = Get-PwGitChangeState
+    $repositoryName = Split-Path -Leaf ([string]$Context.RepositoryRoot)
+    $border = '+' + ('-' * ($Width - 2)) + '+'
+    $divider = '-' * ($Width - 4)
+    $content = @(
+        New-PwGitMenuLine -Text 'PW-GIT' -Alignment Center -Color Cyan -Width $Width
+        New-PwGitMenuLine -Text 'Safe Git Operations Console' -Alignment Center -Color DarkCyan -Width $Width
+        New-PwGitMenuLine -Text $divider -Color DarkGray -Width $Width
+        New-PwGitMenuLine -Text "Repository : $repositoryName" -Width $Width
+        New-PwGitMenuLine -Text "Branch     : $branch" -Width $Width
+        New-PwGitMenuLine -Text "Upstream   : $(if ($upstream) { $upstream } else { '<not configured>' })" -Width $Width
+        New-PwGitMenuLine -Text "Changes    : staged $($state.Staged) | unstaged $($state.Unstaged) | untracked $($state.Untracked) | conflicts $($state.Conflicts)" -Width $Width
+        New-PwGitMenuLine -Text $divider -Color DarkGray -Width $Width
+        New-PwGitMenuLine -Text '  [1] Check repository health' -Width $Width
+        New-PwGitMenuLine -Text '  [2] Show repository status' -Width $Width
+        New-PwGitMenuLine -Text '  [3] Compare local and repository' -Width $Width
+        New-PwGitMenuLine -Text '  [4] Pull from repository' -Width $Width
+        New-PwGitMenuLine -Text '  [5] Pull selected files' -Width $Width
+        New-PwGitMenuLine -Text '  [6] Push all local changes' -Width $Width
+        New-PwGitMenuLine -Text '  [7] Push selected files' -Width $Width
+        New-PwGitMenuLine -Text '  [8] Create local commit from staged files' -Width $Width
+        New-PwGitMenuLine -Text '  [9] Show repository history' -Width $Width
+        New-PwGitMenuLine -Text '  [H] Show command help' -Width $Width
+        New-PwGitMenuLine -Text '  [Q] Quit' -Color Yellow -Width $Width
+        New-PwGitMenuLine -Width $Width
+        New-PwGitMenuLine -Text 'Press 1-9, H, or Q.' -Color DarkGray -Width $Width
+    )
+    if ($Height -lt 24) {
+        $content = @(
+            New-PwGitMenuLine -Text 'PW-GIT' -Alignment Center -Color Cyan -Width $Width
+            New-PwGitMenuLine -Text "Repo: $repositoryName | Branch: $branch" -Width $Width
+            New-PwGitMenuLine -Text "S:$($state.Staged) U:$($state.Unstaged) ?: $($state.Untracked) X:$($state.Conflicts) | $(if ($upstream) { $upstream } else { 'no upstream' })" -Width $Width
+            New-PwGitMenuLine -Text $divider -Color DarkGray -Width $Width
+            New-PwGitMenuLine -Text ' [1] Check   [2] Status   [3] Compare' -Width $Width
+            New-PwGitMenuLine -Text ' [4] Pull    [5] Pull selected' -Width $Width
+            New-PwGitMenuLine -Text ' [6] Push    [7] Push selected' -Width $Width
+            New-PwGitMenuLine -Text ' [8] Commit  [9] History' -Width $Width
+            New-PwGitMenuLine -Text ' [H] Help    [Q] Quit' -Color Yellow -Width $Width
+            New-PwGitMenuLine -Text 'Press 1-9, H, or Q.' -Color DarkGray -Width $Width
+        )
+    }
+    $targetRenderedRows = if ($Height -le 18) { $Height } else { $Height - 2 }
+    $extraRows = [math]::Max(0, $targetRenderedRows - ($content.Count + 2))
+    $topPadding = [math]::Floor($extraRows / 2)
+    $bottomPadding = $extraRows - $topPadding
+    $layout = [System.Collections.Generic.List[object]]::new()
+    $layout.Add([pscustomobject]@{ Text = $border; Color = [ConsoleColor]::Cyan })
+    for ($index = 0; $index -lt $topPadding; $index++) {
+        $layout.Add((New-PwGitMenuLine -Width $Width))
+    }
+    foreach ($line in $content) {
+        $layout.Add($line)
+    }
+    for ($index = 0; $index -lt $bottomPadding; $index++) {
+        $layout.Add((New-PwGitMenuLine -Width $Width))
+    }
+    $layout.Add([pscustomobject]@{ Text = $border; Color = [ConsoleColor]::Cyan })
+    @($layout)
+}
+function Write-PwGitMenu {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][object]$Context,
+        [Parameter(Mandatory)][object]$Terminal
+    )
+    $layout = Get-PwGitMenuLayout -Context $Context -Width $Terminal.Width -Height $Terminal.Height
+    foreach ($line in $layout) {
+        Write-Host $line.Text -ForegroundColor $line.Color
+    }
+}
+function Read-PwGitMenuSelection {
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][object]$RenderedTerminal)
+    try {
+        $null = [Console]::KeyAvailable
+    }
+    catch {
+        return Read-Host 'Select'
+    }
+    while ($true) {
+        $currentTerminal = Get-PwGitTerminalSize
+        if ($currentTerminal.Width -ne $RenderedTerminal.Width -or $currentTerminal.Height -ne $RenderedTerminal.Height) {
+            return '__RESIZE__'
+        }
+        if ([Console]::KeyAvailable) {
+            $key = [Console]::ReadKey($true)
+            $selection = $key.KeyChar.ToString().ToUpperInvariant()
+            if ($selection -in @('1', '2', '3', '4', '5', '6', '7', '8', '9', 'H', 'Q')) {
+                return $selection
+            }
+        }
+        Start-Sleep -Milliseconds 100
+    }
+}
 function Invoke-PwGitMenuCommand {
     [CmdletBinding()]
     param(
@@ -12,11 +157,11 @@ function Invoke-PwGitMenuCommand {
     )
     $definition = Get-PwGitCommandDefinition -Name $Name
     if ($null -eq $definition) {
-        throw "Unsupported pw-git menu command: $Name"
+        throw "Unsupported Pw-Git menu command: $Name"
     }
     $commandPath = Join-Path $script:PwGitCommandsRoot $definition.File
     if (-not (Test-Path -LiteralPath $commandPath -PathType Leaf)) {
-        throw "The pw-git '$Name' command has not been implemented. Expected: $commandPath"
+        throw "The Pw-Git '$Name' command has not been implemented. Expected: $commandPath"
     }
     . $commandPath
     $commandFunction = Get-Command $definition.Function -CommandType Function -ErrorAction SilentlyContinue
@@ -30,31 +175,19 @@ function Show-PwGitMenu {
     param([Parameter(Mandatory)][object]$Context)
     try {
         while ($true) {
-            Write-PwGitSection -Title 'pw-git'
-            Write-Host "Repository : $($Context.RepositoryRoot)"
-            Write-Host "Branch     : $(Get-PwGitBranch)"
-            Write-Host ''
-            Write-Host '1. Check repository health'
-            Write-Host '2. Show repository status'
-            Write-Host '3. Compare local and repository'
-            Write-Host '4. Pull from repository'
-            Write-Host '5. Pull selected files'
-            Write-Host '6. Push all local changes'
-            Write-Host '7. Push selected files'
-            Write-Host '8. Create local commit from staged files'
-            Write-Host '9. Show repository history'
-            Write-Host 'H. Show command help'
-            Write-Host 'Q. Quit'
-            Write-Host ''
-            $choice = Read-Host 'Choose an action'
+            Clear-Host
+            $renderedTerminal = Get-PwGitTerminalSize
+            Write-PwGitMenu -Context $Context -Terminal $renderedTerminal
+            $choice = Read-PwGitMenuSelection -RenderedTerminal $renderedTerminal
+            if ($choice -eq '__RESIZE__') {
+                continue
+            }
             if (Test-PwGitQuitInput -Value $choice) {
                 return
             }
-            if ([string]::IsNullOrWhiteSpace($choice)) {
-                continue
-            }
+            Clear-Host
             try {
-                switch ($choice.Trim().ToUpperInvariant()) {
+                switch ($choice) {
                     '1' { Invoke-PwGitMenuCommand -Name 'check' -Context $Context }
                     '2' { Invoke-PwGitMenuCommand -Name 'status' -Context $Context }
                     '3' { Invoke-PwGitMenuCommand -Name 'compare' -Context $Context }
@@ -84,18 +217,16 @@ function Show-PwGitMenu {
                         }
                     }
                     'H' { Show-PwGitHelp }
-                    default { Write-Warning "Unknown menu choice: '$choice'." }
                 }
             }
             catch [System.OperationCanceledException] {
                 throw
             }
             catch {
-                Write-Host ''
-                Write-Warning $_.Exception.Message
+                Write-Host $_.Exception.Message -ForegroundColor Red
             }
             Write-Host ''
-            $pauseInput = Read-Host 'Press Enter to return to the menu, or Q to quit'
+            $pauseInput = Read-Host 'Press Enter to return to Pw-Git, or Q to quit'
             if (Test-PwGitQuitInput -Value $pauseInput) {
                 return
             }
