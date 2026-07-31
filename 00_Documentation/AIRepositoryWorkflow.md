@@ -17,6 +17,47 @@ Always begin with:
 
 These files define the repository map before deeper inspection.
 
+## Repository Truth and Verification Rules
+
+The repository state is authoritative.
+
+Before answering repository-specific questions, making recommendations, or modifying files:
+
+1. Inspect the current repository state.
+2. Verify that files, folders, and implementations actually exist.
+3. Read the relevant documentation for the affected area.
+4. Use repository contents instead of assumptions or conversation memory.
+5. If uncertainty exists, inspect first, confirm second, answer third.
+
+AI assistants must not:
+
+- claim files are missing without verification.
+- claim features are absent without checking the implementation.
+- propose replacements for systems that already exist.
+- rely solely on previous conversation history when repository state can be inspected.
+
+If documentation and assumptions conflict, repository documentation and current repository contents take priority.
+
+## Authoritative Repository Sources
+
+Primary source for repository orientation:
+
+`README.md`
+
+URL:
+
+https://github.com/nmyint/Palworld-Modding/blob/main/README.md
+
+The README provides the initial navigation point for AI assistants and developers.
+
+Supporting authoritative sources:
+
+1. `00_Documentation/RepositoryStructure.txt`
+2. `00_Documentation/RepositoryInventory.json`
+3. `00_Documentation/AIRepositoryWorkflow.md`
+4. Relevant operational documentation
+5. `00_Documentation/Scrapbook.md` for historical context
+
 ## File Reading Strategy
 
 Large files must be processed incrementally.
@@ -31,7 +72,7 @@ Recommended approach:
 6. Update the file using the complete validated content.
 7. Commit the change with a descriptive message.
 
-### Large File Modification Workflow
+## Large File Modification Workflow
 
 When modifying large repository files:
 
@@ -65,16 +106,6 @@ Priority order:
 5. Scrapbook.md
 
 Generated files describe the current repository state. They should not be manually edited unless specifically required.
-
-Avoid loading:
-
-- large logs
-- archives
-- generated files
-- deployment payloads
-- binary content
-
-unless specifically required.
 
 ## Priority Order
 
