@@ -5,6 +5,7 @@ function Invoke-PwGitCheck {
     param(
         [Parameter(Mandatory)]
         [object]$Context,
+
         [string[]]$Arguments
     )
 
@@ -14,19 +15,70 @@ function Invoke-PwGitCheck {
     $branch = Get-PwGitBranch
     $upstream = Get-PwGitUpstream
     $state = Get-PwGitChangeState
+    $remoteConfigured = Test-PwGitRemote
+    $hasUpstream = -not [string]::IsNullOrWhiteSpace($upstream)
+    $hasConflicts = Test-PwGitConflicts
+
+    $requiredFunctions = @(
+        'Invoke-PwGitNative'
+        'Get-PwGitChangeState'
+        'Get-PwGitDivergence'
+        'Assert-PwGitWritableState'
+    )
+
+    $missingFunctions = @(
+        foreach ($functionName in $requiredFunctions) {
+            if ($null -eq (Get-Command $functionName -CommandType Function -ErrorAction SilentlyContinue)) {
+                $functionName
+            }
+        }
+    )
 
     $checks = @(
-        [pscustomobject]@{ Name='Workshop configuration'; Passed=$null -ne $Context.Config; Details=$Context.ConfigPath }
-        [pscustomobject]@{ Name='Repository root'; Passed=Test-Path -LiteralPath (Join-Path $Context.WorkshopRoot '.git'); Details=$Context.WorkshopRoot }
-        [pscustomobject]@{ Name='Git available'; Passed=$gitVersion.ExitCode -eq 0; Details=($gitVersion.Output -join ' ').Trim() }
-        [pscustomobject]@{ Name='Current branch'; Passed=-not (Test-PwGitDetachedHead); Details=$(if ($branch) { $branch } else { 'Detached HEAD' }) }
-        [pscustomobject]@{ Name='Origin remote'; Passed=Test-PwGitRemote; Details=$(if (Test-PwGitRemote) { 'Configured' } else { 'Missing' }) }
-        [pscustomobject]@{ Name='Upstream branch'; Passed=Test-PwGitUpstream; Details=$(if ($upstream) { $upstream } else { 'Missing' }) }
-        [pscustomobject]@{ Name='Merge conflicts'; Passed=-not (Test-PwGitConflicts); Details=$(if (Test-PwGitConflicts) { 'Present' } else { 'None' }) }
+        [pscustomobject]@{
+            Name = 'pw-git runtime'
+            Passed = $Context.Application -eq 'pw-git'
+            Details = "PowerShell $($Context.CurrentPowerShellVersion)"
+        }
+        [pscustomobject]@{
+            Name = 'Git dependencies'
+            Passed = $missingFunctions.Count -eq 0
+            Details = $(if ($missingFunctions.Count -eq 0) { 'Loaded' } else { "Missing: $($missingFunctions -join ', ')" })
+        }
+        [pscustomobject]@{
+            Name = 'Repository root'
+            Passed = Test-Path -LiteralPath (Join-Path $Context.RepositoryRoot '.git')
+            Details = $Context.RepositoryRoot
+        }
+        [pscustomobject]@{
+            Name = 'Git available'
+            Passed = $gitVersion.ExitCode -eq 0
+            Details = ($gitVersion.Output -join ' ').Trim()
+        }
+        [pscustomobject]@{
+            Name = 'Current branch'
+            Passed = -not (Test-PwGitDetachedHead)
+            Details = $(if ($branch) { $branch } else { 'Detached HEAD' })
+        }
+        [pscustomobject]@{
+            Name = 'Origin remote'
+            Passed = $remoteConfigured
+            Details = $(if ($remoteConfigured) { 'Configured' } else { 'Missing' })
+        }
+        [pscustomobject]@{
+            Name = 'Upstream branch'
+            Passed = $hasUpstream
+            Details = $(if ($hasUpstream) { $upstream } else { 'Not configured' })
+        }
+        [pscustomobject]@{
+            Name = 'Merge conflicts'
+            Passed = -not $hasConflicts
+            Details = $(if ($hasConflicts) { 'Present' } else { 'None' })
+        }
     )
 
     foreach ($check in $checks) {
-        $label = if ($check.Passed) { '[ OK ]' } else { '[FAIL]' }
+        $label = if ($check.Passed) { '[ OK ]' } else { '[WARN]' }
         Write-Host ('{0} {1}: {2}' -f $label, $check.Name, $check.Details)
     }
 
@@ -40,7 +92,19 @@ function Invoke-PwGitCheck {
         Write-Host '[WARN] Mixed staged and unstaged changes detected.'
     }
 
-    if (Test-PwGitDiverged) {
-        Write-Host '[WARN] Branches have diverged. Rebase recommended.'
+    if ($hasUpstream) {
+        $divergence = Get-PwGitDivergence
+        Write-Host ''
+        Write-Host 'Branch relationship:'
+        Write-Host "  Ahead : $($divergence.Ahead)"
+        Write-Host "  Behind: $($divergence.Behind)"
+
+        if ($divergence.Ahead -gt 0 -and $divergence.Behind -gt 0) {
+            Write-Host '[WARN] Local and upstream branches have diverged. Rebase or reconcile before pushing.'
+        }
+    }
+    else {
+        Write-Host ''
+        Write-Host '[INFO] Branch relationship is unavailable until an upstream branch is configured.'
     }
 }
