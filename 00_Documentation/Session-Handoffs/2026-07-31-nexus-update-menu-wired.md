@@ -111,8 +111,8 @@ PowerShell 7.6.4 with Pester 3.4.0 on 2026-07-31:
   0 inconclusive.
 
 The validation covered the final production code and isolated safety tests at
-commit `9baa746bab6054e1445a1de8fc9aefa1ba398af7`. This handoff update is
-documentation-only and does not alter the validated implementation.
+commit `9baa746bab6054e1445a1de8fc9aefa1ba398af7`. The commits after that point are
+documentation-only and do not alter the validated implementation.
 
 A real Nexus Premium download remains optional and must use the repository
 owner's own Nexus account. Pull request #2 may now proceed to final review, but
