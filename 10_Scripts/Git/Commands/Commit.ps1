@@ -16,10 +16,10 @@ function Invoke-PwGitCommit {
         Write-Host ''
         Write-Host 'Stage files before creating a commit.'
         Write-Host ''
-        Write-Host 'Options:'
-        Write-Host '  1. Return to menu and use Push Selected Files'
-        Write-Host '  2. Stage files manually and run Create Local Commit again'
-        Write-Host '  Q. Quit pw-git'
+        Write-Host 'Suggested actions:'
+        Write-Host '  - Use Push Selected Files to stage and publish changes'
+        Write-Host '  - Stage files manually with git add, then retry'
+        Write-Host '  - Return to menu'
         return
     }
 
@@ -29,10 +29,6 @@ function Invoke-PwGitCommit {
     }
     else {
         Read-PwGitCommitMessage
-    }
-
-    if ([string]::IsNullOrWhiteSpace($message)) {
-        throw 'A commit message is required.'
     }
 
     Write-Host "Branch         : $(Get-PwGitBranch)"
