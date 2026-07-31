@@ -18,10 +18,13 @@ param(
         'menu',
         'check',
         'compare',
+        'fetch',
         'pull',
         'pull-selected',
         'push',
         'status',
+        'stage',
+        'review-staged',
         'commit',
         'log',
         'help'
@@ -50,29 +53,32 @@ Usage:
   pw-git <command> [arguments]
 
 Commands:
-  menu           Open the interactive Git menu
-  check          Verify Git, repository, branch, remote, and runtime health
-  compare        Compare the local branch with its upstream branch
-  pull           Safely pull repository changes into the local working copy
-  pull-selected  Update selected working-tree files from the upstream branch
-  push           Review, commit, and push local changes
-  status         Show concise local repository status
-  commit         Create a reviewed local commit
-  log            Show recent repository history
-  help           Show this help
+  menu             Open the interactive Git menu
+  check            Verify Git, repository, branch, remote, and runtime health
+  compare          Compare the local branch with its upstream branch
+  fetch            Fetch remote repository updates without modifying files
+  pull             Safely pull repository changes into the local working copy
+  pull-selected    Update selected working-tree files from the upstream branch
+  push             Review, commit, and push local changes
+  status           Show concise local repository status
+  stage            Stage selected local files
+  review-staged    Review staged changes before committing
+  commit           Create a reviewed local commit
+  log              Show recent repository history
+  help             Show this help
 
 Interactive controls:
-  Enter or B     Cancel the current action and return to the menu
-  Q              Quit Pw-Git
-  Ctrl-C         Interrupt immediately
+  Enter or B       Cancel the current action and return to the menu
+  Q                Quit Pw-Git
+  Ctrl-C           Interrupt immediately
 
 Examples:
   pw-git
   pw-git check
+  pw-git fetch
   pw-git compare
   pw-git pull
-  pw-git pull-selected
-  pw-git push
+  pw-git stage
 '@ | Write-Host
 }
 function Get-PwGitCommandDefinition {
@@ -81,10 +87,13 @@ function Get-PwGitCommandDefinition {
     $definitions = @{
         check = [pscustomobject]@{ File = 'Check.ps1'; Function = 'Invoke-PwGitCheck' }
         compare = [pscustomobject]@{ File = 'Compare.ps1'; Function = 'Invoke-PwGitCompare' }
+        fetch = [pscustomobject]@{ File = 'Fetch.ps1'; Function = 'Invoke-PwGitFetch' }
         pull = [pscustomobject]@{ File = 'Pull.ps1'; Function = 'Invoke-PwGitPull' }
         'pull-selected' = [pscustomobject]@{ File = 'PullSelected.ps1'; Function = 'Invoke-PwGitPullSelected' }
         push = [pscustomobject]@{ File = 'Push.ps1'; Function = 'Invoke-PwGitPush' }
         status = [pscustomobject]@{ File = 'Status.ps1'; Function = 'Invoke-PwGitStatus' }
+        stage = [pscustomobject]@{ File = 'Stage.ps1'; Function = 'Invoke-PwGitStage' }
+        'review-staged' = [pscustomobject]@{ File = 'ReviewStaged.ps1'; Function = 'Invoke-PwGitReviewStaged' }
         commit = [pscustomobject]@{ File = 'Commit.ps1'; Function = 'Invoke-PwGitCommit' }
         log = [pscustomobject]@{ File = 'Log.ps1'; Function = 'Invoke-PwGitLog' }
     }
