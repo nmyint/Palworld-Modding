@@ -217,6 +217,12 @@ shared ownership and locally changed output remain visible. Plans report backup
 requirements and retain the package manifests needed for a later rollback-aware
 workflow.
 
+Both plan types are preview-only. A returned `CanApply` value is a
+forward-compatible readiness flag indicating whether the plan's current checks
+found a blocker. It does not mean an apply command exists, does not perform an
+operation, and does not guarantee that a future apply workflow will accept an
+old plan without revalidation.
+
 These commands do not copy, overwrite, or remove files. Transactional plan
 application, stale-plan protection, and automatic rollback require a separately
 approved future scope.
