@@ -105,6 +105,9 @@ function Get-PwNexusUpdateDownloadDecision {
     Optional Nexus API key. When omitted, NEXUSMODS_API_KEY is used.
 .PARAMETER Destination
     Archive destination. Defaults to the configured 01_Archives directory.
+.OUTPUTS
+    A PSCustomObject containing the selected Nexus identity, download result,
+    archive path, SHA-256 hash, and the recommended next workflow step.
 #>
 function Save-PwModUpdateFromReport {
 
