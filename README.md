@@ -49,9 +49,9 @@ Workshop automation is developed and tested for **PowerShell 7.6.4** (`pwsh`). W
 
 ## Pw-Git
 
-**Pw-Git v1.1 is complete.** It is the repository-safe Git workflow interface used by the workshop and remains separate from PwWorkshop.
+**Pw-Git v1.1 is complete; v1.2 is in progress.** Pw-Git is the repository-safe Git workflow interface used by the workshop and remains separate from PwWorkshop.
 
-The responsive main menu provides repository health, status, fetch, compare, pull, selected-file pull, staging, commit, and committed-change push workflows. `H` opens the Advanced menu for unstage, discard, stash, stash restore, repository history, and branch information.
+The responsive main menu provides repository health, status, fetch, compare, pull, selected-file pull, staging, commit, and committed-change push workflows. `H` opens the Advanced menu for unstage, discard, stash, stash restore, repository history, branch information, and the v1.2 manual repository-structure refresh action.
 
 Safety and usability features include:
 
@@ -60,6 +60,9 @@ Safety and usability features include:
 - file selection before supported destructive operations
 - explicit confirmation before commits and destructive changes
 - direct staged-change review through `review-staged`
+- synchronized direct-command validation in both launchers
+- manual repository-map refresh through `refresh-structure`
+- repository-map refresh leaves Git staging unchanged
 - `Enter` or `B` returns to the previous menu where supported
 - `Q` exits Pw-Git
 - Ctrl-C safely interrupts the current operation
@@ -70,7 +73,13 @@ Run Pw-Git from the repository root:
 pwsh -NoProfile -File ./pw-git.ps1
 ```
 
-See [Pw-Git.md](00_Documentation/Pw-Git.md) for the complete v1.1 workflow, menu map, direct commands, and safety model.
+Refresh the generated repository map manually:
+
+```powershell
+pwsh -NoProfile -File ./pw-git.ps1 refresh-structure
+```
+
+See [Pw-Git.md](00_Documentation/Pw-Git.md) for the current v1.2 scope, menu map, direct commands, safety model, and pending completion checks.
 
 ## Goals
 
