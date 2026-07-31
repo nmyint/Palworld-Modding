@@ -25,7 +25,7 @@ should describe what was actually delivered.
 | 2 | PowerShell module and integrated development tooling | Complete |
 | 3 | Safe workshop automation | Complete |
 | 4 | Mod intake, library management, and validation | In progress |
-| 5 | Mod development, testing, and diagnostics | Planned |
+| 5 | Development, testing, workshop experience, and automation | In progress |
 | 6 | Packaging, releases, restoration, and maintenance | Planned |
 
 ## Sprint 0 - Environment setup
@@ -219,9 +219,11 @@ Status: In progress
 - Preview-only manifest and SHA-256 change plans are now available; applying
   changes remains intentionally disabled until backup and rollback are complete.
 
-## Sprint 5 - Development and testing
+## Sprint 5 - Development, testing, workshop experience, and automation
 
-Support active mod projects and repeatable compatibility investigations.
+Support active mod projects, repeatable compatibility investigations, and a
+guided PwWorkshop operator experience while preserving the stable command and
+safety foundations delivered in earlier sprints.
 
 Planned outcomes:
 
@@ -232,6 +234,106 @@ Planned outcomes:
 - Game-launch helpers with selected profiles.
 - Compatibility patch workflow.
 - Automated validation for project and deployment artifacts.
+- Repository-aware workshop navigation and health reporting.
+- Structured runtime/session and dashboard models.
+- Guided menu integration over existing commands.
+
+### Sprint 5.1 - Workshop experience and automation
+
+Status: In progress
+
+Build the guided workshop experience incrementally over the existing PowerShell
+commands without changing their established behavior or safety guarantees.
+
+#### Sprint 5.1.1 - Repository awareness and structure documentation
+
+Status: First priority
+
+Scope:
+
+- Establish repository structure awareness before further session/dashboard UX
+  work.
+- Add a concise root-level repository map for fast navigation while keeping
+  detailed architecture guidance under `00_Documentation`.
+- Add PowerShell tooling to generate and validate folder structure
+  documentation.
+- Integrate repository and documentation structure checks into workshop
+  diagnostics.
+- Avoid duplicate sources of truth by generating or linking structure
+  information from one canonical definition.
+
+Completion criteria:
+
+- The repository layout can be discovered automatically.
+- Structure documentation matches the verified repository state.
+- Missing required folders and documentation are reported clearly.
+- Existing commands and menu behavior remain unchanged.
+
+#### Sprint 5.1.2 - Workshop runtime and session model
+
+Status: In progress
+
+Scope:
+
+- Establish the workshop runtime/session model.
+- Preserve explicit, structured state without depending on hidden global state.
+- Keep initialization read-only unless an action is explicitly requested.
+
+Completion criteria:
+
+- Existing workshop commands continue to operate.
+- Session models return structured objects without unintended pipeline output.
+- Tests cover initialization and backward compatibility.
+
+#### Sprint 5.1.3 - Dashboard data model
+
+Status: Planned
+
+Scope:
+
+- Add a structured dashboard model over existing commands.
+- Present repository, profile, catalog, deployment, and diagnostic state without
+  duplicating command logic.
+- Keep dashboard data consumable by both the terminal UI and automation.
+
+Completion criteria:
+
+- Dashboard output is structured, deterministic, and testable.
+- Data collection does not modify workshop or game state.
+- Existing command behavior remains authoritative.
+
+#### Sprint 5.1.4 - Menu UX integration
+
+Status: Planned
+
+Scope:
+
+- Integrate session and dashboard models into the current workshop entry point.
+- Preserve the one-command `PwWorkshop.ps1` workflow.
+- Maintain adaptive terminal behavior and explicit approval safeguards.
+
+Completion criteria:
+
+- The menu presents current workshop state clearly.
+- Existing menu actions remain compatible.
+- Narrow, wide, short, and tall terminal layouts remain usable.
+
+#### Sprint 5.1.5 - Diagnostics and health reporting
+
+Status: Planned
+
+Scope:
+
+- Add repository, documentation, configuration, module, and test health signals.
+- Provide actionable guidance for missing, stale, or inconsistent workshop
+  components.
+- Distinguish tool limitations from actual project failures.
+
+Completion criteria:
+
+- Health reporting identifies missing required paths and documents.
+- Reports distinguish warnings from blocking errors.
+- Full workshop test suite passes under Pester 3.4.0.
 
 ## Sprint 6 - Packaging and maintenance
 
@@ -291,21 +393,3 @@ Every sprint or sub-sprint should:
 5. Update user documentation and command help.
 6. Leave the repository in a working, reviewable state.
 7. Be reviewed before its final commit and push.
-
-## Sprint 5 — Workshop Experience and Automation
-
-### 5.1 — Guided Workshop Experience
-
-Status: In Progress
-
-Scope:
-- Establish the workshop runtime/session model.
-- Add a structured dashboard model over existing commands.
-- Integrate the model into the current workshop entry point without changing existing command behavior.
-- Preserve Pester 3.4.0 compatibility and the existing module conventions.
-
-Completion criteria:
-- Existing workshop commands continue to operate.
-- Session and dashboard models return structured objects without unintended pipeline output.
-- Tests cover initialization and backward compatibility.
-- Full workshop test suite passes.
