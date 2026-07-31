@@ -1,15 +1,17 @@
 <#
 .SYNOPSIS
-    Context-aware command entry point for pw-git.
+    Git-only command entry point for pw-git.
 
 .DESCRIPTION
-    Initializes the Palworld Modding Workshop, resolves the repository root,
-    and opens the interactive menu or dispatches a direct command. Git behavior
-    belongs in Commands\*.ps1, menu behavior belongs in Menu.ps1, and shared
-    behavior belongs in ..\Shared\GitHelpers.ps1.
+    Initializes the dedicated pw-git runtime, resolves the repository root, and
+    opens the interactive Git menu or dispatches a direct Git command.
+
+    pw-git is intentionally separate from PwWorkshop. It does not load the
+    Palworld Modding Workshop module, mod-management UX, profiles, deployment,
+    or other workshop commands.
 
 .NOTES
-    Supported runtime: PowerShell 7.6.4 (pwsh).
+    Supported runtime: PowerShell 7.6.4 or later in the 7.x line (pwsh).
     Windows PowerShell 5.1 is not supported.
 #>
 
@@ -38,21 +40,18 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $gitScriptRoot = $PSScriptRoot
-$bootstrapPath = Join-Path $gitScriptRoot '..\Core\Bootstrap.ps1'
-$sharedHelpersPath = Join-Path $gitScriptRoot '..\Shared\GitHelpers.ps1'
+$bootstrapPath = Join-Path $gitScriptRoot 'Bootstrap.ps1'
 $menuPath = Join-Path $gitScriptRoot 'Menu.ps1'
-$commandsRoot = Join-Path $gitScriptRoot 'Commands'
-$script:PwGitCommandsRoot = $commandsRoot
 
 function Show-PwGitHelp {
     [CmdletBinding()]
     param()
 
     @'
-pw-git - Palworld Modding Workshop Git tooling
+pw-git - Git tooling for the Palworld-Modding repository
 
 Runtime:
-  PowerShell 7.6.4 (pwsh)
+  PowerShell 7.6.4 or later in the 7.x line (pwsh)
   Windows PowerShell 5.1 is not supported.
 
 Usage:
@@ -60,13 +59,13 @@ Usage:
   pw-git <command> [arguments]
 
 Commands:
-  menu           Open the interactive menu
-  check          Verify Git, repository, branch, remote, and workshop health
-  compare        Compare the local working copy with its upstream branch
+  menu           Open the interactive Git menu
+  check          Verify Git, repository, branch, remote, and runtime health
+  compare        Compare the local branch with its upstream branch
   pull           Safely pull repository changes into the local working copy
   pull-selected  Update selected working-tree files from the upstream branch
   push           Review, commit, and push local changes
-  status         Show concise local and repository status
+  status         Show concise local repository status
   commit         Create a reviewed local commit
   log            Show recent repository history
   help           Show this help
@@ -83,7 +82,10 @@ Examples:
 
 function Get-PwGitCommandDefinition {
     [CmdletBinding()]
-    param([Parameter(Mandatory)][string]$Name)
+    param(
+        [Parameter(Mandatory)]
+        [string]$Name
+    )
 
     $definitions = @{
         check = [pscustomobject]@{
@@ -129,25 +131,18 @@ if ($Command -eq 'help') {
 }
 
 if (-not (Test-Path -LiteralPath $bootstrapPath -PathType Leaf)) {
-    throw "Workshop bootstrap was not found: $bootstrapPath"
-}
-
-if (-not (Test-Path -LiteralPath $sharedHelpersPath -PathType Leaf)) {
-    throw "pw-git shared helpers were not found: $sharedHelpersPath"
+    throw "pw-git bootstrap was not found: $bootstrapPath"
 }
 
 . $bootstrapPath
-. $sharedHelpersPath
 
-$context = Initialize-PwWorkshop
-$repositoryRoot = [string]$context.WorkshopRoot
+$context = Initialize-PwGit
+$repositoryRoot = [string]$context.RepositoryRoot
+$commandsRoot = [string]$context.CommandsRoot
+$script:PwGitCommandsRoot = $commandsRoot
 
 if ([string]::IsNullOrWhiteSpace($repositoryRoot)) {
-    throw 'Initialize-PwWorkshop did not return a workshop root.'
-}
-
-if (-not (Test-Path -LiteralPath (Join-Path $repositoryRoot '.git'))) {
-    throw "Workshop root is not a Git repository: $repositoryRoot"
+    throw 'Initialize-PwGit did not return a repository root.'
 }
 
 Push-Location $repositoryRoot
@@ -169,7 +164,7 @@ try {
 
     $commandPath = Join-Path $commandsRoot $definition.File
     if (-not (Test-Path -LiteralPath $commandPath -PathType Leaf)) {
-        throw "The pw-git '$Command' command has not been implemented yet. Expected command file: $commandPath"
+        throw "The pw-git '$Command' command has not been implemented. Expected: $commandPath"
     }
 
     . $commandPath
