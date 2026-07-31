@@ -39,6 +39,17 @@ unless the task specifically requires them.
 
 ===== READ EVERY SINGLE DOCUMENT IN 00_Documentation/* =====
 
+## Session Handoffs
+
+Historical AI/development continuation records are stored in:
+
+`00_Documentation/Session-Handoffs/`
+
+Use the latest relevant handoff when continuing previous work.
+
+- `Scrapbook.md` contains project history and research context.
+- `Session-Handoffs/` contains continuation state from previous AI sessions.
+
 # Palworld Modding Workshop
 
 This repository is the authoritative development workspace for a personal Palworld installation. It keeps development, testing, deployment, and archival work separate from the live game installation.
