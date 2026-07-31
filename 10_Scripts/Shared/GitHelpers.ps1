@@ -260,11 +260,11 @@ function ConvertFrom-PwGitSelection {
 function Select-PwGitItems {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)][object[]]$Items,
+        [Parameter(Mandatory)][AllowEmptyCollection()][object[]]$Items,
         [string]$StatusProperty = 'Status',
         [string]$PathProperty = 'Path'
     )
-    if ($Items.Count -eq 0) {
+    if (@($Items).Count -eq 0) {
         return @()
     }
     Write-Host 'Select files by number. Use commas or ranges (example: 1,3-5).'
@@ -288,6 +288,9 @@ function Select-PwGitFiles {
     [CmdletBinding()]
     param()
     [object[]]$items = @(Get-PwGitSelectableFiles)
+    if ($items.Count -eq 0) {
+        return @()
+    }
     [string[]]@(
         Select-PwGitItems -Items $items |
             ForEach-Object { [string]$_.Path }
