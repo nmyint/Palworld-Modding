@@ -4,6 +4,21 @@ This repository is the authoritative development workspace for a personal
 Palworld installation. It keeps development, testing, deployment, and archival
 work separate from the live game installation.
 
+## Requirements
+
+Workshop automation is developed and tested for **PowerShell 7.6.4** (`pwsh`).
+Windows PowerShell 5.1 is not a supported runtime for the workshop scripts.
+Git must also be available on `PATH`.
+
+Verify the active runtime before using the workshop tooling:
+
+```powershell
+$PSVersionTable.PSVersion
+```
+
+The expected result is `7.6.4`. The authoritative configured requirement is
+stored in `.config/Workshop.json` under `Tools.PowerShell.RequiredVersion`.
+
 ## Goals
 
 - Maintain a stable modded installation.
@@ -35,7 +50,7 @@ Initialize-PwWorkshop
 Get-PwWorkshopInfo
 ```
 
-PowerShell conventions are documented in
+PowerShell conventions and runtime requirements are documented in
 [PowerShellStandards.md](00_Documentation/PowerShellStandards.md).
 
 ## One-command menu
@@ -109,7 +124,7 @@ storage. See
 
 ## Tests
 
-Run the automated checks from the repository root:
+Run the automated checks from the repository root with PowerShell 7.6.4:
 
 ```powershell
 pwsh -NoProfile -File ./10_Scripts/Tasks/Test-Workshop.ps1
