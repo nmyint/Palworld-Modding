@@ -220,6 +220,9 @@ function Show-PwGitMenu {
                 }
             }
             catch [System.OperationCanceledException] {
+                if ($_.Exception.Message -eq 'PWGIT_BACK') {
+                    continue
+                }
                 throw
             }
             catch {
