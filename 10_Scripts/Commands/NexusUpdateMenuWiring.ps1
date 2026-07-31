@@ -154,12 +154,11 @@ function Save-PwNexusModUpdate {
     )
 
     if ($reportRows.Count -eq 0) {
-        Save-PwNexusModUpdateCore `
-            -ModId $ModId `
-            -FileId $FileId `
-            -ApiKey $ApiKey `
-            -Destination $Destination
-        return
+        throw (
+            "The refreshed Nexus update report returned no row for mod $ModId. " +
+                'Direct menu download is blocked; refresh the update screen or ' +
+                'use manual browser download.'
+        )
     }
 
     $selected = $reportRows |
