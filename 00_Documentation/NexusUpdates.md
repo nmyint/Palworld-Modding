@@ -65,34 +65,64 @@ A mod without a reviewed Nexus ID remains visible in the catalog but cannot be
 checked automatically. Add or correct its identity through **Catalog → Edit
 identity** after verifying the Nexus page.
 
-## Remote metadata cache
+## Universal Nexus metadata cache
 
-Successful Nexus and GitHub metadata responses are cached in memory for ten
-minutes within the current PowerShell module session. The cache is shared by:
+The workshop keeps one persistent catalog-wide Nexus metadata snapshot at:
 
-- menu option 4 update reports;
-- remote catalog metadata and identity review;
-- current-game adoption identity and file-list checks;
-- profile archive download plans; and
-- configured Nexus and GitHub source checks.
+```text
+.cache\NexusMetadata.json
+```
 
-This prevents repeated menu navigation from requesting the same endpoint again.
-Local files are not cached: `01_Archives`, the persistent catalog, profiles, and
-configuration are reread by their normal commands so local changes remain
-visible.
+The `.cache` directory is local generated state and is ignored by Git.
 
-Cache entries are separated by provider, endpoint, and an in-memory credential
-fingerprint. The API key or GitHub token is never written into a cache entry,
-file, log, or tracked configuration. Failed requests are not cached.
+For every reviewed Nexus mod ID known through the persistent catalog, surviving
+archives, or configured Nexus sources, the snapshot stores the complete raw JSON
+returned by both canonical metadata endpoints used by the workshop:
 
-The following data is always requested live:
+- the mod metadata response;
+- the complete mod file-list response, including every field Nexus returns in
+  that response.
 
-- Nexus direct-download links, because they can expire;
-- the selected mod update report immediately before an approved menu download.
+The snapshot therefore retains information that current menu modules do not yet
+display. Update reporting, catalog metadata, identity review, current-game
+adoption, profile archive planning, configured Nexus source checks, and exact
+file selection all parse the fields they need from the same cached responses.
+The existing commands continue to call `Invoke-PwNexusApi`; the shared API layer
+routes supported mod and file reads to the snapshot.
 
-Inside menu option 4, use **R — Refresh** to clear both the Nexus and GitHub
-metadata caches and rerun the reports. Reimporting the module or starting a new
-PowerShell process also starts with an empty cache.
+This is intentionally not a crawl of every endpoint exposed by Nexus Mods. It
+does not persist:
+
+- API keys or other credentials;
+- user identity or account data;
+- transient direct-download links;
+- downloaded archive contents;
+- unrelated games, mods, collections, comments, or user-specific endpoints.
+
+Direct-download links and API account validation are always requested live.
+The selected mod is also refreshed immediately before an approved direct
+Premium download so stale file IDs cannot be used.
+
+### Cache lifetime and refresh
+
+The Nexus snapshot has no automatic ten-minute expiration. It remains
+Authoritative until one of these events occurs:
+
+- the cache does not exist, in which case the first Nexus-backed menu action
+  builds the full snapshot;
+- a new reviewed Nexus ID appears in the catalog, archives, or configured
+  sources, in which case only the missing ID is added;
+- the user explicitly presses `R` in menu 1 Remote Metadata or menu 4 Updates;
+- a guarded direct download refreshes its selected Nexus mod before mutation.
+
+Menu 1 and menu 4 show the snapshot timestamp and ready-versus-catalog mod count
+in the screen title. `R` performs a complete catalog refresh. A successful prior
+entry is retained if a later refresh fails, and the refresh error is recorded so
+the cached data remains usable but visibly stale.
+
+Local state is never substituted by this cache. `01_Archives`, the persistent
+catalog, profiles, and update-source configuration are still reread normally, so
+local changes remain visible immediately.
 
 ## Download an update
 
