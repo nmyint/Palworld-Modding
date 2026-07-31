@@ -17,6 +17,8 @@ The generated repository structure files provide the authoritative map of:
 - project boundaries
 - deployment and testing areas
 
+See [RepositoryStructureTool.md](00_Documentation/RepositoryStructureTool.md) for documentation about the exporter that creates these generated repository maps.
+
 Large files should not be loaded blindly. Review large documents, logs, generated files, and archives incrementally using logical sections or chunks.
 
 Prioritize:
