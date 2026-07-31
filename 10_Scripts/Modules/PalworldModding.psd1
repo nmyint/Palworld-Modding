@@ -90,6 +90,7 @@ FunctionsToExport = @(
     'Get-PwModUpdateReport',
     'Open-PwNexusModPage',
     'Save-PwNexusModUpdate',
+    'Save-PwModUpdateFromReport',
     'Save-PwProfileModDownloads',
     'Get-PwUpdateSources',
     'Get-PwSourceUpdateReport',
