@@ -16,7 +16,7 @@ Describe 'PalworldModding guarded Nexus update downloads' {
 
     It 'refuses a report row that is already current' {
         InModuleScope PalworldModding {
-            Mock Save-PwNexusModUpdate {
+            Mock Save-PwNexusModUpdateCore {
                 throw 'The downloader should not be called.'
             }
 
@@ -43,13 +43,13 @@ Describe 'PalworldModding guarded Nexus update downloads' {
             }
 
             $threw | Should Be $true
-            Assert-MockCalled Save-PwNexusModUpdate -Times 0 -Scope It
+            Assert-MockCalled Save-PwNexusModUpdateCore -Times 0 -Scope It
         }
     }
 
     It 'refuses an update row without a remote file ID' {
         InModuleScope PalworldModding {
-            Mock Save-PwNexusModUpdate {
+            Mock Save-PwNexusModUpdateCore {
                 throw 'The downloader should not be called.'
             }
 
@@ -76,13 +76,13 @@ Describe 'PalworldModding guarded Nexus update downloads' {
             }
 
             $threw | Should Be $true
-            Assert-MockCalled Save-PwNexusModUpdate -Times 0 -Scope It
+            Assert-MockCalled Save-PwNexusModUpdateCore -Times 0 -Scope It
         }
     }
 
     It 'downloads the exact file selected by an actionable report row' {
         InModuleScope PalworldModding {
-            Mock Save-PwNexusModUpdate {
+            Mock Save-PwNexusModUpdateCore {
                 [PSCustomObject]@{
                     Downloaded = $true
                     Path = Join-Path $TestDrive 'Example Mod 1234 2.0.zip'
@@ -116,7 +116,7 @@ Describe 'PalworldModding guarded Nexus update downloads' {
             $result.RemoteFileName | Should Be 'Example-2.0.zip'
             $result.Hash | Should Be 'ABC123'
             $result.NextStep | Should Match 'menu option 2'
-            Assert-MockCalled Save-PwNexusModUpdate `
+            Assert-MockCalled Save-PwNexusModUpdateCore `
                 -Times 1 `
                 -Scope It `
                 -ParameterFilter {
@@ -130,7 +130,7 @@ Describe 'PalworldModding guarded Nexus update downloads' {
 
     It 'supports preview without calling the downloader' {
         InModuleScope PalworldModding {
-            Mock Save-PwNexusModUpdate {
+            Mock Save-PwNexusModUpdateCore {
                 throw 'The downloader should not be called.'
             }
 
@@ -151,13 +151,13 @@ Describe 'PalworldModding guarded Nexus update downloads' {
 
             $result.Downloaded | Should Be $false
             $result.FileId | Should Be 42
-            Assert-MockCalled Save-PwNexusModUpdate -Times 0 -Scope It
+            Assert-MockCalled Save-PwNexusModUpdateCore -Times 0 -Scope It
         }
     }
 
     It 'returns one preview result for every actionable pipeline row' {
         InModuleScope PalworldModding {
-            Mock Save-PwNexusModUpdate {
+            Mock Save-PwNexusModUpdateCore {
                 throw 'The downloader should not be called.'
             }
 
@@ -192,7 +192,7 @@ Describe 'PalworldModding guarded Nexus update downloads' {
             $results.Count | Should Be 2
             $results[0].FileId | Should Be 42
             $results[1].FileId | Should Be 84
-            Assert-MockCalled Save-PwNexusModUpdate -Times 0 -Scope It
+            Assert-MockCalled Save-PwNexusModUpdateCore -Times 0 -Scope It
         }
     }
 }
