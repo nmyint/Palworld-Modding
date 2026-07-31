@@ -18,7 +18,7 @@ function Invoke-PwGitPush {
     Write-PwGitOutput -InputObject @(Invoke-PwGitNative -Arguments @('fetch', '--prune'))
     $comparison = Get-PwGitAheadBehind -Upstream $upstream
     if ($comparison.Behind -gt 0) {
-        throw "Local branch is $($comparison.Behind) commit(s) behind $upstream. Pull or reconcile before pushing."
+        throw "Local branch is $($comparison.Behind) commit(s) behind ${upstream}. Pull or reconcile before pushing."
     }
     [string[]]$paths = @(
         @($Arguments) |
@@ -45,7 +45,7 @@ function Invoke-PwGitPush {
             return
         }
         Write-Host "Local branch has $($comparison.Ahead) unpushed commit(s)."
-        if (-not (Confirm-PwGitAction -Prompt "Push existing commits to $upstream?")) {
+        if (-not (Confirm-PwGitAction -Prompt "Push existing commits to ${upstream}?")) {
             Write-Host '[INFO] Push cancelled.'
             return
         }
