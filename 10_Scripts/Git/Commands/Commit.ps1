@@ -12,7 +12,15 @@ function Invoke-PwGitCommit {
     Write-PwGitSection -Title 'Create Local Commit'
 
     if (-not (Test-PwGitStagedChanges)) {
-        throw 'No staged changes were found. Stage files before running pw-git commit.'
+        Write-Host '[INFO] No staged changes found.'
+        Write-Host ''
+        Write-Host 'Stage files before creating a commit.'
+        Write-Host ''
+        Write-Host 'Options:'
+        Write-Host '  1. Return to menu and use Push Selected Files'
+        Write-Host '  2. Stage files manually and run Create Local Commit again'
+        Write-Host '  Q. Quit pw-git'
+        return
     }
 
     $argumentList = @($Arguments)
