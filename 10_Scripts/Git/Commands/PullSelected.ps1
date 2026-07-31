@@ -88,7 +88,7 @@ function Invoke-PwGitPullSelected {
     Write-Host ''
     Write-Warning 'This updates only the selected files. It does not merge or advance the current branch.'
     Write-Warning 'The selected upstream versions will be placed in both the index and working tree.'
-    if (-not (Confirm-PwGitAction -Prompt "Replace the selected files with their versions from $upstream?")) {
+    if (-not (Confirm-PwGitAction -Prompt "Replace the selected files with their versions from ${upstream}?")) {
         Write-Host '[INFO] Pull selected files cancelled. No files were changed.'
         return
     }
