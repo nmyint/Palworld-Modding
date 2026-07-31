@@ -17,6 +17,21 @@ Always begin with:
 
 These files define the repository map before deeper inspection.
 
+## Mandatory Repository Compliance Gate
+
+Before answering any repository-specific request, making recommendations, or modifying files, verify:
+
+- README.md has been reviewed.
+- AIRepositoryWorkflow.md has been reviewed.
+- RepositoryStructure.txt has been reviewed.
+- RepositoryInventory.json has been reviewed.
+- Relevant documentation has been identified.
+- Existing implementation has been inspected when applicable.
+
+If verification cannot be completed, state what remains unverified instead of guessing.
+
+Conversation history, previous responses, cached context, screenshots, and assumptions are not authoritative repository state.
+
 ## Repository Truth and Verification Rules
 
 The repository state is authoritative.
@@ -49,8 +64,6 @@ URL:
 
 https://github.com/nmyint/Palworld-Modding/blob/main/README.md
 
-The README provides the initial navigation point for AI assistants and developers.
-
 Supporting authoritative sources:
 
 1. `00_Documentation/RepositoryStructure.txt`
@@ -58,6 +71,55 @@ Supporting authoritative sources:
 3. `00_Documentation/AIRepositoryWorkflow.md`
 4. Relevant operational documentation
 5. `00_Documentation/Scrapbook.md` for historical context
+
+## Request Classification
+
+Repository requests should be classified before action.
+
+### Audit
+
+Examples:
+
+- review
+- check
+- verify
+- how many
+- what exists
+- stale/current status
+
+Required behavior:
+
+- inspect repository state
+- enumerate relevant files
+- provide evidence-based findings
+
+### Modification
+
+Examples:
+
+- update
+- edit
+- create
+- remove
+
+Required behavior:
+
+- read affected files first
+- preserve unrelated content
+- validate changes
+
+### Execution
+
+Examples:
+
+- test
+- run
+- validate
+
+Required behavior:
+
+- execute requested validation
+- report actual results
 
 ## File Reading Strategy
 
@@ -86,6 +148,46 @@ When modifying large repository files:
 
 Do not repeatedly explain tooling limitations when the workflow can proceed. Continue with the established chunked fetch -> edit -> update -> commit process.
 
+## Repository Audit Protocol
+
+For repository audits:
+
+1. Read authoritative entry documents.
+2. Use repository maps/inventory.
+3. Inspect actual files.
+4. Compare findings against documentation.
+5. Report discrepancies.
+
+Do not infer repository state from previously opened files alone.
+
+## Evidence-Based Responses
+
+Avoid unsupported completion claims.
+
+Responses should identify:
+
+- sources checked.
+- files inspected.
+- validation performed.
+- remaining uncertainty.
+
+Do not claim completion, verification, or successful validation unless evidence exists.
+
+## Completion Rules
+
+Completion statements require:
+
+1. Action performed.
+2. Result verified.
+3. Evidence available.
+
+Distinguish between:
+
+- planned
+- in progress
+- completed
+- verified
+
 ## AI Change Scope Rules
 
 Before modifying files:
@@ -96,33 +198,35 @@ Before modifying files:
 4. Update documentation when changing workflows.
 5. Prefer additive changes over destructive changes.
 
+## Session Handoff Protocol
+
+Before creating a session handoff:
+
+Verify:
+
+- existing handoff files.
+- current project state.
+- latest relevant continuation point.
+- stale or superseded handoffs.
+
+A new handoff should contain:
+
+- scope reviewed.
+- files inspected.
+- tests performed.
+- current status.
+- unresolved items.
+- next action boundary.
+
 ## Code Creation Requirements
 
 Before creating or modifying code:
 
 1. Identify the language, runtime, and tooling requirements.
 2. Read the applicable standards documentation.
-3. Read the environment requirements for the affected toolchain.
+3. Read environment requirements for the affected toolchain.
 4. Inspect existing implementations before creating new ones.
-5. Follow repository-specific versions and conventions instead of general best practices.
-
-Examples:
-
-### PowerShell
-
-Before creating or modifying PowerShell scripts, read:
-
-- `00_Documentation/PowerShellStandards.md`
-- `00_Documentation/Environment.md`
-
-Verify:
-
-- supported PowerShell version
-- module/script organization
-- testing framework version
-- syntax compatibility requirements
-
-Do not assume the latest language or framework conventions are compatible with this repository.
+5. Follow repository-specific versions and conventions.
 
 ## Documentation Authority
 
