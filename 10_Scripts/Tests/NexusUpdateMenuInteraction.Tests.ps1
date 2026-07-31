@@ -16,7 +16,7 @@ Describe 'PalworldModding option 4 interaction flow' {
 
     It 'routes a direct option 4 selection through the guarded report command' {
         InModuleScope PalworldModding {
-            $update = [PSCustomObject]@{
+            $script:updateFixture = [PSCustomObject]@{
                 Name = 'Example Mod'
                 NexusModId = 1234
                 LocalVersion = '1.0'
@@ -52,7 +52,7 @@ Describe 'PalworldModding option 4 interaction flow' {
 
                 switch ($Action) {
                     'Updates' {
-                        @($update)
+                        @($script:updateFixture)
                     }
                     'SourceUpdates' {
                         @()
@@ -73,7 +73,7 @@ Describe 'PalworldModding option 4 interaction flow' {
                 'D'
             }
             Mock Get-PwModUpdateReport {
-                @($update)
+                @($script:updateFixture)
             }
             Mock Save-PwModUpdateFromReport {
                 [PSCustomObject]@{
@@ -90,6 +90,9 @@ Describe 'PalworldModding option 4 interaction flow' {
                         'Inspect and import the archive through menu option 2.'
                     )
                 }
+            }
+            Mock Open-PwNexusModPage {
+                throw 'The manual browser path should not run in direct mode.'
             }
             Mock Write-Host {}
 
@@ -116,7 +119,7 @@ Describe 'PalworldModding option 4 interaction flow' {
 
     It 'keeps the option 4 manual browser path available' {
         InModuleScope PalworldModding {
-            $update = [PSCustomObject]@{
+            $script:updateFixture = [PSCustomObject]@{
                 Name = 'Example Mod'
                 NexusModId = 1234
                 LocalVersion = '1.0'
@@ -150,7 +153,7 @@ Describe 'PalworldModding option 4 interaction flow' {
 
                 switch ($Action) {
                     'Updates' {
-                        @($update)
+                        @($script:updateFixture)
                     }
                     'SourceUpdates' {
                         @()
