@@ -3,6 +3,7 @@
     Repository-state validation helpers for pw-git.
 #>
 Set-StrictMode -Version Latest
+$script:PwGitConflictStatusCodes = @('DD', 'AU', 'UD', 'UA', 'DU', 'AA', 'UU')
 function Test-PwGitDetachedHead {
     [CmdletBinding()]
     param()
@@ -22,9 +23,11 @@ function Get-PwGitConflictFiles {
     [CmdletBinding()]
     param()
     [string[]]@(
-        Invoke-PwGitNative -Arguments @('diff', '--name-only', '--diff-filter=U', '--') |
-            ForEach-Object { ([string]$_).Trim() } |
-            Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+        foreach ($item in @(Get-PwGitSelectableFiles)) {
+            if ($script:PwGitConflictStatusCodes -contains [string]$item.Status) {
+                [string]$item.Path
+            }
+        }
     )
 }
 function Test-PwGitConflicts {
@@ -39,14 +42,13 @@ function Get-PwGitChangeState {
     $unstaged = 0
     $untracked = 0
     $conflicts = 0
-    $conflictCodes = @('DD', 'AU', 'UD', 'UA', 'DU', 'AA', 'UU')
     foreach ($item in @(Get-PwGitSelectableFiles)) {
         $code = [string]$item.Status
         if ($code -eq '??') {
             $untracked++
             continue
         }
-        if ($conflictCodes -contains $code) {
+        if ($script:PwGitConflictStatusCodes -contains $code) {
             $conflicts++
         }
         if ($code.Length -ge 1 -and $code[0] -ne ' ') {
