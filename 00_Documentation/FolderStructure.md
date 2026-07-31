@@ -23,7 +23,7 @@ directly in the Palworld installation.
 | `12_Research` | Technical research and investigation notes |
 | `13_Backups` | Deployment and pre-restore safety backups |
 | `14_Templates` | Reusable project and configuration templates |
-| `15_Sandbox` | Isolated experiments |
+| `15_Sandbox` | Isolated, disposable experiments and temporary build work |
 | `16_Profiles` | Installation and mod-set profiles |
 
 ## Workflow
@@ -56,6 +56,24 @@ are working toward:
 
 That keeps the current working copy aligned with the files you are actually
 testing before they are promoted into the curated library or deployment bundles.
+
+## Sandbox experiments
+
+Profile experiment builds use the established sandbox area:
+
+```text
+15_Sandbox\ProfileExperiments\<timestamp>-<Profile>-<Label>\
+└─ Pal\
+```
+
+The `<Profile>` segment identifies the source profile, such as `Stable` or a
+future test profile. A separate `15_Sandbox\stable` or `15_Sandbox\test` root is
+therefore unnecessary. Each experiment is timestamped, isolated, disposable,
+and kept separate from curated packages in `03_Mod_Library`, normal output in
+`05_Deployment`, and the live game installation.
+
+Temporary internal assembly work may also use `15_Sandbox`, but temporary
+content is not a new workflow stage and must not become an authoritative source.
 
 Git stores source and lightweight metadata. External 7z archives preserve
 durable binary content; see [WorkshopBackup.md](WorkshopBackup.md).
