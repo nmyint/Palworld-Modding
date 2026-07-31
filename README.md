@@ -49,14 +49,17 @@ Workshop automation is developed and tested for **PowerShell 7.6.4** (`pwsh`). W
 
 ## Pw-Git
 
-`Pw-Git` is the repository-safe Git workflow interface used by the workshop. It is designed to keep Git operations review-first and avoid accidental changes.
+**Pw-Git v1.1 is complete.** It is the repository-safe Git workflow interface used by the workshop and remains separate from PwWorkshop.
 
-Features:
+The responsive main menu provides repository health, status, fetch, compare, pull, selected-file pull, staging, commit, and committed-change push workflows. `H` opens the Advanced menu for unstage, discard, stash, stash restore, repository history, and branch information.
+
+Safety and usability features include:
 
 - dynamic terminal redraw and resize handling
-- guided push and pull workflows
-- file selection before destructive operations
-- explicit commit confirmation
+- review-first repository operations
+- file selection before supported destructive operations
+- explicit confirmation before commits and destructive changes
+- direct staged-change review through `review-staged`
 - `Enter` or `B` returns to the previous menu where supported
 - `Q` exits Pw-Git
 - Ctrl-C safely interrupts the current operation
@@ -66,6 +69,8 @@ Run Pw-Git from the repository root:
 ```powershell
 pwsh -NoProfile -File ./pw-git.ps1
 ```
+
+See [Pw-Git.md](00_Documentation/Pw-Git.md) for the complete v1.1 workflow, menu map, direct commands, and safety model.
 
 ## Goals
 
