@@ -51,10 +51,12 @@ function Invoke-PwGitPush {
     }
 
     $message = Read-PwGitCommitMessage
+    $branch = Get-PwGitBranch
+    $upstream = Get-PwGitUpstream
+    $beforeCommit = Invoke-PwGitNative -Arguments @('rev-parse', '--short', 'HEAD')
 
     Write-Host ''
-    Write-Host "Branch         : $(Get-PwGitBranch)"
-    $upstream = Get-PwGitUpstream
+    Write-Host "Branch         : $branch"
     Write-Host "Upstream       : $(if ($upstream) { $upstream } else { '<not configured>' })"
     Write-Host "Commit message : $message"
     Write-Host ''
@@ -69,19 +71,25 @@ function Invoke-PwGitPush {
         return
     }
 
-    Invoke-PwGitNative -Arguments @('commit', '-m', $message) |
-        ForEach-Object { Write-Host $_ }
+    Invoke-PwGitNative -Arguments @('commit', '-m', $message) | Out-Null
 
-    $branch = Get-PwGitBranch
+    $afterCommit = (Invoke-PwGitNative -Arguments @('rev-parse', '--short', 'HEAD') | Select-Object -First 1).ToString().Trim()
 
     if ([string]::IsNullOrWhiteSpace($upstream)) {
-        Invoke-PwGitNative -Arguments @('push', '--set-upstream', 'origin', $branch) |
-            ForEach-Object { Write-Host $_ }
+        Invoke-PwGitNative -Arguments @('push', '--set-upstream', 'origin', $branch) | Out-Null
     }
     else {
-        Invoke-PwGitNative -Arguments @('push') |
-            ForEach-Object { Write-Host $_ }
+        Invoke-PwGitNative -Arguments @('push') | Out-Null
     }
 
-    Write-Host '[ OK ] Commit and push completed.'
+    Write-PwGitSection -Title 'Push Complete'
+    Write-Host '[ OK ] Commit created'
+    Write-Host "      Branch : $branch"
+    Write-Host "      Commit : $afterCommit"
+    Write-Host "      Message: $message"
+    Write-Host ''
+    Write-Host '[ OK ] Pushed to repository'
+    if ($beforeCommit) {
+        Write-Host "      $($beforeCommit[0]) -> $afterCommit"
+    }
 }
