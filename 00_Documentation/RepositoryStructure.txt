@@ -1,14 +1,14 @@
 Palworld Modding Workshop Repository Structure
-Generated: 07/31/2026 10:11:52
+Generated: 07/31/2026 10:43:18
 Repository: Palworld-Modding
 Root: .
 Branch: main
-CommitSHA: 432b67cd72b12e38d5f410b92b374b565be9ca78
+CommitSHA: 9902af9ba7911325f3e03d2d5dea01c0a986844f
 
 Statistics:
 Directories: 35
-Files: 122
-Documents: 122
+Files: 123
+Documents: 123
 PowerShell Scripts: 80
 
 ├── .config
@@ -27,6 +27,7 @@ PowerShell Scripts: 80
 │   │   ├── 2026-07-30-pw-git-kickoff.md
 │   │   ├── 2026-07-30-shit.md
 │   │   ├── 2026-07-31-pw-git-v1.1-complete.md
+│   │   ├── 2026-07-31-pw-git-v1.2-complete.md
 │   │   ├── 2026-07-31-pw-git-v1.2-implementation-checkpoint.md
 │   │   ├── Codex.txt
 │   ├── AIRepositoryWorkflow.md

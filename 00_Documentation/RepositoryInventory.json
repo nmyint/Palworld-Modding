@@ -3,13 +3,13 @@
     "Repository": "Palworld-Modding",
     "Root": ".",
     "Branch": "main",
-    "CommitSHA": "432b67cd72b12e38d5f410b92b374b565be9ca78",
-    "Generated": "2026-07-31T10:11:52.5774824-04:00"
+    "CommitSHA": "9902af9ba7911325f3e03d2d5dea01c0a986844f",
+    "Generated": "2026-07-31T10:43:18.3754437-04:00"
   },
   "Statistics": {
     "Directories": 35,
-    "Files": 122,
-    "Documents": 122,
+    "Files": 123,
+    "Documents": 123,
     "PowerShellScripts": 80
   },
   "Structure": [
@@ -96,6 +96,11 @@
             },
             {
               "Name": "2026-07-31-pw-git-v1.1-complete.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-pw-git-v1.2-complete.md",
               "Type": "File",
               "Extension": ".md"
             },
