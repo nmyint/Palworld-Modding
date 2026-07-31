@@ -5,48 +5,24 @@ function Invoke-PwGitCheck {
     param(
         [Parameter(Mandatory)]
         [object]$Context,
-
         [string[]]$Arguments
     )
 
     Write-PwGitSection -Title 'pw-git Health Check'
 
     $gitVersion = Invoke-PwGitNative -Arguments @('--version') -AllowFailure -PassThru
-    $origin = Invoke-PwGitNative -Arguments @('remote', 'get-url', 'origin') -AllowFailure -PassThru
     $branch = Get-PwGitBranch
     $upstream = Get-PwGitUpstream
+    $state = Get-PwGitChangeState
 
     $checks = @(
-        [pscustomobject]@{
-            Name = 'Workshop configuration'
-            Passed = $null -ne $Context.Config
-            Details = $Context.ConfigPath
-        }
-        [pscustomobject]@{
-            Name = 'Repository root'
-            Passed = Test-Path -LiteralPath (Join-Path $Context.WorkshopRoot '.git')
-            Details = $Context.WorkshopRoot
-        }
-        [pscustomobject]@{
-            Name = 'Git available'
-            Passed = $gitVersion.ExitCode -eq 0
-            Details = ($gitVersion.Output -join ' ').Trim()
-        }
-        [pscustomobject]@{
-            Name = 'Current branch'
-            Passed = -not [string]::IsNullOrWhiteSpace($branch)
-            Details = $(if ($branch) { $branch } else { 'Detached HEAD or unavailable' })
-        }
-        [pscustomobject]@{
-            Name = 'Origin remote'
-            Passed = $origin.ExitCode -eq 0
-            Details = $(if ($origin.ExitCode -eq 0) { ($origin.Output -join ' ').Trim() } else { 'Not configured' })
-        }
-        [pscustomobject]@{
-            Name = 'Upstream branch'
-            Passed = -not [string]::IsNullOrWhiteSpace($upstream)
-            Details = $(if ($upstream) { $upstream } else { 'Not configured' })
-        }
+        [pscustomobject]@{ Name='Workshop configuration'; Passed=$null -ne $Context.Config; Details=$Context.ConfigPath }
+        [pscustomobject]@{ Name='Repository root'; Passed=Test-Path -LiteralPath (Join-Path $Context.WorkshopRoot '.git'); Details=$Context.WorkshopRoot }
+        [pscustomobject]@{ Name='Git available'; Passed=$gitVersion.ExitCode -eq 0; Details=($gitVersion.Output -join ' ').Trim() }
+        [pscustomobject]@{ Name='Current branch'; Passed=-not (Test-PwGitDetachedHead); Details=$(if ($branch) { $branch } else { 'Detached HEAD' }) }
+        [pscustomobject]@{ Name='Origin remote'; Passed=Test-PwGitRemote; Details=$(if (Test-PwGitRemote) { 'Configured' } else { 'Missing' }) }
+        [pscustomobject]@{ Name='Upstream branch'; Passed=Test-PwGitUpstream; Details=$(if ($upstream) { $upstream } else { 'Missing' }) }
+        [pscustomobject]@{ Name='Merge conflicts'; Passed=-not (Test-PwGitConflicts); Details=$(if (Test-PwGitConflicts) { 'Present' } else { 'None' }) }
     )
 
     foreach ($check in $checks) {
@@ -55,16 +31,16 @@ function Invoke-PwGitCheck {
     }
 
     Write-Host ''
-    $status = @(Get-PwGitStatusLines)
-    if ($status.Count -eq 0) {
-        Write-Host '[ OK ] Working tree is clean.'
-    }
-    else {
-        Write-Host '[INFO] Working tree contains changes:'
-        $status | ForEach-Object { Write-Host "  $_" }
+    Write-Host 'Change state:'
+    Write-Host "  Staged   : $($state.Staged)"
+    Write-Host "  Unstaged : $($state.Unstaged)"
+    Write-Host "  Conflicts: $($state.Conflicts)"
+
+    if (Test-PwGitMixedChanges) {
+        Write-Host '[WARN] Mixed staged and unstaged changes detected.'
     }
 
-    if ($checks.Passed -contains $false) {
-        throw 'One or more pw-git health checks failed.'
+    if (Test-PwGitDiverged) {
+        Write-Host '[WARN] Branches have diverged. Rebase recommended.'
     }
 }
