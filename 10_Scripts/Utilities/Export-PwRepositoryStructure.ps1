@@ -5,11 +5,7 @@
     Creates RepositoryStructure.txt and RepositoryInventory.json from one repository model.
 #>
 [CmdletBinding()]
-param(
-    [string]$Root = (Get-Location).Path,
-    [string]$DocumentationFolder = '00_Documentation',
-    [string]$OutputFolder
-)
+param([string]$Root=(Get-Location).Path,[string]$DocumentationFolder='00_Documentation',[string]$OutputFolder)
 $IncludeExtensions=@('.md','.txt','.json','.ps1','.psd1','.psm1','.ini','.yaml','.yml','.toml','.code-workspace')
 $IgnoreExtensions=@('.zip','.7z','.rar','.pak','.dll','.exe','.bin')
 $IgnoreDirectories=@('.git')
@@ -27,9 +23,18 @@ function Get-Stats{param($Items);$dirs=0;$files=0;$docs=0;$ps=0;foreach($Item in
 function Write-Tree{param($Items,$Prefix='');foreach($Item in $Items){Add-Content -Path $TxtOutput -Value "$Prefix├── $($Item.Name)";if($Item.Type -eq 'Directory' -and $Item.Children.Count -gt 0){Write-Tree $Item.Children "$Prefix│   "}}}
 $Model=@(New-RepositoryModel $Root)
 $Statistics=Get-Stats $Model
-@('Palworld Modding Workshop Repository Structure',"Generated: $(Get-Date)","Repository: $(Split-Path $Root -Leaf)",'Root: .','', 'Statistics:',"Directories: $($Statistics.Directories)","Files: $($Statistics.Files)","Documents: $($Statistics.Documents)","PowerShell Scripts: $($Statistics.PowerShellScripts)",'')|Set-Content $TxtOutput
+$GitBranch=(git -C $Root branch --show-current 2>$null)
+$GitCommit=(git -C $Root rev-parse HEAD 2>$null)
+$Metadata=[PSCustomObject]@{Repository=Split-Path $Root -Leaf;Root='.';Branch=$GitBranch;CommitSHA=$GitCommit;Generated=(Get-Date)}
+@('Palworld Modding Workshop Repository Structure',"Generated: $($Metadata.Generated)","Repository: $($Metadata.Repository)",'Root: .',"Branch: $($Metadata.Branch)","CommitSHA: $($Metadata.CommitSHA)",'')|Set-Content $TxtOutput
+Add-Content $TxtOutput 'Statistics:'
+Add-Content $TxtOutput "Directories: $($Statistics.Directories)"
+Add-Content $TxtOutput "Files: $($Statistics.Files)"
+Add-Content $TxtOutput "Documents: $($Statistics.Documents)"
+Add-Content $TxtOutput "PowerShell Scripts: $($Statistics.PowerShellScripts)"
+Add-Content $TxtOutput ''
 Write-Tree $Model
-[PSCustomObject]@{Repository=Split-Path $Root -Leaf;Generated=Get-Date;Root='.';Statistics=$Statistics;Structure=$Model}|ConvertTo-Json -Depth 50|Set-Content $JsonOutput
+[PSCustomObject]@{Metadata=$Metadata;Statistics=$Statistics;Structure=$Model}|ConvertTo-Json -Depth 50|Set-Content $JsonOutput
 Write-Host 'Repository structure exported:'
 Write-Host $TxtOutput
 Write-Host $JsonOutput
