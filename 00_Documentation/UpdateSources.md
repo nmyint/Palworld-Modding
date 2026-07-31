@@ -22,8 +22,10 @@ Get-PwSourceUpdateReport
 ```
 
 The same report appears below the Nexus mod report in menu option
-**Check mod and tool updates**. Enter `B` there to record the displayed UE4SS
-asset as the installed baseline after it has been installed and validated.
+**Check mod and tool updates**. Enter `U` there to start the UE4SS baseline
+workflow. After reviewing the displayed asset and confirming that exact build
+has been installed and validated, approve the prompt to record it as the
+installed baseline. Enter `B` to return without changing the baseline.
 
 GitHub public releases do not require a token. `GITHUB_TOKEN` is used when it is
 already present, which raises GitHub API rate limits. Nexus sources use the
