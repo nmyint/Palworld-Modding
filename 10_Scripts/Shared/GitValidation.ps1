@@ -19,4 +19,74 @@ function Test-PwGitRemote {
     param()
 
     $result = Invoke-PwGitNative -Arguments @('remote', 'get-url', 'origin') -AllowFailure -PassThru
-    $result.ExitCode -eq 0 -and -not [string]::IsNullOrWhite
+    $result.ExitCode -eq 0 -and -not [string]::IsNullOrWhiteSpace(($result.Output -join ''))
+}
+
+function Test-PwGitUpstream {
+    [CmdletBinding()]
+    param()
+
+    -not [string]::IsNullOrWhiteSpace((Get-PwGitUpstream))
+}
+
+function Get-PwGitConflictFiles {
+    [CmdletBinding()]
+    param()
+
+    @(Invoke-PwGitNative -Arguments @('diff', '--name-only', '--diff-filter=U'))
+}
+
+function Test-PwGitConflicts {
+    [CmdletBinding()]
+    param()
+
+    @(Get-PwGitConflictFiles).Count -gt 0
+}
+
+function Get-PwGitChangeState {
+    [CmdletBinding()]
+    param()
+
+    [pscustomobject]@{
+        Staged = @(Invoke-PwGitNative -Arguments @('diff', '--cached', '--name-only')).Count
+        Unstaged = @(Invoke-PwGitNative -Arguments @('diff', '--name-only')).Count
+        Conflicts = @(Get-PwGitConflictFiles).Count
+    }
+}
+
+function Test-PwGitMixedChanges {
+    [CmdletBinding()]
+    param()
+
+    $state = Get-PwGitChangeState
+    $state.Staged -gt 0 -and $state.Unstaged -gt 0
+}
+
+function Get-PwGitDivergence {
+    [CmdletBinding()]
+    param()
+
+    $upstream = Assert-PwGitUpstream
+    Get-PwGitAheadBehind -Upstream $upstream
+}
+
+function Test-PwGitDiverged {
+    [CmdletBinding()]
+    param()
+
+    $state = Get-PwGitDivergence
+    $state.Ahead -gt 0 -and $state.Behind -gt 0
+}
+
+function Assert-PwGitWritableState {
+    [CmdletBinding()]
+    param()
+
+    if (Test-PwGitDetachedHead) {
+        throw 'Repository is in detached HEAD state. Switch to a branch before committing or pushing.'
+    }
+
+    if (Test-PwGitConflicts) {
+        throw 'Repository contains unresolved merge conflicts. Resolve them before continuing.'
+    }
+}
