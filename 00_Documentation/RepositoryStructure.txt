@@ -1,0 +1,229 @@
+Palworld Modding Workshop Repository Structure
+Generated: 07/30/2026 23:09:53
+Repository: Palworld-Modding
+Root: D:\Projects\Palworld-Modding
+
+Statistics:
+Directories: 265
+Documents: 236
+PowerShell Scripts: 74
+
+D:\Projects\Palworld-Modding
+├── 00_Documentation
+│   ├── MCP
+│   ├── Session-Handoffs
+│   │   ├── 2026-07-30-pw-git-kickoff.md
+│   │   └── 2026-07-30-shit.md
+│   ├── CatalogMetadata.md
+│   ├── DailyWorkflow.md
+│   ├── Deployment.md
+│   ├── Environment.md
+│   ├── FolderStructure.md
+│   ├── MenuFlow.md
+│   ├── ModCatalog.md
+│   ├── ModIntake.md
+│   ├── NexusHashVerification.md
+│   ├── NexusUpdates.md
+│   ├── PowerShellStandards.md
+│   ├── Profiles.md
+│   ├── Recovery.md
+│   ├── RepositoryStructure.txt
+│   ├── Roadmap.md
+│   ├── Scrapbook.md
+│   ├── UpdateSources.md
+│   └── WorkshopBackup.md
+├── 01_Archives
+├── 02_Staging
+│   └── Pal
+├── 03_Mod_Library
+│   ├── antiphat-SP-2.0.5
+│   │   └── manifest.json
+│   ├── antiwaste-working
+│   │   └── manifest.json
+│   ├── basepalvisibility-0.2.3
+│   │   └── manifest.json
+│   ├── bpmlgenericfunctions-working
+│   │   └── manifest.json
+│   ├── bpmodloadermod-working
+│   │   └── manifest.json
+│   ├── buildflightcamera-working
+│   │   └── manifest.json
+│   ├── cheatmanagerenablermod-working
+│   │   └── manifest.json
+│   ├── concealedcarry-working
+│   │   └── manifest.json
+│   ├── consolecommandsmod-working
+│   │   └── manifest.json
+│   ├── consoleenablermod-working
+│   │   └── manifest.json
+│   ├── creativemenu-working
+│   │   └── manifest.json
+│   ├── dekmodconfigmenu-working
+│   │   └── manifest.json
+│   ├── existingpaleditor-1.0.4
+│   │   └── manifest.json
+│   ├── fieldbossdefeatmarker-1.1.1
+│   │   └── manifest.json
+│   ├── infinitemod-working
+│   │   └── manifest.json
+│   ├── instantpalboxsearch-working
+│   │   └── manifest.json
+│   ├── keybinds-working
+│   │   └── manifest.json
+│   ├── lessrestrictivebuilding-1.2
+│   │   └── manifest.json
+│   ├── linetracemod-working
+│   │   └── manifest.json
+│   ├── mapcollectablesmod-working
+│   │   └── manifest.json
+│   ├── mercymode-working
+│   │   └── manifest.json
+│   ├── minibuilds-working
+│   │   └── manifest.json
+│   ├── nopaldeposit-working
+│   │   └── manifest.json
+│   ├── palminimap-1.2.5
+│   │   └── manifest.json
+│   ├── palmodoptions-0.1.3
+│   │   └── manifest.json
+│   ├── palschema-working
+│   │   └── manifest.json
+│   ├── palwellbeing-0.2.1
+│   │   └── manifest.json
+│   ├── palworldtuner-1.9.0
+│   │   └── manifest.json
+│   ├── remotepalbox-working
+│   │   └── manifest.json
+│   ├── rotateitbeta-working
+│   │   └── manifest.json
+│   ├── smartpause-working
+│   │   └── manifest.json
+│   ├── splitscreenmod-working
+│   │   └── manifest.json
+│   ├── stacksize999999999zeroweight-working
+│   │   └── manifest.json
+│   ├── stutterfixpack-working
+│   │   └── manifest.json
+│   ├── waypointteleport-working
+│   │   └── manifest.json
+│   └── catalog.json
+├── 04_Projects
+├── 05_Deployment
+│   ├── Pal
+│   └── assembly-manifest.json
+├── 06_Current_Installation
+├── 07_Testing
+│   ├── Compatibility
+│   ├── Performance
+│   ├── Plans
+│   ├── Regression
+│   └── Results
+├── 08_Tools
+│   ├── Git
+│   ├── Lua
+│   ├── PowerShell
+│   ├── Save_Editors
+│   ├── UE4SS
+│   └── WinMerge
+├── 09_Logs
+│   └── 2026
+│       └── 07
+├── 10_Scripts
+│   ├── Commands
+│   │   ├── CatalogMetadata.ps1
+│   │   ├── CurrentGameAdoption.ps1
+│   │   ├── Deployment.ps1
+│   │   ├── DeploymentActions.ps1
+│   │   ├── Environment.ps1
+│   │   ├── ModCatalog.ps1
+│   │   ├── ModIntake.ps1
+│   │   ├── NexusUpdates.ps1
+│   │   ├── Paths.ps1
+│   │   ├── PersistentCatalog.ps1
+│   │   ├── ProfileAssembly.ps1
+│   │   ├── Profiles.ps1
+│   │   ├── Recovery.ps1
+│   │   ├── SourceUpdates.ps1
+│   │   ├── StagingReconciliation.ps1
+│   │   ├── Tools.ps1
+│   │   ├── UpgradeRemoval.ps1
+│   │   ├── WorkshopBackup.ps1
+│   │   ├── WorkshopInfo.ps1
+│   │   └── WorkshopMenu.ps1
+│   ├── Config
+│   │   ├── Json.ps1
+│   │   └── WorkshopConfig.ps1
+│   ├── Core
+│   │   └── Bootstrap.ps1
+│   ├── Git
+│   │   ├── Commands
+│   │   │   ├── Check.ps1
+│   │   │   ├── Commit.ps1
+│   │   │   ├── Compare.ps1
+│   │   │   ├── Log.ps1
+│   │   │   ├── Pull.ps1
+│   │   │   ├── PullSelected.ps1
+│   │   │   ├── Push.ps1
+│   │   │   └── Status.ps1
+│   │   ├── Bootstrap.ps1
+│   │   ├── Menu.ps1
+│   │   └── pw-git.ps1
+│   ├── Modules
+│   │   └── PalworldModding.psm1
+│   ├── Output
+│   ├── Shared
+│   │   ├── GitHelpers.ps1
+│   │   └── GitValidation.ps1
+│   ├── Tasks
+│   │   ├── Backup-Workshop.ps1
+│   │   ├── Complete-ModValidation.ps1
+│   │   ├── Inspect-ModArchive.ps1
+│   │   ├── Restore-Backup.ps1
+│   │   ├── Show-DeploymentHistory.ps1
+│   │   ├── Show-DeploymentPreview.ps1
+│   │   ├── Show-InstallationInventory.ps1
+│   │   ├── Show-ModCatalog.ps1
+│   │   ├── Show-ModUpdates.ps1
+│   │   ├── Show-RestorePreview.ps1
+│   │   ├── Show-SourceUpdates.ps1
+│   │   ├── Show-WorkshopDiagnostics.ps1
+│   │   ├── Sync-CatalogMetadata.ps1
+│   │   ├── Sync-ModCatalog.ps1
+│   │   ├── Test-Backup.ps1
+│   │   ├── Test-Environment.ps1
+│   │   ├── Test-Profiles.ps1
+│   │   └── Test-Workshop.ps1
+│   ├── Tests
+│   │   ├── CatalogMetadata.Tests.ps1
+│   │   ├── Deployment.Tests.ps1
+│   │   ├── ModCatalog.Tests.ps1
+│   │   ├── ModIntake.Tests.ps1
+│   │   ├── NexusUpdates.Tests.ps1
+│   │   ├── PalworldModding.Tests.ps1
+│   │   ├── ProfileAssembly.Tests.ps1
+│   │   ├── Profiles.Tests.ps1
+│   │   ├── Recovery.Tests.ps1
+│   │   ├── SourceUpdates.Tests.ps1
+│   │   ├── StagingReconciliation.Tests.ps1
+│   │   ├── UpgradeRemoval.Tests.ps1
+│   │   └── WorkshopBackup.Tests.ps1
+│   └── Utilities
+│       └── Export-PwRepositoryStructure.ps1
+├── 11_Utilities
+│   ├── pw-chat-archive
+│   │   └── pw-chat-archive.ps1
+│   └── modman.ps1
+├── 12_Research
+├── 13_Backups
+├── 14_Templates
+├── 15_Sandbox
+│   ├── ProfileAssembly
+│   └── pw-git-monolith
+│       └── pw-git.ps1
+├── 16_Profiles
+│   └── Stable.json
+├── CONTRIBUTING.md
+├── Palworld-Modding.code-workspace
+├── pw-git.ps1
+├── PwWorkshop.ps1
+└── README.md
