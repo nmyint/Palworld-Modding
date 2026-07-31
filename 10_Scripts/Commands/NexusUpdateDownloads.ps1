@@ -162,7 +162,8 @@ function Save-PwModUpdateFromReport {
                 -ModId $decision.NexusModId `
                 -FileId $decision.RemoteFileId `
                 -ApiKey $ApiKey `
-                -Destination $Destination
+                -Destination $Destination `
+                -Confirm:$false
 
             [PSCustomObject]@{
                 Name = $decision.Name
