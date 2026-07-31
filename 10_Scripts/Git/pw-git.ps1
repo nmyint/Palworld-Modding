@@ -7,6 +7,10 @@
     and opens the interactive menu or dispatches a direct command. Git behavior
     belongs in Commands\*.ps1, menu behavior belongs in Menu.ps1, and shared
     behavior belongs in ..\Shared\GitHelpers.ps1.
+
+.NOTES
+    Supported runtime: PowerShell 7.6.4 (pwsh).
+    Windows PowerShell 5.1 is not supported.
 #>
 
 [CmdletBinding()]
@@ -46,6 +50,10 @@ function Show-PwGitHelp {
 
     @'
 pw-git - Palworld Modding Workshop Git tooling
+
+Runtime:
+  PowerShell 7.6.4 (pwsh)
+  Windows PowerShell 5.1 is not supported.
 
 Usage:
   pw-git
