@@ -1,9 +1,276 @@
 <#
 .SYNOPSIS
-    Wires the workshop menu's Nexus download action to the guarded report flow.
+    Wires guarded Nexus downloads, remote metadata caching, and update-menu UX.
 #>
 
 Set-StrictMode -Version Latest
+
+$script:PwRemoteMetadataCache = @{}
+$script:PwRemoteMetadataCacheMinutes = 10
+
+function Get-PwRemoteCredentialFingerprint {
+
+    [CmdletBinding()]
+    param(
+        [AllowEmptyString()]
+        [string]$Credential
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Credential)) {
+        return 'anonymous'
+    }
+
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Credential)
+    $hash = [System.Security.Cryptography.SHA256]::HashData($bytes)
+    [Convert]::ToHexString($hash).Substring(0, 16)
+}
+
+function Clear-PwRemoteMetadataCache {
+
+    [CmdletBinding()]
+    param(
+        [ValidateSet('All', 'NexusMods', 'GitHub')]
+        [string]$Provider = 'All'
+    )
+
+    if ($Provider -eq 'All') {
+        $script:PwRemoteMetadataCache = @{}
+        return
+    }
+
+    $prefix = "$Provider|"
+
+    foreach ($key in @($script:PwRemoteMetadataCache.Keys)) {
+        if ($key.StartsWith($prefix, [System.StringComparison]::Ordinal)) {
+            $null = $script:PwRemoteMetadataCache.Remove($key)
+        }
+    }
+}
+
+function Invoke-PwCachedRemoteRequest {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateSet('NexusMods', 'GitHub')]
+        [string]$Provider,
+
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [Parameter(Mandatory)]
+        [scriptblock]$Request,
+
+        [AllowEmptyString()]
+        [string]$Credential,
+
+        [ValidateRange(1, 1440)]
+        [int]$MaxAgeMinutes = $script:PwRemoteMetadataCacheMinutes,
+
+        [switch]$Refresh
+    )
+
+    $normalizedPath = $Path.TrimStart('/').ToLowerInvariant()
+    $credentialScope = Get-PwRemoteCredentialFingerprint `
+        -Credential $Credential
+    $key = "$Provider|$credentialScope|$normalizedPath"
+    $now = (Get-Date).ToUniversalTime()
+
+    if (
+        -not $Refresh -and
+        $script:PwRemoteMetadataCache.ContainsKey($key)
+    ) {
+        $entry = $script:PwRemoteMetadataCache[$key]
+        $age = $now - ([datetime]$entry.RetrievedAt).ToUniversalTime()
+
+        if ($age.TotalMinutes -lt $MaxAgeMinutes) {
+            Write-Output -NoEnumerate $entry.Value
+            return
+        }
+
+        $null = $script:PwRemoteMetadataCache.Remove($key)
+    }
+
+    $value = & $Request
+    $script:PwRemoteMetadataCache[$key] = [PSCustomObject]@{
+        Provider = $Provider
+        Path = $normalizedPath
+        RetrievedAt = $now
+        Value = $value
+    }
+
+    Write-Output -NoEnumerate $value
+}
+
+function Invoke-PwNexusApi {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [string]$ApiKey,
+
+        [switch]$Refresh
+    )
+
+    $resolvedKey = Resolve-PwNexusApiKey -ApiKey $ApiKey
+    $normalizedPath = $Path.TrimStart('/')
+    $uri = 'https://api.nexusmods.com/v1/' + $normalizedPath
+    $headers = @{
+        apikey = $resolvedKey
+        'Application-Name' = 'Palworld-Modding-Workshop'
+        'Application-Version' = (Get-PwVersion)
+    }
+    $request = {
+        Invoke-RestMethod `
+            -Method Get `
+            -Uri $uri `
+            -Headers $headers `
+            -UserAgent 'Palworld-Modding-Workshop'
+    }
+
+    if ($normalizedPath -match '(?i)/download_link\.json$') {
+        return & $request
+    }
+
+    Invoke-PwCachedRemoteRequest `
+        -Provider NexusMods `
+        -Path $normalizedPath `
+        -Credential $resolvedKey `
+        -Refresh:$Refresh `
+        -Request $request
+}
+
+function Invoke-PwGitHubApi {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [switch]$Refresh
+    )
+
+    $normalizedPath = $Path.TrimStart('/')
+    $headers = @{
+        Accept = 'application/vnd.github+json'
+        'X-GitHub-Api-Version' = '2022-11-28'
+        'User-Agent' = 'Palworld-Modding-Workshop'
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($env:GITHUB_TOKEN)) {
+        $headers.Authorization = "Bearer $($env:GITHUB_TOKEN)"
+    }
+
+    $request = {
+        Invoke-RestMethod `
+            -Uri "https://api.github.com/$normalizedPath" `
+            -Headers $headers `
+            -Method Get `
+            -ErrorAction Stop
+    }
+
+    Invoke-PwCachedRemoteRequest `
+        -Provider GitHub `
+        -Path $normalizedPath `
+        -Credential ([string]$env:GITHUB_TOKEN) `
+        -Refresh:$Refresh `
+        -Request $request
+}
+
+$script:PwReadWorkshopPagedTableCore = ${function:Read-PwWorkshopPagedTable}
+
+function Read-PwWorkshopPagedTable {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Title,
+
+        [object[]]$Rows = @(),
+
+        [Parameter(Mandatory)]
+        [object[]]$Properties,
+
+        [Parameter(Mandatory)]
+        [string]$Prompt,
+
+        [ValidateRange(1, [int]::MaxValue)]
+        [int]$Page = 1
+    )
+
+    $isUpdatesPrompt = $Prompt.StartsWith(
+        'Nexus mod ID,',
+        [System.StringComparison]::Ordinal
+    )
+    $effectivePrompt = if ($isUpdatesPrompt) {
+        'Nexus mod ID, [U] record UE4SS baseline, [R] Refresh, ' +
+            '[B] Back, Enter to return, or Q to quit'
+    }
+    else {
+        $Prompt
+    }
+    $selection = & $script:PwReadWorkshopPagedTableCore `
+        -Title $Title `
+        -Rows $Rows `
+        -Properties $Properties `
+        -Prompt $effectivePrompt `
+        -Page $Page
+
+    if (-not $isUpdatesPrompt) {
+        return $selection
+    }
+
+    if (Test-PwWorkshopBackSelection $selection) {
+        return ''
+    }
+
+    if ($selection -match '^(?i:R)$') {
+        Clear-PwRemoteMetadataCache
+        Write-Host (
+            'Remote metadata cache cleared. Refreshing Nexus and GitHub ' +
+                'update information.'
+        ) -ForegroundColor DarkGray
+    }
+
+    $selection
+}
+
+function Open-PwNexusModPage {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateRange(1, [int]::MaxValue)]
+        [int]$ModId,
+
+        [switch]$Launch
+    )
+
+    $url = "https://www.nexusmods.com/palworld/mods/${ModId}?tab=files"
+
+    if ($Launch -and $PSCmdlet.ShouldProcess($url, 'Open Nexus Mods page')) {
+        $archiveRoot = [System.IO.Path]::GetFullPath((Get-PwPaths).Archives)
+
+        Write-Host ''
+        Write-Host 'Manual Nexus Download' -ForegroundColor Cyan
+        Write-Host 'Save the completed ZIP or 7z file directly into:'
+        Write-Host "  $archiveRoot" -ForegroundColor Green
+        Write-Host (
+            'The workshop does not monitor browser download completion. ' +
+                'After the file finishes downloading, return to menu 4 and ' +
+                'press R to rescan 01_Archives and refresh remote metadata.'
+        ) -ForegroundColor Yellow
+        Write-Host (
+            'Use menu option 2 afterward to inspect and import the archive.'
+        ) -ForegroundColor DarkGray
+
+        Start-Process $url
+    }
+
+    $url
+}
 
 function Save-PwNexusModUpdateCore {
 
@@ -161,6 +428,7 @@ function Save-PwNexusModUpdate {
         return
     }
 
+    Clear-PwRemoteMetadataCache -Provider NexusMods
     $reportRows = @(
         Get-PwModUpdateReport -ApiKey $ApiKey -ModId @($ModId)
     )
