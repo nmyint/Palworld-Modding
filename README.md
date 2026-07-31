@@ -49,9 +49,9 @@ Workshop automation is developed and tested for **PowerShell 7.6.4** (`pwsh`). W
 
 ## Pw-Git
 
-**Pw-Git v1.1 is complete; v1.2 is in progress.** Pw-Git is the repository-safe Git workflow interface used by the workshop and remains separate from PwWorkshop.
+**Pw-Git v1.2 is complete.** Pw-Git is the repository-safe Git workflow interface used by the workshop and remains separate from PwWorkshop.
 
-The responsive main menu provides repository health, status, fetch, compare, pull, selected-file pull, staging, commit, and committed-change push workflows. `H` opens the Advanced menu for unstage, discard, stash, stash restore, repository history, branch information, and the v1.2 manual repository-structure refresh action.
+The responsive main menu provides repository health, status, fetch, compare, pull, selected-file pull, staging, commit, and committed-change push workflows. `H` opens the Advanced menu for unstage, discard, stash, stash restore, repository history, branch information, and manual repository-structure refresh.
 
 Safety and usability features include:
 
@@ -63,6 +63,7 @@ Safety and usability features include:
 - synchronized direct-command validation in both launchers
 - manual repository-map refresh through `refresh-structure`
 - repository-map refresh leaves Git staging unchanged
+- transactional generated-output replacement if export fails
 - `Enter` or `B` returns to the previous menu where supported
 - `Q` exits Pw-Git
 - Ctrl-C safely interrupts the current operation
@@ -79,7 +80,9 @@ Refresh the generated repository map manually:
 pwsh -NoProfile -File ./pw-git.ps1 refresh-structure
 ```
 
-See [Pw-Git.md](00_Documentation/Pw-Git.md) for the current v1.2 scope, menu map, direct commands, safety model, and pending completion checks.
+Pw-Git v1.2 was validated under PowerShell 7.6.4 with the focused exporter and Pw-Git test suites passing, generated changes reported correctly, staging preserved, and the regenerated repository maps published to `main`.
+
+See [Pw-Git.md](00_Documentation/Pw-Git.md) for the completed v1.2 release record, menu map, direct commands, and safety model.
 
 ## Goals
 
