@@ -100,11 +100,13 @@ and rows without valid Nexus mod and remote file IDs. It supports `-WhatIf`,
 uses high-impact confirmation, and passes the exact selected remote file ID to
 the existing downloader.
 
+Menu option 4 now refreshes and matches the selected report row before a direct
+download. It displays the selected mod, local and remote versions, variant,
+remote filename, file ID, and status; refuses stale or non-actionable rows; and
+requires deliberate confirmation before calling the guarded report command.
 The result reports the downloaded archive path and SHA-256 hash and identifies
 the next workflow step: inspect and import the archive through menu option 2.
-The option 4 menu currently still calls the low-level downloader directly; the
-guarded function is the reviewed backend boundary for the next menu-wiring
-increment.
+Manual browser download remains available as the normal-account fallback.
 
 The workshop uses the user-local `wget.exe` installation at
 `%LOCALAPPDATA%\Programs\Wget`, otherwise `curl.exe`, and finally PowerShell web
