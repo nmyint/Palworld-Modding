@@ -31,20 +31,30 @@ guarded Nexus update-report workflow without reopening Sprint 4.
 
 `10_Scripts/Tests/NexusUpdateMenuWiring.Tests.ps1` covers:
 
-- non-mutating menu preview;
+- non-mutating command preview;
 - exact report-row routing;
 - refusal of non-actionable rows;
 - refusal of stale file IDs;
 - preservation of low-level explicit-ID behavior outside the menu.
 
-## Validation Complete
+`10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1` exercises the actual
+`Start-PwWorkshop` option 4 control flow with mocked input and no network or
+filesystem mutation. It covers:
 
-On 2026-07-31, the repository owner ran the focused menu-wiring suite, the
-guarded download suite, and the complete repository test suite locally on the
-feature branch. All tests passed with no failures, skips, pending tests, or
-inconclusive results reported.
+- selecting option 4 from the main menu;
+- selecting a Nexus mod ID from the rendered update report;
+- routing direct mode through `Save-PwModUpdateFromReport`;
+- returning from the updates submenu and honoring global `Q`;
+- preserving the manual browser fallback without invoking the downloader.
 
-Commands validated:
+## Validation History
+
+On 2026-07-31, the repository owner ran the original focused menu-wiring suite,
+the guarded download suite, and the complete repository test suite locally on
+the feature branch. All tests present at that point passed with no failures,
+skips, pending tests, or inconclusive results reported.
+
+Commands previously validated:
 
 ```powershell
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuWiring.Tests.ps1
@@ -52,9 +62,16 @@ Invoke-Pester ./10_Scripts/Tests/NexusUpdateDownloads.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests
 ```
 
-## Remaining Manual Check
+## Current Validation Required
 
-Exercise option 4 interactively with manual browser mode or a non-mutating
-`-WhatIf` direct-download preview before merging. A real Premium download is
-optional and must use the owner's own Nexus account. Do not merge to `main`
-until this final interactive check is complete.
+The interaction-flow suite was added after the successful run above and must be
+validated before merge:
+
+```powershell
+Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1
+Invoke-Pester ./10_Scripts/Tests
+```
+
+A real Premium download is optional and must use the owner's own Nexus account.
+Do not merge to `main` until the new interaction suite and the complete suite
+pass.
