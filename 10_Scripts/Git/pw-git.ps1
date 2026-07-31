@@ -25,6 +25,7 @@ param(
         'status',
         'stage',
         'review-staged',
+        'refresh-structure',
         'commit',
         'log',
         'help'
@@ -63,6 +64,7 @@ Commands:
   status           Show concise local repository status
   stage            Stage selected local files
   review-staged    Review staged changes before committing
+  refresh-structure Refresh generated repository structure documentation
   commit           Create a reviewed local commit
   log              Show recent repository history
   help             Show this help
@@ -79,6 +81,7 @@ Examples:
   pw-git compare
   pw-git pull
   pw-git stage
+  pw-git refresh-structure
 '@ | Write-Host
 }
 function Get-PwGitCommandDefinition {
@@ -94,6 +97,7 @@ function Get-PwGitCommandDefinition {
         status = [pscustomobject]@{ File = 'Status.ps1'; Function = 'Invoke-PwGitStatus' }
         stage = [pscustomobject]@{ File = 'Stage.ps1'; Function = 'Invoke-PwGitStage' }
         'review-staged' = [pscustomobject]@{ File = 'ReviewStaged.ps1'; Function = 'Invoke-PwGitReviewStaged' }
+        'refresh-structure' = [pscustomobject]@{ File = 'RefreshStructure.ps1'; Function = 'Invoke-PwGitRefreshStructure' }
         commit = [pscustomobject]@{ File = 'Commit.ps1'; Function = 'Invoke-PwGitCommit' }
         log = [pscustomobject]@{ File = 'Log.ps1'; Function = 'Invoke-PwGitLog' }
     }
