@@ -1,21 +1,32 @@
 Palworld Modding Workshop Repository Structure
-Generated: 07/31/2026 02:05:43
+Generated: 07/31/2026 02:21:35
 Repository: Palworld-Modding
-Root: D:\Projects\Palworld-Modding
+Root: .
+Branch: main
+CommitSHA: cfcea2173660e54d76d865d9e34c8ebd492e2c9d
 
 Statistics:
-Directories: 265
-Documents: 242
-PowerShell Scripts: 74
+Directories: 35
+Files: 113
+Documents: 113
+PowerShell Scripts: 75
 
-D:\Projects\Palworld-Modding
+├── .config
+│   ├── UpdateSources.json
+│   ├── Workshop.json
+├── .vscode
+│   ├── extensions.json
+│   ├── mcp.json
+│   ├── PowerShellEditorServices.json
+│   ├── settings.json
+│   ├── tasks.json
 ├── 00_Documentation
 │   ├── MCP
-│   │   └── TODO.md
+│   │   ├── TODO.md
 │   ├── Session-Handoffs
 │   │   ├── 2026-07-30-pw-git-kickoff.md
 │   │   ├── 2026-07-30-shit.md
-│   │   └── Codex.txt
+│   │   ├── Codex.txt
 │   ├── AIRepositoryWorkflow.md
 │   ├── CatalogMetadata.md
 │   ├── ChangeManagement.md
@@ -32,11 +43,12 @@ D:\Projects\Palworld-Modding
 │   ├── PowerShellStandards.md
 │   ├── Profiles.md
 │   ├── Recovery.md
+│   ├── RepositoryInventory.json
 │   ├── RepositoryStructure.txt
 │   ├── Roadmap.md
 │   ├── Scrapbook.md
 │   ├── UpdateSources.md
-│   └── WorkshopBackup.md
+│   ├── WorkshopBackup.md
 ├── 01_Archives
 ├── 02_Staging
 ├── 03_Mod_Library
@@ -67,12 +79,12 @@ D:\Projects\Palworld-Modding
 │   │   ├── UpgradeRemoval.ps1
 │   │   ├── WorkshopBackup.ps1
 │   │   ├── WorkshopInfo.ps1
-│   │   └── WorkshopMenu.ps1
+│   │   ├── WorkshopMenu.ps1
 │   ├── Config
 │   │   ├── Json.ps1
-│   │   └── WorkshopConfig.ps1
+│   │   ├── WorkshopConfig.ps1
 │   ├── Core
-│   │   └── Bootstrap.ps1
+│   │   ├── Bootstrap.ps1
 │   ├── Git
 │   │   ├── Commands
 │   │   │   ├── Check.ps1
@@ -82,17 +94,17 @@ D:\Projects\Palworld-Modding
 │   │   │   ├── Pull.ps1
 │   │   │   ├── PullSelected.ps1
 │   │   │   ├── Push.ps1
-│   │   │   └── Status.ps1
+│   │   │   ├── Status.ps1
 │   │   ├── Bootstrap.ps1
 │   │   ├── Menu.ps1
-│   │   └── pw-git.ps1
+│   │   ├── pw-git.ps1
 │   ├── Modules
 │   │   ├── PalworldModding.psd1
-│   │   └── PalworldModding.psm1
+│   │   ├── PalworldModding.psm1
 │   ├── Output
 │   ├── Shared
 │   │   ├── GitHelpers.ps1
-│   │   └── GitValidation.ps1
+│   │   ├── GitValidation.ps1
 │   ├── Tasks
 │   │   ├── Backup-Workshop.ps1
 │   │   ├── Complete-ModValidation.ps1
@@ -111,7 +123,7 @@ D:\Projects\Palworld-Modding
 │   │   ├── Test-Backup.ps1
 │   │   ├── Test-Environment.ps1
 │   │   ├── Test-Profiles.ps1
-│   │   └── Test-Workshop.ps1
+│   │   ├── Test-Workshop.ps1
 │   ├── Tests
 │   │   ├── CatalogMetadata.Tests.ps1
 │   │   ├── Deployment.Tests.ps1
@@ -122,27 +134,28 @@ D:\Projects\Palworld-Modding
 │   │   ├── ProfileAssembly.Tests.ps1
 │   │   ├── Profiles.Tests.ps1
 │   │   ├── Recovery.Tests.ps1
+│   │   ├── RepositoryStructure.Tests.ps1
 │   │   ├── SourceUpdates.Tests.ps1
 │   │   ├── StagingReconciliation.Tests.ps1
 │   │   ├── UpgradeRemoval.Tests.ps1
-│   │   └── WorkshopBackup.Tests.ps1
-│   └── Utilities
-│       └── Export-PwRepositoryStructure.ps1
+│   │   ├── WorkshopBackup.Tests.ps1
+│   ├── Utilities
+│   │   ├── Export-PwRepositoryStructure.ps1
 ├── 11_Utilities
 │   ├── pw-chat-archive
-│   │   └── pw-chat-archive.ps1
-│   └── modman.ps1
+│   │   ├── pw-chat-archive.ps1
+│   ├── modman.ps1
 ├── 12_Research
 ├── 13_Backups
 ├── 14_Templates
 ├── 15_Sandbox
 │   ├── ProfileAssembly
-│   └── pw-git-monolith
-│       └── pw-git.ps1
+│   ├── pw-git-monolith
+│   │   ├── pw-git.ps1
 ├── 16_Profiles
-│   └── Stable.json
+│   ├── Stable.json
 ├── CONTRIBUTING.md
 ├── Palworld-Modding.code-workspace
 ├── pw-git.ps1
 ├── PwWorkshop.ps1
-└── README.md
+├── README.md
