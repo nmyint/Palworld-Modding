@@ -3,273 +3,285 @@
 **Date:** 2026-07-31
 **Repository:** `nmyint/Palworld-Modding`
 **Branch:** `agent/nexus-update-download-flow`
+**Pull request:** #2, open and draft
 
 ## Scope
 
-Wire the existing `PwWorkshop.ps1` option 4 direct-download selection to the
-guarded Nexus update-report workflow without reopening Sprint 4. Follow-up work
-completes the observed menu navigation, manual-download guidance, menu 1 remote-
-metadata failure handling, and a persistent universal Nexus metadata snapshot.
+Continue the Sprint 5 Nexus workflow without reopening completed Sprint 4. The
+branch now combines:
 
-## Completed Download Boundary
+- guarded option-4 update downloads;
+- option-4 navigation and manual-download guidance;
+- a persistent catalog-wide Nexus metadata snapshot;
+- explicit refresh UX in menu 1 and menu 4; and
+- a fix for menu 1 Remote Metadata when an incomplete catalog identity has no
+  install-name alias.
 
-- Added `NexusUpdateMenuWiring.ps1` after the existing menu controller in module
-  load order.
-- Preserved the existing explicit-ID downloader as an internal core operation.
-- Menu-originated direct downloads refresh and match the current update row.
-- Only an exact `UpdateAvailable` row with matching Nexus mod and file IDs can
-  proceed.
-- `Current`, failed, incompatible-variant, missing-file, stale-file-ID, and
-  empty-refreshed-report cases are refused before a network or filesystem
-  mutation.
-- The menu displays the selected mod, local and remote versions, variant,
-  filename, file ID, and status before confirmation.
-- High-impact `ShouldProcess` confirmation is required for guarded menu and
-  report-based downloads.
-- The original medium-impact `ShouldProcess` and `-WhatIf` behavior remains on
-  the low-level explicit-ID downloader.
-- The guarded report command performs the download and returns the archive path,
-  SHA-256 hash, and option-2 import next step.
-- Manual browser download remains available.
-- Existing non-update explicit-ID callers retain the low-level behavior.
+Do not merge to `main` without the repository owner's explicit approval.
+
+## Guarded Download Boundary
+
+The option-4 direct-download flow:
+
+- accepts only an exact `UpdateAvailable` report row;
+- matches both Nexus mod ID and current remote file ID;
+- refuses current, failed, incompatible-variant, missing-file, stale-file-ID,
+  and empty-refreshed-report cases before mutation;
+- shows the selected name, local and remote versions, variants, filename, file
+  ID, and status;
+- requires high-impact confirmation;
+- retains the original explicit-ID `ShouldProcess`, `-Confirm`, and `-WhatIf`
+  boundary;
+- validates Premium status live;
+- obtains the direct-download link live;
+- downloads to a temporary path, inspects the archive, and only then moves it
+  into `01_Archives`; and
+- returns the archive path, SHA-256 hash, and option-2 import next step.
+
+Manual browser download remains available for normal accounts. The menu displays
+the resolved `01_Archives` path before opening Nexus. Browser completion is not
+monitored; the completed ZIP or 7z must be saved into `01_Archives`, followed by
+option-4 `R` and option 2 archive inspection/import.
 
 ## Nexus Metadata Usage Audit
 
-The workshop currently consumes Nexus metadata in these workflows:
+Current workshop consumers use these Nexus fields:
 
-- mod update reports:
-  - mod name and version;
-  - file ID, filename, version, category, and upload time;
-- remote catalog metadata and identity review:
-  - name, version, summary, and description;
-  - GitHub links and framework hints parsed from description text;
-- current-game adoption:
-  - reviewed identity metadata;
-  - file ID, name, filename, version, category, size, and upload time;
-- profile missing-archive plans:
-  - mod metadata and the latest compatible file;
-- configured Nexus source checks:
-  - mod version and description;
-  - latest file metadata;
-- direct downloads:
-  - live account Premium status;
-  - current mod metadata and exact file metadata;
-  - a transient direct-download link.
+- update reports: mod name/version and file ID, filename, version, category, and
+  upload time;
+- catalog metadata and identity review: name, version, summary, description,
+  GitHub links, and framework hints;
+- current-game adoption: identity data plus file name, version, category, size,
+  and upload time;
+- profile archive plans: mod data and latest compatible file;
+- configured Nexus sources: mod version/description and latest file metadata;
+- direct downloads: live Premium identity, current mod/file data, and a live
+  transient download link.
 
-Before the snapshot follow-up, these modules independently requested overlapping
-mod and file-list endpoints.
+Before this branch, these workflows independently repeated overlapping mod and
+file-list API calls.
 
 ## Universal Nexus Metadata Snapshot
 
-The branch now creates one persistent local snapshot at:
+The single cache/API authority is:
+
+```text
+10_Scripts\Commands\NexusMetadataCache.ps1
+```
+
+It loads **before** `NexusUpdateMenuWiring.ps1`. The wiring file consumes the
+cache services and contains only menu UX and download orchestration.
+
+The local persistent snapshot is:
 
 ```text
 .cache\NexusMetadata.json
 ```
 
-The directory is ignored by Git. The snapshot records one entry for every unique
-reviewed Nexus ID known through:
+`.cache` is ignored by Git. The snapshot covers every unique reviewed Nexus ID
+known through:
 
 - `03_Mod_Library\catalog.json`;
 - surviving Nexus archives in `01_Archives`; and
 - enabled configured Nexus sources.
 
-Each entry stores the complete raw JSON returned by:
+For each ID it preserves the complete raw JSON returned by:
 
 - `games/palworld/mods/{id}.json`;
 - `games/palworld/mods/{id}/files.json`.
 
-All fields returned by those two canonical v1 endpoints are preserved, including
-fields not yet displayed by a menu. Existing menu and module commands continue
-to call `Invoke-PwNexusApi`; the shared API layer serves supported mod, file-list,
-and exact-file reads from the snapshot. Exact-file reads are resolved from the
-complete cached file list.
+The full file-list response already contains complete per-file metadata,
+including descriptions, changelog HTML, sizes, content-preview links, upload
+times, virus-scan links, primary-file state, and file-update chains. Exact-file
+reads are resolved from that cached list rather than causing per-file API fan-
+out.
 
-The snapshot deliberately excludes:
+Existing commands continue calling `Invoke-PwNexusApi`. The shared API layer
+routes supported mod, file-list, and exact-file reads to the snapshot, so menu
+and module code parse one authoritative dataset.
 
-- Nexus API keys and credentials;
-- user identity and account data;
-- direct-download links;
-- archive file contents;
-- unrelated games, collections, comments, and user-specific endpoints.
+### Deliberate exclusions
 
-`users/validate.json` and `download_link.json` remain live-only. A selected mod
-and file list are refreshed immediately before an approved direct download.
+The snapshot does not separately request or store:
+
+- API keys or credentials;
+- API validation responses;
+- tracked-mod or endorsement-list endpoints;
+- transient direct-download links;
+- archive contents or content-preview payloads;
+- unrelated games, collections, comments, discovery feeds, or other user-
+  specific endpoints.
+
+The mod-info response is retained verbatim. If Nexus includes an optional
+account-relative field inside that raw response, such as an inline endorsement
+state, it is preserved with the response; no separate account-data request is
+made to obtain it.
+
+`users/validate.json` and `download_link.json` remain live-only.
 
 ## Snapshot Lifetime and Refresh
 
-There is no automatic ten-minute Nexus expiration.
+There is no automatic Nexus cache expiration.
 
-- An absent or empty cache builds the complete catalog-wide snapshot, even when
-  reached through a single-mod request.
-- Normal menu and module use reuses the persistent disk snapshot indefinitely.
-- Newly reviewed Nexus IDs are fetched incrementally without refreshing existing
-  entries.
-- `R` in menu 1 Remote Metadata performs a complete refresh and redraws the
+- An absent or empty cache builds the complete catalog-wide snapshot, including
+  when first reached through a single-mod request.
+- Normal menu/module use reuses the disk snapshot indefinitely.
+- Newly reviewed IDs are fetched incrementally without refreshing existing IDs.
+- Menu 1 Remote Metadata `R` refreshes the complete snapshot and redraws the
   report in place.
-- `R` in menu 4 Updates performs a complete Nexus refresh, clears the short-lived
-  GitHub source cache, and reruns both update reports.
-- Menu 1 and menu 4 display the snapshot timestamp and ready-versus-catalog mod
-  count in their screen title.
-- A failed refresh preserves a prior known-good entry, records the error and
-  timestamp, and reports the refresh-error count in the title.
+- Menu 4 Updates `R` refreshes the complete Nexus snapshot, clears the short-
+  lived GitHub source cache, and reruns both reports.
+- A selected mod and full file list are refreshed immediately before an
+  approved direct download.
+- Menu 1 and menu 4 show the cache timestamp and ready-versus-catalog count.
+- When a refresh fails, a prior known-good entry is retained and the refresh
+  error/time is recorded and surfaced in the title.
+- Cache writes use a temporary file followed by replacement of the final JSON
+  path.
 
-Local archives, the persistent catalog, profiles, and configuration remain
-uncached and are reread normally.
+Local archives, catalog, profiles, and source configuration remain uncached and
+are reread normally.
+
+For approximately 30 unique mods, a complete refresh performs approximately 60
+stable metadata requests: one mod-info and one full file-list request per ID.
+Normal reads then reuse the snapshot until explicit refresh or catalog coverage
+changes.
 
 ## Menu 1 Remote Metadata Fix
 
-The reported error:
+The observed exception:
 
 ```text
 Index was outside the bounds of the array.
 ```
 
-came from indexing the first `InstallNames` value without verifying that an
-incomplete catalog record had one. `Get-PwNexusCatalogMetadataReport` now:
+came from indexing the first `InstallNames` value without checking whether an
+incomplete catalog record had one.
 
-- safely filters absent or empty install-name values;
-- uses the first valid install name when present;
-- falls back to `DisplayName` and then `CatalogKey`;
-- keeps the incomplete record visible as `NeedsNexusId` instead of terminating
-  the Remote Metadata screen.
+`Get-PwNexusCatalogMetadataReport` now:
 
-A focused regression test covers the empty-install-name case.
+- filters absent and blank install-name values safely;
+- uses the first valid install name when available;
+- falls back to `DisplayName`, then `CatalogKey`;
+- keeps the record visible as `NeedsNexusId`; and
+- no longer terminates the Remote Metadata screen.
 
-## Option 4 UX Follow-up
+## Menu UX
 
-The update report prompt visibly provides:
+### Menu 1 - Remote Metadata
 
-- a Nexus mod ID selection;
-- `U` for the UE4SS baseline workflow;
-- `R` to refresh the complete Nexus snapshot and remote source metadata;
-- `B` to return to the main menu;
-- Enter to return; and
-- `Q` to exit.
+The screen title shows the Nexus cache timestamp and ready/catalog count.
+Controls include:
 
-The existing update-menu controller already used Enter as its return value. The
-wiring layer maps the visible `B` selection to that established behavior.
+- `A` store derived reviewed metadata;
+- `V` verify a review item;
+- `R` refresh the complete Nexus snapshot and redraw in place;
+- `B` return to the catalog submenu; and
+- `Q` exit.
 
-Manual browser downloads display the resolved `01_Archives` directory before
-opening Nexus. The workshop does not monitor browser completion or scan the
-normal Windows Downloads directory. The user must save a completed ZIP or 7z
-into `01_Archives`, return to option 4, press `R`, and then use option 2 to inspect
-and import it.
+### Menu 4 - Updates
+
+The screen title shows the same Nexus cache timestamp and count. Controls
+include:
+
+- Nexus mod ID selection;
+- `U` UE4SS baseline flow;
+- `R` complete Nexus refresh plus GitHub source-cache clear;
+- `B` or Enter to return to the main menu; and
+- `Q` exit.
 
 ## Implementation Files
 
+- `.gitignore`
+- `10_Scripts/Commands/NexusMetadataCache.ps1`
 - `10_Scripts/Commands/NexusUpdateDownloads.ps1`
 - `10_Scripts/Commands/NexusUpdateMenuWiring.ps1`
-- `10_Scripts/Commands/NexusMetadataCache.ps1`
 - `10_Scripts/Commands/CatalogMetadata.ps1`
 - `10_Scripts/Modules/PalworldModding.psm1`
-- `.gitignore`
+- `10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1`
+- `10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1`
+- `10_Scripts/Tests/NexusUpdateMenuWiring.Tests.ps1`
+- `10_Scripts/Tests/NexusUpdateDownloads.Tests.ps1`
+- `10_Scripts/Tests/CatalogMetadata.Tests.ps1`
+- `00_Documentation/NexusUpdates.md`
+- `00_Documentation/MenuFlow.md`
 
-`NexusMetadataCache.ps1` is loaded after the menu wiring compatibility layer and
-finalizes the persistent cache read, update, status, and title behavior.
+## Test Coverage Added
 
-## Test Coverage
+The focused tests cover:
 
-`10_Scripts/Tests/NexusUpdateMenuWiring.Tests.ps1` covers:
+- fail-closed refreshed-report behavior;
+- explicit-ID `-WhatIf` safety;
+- complete raw mod/file-list storage for every catalog ID;
+- persistent disk reuse without repeated API calls;
+- incremental retrieval of a newly reviewed ID;
+- exact-file lookup from the full cached file list;
+- live retrieval of every download-link response;
+- GitHub metadata session caching and explicit clearing;
+- menu 4 timestamp, `R`, and `B` behavior;
+- menu 1 explicit refresh and redraw;
+- manual browser handoff; and
+- incomplete catalog records with no install names.
 
-- non-mutating command preview;
-- exact report-row routing;
-- refusal of non-actionable rows;
-- refusal of stale file IDs;
-- preservation of low-level explicit-ID behavior outside the menu.
+New Pester 3.4 cache/UX cases are isolated into separate `Describe` scopes to
+avoid module-scoped mock leakage.
 
-`10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1` covers:
-
-- selecting option 4 from the main menu;
-- selecting a Nexus mod ID from the rendered update report;
-- routing direct mode through `Save-PwModUpdateFromReport`;
-- returning from the updates submenu and honoring global `Q`;
-- preserving the manual browser fallback without invoking the downloader.
-
-`10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1` now covers:
-
-- fail-closed behavior when the refreshed update report returns no row;
-- preservation of non-mutating `-WhatIf` behavior for explicit-ID callers;
-- complete raw mod and file-list storage for every catalog ID;
-- persistent disk reuse without a repeated API request;
-- incremental retrieval of a newly cataloged Nexus ID;
-- exact-file lookup through the cached full file list;
-- live retrieval of every transient Nexus download link;
-- reuse and explicit clearing of GitHub release metadata;
-- visible option 4 cache timestamp, `B`, and `R` controls;
-- explicit complete refresh from option 4;
-- explicit complete refresh and redraw from menu 1 Remote Metadata; and
-- the manual browser handoff while preserving the archive intake boundary.
-
-`10_Scripts/Tests/CatalogMetadata.Tests.ps1` adds the incomplete catalog identity
-regression case.
-
-Each new Pester 3.4 cache or UX case is isolated in its own `Describe` scope to
-avoid module-scoped mock leakage between cases.
-
-## Earlier Validation History
-
-Before pull-request review, the repository owner validated the branch locally
-with PowerShell 7.6.4 and Pester 3.4.0:
-
-- option-4 interaction suite: 2 passed, 0 failed;
-- complete repository suite: 123 passed, 0 failed.
-
-The review then found and corrected two production-code safety regressions:
-
-1. An empty refreshed menu report fell back to the low-level explicit-ID
-   downloader.
-2. Moving the original downloader into a core function omitted its original
-   `ShouldProcess` boundary.
-
-The first post-review Pester 3.4 safety run also exposed module-scoped mock
-leakage. The affected cases were isolated into separate `Describe` scopes.
-
-## Last Verified Executable Checkpoint
+## Earlier Verified Checkpoint
 
 The repository owner validated executable commit
-`9baa746bab6054e1445a1de8fc9aefa1ba398af7` locally under PowerShell 7.6.4 with
+`9baa746bab6054e1445a1de8fc9aefa1ba398af7` locally under PowerShell 7.6.4 and
 Pester 3.4.0 on 2026-07-31:
 
-- original `NexusUpdateMenuSafety.Tests.ps1`: 2 passed, 0 failed;
-- complete `10_Scripts/Tests` suite: 125 passed, 0 failed.
+- original safety suite: 2 passed, 0 failed;
+- complete suite: 125 passed, 0 failed.
 
-## Current Validation Required
+The persistent snapshot and menu 1 fix are later executable changes and have not
+yet been locally validated.
 
-The persistent universal snapshot and menu 1 fix change production code after
-the last validated checkpoint. Pull the current feature branch and run:
+## Required Local Validation
+
+Because `NexusMetadataCache.ps1` is a new command file, regenerate the generated
+repository maps **before** the complete Pester suite:
 
 ```powershell
+.\10_Scripts\Utilities\Export-PwRepositoryStructure.ps1
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests/CatalogMetadata.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests
 ```
 
-Expected counts, assuming no further tests are added first:
+Expected counts, assuming no additional tests are added first:
 
 - safety suite: 12 passed, 0 failed;
 - catalog metadata suite: 8 passed, 0 failed;
 - option-4 interaction suite: 2 passed, 0 failed;
 - complete suite: 136 passed, 0 failed.
 
-Interactive acceptance should verify:
+Then verify:
 
-1. menu 1 `R` opens Remote Metadata without an indexing exception;
-2. menu 1 Remote Metadata shows the cache timestamp/count and its inner `R`
-   refreshes and redraws the report;
-3. option 4 shows the same cache timestamp/count plus `R` and `B`;
-4. option 4 `B` returns to the main menu;
-5. option 4 `M` displays the resolved `01_Archives` path and opens Nexus;
-6. option 4 `R` rescans local archives and refreshes remote metadata;
-7. cancelling a direct-download confirmation leaves files unchanged; and
-8. `.cache\NexusMetadata.json` exists locally and remains untracked.
+```powershell
+git status --short --branch
+git check-ignore -v .cache/NexusMetadata.json
+```
 
-Because `NexusMetadataCache.ps1` adds a command file, regenerate the generated
-repository structure and inventory artifacts locally before merge, then review
-their diff. Do not hand-edit generated structure artifacts.
+Expected generated tracked changes:
+
+- `00_Documentation/RepositoryStructure.txt`
+- `00_Documentation/RepositoryInventory.json`
+
+The cache JSON itself must remain ignored and untracked.
+
+## Interactive Acceptance
+
+1. Menu 1 `R` opens Remote Metadata without an indexing exception.
+2. Menu 1 shows the timestamp/count and inner `R` refreshes/redraws.
+3. Menu 4 shows the same timestamp/count plus visible `R` and `B`.
+4. Menu 4 `B` returns to the main menu.
+5. Manual mode displays the resolved `01_Archives` path and opens Nexus.
+6. Menu 4 `R` rescans local archives and refreshes remote metadata.
+7. Cancelling direct-download confirmation leaves files unchanged.
+8. `.cache\NexusMetadata.json` exists after first use and remains ignored.
 
 A real Nexus Premium download remains optional and must use the repository
-owner's own account. Pull request #2 must remain draft until the current focused
-and complete suites pass, and it must not be merged to `main` without the
-repository owner's explicit approval.
+owner's own account and API key.
