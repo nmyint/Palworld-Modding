@@ -79,15 +79,129 @@ function New-PwWorkshopMenuLine {
     }
 }
 
+function Get-PwWorkshopDashboardMenuStatus {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Dashboard
+    )
+
+    $profile = if ($null -eq $Dashboard.Profile) {
+        'Profile unavailable'
+    }
+    else {
+        $profileState = if ($Dashboard.Profile.IsReady) {
+            'Ready'
+        }
+        elseif ($Dashboard.Profile.IsValid) {
+            'Not ready'
+        }
+        else {
+            'Invalid'
+        }
+        $modSet = if (
+            [string]::IsNullOrWhiteSpace($Dashboard.Profile.ActiveModSet)
+        ) {
+            'No active set'
+        }
+        else {
+            (
+                '{0} ({1} mods)' -f
+                    $Dashboard.Profile.ActiveModSet,
+                    $Dashboard.Profile.SelectedModCount
+            )
+        }
+
+        '{0}: {1}, {2}' -f $Dashboard.Profile.Name, $profileState, $modSet
+    }
+
+    $repository = if ($null -eq $Dashboard.Repository) {
+        'Repo unavailable'
+    }
+    else {
+        $workingState = if ($Dashboard.Repository.IsClean) {
+            'clean'
+        }
+        else {
+            $changeCount = @($Dashboard.Repository.Changes).Count
+            "$changeCount change(s)"
+        }
+        $syncState = if (-not $Dashboard.Repository.HasUpstream) {
+            'no upstream'
+        }
+        elseif (
+            $Dashboard.Repository.Ahead -eq 0 -and
+            $Dashboard.Repository.Behind -eq 0
+        ) {
+            'synced'
+        }
+        else {
+            'ahead {0}, behind {1}' -f
+                $Dashboard.Repository.Ahead,
+                $Dashboard.Repository.Behind
+        }
+
+        '{0}: {1}, {2}' -f
+            $Dashboard.Repository.Branch,
+            $workingState,
+            $syncState
+    }
+
+    $catalog = if ($null -eq $Dashboard.Catalog) {
+        'Catalog unavailable'
+    }
+    else {
+        "Catalog $($Dashboard.Catalog.ModCount) mods"
+    }
+    $deployment = if ($null -eq $Dashboard.Deployment) {
+        'Deploy unavailable'
+    }
+    elseif ($Dashboard.Deployment.CanDeploy) {
+        'Deploy ready'
+    }
+    else {
+        'Deploy blocked'
+    }
+    $updates = if ($null -eq $Dashboard.UpdateCache) {
+        'Updates unavailable'
+    }
+    elseif (-not $Dashboard.UpdateCache.Exists) {
+        'Updates not cached'
+    }
+    elseif ($Dashboard.UpdateCache.IsCurrent) {
+        'Updates current'
+    }
+    else {
+        'Updates stale'
+    }
+    $diagnostics = if ($null -eq $Dashboard.Diagnostics) {
+        'Diagnostics unavailable'
+    }
+    elseif ($Dashboard.Diagnostics.IsHealthy) {
+        'Diagnostics healthy'
+    }
+    else {
+        'Diagnostics need attention'
+    }
+
+    [PSCustomObject]@{
+        Primary = "Profile $profile | Repo $repository"
+        Health = "$catalog | $deployment | $updates | $diagnostics"
+        Snapshot = (
+            'Snapshot {0}/{1} sections ready' -f
+                $Dashboard.ReadySectionCount,
+                @($Dashboard.Sections).Count
+        )
+    }
+}
+
 function Get-PwWorkshopMenuLayout {
 
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string]$Profile,
-
-        [Parameter(Mandatory)]
-        [string]$EnvironmentStatus,
+        [object]$Dashboard,
 
         [ValidateRange(40, 110)]
         [int]$Width = 80,
@@ -97,6 +211,7 @@ function Get-PwWorkshopMenuLayout {
     )
 
     $border = '+' + ('-' * ($Width - 2)) + '+'
+    $status = Get-PwWorkshopDashboardMenuStatus -Dashboard $Dashboard
     $content = @(
         New-PwWorkshopMenuLine `
             -Text 'PALWORLD MODDING WORKSHOP' `
@@ -104,7 +219,7 @@ function Get-PwWorkshopMenuLayout {
             -Color Cyan `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text 'Sprint 4 - Catalog, Library, and Compatibility' `
+            -Text 'WORKSHOP CONTROL CENTER' `
             -Alignment Center `
             -Color DarkCyan `
             -Width $Width
@@ -113,10 +228,10 @@ function Get-PwWorkshopMenuLayout {
             -Color DarkGray `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text "Active profile : $Profile" `
+            -Text $status.Primary `
             -Width $Width
         New-PwWorkshopMenuLine `
-            -Text "Environment    : $EnvironmentStatus" `
+            -Text $status.Health `
             -Width $Width
         New-PwWorkshopMenuLine `
             -Text ('-' * ($Width - 4)) `
@@ -172,7 +287,10 @@ function Get-PwWorkshopMenuLayout {
                 -Color Cyan `
                 -Width $Width
             New-PwWorkshopMenuLine `
-                -Text "Profile: $Profile | Environment: $EnvironmentStatus" `
+                -Text $status.Primary `
+                -Width $Width
+            New-PwWorkshopMenuLine `
+                -Text ($status.Health + ' | ' + $status.Snapshot) `
                 -Width $Width
             New-PwWorkshopMenuLine `
                 -Text ('-' * ($Width - 4)) `
@@ -245,18 +363,10 @@ function Show-PwWorkshopMenu {
     [CmdletBinding()]
     param()
 
-    $configuration = Get-PwWorkshopConfig
-    $environment = Test-PwEnvironment
-    $environmentStatus = if ($environment.IsReady) {
-        'Ready'
-    }
-    else {
-        'Needs attention'
-    }
+    $dashboard = Get-PwWorkshopDashboard
     $terminal = Get-PwWorkshopTerminalSize
     $layout = Get-PwWorkshopMenuLayout `
-        -Profile $configuration.Deployment.ActiveProfile `
-        -EnvironmentStatus $environmentStatus `
+        -Dashboard $dashboard `
         -Width $terminal.Width `
         -Height $terminal.Height
 
@@ -294,7 +404,7 @@ function Read-PwWorkshopMenuSelection {
             $key = [Console]::ReadKey($true)
             $selection = $key.KeyChar.ToString().ToUpperInvariant()
 
-            if ($selection -in @('1', '2', '3', '4', '5', '6', '7', '8', 'H', 'Q')) {
+            if ($selection -in @('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Q')) {
                 return $selection
             }
         }
@@ -692,9 +802,8 @@ function Invoke-PwWorkshopMenuAction {
 .SYNOPSIS
     Starts the one-command workshop interface.
 .DESCRIPTION
-    Opens an interactive menu over safe workshop commands. Sprint 4.1 begins
-    with read-only catalog, archive, staging, diagnostic, inventory, and history
-    views. Additional reviewed actions will be added as Sprint 4 progresses.
+    Opens the adaptive workshop control center over the structured dashboard and
+    established safe workshop commands.
 .PARAMETER Action
     Optional non-interactive action for scripting and testing.
 .PARAMETER NoClear

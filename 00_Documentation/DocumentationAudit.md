@@ -20,7 +20,7 @@ sequence accurately enough to serve as the project knowledge base.
 Sprint 5 remains active. Sprint 5.1.1, repository awareness and structure
 documentation; Sprint 5.1.2, workshop runtime and session model; and Sprint
 5.1.3, the dashboard data model, are complete. Sprint 5.1.4, menu UX integration,
-is the next planned Sprint 5.1 increment.
+is active with a validated implementation checkpoint.
 
 The documentation set still has maintenance items, but none invalidate the
 accepted Sprint 1–4 milestones or the completed Sprint 5.1.1 through 5.1.3
@@ -37,7 +37,7 @@ The following earlier findings have been corrected:
   respectively instead of attributing early foundation work to Sprint 4.
 - `Roadmap.md`, `README.md`, and `Scrapbook.md` consistently mark Sprint 4 as
   complete, Sprint 5 as active, Sprint 5.1.1 through 5.1.3 as complete, and
-  Sprint 5.1.4 as next planned.
+  Sprint 5.1.4 as active.
 - `Environment.md` provides the operator-facing documentation for
   `10_Scripts\Core\Bootstrap.ps1`, including initialization, context lifetime,
   reset behavior, structured output, read-only startup, and durable-state
@@ -83,6 +83,12 @@ The following earlier findings have been corrected:
   one assistant turn. Acknowledgements, progress updates, apologies, plans,
   promises, partial summaries, and lists of remaining reading are prohibited
   before a completed result or genuine concise hard-blocker report.
+- The adaptive workshop menu now consumes one dashboard snapshot per redraw and
+  uses a durable control-center label instead of a transient sprint label.
+- The `Start-PwWorkshop` help and module-version test no longer describe Sprint
+  4 as current work.
+- The main-menu key reader accepts the displayed inventory (`9`) and history
+  (`0`) actions.
 
 ## Remaining verified findings
 
@@ -125,20 +131,6 @@ There is no dedicated health suite validating exact path casing, internal links,
 documented menu keys, required documents, generated-map freshness, module
 health, configuration health, and completed-feature language. This work remains
 explicitly assigned to Sprint 5.1.5.
-
-### 5. Transient sprint labels in implementation text
-
-The interactive menu header still contains:
-
-```text
-Sprint 4 - Catalog, Library, and Compatibility
-```
-
-`Start-PwWorkshop` comment-based help and one module-test description also retain
-Sprint 4-era wording. These strings do not define project status, but they are
-stale operator/developer text. Durable product/workflow labels are assigned to
-Sprint 5.1.4 menu UX integration so the interface does not require a code change
-every time the roadmap advances.
 
 ## Explicitly outside this correction
 

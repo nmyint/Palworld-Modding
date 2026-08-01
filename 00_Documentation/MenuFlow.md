@@ -17,6 +17,15 @@ losing the intended hierarchy.
 
 The top-level menu is the one shown by `Start-PwWorkshop`.
 
+Each redraw collects exactly one `Get-PwWorkshopDashboard` snapshot and presents
+compact profile, repository, catalog, deployment, update-cache, and diagnostic
+state above the established actions. The menu does not duplicate provider logic
+or refresh Git/Nexus remote state. Provider failures remain visible through the
+dashboard's isolated section status without preventing available menu actions.
+
+The header uses the durable product label `WORKSHOP CONTROL CENTER`; roadmap or
+sprint names are not embedded in the operator interface.
+
 - `1` Catalog
 - `2` Archive intake and staging
 - `3` Staging and ownership snapshot
@@ -28,6 +37,9 @@ The top-level menu is the one shown by `Start-PwWorkshop`.
 - `9` Installation inventory
 - `0` Deployment and restore history
 - `Q` Exit
+
+The direct key reader accepts every displayed numeric action, including `0` and
+`9`, in both full and compact terminal layouts.
 
 ## Catalog Submenu
 

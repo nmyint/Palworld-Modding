@@ -368,8 +368,8 @@ Completion evidence:
 
 #### Sprint 5.1.4 - Menu UX integration
 
-Status: Planned  
-Next planned Sprint 5.1 increment
+Status: In progress
+Active Sprint 5.1 increment
 
 Scope:
 
@@ -383,6 +383,23 @@ Completion criteria:
 - The menu presents current workshop state clearly.
 - Existing menu actions remain compatible.
 - Narrow, wide, short, and tall terminal layouts remain usable.
+
+Current implementation checkpoint:
+
+- The adaptive menu collects exactly one `Get-PwWorkshopDashboard` snapshot per
+  redraw.
+- Full and compact layouts summarize profile, local repository, catalog,
+  deployment, update-cache, and diagnostic state without duplicating provider
+  logic or performing remote refreshes.
+- The transient Sprint 4 header was replaced with the durable
+  `WORKSHOP CONTROL CENTER` product label.
+- The direct key reader now accepts every displayed numeric action, including
+  inventory (`9`) and history (`0`).
+- Focused menu/dashboard/catalog coverage passes, and the complete workshop
+  suite passes with 148 tests under PowerShell 7.6.4 and Pester 3.4.0.
+
+The increment remains in progress until the branch is reviewed, published, and
+accepted at its milestone boundary.
 
 #### Sprint 5.1.5 - Diagnostics and health reporting
 

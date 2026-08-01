@@ -9,7 +9,9 @@
 `Get-PwWorkshopDashboard` provides one structured, read-only snapshot of the
 current Palworld Modding Workshop state. It is a data model for automation,
 future terminal presentation, and later MCP or interface adapters. It is not a
-menu screen and does not replace any existing command.
+menu screen and does not replace any existing command. Sprint 5.1.4 now consumes
+one snapshot per `PwWorkshop` menu redraw while keeping presentation separate
+from provider logic.
 
 ## Command
 
@@ -181,7 +183,7 @@ the entire workshop.
 - restore backups;
 - delete, discard, or clean workshop data.
 
-Sprint 5.1.4 may present this model through the existing adaptive menu. Sprint
+Sprint 5.1.4 presents this model through the existing adaptive menu. Sprint
 5.1.5 may add broader repository/document/configuration/test health providers.
 Those later increments must continue using established command authority rather
 than embedding duplicate logic in the interface.

@@ -122,8 +122,9 @@ planning.
 **Sprint 5 is active.** Within Sprint 5.1, repository awareness and structure
 documentation (5.1.1), the workshop runtime/session model (5.1.2), and the
 structured dashboard data model (5.1.3) are complete. Menu UX integration
-(5.1.4) is the next planned increment, followed by broader diagnostics and
-health reporting (5.1.5).
+(5.1.4) is active, with a dashboard-driven adaptive control-center checkpoint
+implemented and validated. Broader diagnostics and health reporting (5.1.5)
+follows.
 
 See [Roadmap.md](00_Documentation/Roadmap.md) for the accepted milestone boundary
 and future scope.
@@ -215,7 +216,9 @@ Start the menu-driven workshop from the repository root:
 pwsh -NoProfile -File ./PwWorkshop.ps1
 ```
 
-The workshop menu provides catalog, archive, staging, component-ownership,
+The workshop menu presents one read-only dashboard snapshot on every redraw,
+including profile, repository, catalog, deployment, update-cache, and diagnostic
+state. It also provides catalog, archive, staging, component-ownership,
 compatibility, profile-set, build, deployment, diagnostic, inventory, history,
 and Nexus update workflows. The interface redraws automatically when its
 terminal window is resized.
