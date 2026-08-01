@@ -3,13 +3,13 @@
     "Repository": "Palworld-Modding",
     "Root": ".",
     "Branch": "main",
-    "CommitSHA": "d060e1f5d495ae7196da46aa1fe13380e18dc157",
-    "Generated": "2026-08-01T09:28:31.9980434-04:00"
+    "CommitSHA": "e6ad4e5aea92143bb994c1b958f78f3074b72e96",
+    "Generated": "2026-08-01T09:53:42.5317655-04:00"
   },
   "Statistics": {
     "Directories": 35,
-    "Files": 148,
-    "Documents": 148,
+    "Files": 133,
+    "Documents": 133,
     "PowerShellScripts": 93
   },
   "Structure": [
@@ -85,84 +85,9 @@
           "Traversal": "Recursive",
           "Children": [
             {
-              "Name": "2026-07-30-pw-git-kickoff.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-30-shit.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-ai-workflow-compliance-review.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-ai-workflow-readme-reference-review.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-ai-workflow-v2-merge-complete.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-nexus-cache-whatif-fix.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-nexus-update-download-foundation.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-nexus-update-menu-wired.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-pw-git-structure-review-handoff.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-pw-git-v1.1-complete.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-pw-git-v1.2-complete.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-pw-git-v1.2-implementation-checkpoint.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "2026-07-31-sprint-3-4-state-correction.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
               "Name": "2026-08-01-session-handoff-sprint-5.1.3-closeout-and-workflow-policy.md",
               "Type": "File",
               "Extension": ".md"
-            },
-            {
-              "Name": "2026-08-01-sprint-5.1.3-dashboard-complete.md",
-              "Type": "File",
-              "Extension": ".md"
-            },
-            {
-              "Name": "Codex.txt",
-              "Type": "File",
-              "Extension": ".txt"
             }
           ]
         },
