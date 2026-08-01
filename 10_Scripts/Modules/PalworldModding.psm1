@@ -47,6 +47,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\WorkshopMenu.ps1"
 . "$PSScriptRoot\..\Commands\NexusMetadataCache.ps1"
 . "$PSScriptRoot\..\Commands\NexusUpdateMenuWiring.ps1"
+. "$PSScriptRoot\..\Commands\NexusContentInventory.ps1"
 . "$PSScriptRoot\..\Commands\Tools.ps1"
 
 # ============================================================
