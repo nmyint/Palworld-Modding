@@ -3,28 +3,16 @@
     "Repository": "Palworld-Modding",
     "Root": ".",
     "Branch": "agent/nexus-update-download-flow",
-    "CommitSHA": "22fde6541e2af89c70bcded2a199177f687ad4d6",
-    "Generated": "2026-07-31T21:10:51.0462013-04:00"
+    "CommitSHA": "b2b8a9927ff34376adc80f58cfe753969cb173db",
+    "Generated": "2026-07-31T21:17:00.1679141-04:00"
   },
   "Statistics": {
-    "Directories": 36,
-    "Files": 144,
-    "Documents": 144,
+    "Directories": 35,
+    "Files": 143,
+    "Documents": 143,
     "PowerShellScripts": 91
   },
   "Structure": [
-    {
-      "Name": ".cache",
-      "Type": "Directory",
-      "Traversal": "Recursive",
-      "Children": [
-        {
-          "Name": "NexusMetadata.json",
-          "Type": "File",
-          "Extension": ".json"
-        }
-      ]
-    },
     {
       "Name": ".config",
       "Type": "Directory",

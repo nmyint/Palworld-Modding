@@ -1,18 +1,16 @@
 Palworld Modding Workshop Repository Structure
-Generated: 07/31/2026 21:10:51
+Generated: 07/31/2026 21:17:00
 Repository: Palworld-Modding
 Root: .
 Branch: agent/nexus-update-download-flow
-CommitSHA: 22fde6541e2af89c70bcded2a199177f687ad4d6
+CommitSHA: b2b8a9927ff34376adc80f58cfe753969cb173db
 
 Statistics:
-Directories: 36
-Files: 144
-Documents: 144
+Directories: 35
+Files: 143
+Documents: 143
 PowerShell Scripts: 91
 
-├── .cache
-│   ├── NexusMetadata.json
 ├── .config
 │   ├── UpdateSources.json
 │   ├── Workshop.json
