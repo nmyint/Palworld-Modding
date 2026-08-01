@@ -302,8 +302,9 @@ Describe 'PalworldModding dashboard menu integration' {
         Import-Module $moduleManifest -Force
     }
 
-    It 'maps dashboard providers into a clear menu state summary' {
+    It 'maps dashboard providers and session context into a clear menu summary' {
         InModuleScope PalworldModding {
+            $started = [datetime]'2026-08-01T12:00:00Z'
             $dashboard = [PSCustomObject]@{
                 IsComplete = $true
                 ReadySectionCount = 7
@@ -321,6 +322,11 @@ Describe 'PalworldModding dashboard menu integration' {
                         Status = 'Ready'
                         Error = ''
                     }
+                }
+                Workshop = [PSCustomObject]@{
+                    Name = 'Palworld Modding Workshop'
+                    Version = '0.4.9'
+                    Started = $started
                 }
                 Profile = [PSCustomObject]@{
                     Name = 'Stable'
@@ -347,6 +353,10 @@ Describe 'PalworldModding dashboard menu integration' {
                     CanDeploy = $true
                     AssemblyPlanStatus = 'Ready'
                     AssemblyValidationStatus = 'Ready'
+                    ReadinessStatus = 'Ready'
+                    Readiness = [PSCustomObject]@{
+                        ReadyToDeploy = $true
+                    }
                 }
                 UpdateCache = [PSCustomObject]@{
                     Exists = $true
@@ -360,6 +370,9 @@ Describe 'PalworldModding dashboard menu integration' {
 
             $state = Get-PwWorkshopMenuDashboardState -Dashboard $dashboard
 
+            $state.WorkshopName | Should Be 'Palworld Modding Workshop'
+            $state.WorkshopVersion | Should Be '0.4.9'
+            $state.SessionStarted | Should Be $started
             $state.ProfileName | Should Be 'Stable'
             $state.ProfileStatus | Should Be 'Ready'
             $state.ActiveModSet | Should Be 'Core'
@@ -372,6 +385,35 @@ Describe 'PalworldModding dashboard menu integration' {
             $state.UpdateCacheStatus | Should Be 'Current'
             $state.DiagnosticsStatus | Should Be 'Healthy'
             $state.CollectionStatus | Should Be 'Complete (7/7)'
+        }
+    }
+
+    It 'does not confuse an available game target with verified deployment readiness' {
+        InModuleScope PalworldModding {
+            $dashboard = [PSCustomObject]@{
+                IsComplete = $false
+                ReadySectionCount = 1
+                Sections = @(
+                    [PSCustomObject]@{
+                        Name = 'Deployment'
+                        Status = 'Ready'
+                        Error = ''
+                    }
+                )
+                Deployment = [PSCustomObject]@{
+                    IsReady = $true
+                    CanDeploy = $true
+                    AssemblyPlanStatus = 'Ready'
+                    AssemblyValidationStatus = 'Ready'
+                    ReadinessStatus = 'NotEvaluated'
+                    Readiness = $null
+                }
+            }
+
+            $state = Get-PwWorkshopMenuDashboardState -Dashboard $dashboard
+
+            $state.DeploymentStatus |
+                Should Be 'Target available; verification required'
         }
     }
 
@@ -395,6 +437,11 @@ Describe 'PalworldModding dashboard menu integration' {
                         Error = ''
                     }
                 }
+                Workshop = [PSCustomObject]@{
+                    Name = 'Palworld Modding Workshop'
+                    Version = '0.4.9'
+                    Started = [datetime]'2026-08-01T12:00:00Z'
+                }
                 Profile = [PSCustomObject]@{
                     Name = 'Stable'
                     IsValid = $true
@@ -420,6 +467,10 @@ Describe 'PalworldModding dashboard menu integration' {
                     CanDeploy = $true
                     AssemblyPlanStatus = 'Ready'
                     AssemblyValidationStatus = 'Ready'
+                    ReadinessStatus = 'Ready'
+                    Readiness = [PSCustomObject]@{
+                        ReadyToDeploy = $true
+                    }
                 }
                 UpdateCache = [PSCustomObject]@{
                     Exists = $true
@@ -443,6 +494,7 @@ Describe 'PalworldModding dashboard menu integration' {
             $compactText = @($compact.Text) -join "`n"
 
             $fullText | Should Match 'Guided workshop operations and current state'
+            $fullText | Should Match 'Palworld Modding Workshop v0.4.9'
             $fullText | Should Match '\[H\] View current state dashboard'
             $fullText | Should Match 'Profile    : Stable'
             $fullText | Should Match 'Repository : main'
@@ -504,6 +556,11 @@ Describe 'PalworldModding dashboard menu integration' {
                     }
                 }
                 Errors = @()
+                Workshop = [PSCustomObject]@{
+                    Name = 'Palworld Modding Workshop'
+                    Version = '0.4.9'
+                    Started = [datetime]'2026-08-01T11:30:00Z'
+                }
                 Profile = [PSCustomObject]@{
                     Name = 'Stable'
                     IsValid = $true
@@ -529,6 +586,10 @@ Describe 'PalworldModding dashboard menu integration' {
                     CanDeploy = $true
                     AssemblyPlanStatus = 'Ready'
                     AssemblyValidationStatus = 'Ready'
+                    ReadinessStatus = 'Ready'
+                    Readiness = [PSCustomObject]@{
+                        ReadyToDeploy = $true
+                    }
                 }
                 UpdateCache = [PSCustomObject]@{
                     Exists = $true
