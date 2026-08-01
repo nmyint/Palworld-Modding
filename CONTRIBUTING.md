@@ -21,6 +21,29 @@ Before changing the repository:
 The current repository contents are authoritative. Verify existing behavior
 before proposing replacements or declaring work complete.
 
+## Branch selection
+
+Use `main` directly for minor, low-risk changes whose scope is already clear,
+including small documentation fixes, narrow workflow clarifications, simple
+metadata maintenance, and focused corrections.
+
+Create a dedicated branch for:
+
+- a new sprint or major milestone;
+- a major feature or broad behavior change;
+- a risky refactor, migration, or experiment;
+- work with uncertain scope that may expand across multiple systems;
+- changes that benefit materially from isolated review or rollback.
+
+Do not create a branch merely because a file is being edited. If a small change
+on `main` expands into major or risky work, stop and create a branch before
+continuing the expanded scope.
+
+Branch-based work should normally use a pull request and a merge commit. Minor
+direct-to-`main` work should still use focused commits, appropriate validation,
+and a clean synchronized repository state. Do not delete a merged branch until
+`main` has been synchronized locally and the required validation has passed.
+
 ## Change types
 
 ### Documentation changes
