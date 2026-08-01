@@ -1,37 +1,47 @@
 ## New Chat Session Startup
 
-Before starting repository work in a new AI chat, use one of the two canonical
-startup blocks in:
+Use one repository-root entry file when starting a new AI chat:
 
-`00_Documentation/SessionStartup.md`
+- `NewSession.md` — start a new project, sprint, feature, maintenance task,
+  investigation, or implementation scope.
+- `ContinueSession.md` — resume from the active session handoff.
 
-Choose exactly one mode:
+Minimal prompts:
 
-1. **New project or implementation** — begin from current canonical repository
-   state without assuming that an older handoff defines the new scope.
-2. **Continue from session handoff** — locate the active handoff, verify it
-   against current repository state, and resume from its confirmed boundary.
+```text
+Use the GitHub connector for nmyint/Palworld-Modding.
+Read NewSession.md completely and follow it.
 
-Both modes require silent startup-gate execution in the same assistant turn. The
-assistant must complete all required reading and verification before sending a
-natural-language response. It must not send acknowledgements, progress updates,
-apologies, plans, promises, partial summaries, or lists of remaining reading.
-The first visible natural-language response must be either the completed verified
-startup result or one concise genuine hard-blocker report.
+Proposed work: <describe the new work here>
+```
+
+```text
+Use the GitHub connector for nmyint/Palworld-Modding.
+Read ContinueSession.md completely and follow it.
+```
+
+The selected entry file invokes the shared policy in
+`00_Documentation/SessionStartup.md`. The assistant must complete all required
+reading and verification silently in the same assistant turn. It must not send
+acknowledgements, progress updates, apologies, plans, promises, partial summaries,
+or lists of remaining reading. The first visible natural-language response must
+be either the completed verified startup result or one concise genuine
+hard-blocker report.
 
 ## Repository Entry Point (AI / Developer Workflow)
 
 When opening this repository, begin with:
 
-1. Read `README.md` completely.
-2. Read `00_Documentation/SessionStartup.md` and use the startup mode appropriate
-   to the session.
-3. Read `00_Documentation/RepositoryStructure.txt` and strictly abide by it.
-4. Read `00_Documentation/RepositoryInventory.json` and strictly abide by it.
-5. Read `00_Documentation/AIRepositoryWorkflow.md` and strictly abide by it.
-6. Read `00_Documentation/AIRepositoryWorkflow_v2_Design.md` as a design reference for the merged workflow guardrails.
-7. Review relevant operational documentation in `00_Documentation`.
-8. Review `00_Documentation/Scrapbook.md` for historical context.
+1. Read the selected repository-root entry file: `NewSession.md` or
+   `ContinueSession.md`.
+2. Read `README.md` completely.
+3. Read `00_Documentation/SessionStartup.md` and follow the shared startup policy.
+4. Read `00_Documentation/RepositoryStructure.txt` and strictly abide by it.
+5. Read `00_Documentation/RepositoryInventory.json` and strictly abide by it.
+6. Read `00_Documentation/AIRepositoryWorkflow.md` and strictly abide by it.
+7. Read `00_Documentation/AIRepositoryWorkflow_v2_Design.md` as a design reference for the merged workflow guardrails.
+8. Review relevant operational documentation in `00_Documentation`.
+9. Review `00_Documentation/Scrapbook.md` for historical context.
 
 The generated repository structure files provide the authoritative map of:
 
@@ -69,9 +79,8 @@ The current AI/development continuation record is stored in:
 
 `00_Documentation/Session-Handoffs/`
 
-Use the active handoff only when continuing previous work. New projects and
-implementations should use the new-project startup mode in
-`SessionStartup.md` instead of assuming that a handoff defines their scope.
+Use `ContinueSession.md` when resuming previous work. Use `NewSession.md` for a
+new scope instead of assuming that an older handoff defines it.
 
 - `Scrapbook.md` contains the canonical working agreement, project history, and
   research context.
@@ -84,7 +93,12 @@ The active AI workflow is maintained in:
 
 - `00_Documentation/AIRepositoryWorkflow.md`
 
-The canonical new-session startup blocks are maintained in:
+The repository-root session entry files are:
+
+- `NewSession.md`
+- `ContinueSession.md`
+
+The shared startup policy is maintained in:
 
 - `00_Documentation/SessionStartup.md`
 
