@@ -167,6 +167,45 @@ Pw-Git follows a review-first approach:
 - Ctrl-C: immediate interruption
 - terminal resize: redraw the responsive menu automatically
 
+## Planned v1.3 Pull Diagnostics Follow-up
+
+**Status:** Planned
+
+A real repository synchronization on 2026-07-31 confirmed that the existing
+pull guard behaved correctly when the local working tree contained an untracked
+`.cache/NexusMetadata.json` file. The local `main` branch did not yet contain the
+new `/.cache/` ignore rule, so Git correctly reported the cache file as a working-
+tree change and Pw-Git correctly blocked the pull.
+
+The safety decision must remain unchanged: Pw-Git must not pull into a non-clean
+working tree, and pulls must continue using fast-forward-only behavior.
+
+The planned v1.3 improvement is limited to diagnostics and user guidance:
+
+- report the exact tracked, untracked, or conflicted paths that block the pull;
+- present the condition as an expected `[BLOCKED]` safety result instead of
+  exposing only a raw PowerShell exception and source line;
+- explain that the user may review, move, stash, commit, discard, or intentionally
+  ignore the blocking paths before retrying;
+- do not automatically stash, move, delete, discard, or add ignore rules;
+- confirm that files already ignored by Git do not block a pull;
+- preserve the current divergence, upstream, conflict, and writable-state
+  safeguards.
+
+Required Pester 3.4.0 regression coverage:
+
+- tracked changes block pull;
+- untracked non-ignored files block pull;
+- conflicted files block pull;
+- ignored files do not block pull;
+- blocked output includes actionable paths and recovery guidance;
+- no pull, stash, discard, delete, or ignore mutation occurs after the guard
+  blocks the operation.
+
+This follow-up is a Pw-Git v1.3 or separately approved maintenance item. It does
+not reopen Pw-Git v1.2, and the observed block was not a repository corruption or
+pull-logic failure.
+
 ## v1.2 Completion Record
 
 Delivered on `main`:
