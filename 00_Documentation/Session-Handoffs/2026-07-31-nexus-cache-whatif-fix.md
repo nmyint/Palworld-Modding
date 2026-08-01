@@ -1,115 +1,116 @@
-# Session Handoff - Nexus Cache WhatIf Fix
+# Session Handoff - Nexus Cache and Repository Map Validation
 
 **Date:** 2026-07-31
 **Repository:** `nmyint/Palworld-Modding`
 **Branch:** `agent/nexus-update-download-flow`
 **Pull request:** #2, open and draft
 
-## Initial Local Validation
+## Nexus Workflow Validation
 
-The repository owner completed the requested focused validation under
-PowerShell 7.6.4 and Pester 3.4.0:
+The repository owner validated the Nexus metadata cache, lazy content inventory,
+menu wiring, and atomic `-WhatIf` cache transaction under PowerShell 7.6.4 and
+Pester 3.4.0.
+
+Focused results:
 
 - `NexusUpdateMenuSafety.Tests.ps1`: 12 passed, 0 failed;
 - `NexusContentInventory.Tests.ps1`: 4 passed, 0 failed;
 - `CatalogMetadata.Tests.ps1`: 8 passed, 0 failed;
-- `NexusUpdateMenuInteraction.Tests.ps1`: 2 passed, 0 failed.
-
-The first complete suite reported 139 passed and 1 failed.
-
-## Failure
-
-The failed case was:
-
-```text
-PalworldModding Nexus update menu wiring
-previews the exact actionable menu update without downloading
-```
-
-During `Save-PwNexusModUpdate -WhatIf`, the ambient preview preference correctly
-prevented `New-Item` and `Write-PwJson` from creating the cache directory and
-temporary JSON file. `Write-PwNexusMetadataCache` then continued to
-`Move-Item`, which failed because the temporary file did not exist.
-
-The failure was isolated to the cache writer transaction. Nexus selection,
-content classification, menu routing, and download safety tests passed.
-
-## Fix
-
-Added:
-
-```text
-10_Scripts\Commands\NexusMetadataCacheTransaction.ps1
-```
-
-The transaction layer replaces `Write-PwNexusMetadataCache` with one
-`SupportsShouldProcess` boundary covering the complete atomic write:
-
-1. resolve the final cache path;
-2. request approval for the complete atomic cache write;
-3. return immediately during `-WhatIf`;
-4. create the parent directory only after approval;
-5. serialize to a temporary JSON file;
-6. verify that the temporary file exists;
-7. replace the final cache path; and
-8. remove any surviving temporary file in `finally`.
-
-It loads immediately after `NexusMetadataCache.ps1` and before the menu and
-content-inventory wrappers.
-
-## Regression Coverage
-
-Added:
-
-```text
-10_Scripts\Tests\NexusMetadataCacheTransaction.Tests.ps1
-```
-
-The isolated Pester 3.4 test verifies that `-WhatIf`:
-
-- does not throw;
-- does not create the cache directory;
-- does not create the final cache file; and
-- does not leave a `.NexusMetadata-*.tmp` file.
-
-The existing failed menu-wiring test remains the integration-level regression.
-
-## Final Local Validation
-
-The repository owner pulled remote head
-`bf72d7e595b7ab72496a6ffcbcf2cb5b947d51b2`, regenerated the repository maps,
-reimported the module, and completed the corrective validation on 2026-07-31.
-
-Results:
-
+- `NexusUpdateMenuInteraction.Tests.ps1`: 2 passed, 0 failed;
 - `NexusMetadataCacheTransaction.Tests.ps1`: 1 passed, 0 failed;
-- `NexusUpdateMenuWiring.Tests.ps1`: 5 passed, 0 failed;
-- complete `10_Scripts\Tests` suite: 141 passed, 0 failed;
-- skipped: 0;
-- pending: 0;
-- inconclusive: 0.
+- `NexusUpdateMenuWiring.Tests.ps1`: 5 passed, 0 failed.
 
-The cache ignore check also passed:
+Complete suite result at executable head
+`bf72d7e595b7ab72496a6ffcbcf2cb5b947d51b2`:
+
+```text
+Passed: 141
+Failed: 0
+Skipped: 0
+Pending: 0
+Inconclusive: 0
+```
+
+The cache ignore check passed:
 
 ```text
 .gitignore:96:/.cache/  ".cache\\NexusMetadata.json"
 ```
 
-The final working tree contained only the expected regenerated tracked files:
+## Generated Repository Maps
+
+The repository owner regenerated, committed, and pushed:
+
+- `00_Documentation/RepositoryInventory.json`;
+- `00_Documentation/RepositoryStructure.txt`.
+
+Commit:
 
 ```text
-00_Documentation/RepositoryInventory.json
-00_Documentation/RepositoryStructure.txt
+39288d97d30d4abbd51b8a6b6b7d191b81cff7f4
+Refresh repository maps for Nexus metadata workflow
 ```
 
-No cache file, temporary cache file, deployment file, archive, mod payload, or
-game installation content was tracked or modified by the validation.
+The local branch was clean and synchronized after the push.
 
-## Remaining Repository Boundary
+## Map Hygiene Issue Found During Final Review
 
-The executable implementation and automated validation are complete.
+The generated maps included the ignored local path:
 
-The repository owner must commit and push the two regenerated structure files so
-PR #2 includes the authoritative generated repository maps. After that push, the
-PR can be rechecked and marked ready for final review. It must not be merged to
-`main` without explicit repository-owner approval.
+```text
+.cache\NexusMetadata.json
+```
+
+The cache contents were not committed, but the documentation exporter listed the
+machine-local cache directory because it ignored only `.git`.
+
+Repository maps should describe durable project structure and must not vary based
+on whether a local cache has been created.
+
+## Corrective Change
+
+`10_Scripts\Utilities\Export-PwRepositoryStructure.ps1` now excludes both:
+
+```text
+.git
+.cache
+```
+
+`10_Scripts\Tests\RepositoryStructure.Tests.ps1` adds a Pester 3.4 regression
+case verifying that:
+
+- `.cache` is absent from the text map;
+- `NexusMetadata.json` is absent from the text map;
+- `.cache` is absent from the JSON inventory; and
+- normal documented files remain present.
+
+Corrective executable/test commits:
+
+```text
+6e1bcea898fc7d7b3d4410c8c269c97192179f6e
+8b194a3ffc4f2c3a50abeb1c82e3dfbe5397b277
+```
+
+## Required Local Validation
+
+Run from the repository root:
+
+```powershell
+git pull
+Invoke-Pester .\10_Scripts\Tests\RepositoryStructure.Tests.ps1
+.\10_Scripts\Utilities\Export-PwRepositoryStructure.ps1
+Select-String -Path .\00_Documentation\RepositoryStructure.txt -Pattern '\.cache|NexusMetadata\.json'
+Invoke-Pester .\10_Scripts\Tests
+git status --short --branch
+```
+
+Expected results:
+
+- repository-structure suite: 5 passed, 0 failed;
+- `Select-String` returns no matches;
+- complete suite: 142 passed, 0 failed;
+- only the two regenerated repository-map files are modified.
+
+Then commit and push the corrected maps. PR #2 must remain draft until that
+validation and push are complete. Do not merge to `main` without explicit
+repository-owner approval.
