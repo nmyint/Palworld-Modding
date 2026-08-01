@@ -48,6 +48,28 @@ Expected changes:
 3. Update `README.md` if the entry workflow changes.
 4. Document migration impact.
 
+## Branch and Review Decision
+
+Choose the lightest workflow that safely fits the change.
+
+Commit directly to `main` when the change is minor, low risk, and clearly
+bounded. Typical examples are small documentation fixes, narrow instruction
+updates, simple metadata maintenance, and focused corrections.
+
+Create a dedicated branch when the change starts a new sprint or major milestone,
+adds a major feature, changes behavior broadly, involves a risky refactor or
+migration, is experimental, has uncertain scope, or benefits materially from
+isolated review and rollback.
+
+Do not require branch creation and pull-request cleanup for routine minor edits.
+If a direct `main` change expands beyond its original small scope, create a branch
+before continuing the expanded work.
+
+Branch-based work should normally be reviewed through a pull request and merged
+with a merge commit. Use squash or rebase only when explicitly approved and when
+no documentation or handoff depends on individual commit SHAs. Delete a merged
+branch only after `main` is synchronized and the required validation passes.
+
 ## Commit Guidelines
 
 Commits should:
@@ -56,6 +78,9 @@ Commits should:
 - avoid unrelated modifications
 - preserve a clear project history
 - separate unrelated work into separate commits
+
+Direct commits to `main` must meet the same review and validation standards as
+branch-based commits.
 
 ## Documentation Updates
 
