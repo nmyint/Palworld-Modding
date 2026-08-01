@@ -10,7 +10,7 @@
 
 Pw-Git v1.2 is complete. Version 1.1 remains the preserved behavioral baseline, while v1.2 adds a narrowly scoped repository-maintenance action and fixes direct-command parity between the repository-root launcher and the authoritative modular dispatcher.
 
-Completion is supported by successful direct-command execution, passing focused regression suites, confirmation that generated files remained unstaged during refresh, creation of the dedicated completion handoff, and publication of the regenerated repository maps to `main`.
+Completion is supported by successful direct-command execution, passing focused regression suites, confirmation that generated files remained unstaged during refresh, and publication of the regenerated repository maps to `main`.
 
 ## Purpose
 
@@ -218,9 +218,9 @@ Delivered on `main`:
 - `b856072dbc8cbbe0148561289da3930837decc7d` — normalize scalar exporter collections
 - `9c34491e9c01ab91ef7b25a7406c71ca88dbc260` — make the exporter strict-mode safe and transactional
 - `fdb8c74247680cd9a0888667184a7372fac399e2` — harden exporter regression coverage
-- `0eb9fd70d5c3f0dad47c39f3f62ca90b16e6b68c` — create the dedicated v1.2 completion handoff
+- `0eb9fd70d5c3f0dad47c39f3f62ca90b16e6b68c` — create the historical v1.2 completion handoff
 - `9902af9ba7911325f3e03d2d5dea01c0a986844f` — supersede the implementation checkpoint
-- `2e93afcdaf48dcdb69bc4c6fd4391173f1fd3141` — publish final repository maps after adding the handoff
+- `2e93afcdaf48dcdb69bc4c6fd4391173f1fd3141` — publish final repository maps after adding the historical handoff
 
 Verified locally under PowerShell 7.6.4:
 
@@ -232,11 +232,19 @@ Verified locally under PowerShell 7.6.4:
 - Git staging state remained unchanged
 - `RepositoryStructure.Tests.ps1`: 4 passed, 0 failed
 - `PwGit.Tests.ps1`: 13 passed, 0 failed
-- regenerated repository maps include the dedicated v1.2 handoff and were pushed to `main`
+- regenerated repository maps were pushed to `main`
 
-The authoritative session handoff is:
+The historical v1.2 handoff and implementation checkpoint were removed during
+the 2026-08-01 stale-handoff cleanup. Their durable completion facts remain in
+this canonical document, the commits listed above, and Git history. Do not depend
+on a deleted handoff path for Pw-Git v1.2 authority.
 
-- `00_Documentation/Session-Handoffs/2026-07-31-pw-git-v1.2-complete.md`
+The current active project continuation record, when handoff continuation is
+needed, is the latest active file under:
+
+```text
+00_Documentation/Session-Handoffs/
+```
 
 Pw-Git v1.2 is closed as a completed side-tooling release. Future feature work must be scoped as v1.3 or as separately defined maintenance.
 
