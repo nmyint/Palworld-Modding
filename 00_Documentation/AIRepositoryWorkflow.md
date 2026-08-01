@@ -121,6 +121,44 @@ Required behavior:
 - execute requested validation
 - report actual results
 
+## Branch and Pull Request Policy
+
+Use a workflow proportional to the size and risk of the change.
+
+Work directly on `main` for minor, low-risk changes such as:
+
+- small documentation corrections;
+- narrow workflow clarifications;
+- simple metadata or configuration maintenance;
+- focused fixes whose scope and impact are already understood.
+
+Create a dedicated branch when the work involves:
+
+- starting a new sprint or major milestone;
+- a major feature or broad behavioral change;
+- a risky refactor or migration;
+- experimental work that may be discarded;
+- uncertain scope that may expand across multiple systems;
+- changes that materially benefit from isolated review or rollback.
+
+Do not create a branch solely as routine ceremony for a minor edit. If work that
+began as a small `main` change expands materially, stop and create a branch before
+continuing the expanded implementation.
+
+Pull requests are expected for branch-based work and whenever the user explicitly
+requests isolated review. Minor direct-to-`main` changes still require focused
+commits, appropriate validation, and a clean synchronized repository state.
+
+When a branch is merged:
+
+- use a merge commit unless the user explicitly chooses another method;
+- do not squash or rebase when documentation or handoffs reference individual
+  commit SHAs;
+- delete local and remote branches only after merged `main` is synchronized and
+  the required validation has passed.
+
+Explicit user instructions may override this default branch policy.
+
 ## File Reading Strategy
 
 Large files must be processed incrementally.
