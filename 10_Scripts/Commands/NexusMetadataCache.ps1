@@ -1,9 +1,38 @@
 <#
 .SYNOPSIS
-    Finalizes the persistent catalog-wide Nexus metadata cache behavior.
+    Provides the persistent catalog-wide Nexus metadata cache.
 #>
 
 Set-StrictMode -Version Latest
+
+$script:PwNexusMetadataCacheSchemaVersion = '1.0'
+$script:PwNexusGameDomain = 'palworld'
+$script:PwGitHubMetadataCache = @{}
+$script:PwGitHubMetadataCacheMinutes = 10
+
+function Get-PwNexusMetadataCachePath {
+
+    [CmdletBinding()]
+    param()
+
+    Join-Path (Get-PwWorkshopRoot) '.cache\NexusMetadata.json'
+}
+
+function New-PwEmptyNexusMetadataCache {
+
+    [CmdletBinding()]
+    param()
+
+    [PSCustomObject]@{
+        SchemaVersion = $script:PwNexusMetadataCacheSchemaVersion
+        GameDomain = $script:PwNexusGameDomain
+        CreatedAt = $null
+        UpdatedAt = $null
+        LastFullRefreshAt = $null
+        CatalogModIds = @()
+        Mods = @()
+    }
+}
 
 function Read-PwNexusMetadataCache {
 
@@ -68,6 +97,156 @@ function Read-PwNexusMetadataCache {
     $cache.CatalogModIds = @($cache.CatalogModIds)
     $cache.Mods = @($cache.Mods)
     $cache
+}
+
+function Write-PwNexusMetadataCache {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNull()]
+        [object]$Cache,
+
+        [string]$Path = (Get-PwNexusMetadataCachePath)
+    )
+
+    $parent = Split-Path -Parent $Path
+    New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    $temporaryPath = Join-Path `
+        $parent `
+        ('.NexusMetadata-{0}.tmp' -f [guid]::NewGuid().ToString('N'))
+
+    try {
+        Write-PwJson `
+            -InputObject $Cache `
+            -Path $temporaryPath `
+            -Depth 100 `
+            -Confirm:$false
+        Move-Item `
+            -LiteralPath $temporaryPath `
+            -Destination $Path `
+            -Force `
+            -ErrorAction Stop
+    }
+    finally {
+        if (Test-Path -LiteralPath $temporaryPath) {
+            Remove-Item `
+                -LiteralPath $temporaryPath `
+                -Force `
+                -ErrorAction SilentlyContinue
+        }
+    }
+}
+
+function Get-PwCatalogNexusModIds {
+
+    [CmdletBinding()]
+    param()
+
+    $ids = [System.Collections.Generic.List[int]]::new()
+    $catalog = Get-PwPersistentModCatalog
+
+    foreach ($record in @($catalog.Mods)) {
+        if (
+            $null -eq $record -or
+            -not $record.PSObject.Properties['NexusModIds']
+        ) {
+            continue
+        }
+
+        foreach ($value in @($record.NexusModIds)) {
+            if (
+                $null -ne $value -and
+                [string]$value -match '^\d+$' -and
+                [int]$value -gt 0
+            ) {
+                $ids.Add([int]$value)
+            }
+        }
+    }
+
+    try {
+        foreach ($archive in @(
+            Get-PwNexusArchiveMetadata -SkipContentInspection
+        )) {
+            if (
+                $null -ne $archive -and
+                $archive.PSObject.Properties['NexusModId'] -and
+                [string]$archive.NexusModId -match '^\d+$' -and
+                [int]$archive.NexusModId -gt 0
+            ) {
+                $ids.Add([int]$archive.NexusModId)
+            }
+        }
+    }
+    catch {
+        # The persistent catalog remains authoritative when archives are absent.
+    }
+
+    try {
+        foreach ($source in @(Get-PwUpdateSources)) {
+            if (
+                $null -ne $source -and
+                [string]$source.Provider -eq 'NexusMods' -and
+                $source.PSObject.Properties['NexusModId'] -and
+                [string]$source.NexusModId -match '^\d+$' -and
+                [int]$source.NexusModId -gt 0
+            ) {
+                $ids.Add([int]$source.NexusModId)
+            }
+        }
+    }
+    catch {
+        # Optional source configuration must not block catalog caching.
+    }
+
+    @($ids | Sort-Object -Unique)
+}
+
+function Get-PwNexusResponseFiles {
+
+    [CmdletBinding()]
+    param(
+        [AllowNull()]
+        [object]$Response
+    )
+
+    if ($null -eq $Response) {
+        return @()
+    }
+
+    if ($Response.PSObject.Properties['files']) {
+        return @($Response.files)
+    }
+
+    @($Response)
+}
+
+function Invoke-PwNexusApiRequest {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [string]$ApiKey
+    )
+
+    $resolvedKey = Resolve-PwNexusApiKey -ApiKey $ApiKey
+    $normalizedPath = $Path.TrimStart('/')
+    $uri = 'https://api.nexusmods.com/v1/' + $normalizedPath
+    $headers = @{
+        apikey = $resolvedKey
+        'Application-Name' = 'Palworld-Modding-Workshop'
+        'Application-Version' = (Get-PwVersion)
+    }
+
+    Invoke-RestMethod `
+        -Method Get `
+        -Uri $uri `
+        -Headers $headers `
+        -UserAgent 'Palworld-Modding-Workshop' `
+        -ErrorAction Stop
 }
 
 function Update-PwNexusMetadataCache {
@@ -234,6 +413,54 @@ function Update-PwNexusMetadataCache {
     $cache
 }
 
+function Get-PwNexusMetadataEntry {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateRange(1, [int]::MaxValue)]
+        [int]$ModId,
+
+        [string]$ApiKey,
+
+        [switch]$Refresh
+    )
+
+    $cache = Update-PwNexusMetadataCache `
+        -ModId @($ModId) `
+        -ApiKey $ApiKey `
+        -Refresh:$Refresh
+    $entry = @(
+        $cache.Mods |
+            Where-Object NexusModId -eq $ModId
+    ) | Select-Object -First 1
+
+    if ($null -eq $entry) {
+        throw "Nexus metadata cache has no entry for mod $ModId."
+    }
+
+    if (
+        -not $entry.PSObject.Properties['Status'] -or
+        [string]$entry.Status -ne 'Ready'
+    ) {
+        $message = if (
+            $entry.PSObject.Properties['LastRefreshError'] -and
+            -not [string]::IsNullOrWhiteSpace(
+                [string]$entry.LastRefreshError
+            )
+        ) {
+            [string]$entry.LastRefreshError
+        }
+        else {
+            "Nexus metadata is unavailable for mod $ModId."
+        }
+
+        throw $message
+    }
+
+    $entry
+}
+
 function Get-PwNexusMetadataCacheInfo {
 
     [CmdletBinding()]
@@ -258,6 +485,11 @@ function Get-PwNexusMetadataCacheInfo {
     $catalogIds = @(Get-PwCatalogNexusModIds)
     $cachedIds = @(
         $entries |
+            Where-Object {
+                $null -ne $_ -and
+                $_.PSObject.Properties['NexusModId'] -and
+                [string]$_.NexusModId -match '^\d+$'
+            } |
             ForEach-Object { [int]$_.NexusModId } |
             Sort-Object -Unique
     )
@@ -284,6 +516,241 @@ function Get-PwNexusMetadataCacheInfo {
             $refreshErrors.Count -eq 0
         )
     }
+}
+
+function Find-PwNexusCachedFile {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNull()]
+        [object]$Entry,
+
+        [Parameter(Mandatory)]
+        [ValidateRange(1, [int]::MaxValue)]
+        [int]$FileId
+    )
+
+    @(
+        Get-PwNexusResponseFiles -Response $Entry.Files |
+            Where-Object {
+                $_.PSObject.Properties['file_id'] -and
+                [int]$_.file_id -eq $FileId
+            }
+    ) | Select-Object -First 1
+}
+
+function Invoke-PwNexusApi {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [string]$ApiKey,
+
+        [switch]$Refresh
+    )
+
+    $normalizedPath = $Path.TrimStart('/')
+
+    if ($normalizedPath -match '(?i)/download_link\.json$') {
+        return Invoke-PwNexusApiRequest `
+            -Path $normalizedPath `
+            -ApiKey $ApiKey
+    }
+
+    if ($normalizedPath -match '^(?i)users/validate\.json$') {
+        return Invoke-PwNexusApiRequest `
+            -Path $normalizedPath `
+            -ApiKey $ApiKey
+    }
+
+    if (
+        $normalizedPath -match (
+            '^(?i)games/palworld/mods/(?<mod>\d+)/files/' +
+                '(?<file>\d+)\.json$'
+        )
+    ) {
+        $modId = [int]$Matches['mod']
+        $fileId = [int]$Matches['file']
+        $entry = Get-PwNexusMetadataEntry `
+            -ModId $modId `
+            -ApiKey $ApiKey `
+            -Refresh:$Refresh
+        $file = Find-PwNexusCachedFile -Entry $entry -FileId $fileId
+
+        if ($null -eq $file -and -not $Refresh) {
+            $entry = Get-PwNexusMetadataEntry `
+                -ModId $modId `
+                -ApiKey $ApiKey `
+                -Refresh
+            $file = Find-PwNexusCachedFile -Entry $entry -FileId $fileId
+        }
+
+        if ($null -eq $file) {
+            throw (
+                "Nexus file $fileId is not present in the cached file list " +
+                    "for mod $modId."
+            )
+        }
+
+        return $file
+    }
+
+    if (
+        $normalizedPath -match (
+            '^(?i)games/palworld/mods/(?<mod>\d+)/files\.json$'
+        )
+    ) {
+        $entry = Get-PwNexusMetadataEntry `
+            -ModId ([int]$Matches['mod']) `
+            -ApiKey $ApiKey `
+            -Refresh:$Refresh
+        return $entry.Files
+    }
+
+    if (
+        $normalizedPath -match (
+            '^(?i)games/palworld/mods/(?<mod>\d+)\.json$'
+        )
+    ) {
+        $entry = Get-PwNexusMetadataEntry `
+            -ModId ([int]$Matches['mod']) `
+            -ApiKey $ApiKey `
+            -Refresh:$Refresh
+        return $entry.Mod
+    }
+
+    Invoke-PwNexusApiRequest -Path $normalizedPath -ApiKey $ApiKey
+}
+
+function Get-PwRemoteCredentialFingerprint {
+
+    [CmdletBinding()]
+    param(
+        [AllowEmptyString()]
+        [string]$Credential
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Credential)) {
+        return 'anonymous'
+    }
+
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Credential)
+    $hash = [System.Security.Cryptography.SHA256]::HashData($bytes)
+    [Convert]::ToHexString($hash).Substring(0, 16)
+}
+
+function Clear-PwGitHubMetadataCache {
+
+    [CmdletBinding()]
+    param()
+
+    $script:PwGitHubMetadataCache = @{}
+}
+
+function Clear-PwRemoteMetadataCache {
+
+    [CmdletBinding()]
+    param(
+        [ValidateSet('All', 'NexusMods', 'GitHub')]
+        [string]$Provider = 'All'
+    )
+
+    if ($Provider -in @('All', 'NexusMods')) {
+        Remove-Item `
+            -LiteralPath (Get-PwNexusMetadataCachePath) `
+            -Force `
+            -ErrorAction SilentlyContinue
+    }
+
+    if ($Provider -in @('All', 'GitHub')) {
+        Clear-PwGitHubMetadataCache
+    }
+}
+
+function Invoke-PwCachedGitHubRequest {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [Parameter(Mandatory)]
+        [scriptblock]$Request,
+
+        [AllowEmptyString()]
+        [string]$Credential,
+
+        [switch]$Refresh
+    )
+
+    $normalizedPath = $Path.TrimStart('/').ToLowerInvariant()
+    $credentialScope = Get-PwRemoteCredentialFingerprint `
+        -Credential $Credential
+    $key = "$credentialScope|$normalizedPath"
+    $now = (Get-Date).ToUniversalTime()
+
+    if (
+        -not $Refresh -and
+        $script:PwGitHubMetadataCache.ContainsKey($key)
+    ) {
+        $entry = $script:PwGitHubMetadataCache[$key]
+        $age = $now - ([datetime]$entry.RetrievedAt).ToUniversalTime()
+
+        if ($age.TotalMinutes -lt $script:PwGitHubMetadataCacheMinutes) {
+            Write-Output -NoEnumerate $entry.Value
+            return
+        }
+
+        $null = $script:PwGitHubMetadataCache.Remove($key)
+    }
+
+    $value = & $Request
+    $script:PwGitHubMetadataCache[$key] = [PSCustomObject]@{
+        Path = $normalizedPath
+        RetrievedAt = $now
+        Value = $value
+    }
+
+    Write-Output -NoEnumerate $value
+}
+
+function Invoke-PwGitHubApi {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path,
+
+        [switch]$Refresh
+    )
+
+    $normalizedPath = $Path.TrimStart('/')
+    $headers = @{
+        Accept = 'application/vnd.github+json'
+        'X-GitHub-Api-Version' = '2022-11-28'
+        'User-Agent' = 'Palworld-Modding-Workshop'
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($env:GITHUB_TOKEN)) {
+        $headers.Authorization = "Bearer $($env:GITHUB_TOKEN)"
+    }
+
+    $request = {
+        Invoke-RestMethod `
+            -Uri "https://api.github.com/$normalizedPath" `
+            -Headers $headers `
+            -Method Get `
+            -ErrorAction Stop
+    }
+
+    Invoke-PwCachedGitHubRequest `
+        -Path $normalizedPath `
+        -Credential ([string]$env:GITHUB_TOKEN) `
+        -Refresh:$Refresh `
+        -Request $request
 }
 
 function Get-PwNexusCacheTitleSuffix {
