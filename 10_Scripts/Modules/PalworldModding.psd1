@@ -152,7 +152,7 @@ PrivateData = @{
 
         LicenseUri = ''
 
-        ReleaseNotes = 'Sprint 4.5 preview-only upgrade and removal planning'
+        ReleaseNotes = 'Dashboard-driven adaptive workshop control center'
 
     }
 

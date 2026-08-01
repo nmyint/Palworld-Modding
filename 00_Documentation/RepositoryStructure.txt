@@ -1,15 +1,15 @@
 Palworld Modding Workshop Repository Structure
-Generated: 08/01/2026 11:33:45
+Generated: 08/01/2026 11:43:28
 Repository: Palworld-Modding
 Root: .
-Branch: main
-CommitSHA: e28dec2727ab05c657f587dea877c1430d116ed8
+Branch: codex/sprint-5.1.4-menu-ux
+CommitSHA: 14e4228d1a2ca87597f81a91c3ca3119bacf7ff6
 
 Statistics:
 Directories: 35
-Files: 137
-Documents: 137
-PowerShell Scripts: 93
+Files: 138
+Documents: 138
+PowerShell Scripts: 94
 
 ├── .config
 │   ├── UpdateSources.json
@@ -161,6 +161,7 @@ PowerShell Scripts: 93
 │   │   ├── UpgradeRemoval.Tests.ps1
 │   │   ├── WorkshopBackup.Tests.ps1
 │   │   ├── WorkshopDashboard.Tests.ps1
+│   │   ├── WorkshopMenu.Tests.ps1
 │   ├── Utilities
 │   │   ├── Export-PwRepositoryStructure.ps1
 ├── 11_Utilities

@@ -20,7 +20,7 @@ Describe 'PalworldModding module' {
             Should Not Throw
     }
 
-    It 'reports the in-progress Sprint 4.5 module version' {
+    It 'reports the current workshop module version' {
         Get-PwVersion | Should Be ([version]'0.4.9')
     }
 

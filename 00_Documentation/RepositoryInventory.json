@@ -2,15 +2,15 @@
   "Metadata": {
     "Repository": "Palworld-Modding",
     "Root": ".",
-    "Branch": "main",
-    "CommitSHA": "e28dec2727ab05c657f587dea877c1430d116ed8",
-    "Generated": "2026-08-01T11:33:45.4822025-04:00"
+    "Branch": "codex/sprint-5.1.4-menu-ux",
+    "CommitSHA": "14e4228d1a2ca87597f81a91c3ca3119bacf7ff6",
+    "Generated": "2026-08-01T11:43:28.3875241-04:00"
   },
   "Statistics": {
     "Directories": 35,
-    "Files": 137,
-    "Documents": 137,
-    "PowerShellScripts": 93
+    "Files": 138,
+    "Documents": 138,
+    "PowerShellScripts": 94
   },
   "Structure": [
     {
@@ -796,6 +796,11 @@
             },
             {
               "Name": "WorkshopDashboard.Tests.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "WorkshopMenu.Tests.ps1",
               "Type": "File",
               "Extension": ".ps1"
             }

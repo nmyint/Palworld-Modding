@@ -989,12 +989,14 @@ Current Sprint 5.1 status:
 - Sprint 5.1.1, repository awareness and structure documentation: Complete.
 - Sprint 5.1.2, workshop runtime and session model: Complete.
 - Sprint 5.1.3, dashboard data model: Complete.
-- Sprint 5.1.4, menu UX integration: Planned as the next Sprint 5.1 increment.
+- Sprint 5.1.4, menu UX integration: In progress with a validated
+  dashboard-driven adaptive menu checkpoint.
 - Sprint 5.1.5, diagnostics and health reporting: Planned.
 
 The completed dashboard model provides one structured, deterministic, read-only
 snapshot over existing repository, profile, catalog, deployment, update-cache,
-and diagnostic providers. Menu presentation remains separate Sprint 5.1.4 work.
+and diagnostic providers. Sprint 5.1.4 consumes one snapshot per adaptive menu
+redraw while preserving that separation from provider logic.
 
 Repository/document required-path checks, link validation, generated-map
 freshness, and module/configuration/test health belong to Sprint 5.1.5. They do

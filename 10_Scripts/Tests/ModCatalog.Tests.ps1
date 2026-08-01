@@ -371,17 +371,41 @@ Describe 'PalworldModding mod catalog' {
 
     It 'renders the main menu responsively within terminal dimensions' {
         InModuleScope PalworldModding {
+            $dashboard = [PSCustomObject]@{
+                Profile = [PSCustomObject]@{
+                    Name = 'Stable'
+                    IsReady = $true
+                    IsValid = $true
+                    ActiveModSet = 'Core'
+                    SelectedModCount = 2
+                }
+                Repository = [PSCustomObject]@{
+                    Branch = 'test'
+                    IsClean = $true
+                    Changes = @()
+                    HasUpstream = $true
+                    Ahead = 0
+                    Behind = 0
+                }
+                Catalog = [PSCustomObject]@{ ModCount = 2 }
+                Deployment = [PSCustomObject]@{ CanDeploy = $false }
+                UpdateCache = [PSCustomObject]@{
+                    Exists = $true
+                    IsCurrent = $true
+                }
+                Diagnostics = [PSCustomObject]@{ IsHealthy = $true }
+                ReadySectionCount = 7
+                Sections = @(1..7)
+            }
             $compactLayout = @(
                 Get-PwWorkshopMenuLayout `
-                    -Profile 'Stable' `
-                    -EnvironmentStatus 'Ready' `
+                    -Dashboard $dashboard `
                     -Width 48 `
                     -Height 18
             )
             $wideLayout = @(
                 Get-PwWorkshopMenuLayout `
-                    -Profile 'Testing' `
-                    -EnvironmentStatus 'Needs attention' `
+                    -Dashboard $dashboard `
                     -Width 110 `
                     -Height 32
             )
