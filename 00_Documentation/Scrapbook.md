@@ -5,10 +5,10 @@
 Before modifying this repository:
 
 1. Read the relevant documents in `00_Documentation/`.
-2. Treat `00_Documentation/scrapbook.md` as the canonical working agreement.
+2. Treat `00_Documentation/Scrapbook.md` as the canonical working agreement.
 3. Verify repository state before claiming work is complete.
 4. Preserve the separation between PwWorkshop and pw-git.
-5. scrapbook.md is the working agreement and overrides ad-hoc assumptions.
+5. `Scrapbook.md` is the working agreement and overrides ad-hoc assumptions.
 6. Changes should follow the existing script/module conventions.
 7. Do not claim completion until the result is verified.
 
@@ -27,7 +27,7 @@ Before modifying large files:
 Large documentation files such as:
 
 - Roadmap.md
-- scrapbook.md
+- Scrapbook.md
 - architecture documents
 
 should be treated as requiring chunked verification before modification.
@@ -101,7 +101,7 @@ Files uploaded by the user during a conversation supersede assumptions.
 
 When the user uploads:
 
-- scrapbook.md
+- Scrapbook.md
 - ZIP archives
 - scripts
 - documentation
@@ -841,6 +841,12 @@ Bootstrap code should:
 
 Initialization should avoid modifying project state unless explicitly requested.
 
+The current runtime/session contract is implemented by
+`10_Scripts\Core\Bootstrap.ps1` and documented in `Environment.md`.
+`Initialize-PwWorkshop`, `Get-PwContext`, and `Reset-PwContext` define explicit
+module-session state; durable project state remains in tracked or documented
+configuration and manifest locations.
+
 ---
 
 # Maintainability
@@ -892,25 +898,34 @@ Current work should always follow the latest verified project guidance.
 
 ---
 
-# Sprint 4 Closure
+# Sprint 1–4 Closure
 
-Sprint 4 established the workshop foundation.
+Sprint 1 established the reproducible workshop foundation: the numbered folder
+structure, workshop configuration, JSON helpers, bootstrap scripts, and initial
+documentation.
 
-Major accomplishments included:
+Sprint 2 turned that foundation into the `PalworldModding` module with structured
+context, configuration commands, VS Code tooling, repository workflow, and
+module tests.
 
-- repository organization;
-- workshop configuration;
-- PowerShell bootstrap framework;
-- JSON helper functions;
-- Workshop configuration helpers;
-- project folder structure;
-- VS Code workspace configuration;
-- documentation framework;
-- verification workflow.
+Sprint 3 added safe operational automation for profiles, deployment planning,
+mod archive intake, staging, curated packages, recovery, restoration, inventory,
+history, and diagnostics.
 
-Sprint 4 should be considered complete.
+Sprint 4 completed the mod-library and compatibility layer. Its major outcomes
+included:
 
-Future work should build upon Sprint 4 rather than revisiting completed decisions unless new evidence justifies doing so.
+- persistent catalog and version history;
+- reviewed component ownership;
+- compatibility, conflict, variant, and dependency reporting;
+- profile mod sets;
+- deterministic deployment assembly;
+- current-game reconciliation and adoption workflows;
+- preview-only upgrade and removal planning.
+
+Sprints 1 through 4 should be considered complete. Future work should build on
+their accepted boundaries rather than relabeling earlier foundation work as
+unfinished Sprint 4 scope.
 
 ---
 
@@ -934,16 +949,31 @@ Deferral is not abandonment.
 
 # Workflow Guidance for Sprint 5
 
-Sprint 5 focuses on expanding the workshop while preserving the stability established during Sprint 4.
+Sprint 5 is active and expands development, testing, workshop experience, and
+automation while preserving the stable foundations accepted through Sprint 4.
 
-Typical Sprint 5 work includes:
+Current Sprint 5.1 status:
 
-- documentation refinement;
-- workflow improvements;
-- additional helper modules;
-- testing improvements;
-- deployment refinement;
-- repository maintenance;
+- Sprint 5.1.1, repository awareness and structure documentation: Complete.
+- Sprint 5.1.2, workshop runtime and session model: Complete.
+- Sprint 5.1.3, dashboard data model: Planned as the next Sprint 5.1 increment.
+- Sprint 5.1.4, menu UX integration: Planned.
+- Sprint 5.1.5, diagnostics and health reporting: Planned.
+
+Repository/document required-path checks, link validation, generated-map
+freshness, and module/configuration/test health belong to Sprint 5.1.5. They do
+not reopen the completed repository exporter or runtime/session milestones.
+
+Typical remaining Sprint 5 work includes:
+
+- project templates and active mod-project workflows;
+- isolated test profiles and sandbox deployments;
+- repeatable test plans and regression records;
+- log collection and diagnostic bundles;
+- game-launch helpers with selected profiles;
+- compatibility patch workflows;
+- dashboard and guided menu integration;
+- repository and documentation health reporting;
 - automation enhancements.
 
 Sprint work should continue to emphasize:
