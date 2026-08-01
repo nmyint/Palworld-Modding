@@ -67,9 +67,11 @@ root resolution, configuration loading and validation, configured path
 resolution, module exports, and compatibility with the existing command
 surface.
 
-This runtime/session model satisfies Sprint 5.1.2. A future dashboard model may
-compose additional read-only state over the existing commands, but it must not
-replace this context contract or introduce hidden mutation during startup.
+This runtime/session model satisfies Sprint 5.1.2. Sprint 5.1.3 adds the
+read-only `Get-PwWorkshopDashboard` composition layer over the existing command
+surface without replacing this context contract or introducing hidden mutation
+during startup. See [WorkshopDashboard.md](WorkshopDashboard.md) for the
+structured dashboard schema, provider boundaries, and validation record.
 
 ## Moving to another computer
 
