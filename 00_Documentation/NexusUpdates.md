@@ -90,14 +90,26 @@ file selection all parse the fields they need from the same cached responses.
 The existing commands continue to call `Invoke-PwNexusApi`; the shared API layer
 routes supported mod and file reads to the snapshot.
 
+The complete file-list response already contains the full metadata object for
+each listed file, including descriptions, changelog HTML, sizes, content-preview
+links, upload times, virus-scan links, primary-file status, and update-chain
+records. The workshop therefore does not make a separate exact-file request for
+every cached file.
+
 This is intentionally not a crawl of every endpoint exposed by Nexus Mods. It
-does not persist:
+does not separately request or persist:
 
 - API keys or other credentials;
-- user identity or account data;
+- API validation responses, tracked-mod lists, endorsement lists, or other
+  account endpoints;
 - transient direct-download links;
-- downloaded archive contents;
-- unrelated games, mods, collections, comments, or user-specific endpoints.
+- downloaded archive contents or content-preview payloads;
+- unrelated games, mods, collections, comments, or discovery feeds.
+
+The mod metadata response is retained verbatim. Consequently, any optional
+account-relative field Nexus includes inside that response, such as an inline
+endorsement state, is preserved as part of the raw response; the workshop does
+not make a separate account-data request to obtain it.
 
 Direct-download links and API account validation are always requested live.
 The selected mod is also refreshed immediately before an approved direct
@@ -105,8 +117,8 @@ Premium download so stale file IDs cannot be used.
 
 ### Cache lifetime and refresh
 
-The Nexus snapshot has no automatic ten-minute expiration. It remains
-Authoritative until one of these events occurs:
+The Nexus snapshot has no automatic ten-minute expiration. It remains the
+working remote metadata source until one of these events occurs:
 
 - the cache does not exist, in which case the first Nexus-backed menu action
   builds the full snapshot;
