@@ -334,25 +334,42 @@ Completion evidence:
 
 #### Sprint 5.1.3 - Dashboard data model
 
-Status: Planned  
-Next planned Sprint 5.1 increment
+Status: Complete
 
-Scope:
+Delivered:
 
-- Add a structured dashboard model over existing commands.
-- Present repository, profile, catalog, deployment, update-cache, and diagnostic
-  state without duplicating command logic.
-- Keep dashboard data consumable by both the terminal UI and automation.
+- Added `Get-PwWorkshopDashboard` as one structured, read-only snapshot over the
+  established workshop command surface.
+- Added fixed-order Workshop, Repository, Profile, Catalog, Deployment,
+  UpdateCache, and Diagnostics sections.
+- Added local read-only Git branch, commit, upstream, divergence, and
+  working-tree state without fetching or changing refs.
+- Preserved profile validity/readiness, catalog provenance, deployment
+  verification, update-cache currentness, and diagnostic health as distinct
+  concepts rather than collapsing them into one status.
+- Isolated provider failures so one unavailable section does not discard other
+  usable dashboard data.
+- Kept output deterministic, JSON-serializable, and independent of terminal
+  formatting.
+- Exported the command through both module surfaces and documented the complete
+  schema and read-only boundary in `WorkshopDashboard.md`.
 
-Completion criteria:
+Completion evidence:
 
-- Dashboard output is structured, deterministic, and testable.
-- Data collection does not modify workshop or game state.
-- Existing command behavior remains authoritative.
+- `WorkshopDashboard.Tests.ps1`: 3 passed, 0 failed.
+- `PalworldModding.Tests.ps1`: 10 passed, 0 failed.
+- Complete workshop suite: 145 passed, 0 failed under PowerShell 7.6.4 and
+  Pester 3.4.0.
+- `RepositoryStructure.Tests.ps1`: 5 passed, 0 failed after map regeneration.
+- A real dashboard snapshot returned all 7 sections as `Ready`, serialized to
+  JSON successfully, and left the Git working tree clean.
+- Generated repository maps include the dashboard command, documentation, and
+  focused test suite.
 
 #### Sprint 5.1.4 - Menu UX integration
 
-Status: Planned
+Status: Planned  
+Next planned Sprint 5.1 increment
 
 Scope:
 

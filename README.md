@@ -75,9 +75,10 @@ deterministic deployment assembly, and preview-only upgrade and removal
 planning.
 
 **Sprint 5 is active.** Within Sprint 5.1, repository awareness and structure
-documentation (5.1.1) and the workshop runtime/session model (5.1.2) are
-complete. The dashboard data model (5.1.3) is the next planned Sprint 5.1
-increment, followed by broader menu integration and health reporting.
+documentation (5.1.1), the workshop runtime/session model (5.1.2), and the
+structured dashboard data model (5.1.3) are complete. Menu UX integration
+(5.1.4) is the next planned increment, followed by broader diagnostics and
+health reporting (5.1.5).
 
 See [Roadmap.md](00_Documentation/Roadmap.md) for the accepted milestone boundary
 and future scope.
@@ -150,12 +151,15 @@ Workshop automation is provided by the `PalworldModding` module:
 Import-Module ./10_Scripts/Modules/PalworldModding.psd1 -Force
 Initialize-PwWorkshop
 Get-PwWorkshopInfo
+Get-PwWorkshopDashboard
 ```
 
 The `Bootstrap.ps1` runtime/session contract, context lifetime, and read-only
 initialization boundary are documented in
-[Environment.md](00_Documentation/Environment.md). PowerShell conventions and
-runtime requirements are documented in
+[Environment.md](00_Documentation/Environment.md). The structured, read-only
+repository/profile/catalog/deployment/update-cache/diagnostic composition model
+is documented in [WorkshopDashboard.md](00_Documentation/WorkshopDashboard.md).
+PowerShell conventions and runtime requirements are documented in
 [PowerShellStandards.md](00_Documentation/PowerShellStandards.md).
 
 ## One-command menu

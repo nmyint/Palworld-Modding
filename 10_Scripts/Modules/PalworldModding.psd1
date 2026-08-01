@@ -39,6 +39,7 @@ FunctionsToExport = @(
     # Workshop
     'Get-PwVersion',
     'Get-PwWorkshopInfo',
+    'Get-PwWorkshopDashboard',
 
     # Environment
     'Test-PwEnvironment',

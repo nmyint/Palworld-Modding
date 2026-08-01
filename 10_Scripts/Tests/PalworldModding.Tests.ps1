@@ -64,6 +64,7 @@ Describe 'PalworldModding module' {
             'Get-PwTools'
             'Get-PwVersion'
             'Get-PwWorkshopConfig'
+            'Get-PwWorkshopDashboard'
             'Get-PwWorkshopInfo'
             'Initialize-PwWorkshop'
             'Import-PwModArchive'

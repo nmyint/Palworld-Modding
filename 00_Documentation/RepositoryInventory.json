@@ -2,15 +2,15 @@
   "Metadata": {
     "Repository": "Palworld-Modding",
     "Root": ".",
-    "Branch": "agent/nexus-update-download-flow",
-    "CommitSHA": "667376467f394204a4f3fc0be4a91cdbecdc5bab",
-    "Generated": "2026-07-31T21:18:47.8234838-04:00"
+    "Branch": "agent/sprint-5.1.3-dashboard-data-model",
+    "CommitSHA": "34977749bdf3535743e4a69562d5193819c743a1",
+    "Generated": "2026-08-01T08:52:18.7191438-04:00"
   },
   "Statistics": {
     "Directories": 35,
-    "Files": 143,
-    "Documents": 143,
-    "PowerShellScripts": 91
+    "Files": 147,
+    "Documents": 147,
+    "PowerShellScripts": 93
   },
   "Structure": [
     {
@@ -150,6 +150,11 @@
               "Extension": ".md"
             },
             {
+              "Name": "2026-08-01-sprint-5.1.3-dashboard-complete.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
               "Name": "Codex.txt",
               "Type": "File",
               "Extension": ".txt"
@@ -278,6 +283,11 @@
         },
         {
           "Name": "WorkshopBackup.md",
+          "Type": "File",
+          "Extension": ".md"
+        },
+        {
+          "Name": "WorkshopDashboard.md",
           "Type": "File",
           "Extension": ".md"
         }
@@ -459,6 +469,11 @@
             },
             {
               "Name": "WorkshopBackup.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "WorkshopDashboard.ps1",
               "Type": "File",
               "Extension": ".ps1"
             },
@@ -836,6 +851,11 @@
             },
             {
               "Name": "WorkshopBackup.Tests.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "WorkshopDashboard.Tests.ps1",
               "Type": "File",
               "Extension": ".ps1"
             }

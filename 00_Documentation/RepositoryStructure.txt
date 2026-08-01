@@ -1,15 +1,15 @@
 Palworld Modding Workshop Repository Structure
-Generated: 07/31/2026 21:18:47
+Generated: 08/01/2026 08:52:18
 Repository: Palworld-Modding
 Root: .
-Branch: agent/nexus-update-download-flow
-CommitSHA: 667376467f394204a4f3fc0be4a91cdbecdc5bab
+Branch: agent/sprint-5.1.3-dashboard-data-model
+CommitSHA: 34977749bdf3535743e4a69562d5193819c743a1
 
 Statistics:
 Directories: 35
-Files: 143
-Documents: 143
-PowerShell Scripts: 91
+Files: 147
+Documents: 147
+PowerShell Scripts: 93
 
 ├── .config
 │   ├── UpdateSources.json
@@ -37,6 +37,7 @@ PowerShell Scripts: 91
 │   │   ├── 2026-07-31-pw-git-v1.2-complete.md
 │   │   ├── 2026-07-31-pw-git-v1.2-implementation-checkpoint.md
 │   │   ├── 2026-07-31-sprint-3-4-state-correction.md
+│   │   ├── 2026-08-01-sprint-5.1.3-dashboard-complete.md
 │   │   ├── Codex.txt
 │   ├── AIRepositoryWorkflow_v2_Design.md
 │   ├── AIRepositoryWorkflow.md
@@ -63,6 +64,7 @@ PowerShell Scripts: 91
 │   ├── Scrapbook.md
 │   ├── UpdateSources.md
 │   ├── WorkshopBackup.md
+│   ├── WorkshopDashboard.md
 ├── 01_Archives
 ├── 02_Staging
 ├── 03_Mod_Library
@@ -97,6 +99,7 @@ PowerShell Scripts: 91
 │   │   ├── Tools.ps1
 │   │   ├── UpgradeRemoval.ps1
 │   │   ├── WorkshopBackup.ps1
+│   │   ├── WorkshopDashboard.ps1
 │   │   ├── WorkshopInfo.ps1
 │   │   ├── WorkshopMenu.ps1
 │   ├── Config
@@ -169,6 +172,7 @@ PowerShell Scripts: 91
 │   │   ├── StagingReconciliation.Tests.ps1
 │   │   ├── UpgradeRemoval.Tests.ps1
 │   │   ├── WorkshopBackup.Tests.ps1
+│   │   ├── WorkshopDashboard.Tests.ps1
 │   ├── Utilities
 │   │   ├── Export-PwRepositoryStructure.ps1
 ├── 11_Utilities
