@@ -1,14 +1,14 @@
 Palworld Modding Workshop Repository Structure
-Generated: 08/01/2026 10:50:57
+Generated: 08/01/2026 11:09:25
 Repository: Palworld-Modding
 Root: .
 Branch: main
-CommitSHA: 764a7c359efa5135d3dc996297b195f310217a15
+CommitSHA: 0153134f68d26d3eef8c2d7f893d0318dceb729b
 
 Statistics:
 Directories: 35
-Files: 134
-Documents: 134
+Files: 137
+Documents: 137
 PowerShell Scripts: 93
 
 ├── .config
@@ -25,6 +25,7 @@ PowerShell Scripts: 93
 │   │   ├── TODO.md
 │   ├── Session-Handoffs
 │   │   ├── 2026-08-01-session-handoff-sprint-5.1.3-closeout-and-workflow-policy.md
+│   │   ├── Codex-Session-2026-07-29.md
 │   ├── AIRepositoryWorkflow_v2_Design.md
 │   ├── AIRepositoryWorkflow.md
 │   ├── CatalogMetadata.md
@@ -175,7 +176,9 @@ PowerShell Scripts: 93
 │   │   ├── pw-git.ps1
 ├── 16_Profiles
 │   ├── Stable.json
+├── ContinueSession.md
 ├── CONTRIBUTING.md
+├── NewSession.md
 ├── Palworld-Modding.code-workspace
 ├── pw-git.ps1
 ├── PwWorkshop.ps1

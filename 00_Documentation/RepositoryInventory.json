@@ -3,13 +3,13 @@
     "Repository": "Palworld-Modding",
     "Root": ".",
     "Branch": "main",
-    "CommitSHA": "764a7c359efa5135d3dc996297b195f310217a15",
-    "Generated": "2026-08-01T10:50:57.0510927-04:00"
+    "CommitSHA": "0153134f68d26d3eef8c2d7f893d0318dceb729b",
+    "Generated": "2026-08-01T11:09:25.0582832-04:00"
   },
   "Statistics": {
     "Directories": 35,
-    "Files": 134,
-    "Documents": 134,
+    "Files": 137,
+    "Documents": 137,
     "PowerShellScripts": 93
   },
   "Structure": [
@@ -86,6 +86,11 @@
           "Children": [
             {
               "Name": "2026-08-01-session-handoff-sprint-5.1.3-closeout-and-workflow-policy.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "Codex-Session-2026-07-29.md",
               "Type": "File",
               "Extension": ".md"
             }
@@ -890,7 +895,17 @@
       ]
     },
     {
+      "Name": "ContinueSession.md",
+      "Type": "File",
+      "Extension": ".md"
+    },
+    {
       "Name": "CONTRIBUTING.md",
+      "Type": "File",
+      "Extension": ".md"
+    },
+    {
+      "Name": "NewSession.md",
       "Type": "File",
       "Extension": ".md"
     },
