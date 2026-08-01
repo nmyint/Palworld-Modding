@@ -9,30 +9,110 @@ Defines how AI assistants and automated tools should interact with this reposito
 Always begin with:
 
 1. `README.md`
-2. `00_Documentation/RepositoryStructure.txt`
-3. `00_Documentation/RepositoryInventory.json`
-4. `00_Documentation/AIRepositoryWorkflow.md`
-5. Relevant operational documentation in `00_Documentation`
-6. `00_Documentation/Scrapbook.md` for historical context
+2. `00_Documentation/SessionStartup.md`
+3. `00_Documentation/RepositoryStructure.txt`
+4. `00_Documentation/RepositoryInventory.json`
+5. `00_Documentation/AIRepositoryWorkflow.md`
+6. Relevant operational documentation in `00_Documentation`
+7. `00_Documentation/Scrapbook.md` for the canonical working agreement and historical context
 
-These files define the repository map before deeper inspection.
+These files define the repository map and startup behavior before deeper inspection.
 
 ## Mandatory Repository Compliance Gate
 
 Before answering any repository-specific request, making recommendations, or modifying files, verify:
 
 - README.md has been reviewed completely rather than skimmed for headings or keywords.
-- Every document explicitly required or referenced by README.md for the task has been read.
+- SessionStartup.md has been reviewed and the correct startup mode has been selected.
+- Every document explicitly required or referenced by README.md for repository work has been read.
 - AIRepositoryWorkflow.md has been reviewed completely and its rules are being followed.
 - Every applicable document required or referenced by AIRepositoryWorkflow.md has been read.
 - RepositoryStructure.txt has been reviewed.
 - RepositoryInventory.json has been reviewed.
-- Relevant operational documentation has been identified and read.
-- Existing implementation has been inspected when applicable.
+- Relevant operational and standards documentation has been identified and read.
+- Existing implementation and tests have been inspected when applicable.
+- Current repository access, branch, HEAD, and relevant recent state have been verified when available.
 
-If verification cannot be completed, state what remains unverified instead of guessing.
+Conversation history, previous responses, cached context, screenshots, handoff summaries, and assumptions are not authoritative repository state.
 
-Conversation history, previous responses, cached context, screenshots, summaries, and assumptions are not authoritative repository state.
+## Silent Startup-Gate Execution
+
+The mandatory startup gate must be completed within the same assistant turn before the assistant sends a natural-language repository response.
+
+During startup-gate execution, the assistant must:
+
+- perform all required connector calls, complete document reads, chunk or blob retrieval, repository inspection, and verification without sending a progress message;
+- continue through the complete required reading set rather than stopping after an initial scan or partial retrieval;
+- resolve ordinary response truncation with line ranges, chunks, or complete blob retrieval;
+- verify actual repository state instead of inheriting a branch, commit, test result, or status from a prompt, handoff, screenshot, or previous conversation;
+- keep repository modifications blocked until the gate and requested scope confirmation are complete.
+
+During startup-gate execution, the assistant must not send:
+
+- acknowledgements such as `I understand`;
+- progress updates or lists of remaining reading;
+- plans, promises, apologies, or statements that it will continue;
+- partial repository summaries;
+- repeated paraphrases of the startup instructions;
+- requests for permission to continue required reading.
+
+Needing additional connector calls, encountering a long document, or receiving a retrievable truncated response is not a hard blocker.
+
+The first visible natural-language response must be one of these result types:
+
+### COMPLETED
+
+The response may contain only:
+
+1. confirmation that the complete startup gate was satisfied;
+2. a concise verified repository-state summary;
+3. the verified project or continuation boundary;
+4. genuine limitations remaining after all available verification was attempted;
+5. the requested scope-selection or approval question.
+
+### BLOCKED
+
+Use this only when a hard technical failure prevents completion in the current turn. The response must contain only:
+
+- the exact source or operation that failed;
+- the exact error or access limitation;
+- the required verification that remains incomplete.
+
+Do not use `BLOCKED` because the reading set is large, more connector calls are required, or a response can be recovered through chunk or blob retrieval. Do not send repeated blocker reports or promise to continue later.
+
+Any acknowledgement, progress report, partial result, or promise to continue before `COMPLETED` or a genuine `BLOCKED` result is a startup-gate violation.
+
+## Session Startup Modes
+
+The canonical copy-and-paste prompts are maintained in `00_Documentation/SessionStartup.md`.
+
+Choose exactly one mode for a new chat session.
+
+### New project or implementation
+
+Use this mode when beginning a new feature, sprint, maintenance project, investigation, or implementation scope that is not being resumed from an active handoff.
+
+Required behavior:
+
+- begin from current canonical repository state;
+- do not assume that an older handoff defines the new scope;
+- read the current implementation and tests relevant to the proposed work;
+- verify the existing feature and milestone boundary;
+- recommend whether a branch is warranted under the documented branch policy;
+- stop at scope approval before implementation in the startup response.
+
+### Continue from session handoff
+
+Use this mode when resuming work summarized by the active file under `00_Documentation/Session-Handoffs`.
+
+Required behavior:
+
+- locate and read the active handoff completely;
+- treat it as a continuation summary subordinate to current user instructions and verified repository state;
+- verify that it remains the active continuation record;
+- inspect newer relevant repository changes;
+- state the exact verified continuation boundary and unresolved choices;
+- stop at scope confirmation before implementation in the startup response.
 
 ## Repository Truth and Verification Rules
 
@@ -49,9 +129,9 @@ Before answering repository-specific questions, making recommendations, or modif
 
 AI assistants must not:
 
-- claim files are missing without verification.
-- claim features are absent without checking the implementation.
-- propose replacements for systems that already exist.
+- claim files are missing without verification;
+- claim features are absent without checking the implementation;
+- propose replacements for systems that already exist;
 - rely solely on previous conversation history when repository state can be inspected.
 
 If documentation and assumptions conflict, repository documentation and current repository contents take priority.
@@ -68,11 +148,12 @@ https://github.com/nmyint/Palworld-Modding/blob/main/README.md
 
 Supporting authoritative sources:
 
-1. `00_Documentation/RepositoryStructure.txt`
-2. `00_Documentation/RepositoryInventory.json`
-3. `00_Documentation/AIRepositoryWorkflow.md`
-4. Relevant operational documentation
-5. `00_Documentation/Scrapbook.md` for historical context
+1. `00_Documentation/SessionStartup.md`
+2. `00_Documentation/RepositoryStructure.txt`
+3. `00_Documentation/RepositoryInventory.json`
+4. `00_Documentation/AIRepositoryWorkflow.md`
+5. Relevant operational documentation
+6. `00_Documentation/Scrapbook.md` for the canonical working agreement and historical context
 
 Explicit current user instructions take precedence. The current repository contents and the required documentation set are authoritative over session summaries and prior conversation memory.
 
@@ -93,9 +174,9 @@ Examples:
 
 Required behavior:
 
-- inspect repository state
-- enumerate relevant files
-- provide evidence-based findings
+- inspect repository state;
+- enumerate relevant files;
+- provide evidence-based findings.
 
 ### Modification
 
@@ -108,9 +189,9 @@ Examples:
 
 Required behavior:
 
-- read affected files first
-- preserve unrelated content
-- validate changes
+- read affected files first;
+- preserve unrelated content;
+- validate changes.
 
 ### Execution
 
@@ -122,8 +203,8 @@ Examples:
 
 Required behavior:
 
-- execute requested validation
-- report actual results
+- execute requested validation;
+- report actual results.
 
 ## Branch and Pull Request Policy
 
@@ -145,21 +226,15 @@ Create a dedicated branch when the work involves:
 - uncertain scope that may expand across multiple systems;
 - changes that materially benefit from isolated review or rollback.
 
-Do not create a branch solely as routine ceremony for a minor edit. If work that
-began as a small `main` change expands materially, stop and create a branch before
-continuing the expanded implementation.
+Do not create a branch solely as routine ceremony for a minor edit. If work that began as a small `main` change expands materially, stop and create a branch before continuing the expanded implementation.
 
-Pull requests are expected for branch-based work and whenever the user explicitly
-requests isolated review. Minor direct-to-`main` changes still require focused
-commits, appropriate validation, and a clean synchronized repository state.
+Pull requests are expected for branch-based work and whenever the user explicitly requests isolated review. Minor direct-to-`main` changes still require focused commits, appropriate validation, and a clean synchronized repository state.
 
 When a branch is merged:
 
 - use a merge commit unless the user explicitly chooses another method;
-- do not squash or rebase when documentation or handoffs reference individual
-  commit SHAs;
-- delete local and remote branches only after merged `main` is synchronized and
-  the required validation has passed.
+- do not squash or rebase when documentation or handoffs reference individual commit SHAs;
+- delete local and remote branches only after merged `main` is synchronized and the required validation has passed.
 
 Explicit user instructions may override this default branch policy.
 
@@ -208,9 +283,9 @@ Avoid unsupported completion claims.
 
 Responses should identify:
 
-- sources checked.
-- files inspected.
-- validation performed.
+- sources checked;
+- files inspected;
+- validation performed;
 - remaining uncertainty.
 
 Do not claim completion, verification, or successful validation unless evidence exists.
@@ -225,10 +300,10 @@ Completion statements require:
 
 Distinguish between:
 
-- planned
-- in progress
-- completed
-- verified
+- planned;
+- in progress;
+- completed;
+- verified.
 
 ## AI Change Scope Rules
 
@@ -246,23 +321,24 @@ A session handoff is a current continuation record, not a substitute for reading
 
 ### Mandatory handoff opening block
 
-Every newly created or substantially revised session handoff must begin with a prominent instruction block requiring the next assistant to:
+Every newly created or substantially revised active handoff must begin with the handoff-continuation startup block or an exact self-contained equivalent from `00_Documentation/SessionStartup.md`.
 
-1. Read `README.md` completely, not superficially and not merely scan headings.
-2. Read every document that `README.md` identifies or requires for repository work.
-3. Read `00_Documentation/AIRepositoryWorkflow.md` completely and abide by it.
-4. Read every applicable document required or referenced by the AI workflow.
-5. Read `RepositoryStructure.txt`, `RepositoryInventory.json`, relevant operational documentation, `Scrapbook.md`, and the current handoff.
-6. Treat explicit user instructions and the verified current repository/documentation set as authoritative sources.
-7. Verify current repository state before making assumptions, recommendations, status claims, or changes.
+The opening block must require:
 
-The block must state that a handoff summary and previous chat memory are subordinate to current authoritative repository sources.
+- complete silent startup-gate execution within the same assistant turn;
+- full reading of README, SessionStartup, AIRepositoryWorkflow, every required repository document, repository maps, relevant operational and standards documentation, Scrapbook, and the active handoff;
+- verification of current repository state and active-handoff status;
+- explicit authority of current user instructions and verified repository sources over the handoff and prior chat memory;
+- no acknowledgement, progress report, apology, plan, promise, partial summary, or list of remaining reading;
+- a first visible response limited to `COMPLETED` or a genuine concise `BLOCKED` result.
+
+Reading only the handoff is never sufficient preparation for repository work.
 
 ### Before creating or revising a handoff
 
 Verify:
 
-- the full current README and AI workflow have been read;
+- the full current README, SessionStartup, and AI workflow have been read;
 - all documents they require for the task have been read;
 - existing handoff files have been inspected;
 - current repository, branch, commit, and working-tree state have been verified when available;
@@ -315,11 +391,15 @@ Before creating or modifying code:
 
 Priority order:
 
-1. README.md
-2. AIRepositoryWorkflow.md
-3. RepositoryStructure.txt
-4. Individual documentation files
-5. Scrapbook.md
+1. Explicit current user instructions
+2. `README.md`
+3. `AIRepositoryWorkflow.md`
+4. `SessionStartup.md`
+5. `RepositoryStructure.txt` and `RepositoryInventory.json`
+6. Individual operational and standards documentation
+7. `Scrapbook.md`
+8. Active handoff summaries
+9. Previous conversation memory
 
 Generated files describe the current repository state. They should not be manually edited unless specifically required.
 
@@ -348,7 +428,7 @@ Preferred reading order:
 
 Before modifying files:
 
-- understand existing structure
-- inspect related documentation
-- preserve existing conventions
-- avoid unrelated changes
+- understand existing structure;
+- inspect related documentation;
+- preserve existing conventions;
+- avoid unrelated changes.
