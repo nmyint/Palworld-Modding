@@ -72,7 +72,12 @@ This repository is the authoritative development workspace for a personal Palwor
 **Sprint 4 is complete and closed.** It delivered the persistent mod catalog,
 component ownership, compatibility and conflict reporting, profile mod sets,
 deterministic deployment assembly, and preview-only upgrade and removal
-planning. Sprint 5 workshop-experience and automation work is in progress.
+planning.
+
+**Sprint 5 is active.** Within Sprint 5.1, repository awareness and structure
+documentation (5.1.1) and the workshop runtime/session model (5.1.2) are
+complete. The dashboard data model (5.1.3) is the next planned Sprint 5.1
+increment, followed by broader menu integration and health reporting.
 
 See [Roadmap.md](00_Documentation/Roadmap.md) for the accepted milestone boundary
 and future scope.
@@ -147,7 +152,11 @@ Initialize-PwWorkshop
 Get-PwWorkshopInfo
 ```
 
-PowerShell conventions and runtime requirements are documented in [PowerShellStandards.md](00_Documentation/PowerShellStandards.md).
+The `Bootstrap.ps1` runtime/session contract, context lifetime, and read-only
+initialization boundary are documented in
+[Environment.md](00_Documentation/Environment.md). PowerShell conventions and
+runtime requirements are documented in
+[PowerShellStandards.md](00_Documentation/PowerShellStandards.md).
 
 ## One-command menu
 
