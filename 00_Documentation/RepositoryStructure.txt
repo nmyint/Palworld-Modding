@@ -1,14 +1,14 @@
 Palworld Modding Workshop Repository Structure
-Generated: 08/01/2026 09:53:42
+Generated: 08/01/2026 10:50:57
 Repository: Palworld-Modding
 Root: .
 Branch: main
-CommitSHA: e6ad4e5aea92143bb994c1b958f78f3074b72e96
+CommitSHA: 764a7c359efa5135d3dc996297b195f310217a15
 
 Statistics:
 Directories: 35
-Files: 133
-Documents: 133
+Files: 134
+Documents: 134
 PowerShell Scripts: 93
 
 ├── .config
@@ -48,6 +48,7 @@ PowerShell Scripts: 93
 │   ├── RepositoryStructureTool.md
 │   ├── Roadmap.md
 │   ├── Scrapbook.md
+│   ├── SessionStartup.md
 │   ├── UpdateSources.md
 │   ├── WorkshopBackup.md
 │   ├── WorkshopDashboard.md
