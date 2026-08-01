@@ -13,13 +13,22 @@
 # Session Handoff - Sprint 5.1.3 Closeout and Workflow Policy
 
 **Date:** 2026-08-01  
+**Finalized:** 2026-08-01 09:55 -04:00  
 **Repository:** `nmyint/Palworld-Modding`  
 **Authoritative branch:** `main`  
 **Sprint state:** Sprint 5.1.3 complete; Sprint 5.1.4 next planned
 
 ## Purpose
 
-Provide one clean continuation point for a new ChatGPT session after completing Sprint 5.1.3, merging and validating it, adopting proportional branch usage, recording accepted future Pw-Git improvements, and removing stale session-handoff material.
+Provide one clean continuation point for a new ChatGPT session after:
+
+- completing and merging Sprint 5.1.3;
+- validating the merged dashboard implementation;
+- adopting proportional branch usage;
+- recording accepted future Pw-Git improvements;
+- strengthening the AI/session-handoff compliance rules;
+- auditing and removing stale handoff documentation; and
+- publishing refreshed repository maps.
 
 This is the only active continuation handoff. Durable project facts remain in canonical documentation, implementation, Git history, and merged pull requests.
 
@@ -33,12 +42,36 @@ Before continuing repository work:
 4. Follow and read every applicable document it requires or references.
 5. Read `00_Documentation/RepositoryStructure.txt`.
 6. Read `00_Documentation/RepositoryInventory.json`.
-7. Read the relevant operational documentation.
+7. Read the relevant operational and standards documentation.
 8. Read `00_Documentation/Scrapbook.md` completely.
 9. Read this handoff.
 10. Verify actual current repository state before proceeding.
 
 Do not use previous conversation context as a substitute for this reading order.
+
+## Final verified repository state
+
+The repository owner reported the following synchronized local state after the handoff cleanup and repository-map refresh:
+
+```text
+Repository : D:\Projects\Palworld-Modding
+Branch     : main
+Upstream   : origin/main
+Working tree: clean
+HEAD       : 5fde7e0 docs(repo): refresh maps after handoff cleanup
+```
+
+GitHub independently confirms the full commit:
+
+```text
+5fde7e03cf5c6caa7a3a25499e90f693cdc8cb00
+```
+
+That commit refreshes `RepositoryStructure.txt` and `RepositoryInventory.json` after removing 15 stale handoff files. The generated maps now show one active handoff and 133 mapped files/documents.
+
+This final handoff amendment is a content-only edit to the existing active handoff path. It does not add, remove, rename, or move a mapped path. Therefore it does not require another repository-map refresh.
+
+After this remote amendment, the repository owner intends to fetch/pull through GitHub Desktop. A future session must still verify the actual current branch, commit, upstream, and working-tree state rather than assume the checkpoint above remains HEAD.
 
 ## Verified Sprint 5.1.3 completion
 
@@ -85,35 +118,34 @@ Pending: 0
 Inconclusive: 0
 ```
 
-The last explicitly reported clean synchronized closeout before this handoff-maintenance update was:
+The repository owner also confirmed that local `main` contained the merge commit and the working tree was clean.
 
-```text
-Branch: main
-Upstream: origin/main
-Working tree: clean
-HEAD: d29a1cc docs(repo): refresh maps after session handoff
-```
+Do not claim a newer complete-suite result unless it is actually run and reported.
 
-A future session must fetch and verify current state rather than assuming this historical checkpoint is still HEAD.
+## Work completed during this session
 
-## Active branch policy
+### Sprint 5.1.3 branch, PR, and merge closure
 
-Use Git workflow proportional to change size and risk.
+- verified the feature branch scope;
+- opened PR #4 into `main`;
+- confirmed mergeability and absence of required GitHub checks;
+- merged using a merge commit, not squash or rebase;
+- synchronized local `main`;
+- ran the complete 145-test suite successfully;
+- removed the completed Sprint 5.1.3 local and remote branches after validation.
 
-### Work directly on `main`
+### Proportional branch policy
 
-Use `main` for minor, low-risk, clearly bounded work such as:
+The user explicitly decided that branches should be created only when they provide meaningful value.
+
+Use `main` directly for minor, low-risk, clearly bounded work such as:
 
 - small documentation corrections;
 - narrow workflow clarifications;
 - simple metadata or configuration maintenance;
 - focused fixes whose scope and impact are already understood.
 
-Direct-to-`main` work still requires focused commits, appropriate validation, reviewed paths, and a clean synchronized repository state.
-
-### Create a dedicated branch
-
-Use a branch for:
+Create a dedicated branch for:
 
 - a new sprint or major milestone;
 - a major feature or broad behavioral change;
@@ -125,6 +157,48 @@ Use a branch for:
 Do not create branches as routine ceremony. If a small change begins on `main` and expands materially, stop and create a branch before continuing the expanded scope.
 
 Branch-based work normally uses a pull request and merge commit. Delete merged branches only after local `main` is synchronized and required validation passes.
+
+This policy is recorded in:
+
+- `00_Documentation/AIRepositoryWorkflow.md`
+- `00_Documentation/ChangeManagement.md`
+- `00_Documentation/Scrapbook.md`
+- `CONTRIBUTING.md`
+
+### Session-handoff policy
+
+`00_Documentation/AIRepositoryWorkflow.md` now requires every future handoff to:
+
+- begin with the mandatory startup gate used at the top of this file;
+- require complete reading of README and the AI workflow;
+- require every applicable referenced document;
+- treat explicit user instructions and verified current repository sources as authoritative;
+- verify actual repository state before assumptions or status claims;
+- inspect existing handoffs before publishing a new one;
+- normally retain one active continuation handoff;
+- move durable facts into canonical documentation;
+- remove superseded continuation files, raw chat dumps, temporary notes, pre-merge checkpoints, poorly named files, and records with obsolete branch/PR/test/next-action guidance;
+- regenerate repository maps whenever handoff paths are added, removed, renamed, or moved.
+
+### Stale-handoff cleanup
+
+The handoff directory was audited and 15 stale files were removed, including:
+
+- raw ChatGPT/Codex transcripts;
+- the poorly named 2026-07-30 raw handoff dump;
+- obsolete Pw-Git kickoff, v1.1, v1.2 checkpoint, and review handoffs;
+- interim Nexus handoffs that described merged PR #2 as open or draft;
+- superseded AI-workflow review checkpoints;
+- the pre-merge Sprint 5.1.3 handoff;
+- older sprint-state records already represented in Roadmap and Scrapbook.
+
+After cleanup, the only active handoff is:
+
+```text
+00_Documentation/Session-Handoffs/2026-08-01-session-handoff-sprint-5.1.3-closeout-and-workflow-policy.md
+```
+
+Git history, canonical documents, and merged pull requests preserve historical records.
 
 ## Accepted future Pw-Git direction
 
@@ -190,38 +264,6 @@ Planned Pw-Git v1.3 diagnostics should:
 
 Future Pw-Git branch/merge UX should support branches only when genuinely needed. It must not force minor edits through branch creation, PR, merge, and deletion ceremony.
 
-## Handoff maintenance policy
-
-Future handoffs must follow the procedure now recorded in `00_Documentation/AIRepositoryWorkflow.md`:
-
-- begin with the mandatory startup gate used at the top of this file;
-- require complete reading of README and the AI workflow, including every applicable referenced document;
-- treat current user instructions and verified repository documentation/state as authoritative;
-- verify actual repository state instead of inheriting assumptions;
-- inspect all existing handoffs before publishing a new one;
-- normally retain one active continuation handoff;
-- move durable facts into canonical documentation;
-- remove superseded continuation files, raw chat dumps, temporary notes, pre-merge checkpoints, poorly named files, and records with obsolete branch/PR/test/next-action guidance;
-- regenerate repository maps whenever handoff paths are added, removed, renamed, or moved.
-
-Git history and merged PRs preserve historical records. Stale handoffs do not need to remain active documentation.
-
-## Stale-handoff audit and cleanup
-
-The handoff directory was audited during this maintenance pass.
-
-Files identified for removal include:
-
-- raw chat or Codex transcripts;
-- the poorly named 2026-07-30 raw handoff dump;
-- Pw-Git kickoff, v1.1, v1.2 checkpoint, and redundant review records superseded by current canonical Pw-Git documentation;
-- interim Nexus foundation/menu/cache records that still describe merged PR #2 as open or draft;
-- AI-workflow review checkpoints superseded by the current workflow;
-- the pre-PR Sprint 5.1.3 completion handoff superseded by this merged closeout record;
-- older sprint-state correction records now represented in Roadmap and Scrapbook.
-
-After cleanup, this file is the active continuation handoff. Historical details remain recoverable through Git history, canonical documents, and merged pull requests.
-
 ## Next development boundary
 
 Sprint 5.1.4, menu UX integration, is the next planned Sprint 5.1 increment. Because it is a new sprint and changes user-facing behavior, a dedicated branch is appropriate when implementation begins.
@@ -231,6 +273,8 @@ Sprint 5.1.4 should present the completed dashboard model through the existing a
 Sprint 5.1.5 remains responsible for broader repository, documentation, configuration, module, and test-health reporting.
 
 The user may choose to prioritize Pw-Git improvements before Sprint 5.1.4. Confirm the requested priority at the start of the next session rather than assuming it.
+
+Do not begin Sprint 5.1.4, Sprint 5.1.5, or Pw-Git implementation without explicit user direction.
 
 ## Working agreement for the next session
 
@@ -242,13 +286,23 @@ The user may choose to prioritize Pw-Git improvements before Sprint 5.1.4. Confi
 - Never fabricate tests, logs, branches, commits, or repository state.
 - Never claim completion without verification.
 - Preserve the separation between PwWorkshop and Pw-Git.
-- Do not expand scope into Sprint 5.1.4, Sprint 5.1.5, or Pw-Git implementation without explicit user direction.
+- Use `main` for minor low-risk edits and branches only for new sprints, major/risky changes, experiments, or materially useful isolated review.
 
-## New-session starting action
+## Exact new-session starting procedure
 
-The next session must first complete the mandatory startup gate, verify current `main`, and then confirm whether the objective is:
+The next session must:
 
-1. Sprint 5.1.4 menu UX integration; or
-2. the accepted Pw-Git improvements.
+1. Complete the mandatory startup gate at the top of this file.
+2. Verify GitHub connector access to `nmyint/Palworld-Modding`.
+3. Verify current `main`, remote HEAD, recent commits, and repository status.
+4. Confirm that this is still the only active handoff.
+5. Confirm whether the next objective is:
+   - Sprint 5.1.4 menu UX integration; or
+   - the accepted Pw-Git improvements.
+6. Read the implementation and documentation relevant to that selected objective.
+7. Create a branch only if the selected work is a new sprint, major/risky change, experiment, uncertain multi-system scope, or otherwise materially benefits from isolation.
+8. Do not begin implementation until verification and scope confirmation are complete.
 
-Do not begin implementation before that verification and scope confirmation.
+## Session closeout status
+
+**This session is fully closed and ready to continue in a new conversation after the repository owner fetches/pulls this final content-only handoff amendment through GitHub Desktop.**
