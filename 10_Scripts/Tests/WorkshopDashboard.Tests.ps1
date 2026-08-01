@@ -14,100 +14,6 @@ Describe 'PalworldModding workshop dashboard model' {
         Import-Module $moduleManifest -Force
     }
 
-    It 'returns a deterministic structured snapshot with fixed section order' {
-        InModuleScope PalworldModding {
-            $generatedAt = [datetime]'2026-08-01T12:00:00Z'
-
-            Mock Get-PwWorkshopInfo {
-                [PSCustomObject]@{ Name = 'Workshop'; Version = '0.4.9' }
-            }
-            Mock Get-PwDashboardRepositoryState {
-                [PSCustomObject]@{ Branch = 'test'; IsClean = $true }
-            }
-            Mock Get-PwDashboardProfileState {
-                [PSCustomObject]@{ Name = 'Stable'; IsReady = $true }
-            }
-            Mock Get-PwDashboardCatalogState {
-                [PSCustomObject]@{ ModCount = 2 }
-            }
-            Mock Get-PwDashboardDeploymentState {
-                [PSCustomObject]@{ CanDeploy = $true }
-            }
-            Mock Get-PwNexusMetadataCacheInfo {
-                [PSCustomObject]@{ Exists = $true; IsCurrent = $true }
-            }
-            Mock Get-PwDiagnostics {
-                [PSCustomObject]@{ IsHealthy = $true }
-            }
-
-            $result = Get-PwWorkshopDashboard -GeneratedAt $generatedAt
-
-            $result.SchemaVersion | Should Be '1.0'
-            $result.GeneratedAt.ToUniversalTime() | Should Be $generatedAt
-            ($result.Sections.Name -join ',') | Should Be (
-                'Workshop,Repository,Profile,Catalog,Deployment,' +
-                'UpdateCache,Diagnostics'
-            )
-            @($result.Sections | Where-Object Status -ne 'Ready').Count |
-                Should Be 0
-            $result.ReadySectionCount | Should Be 7
-            $result.UnavailableSectionCount | Should Be 0
-            $result.IsComplete | Should Be $true
-            @($result.Errors).Count | Should Be 0
-            $result.Workshop.Name | Should Be 'Workshop'
-            $result.Repository.Branch | Should Be 'test'
-            $result.Profile.Name | Should Be 'Stable'
-            $result.Catalog.ModCount | Should Be 2
-            $result.Deployment.CanDeploy | Should Be $true
-            $result.UpdateCache.IsCurrent | Should Be $true
-            $result.Diagnostics.IsHealthy | Should Be $true
-
-            { $result | ConvertTo-Json -Depth 30 } | Should Not Throw
-        }
-    }
-
-    It 'isolates one unavailable provider without discarding other sections' {
-        InModuleScope PalworldModding {
-            Mock Get-PwWorkshopInfo {
-                [PSCustomObject]@{ Name = 'Workshop' }
-            }
-            Mock Get-PwDashboardRepositoryState {
-                [PSCustomObject]@{ Branch = 'test' }
-            }
-            Mock Get-PwDashboardProfileState {
-                [PSCustomObject]@{ Name = 'Stable' }
-            }
-            Mock Get-PwDashboardCatalogState {
-                [PSCustomObject]@{ ModCount = 2 }
-            }
-            Mock Get-PwDashboardDeploymentState {
-                [PSCustomObject]@{ CanDeploy = $false }
-            }
-            Mock Get-PwNexusMetadataCacheInfo {
-                throw 'Cache is unreadable.'
-            }
-            Mock Get-PwDiagnostics {
-                [PSCustomObject]@{ IsHealthy = $true }
-            }
-
-            $result = Get-PwWorkshopDashboard
-            $cacheSection = $result.Sections |
-                Where-Object Name -eq 'UpdateCache' |
-                Select-Object -First 1
-
-            $result.Workshop.Name | Should Be 'Workshop'
-            $result.Repository.Branch | Should Be 'test'
-            $result.UpdateCache | Should BeNullOrEmpty
-            $cacheSection.Status | Should Be 'Unavailable'
-            $cacheSection.Error | Should Be 'Cache is unreadable.'
-            $result.ReadySectionCount | Should Be 6
-            $result.UnavailableSectionCount | Should Be 1
-            $result.IsComplete | Should Be $false
-            $result.Errors[0].Section | Should Be 'UpdateCache'
-            $result.Errors[0].Message | Should Be 'Cache is unreadable.'
-        }
-    }
-
     It 'uses existing read-only providers and never invokes mutation commands' {
         InModuleScope PalworldModding {
             Mock Get-PwWorkshopInfo {
@@ -270,7 +176,12 @@ Describe 'PalworldModding workshop dashboard model' {
             Mock Restore-PwDeployment {}
 
             $result = Get-PwWorkshopDashboard
+            $profileSection = $result.Sections |
+                Where-Object Name -eq 'Profile' |
+                Select-Object -First 1
 
+            $profileSection.Status | Should Be 'Ready'
+            $profileSection.Error | Should Be ''
             $result.Profile.SelectedMods[0].CatalogKey | Should Be 'alpha'
             $result.Catalog.Items[0].CatalogKey | Should Be 'alpha'
             $result.Catalog.Items[0].PresentArchiveCount | Should Be 1
@@ -285,6 +196,101 @@ Describe 'PalworldModding workshop dashboard model' {
             Assert-MockCalled Build-PwProfileDeployment -Times 0 -Exactly
             Assert-MockCalled Invoke-PwDeployment -Times 0 -Exactly
             Assert-MockCalled Restore-PwDeployment -Times 0 -Exactly
+        }
+    }
+
+    It 'returns a deterministic structured snapshot with fixed section order' {
+        InModuleScope PalworldModding {
+            $generatedAt = [datetime]'2026-08-01T12:00:00Z'
+
+            Mock Get-PwWorkshopInfo {
+                [PSCustomObject]@{ Name = 'Workshop'; Version = '0.4.9' }
+            }
+            Mock Get-PwDashboardRepositoryState {
+                [PSCustomObject]@{ Branch = 'test'; IsClean = $true }
+            }
+            Mock Get-PwDashboardProfileState {
+                [PSCustomObject]@{ Name = 'Stable'; IsReady = $true }
+            }
+            Mock Get-PwDashboardCatalogState {
+                [PSCustomObject]@{ ModCount = 2 }
+            }
+            Mock Get-PwDashboardDeploymentState {
+                [PSCustomObject]@{ CanDeploy = $true }
+            }
+            Mock Get-PwNexusMetadataCacheInfo {
+                [PSCustomObject]@{ Exists = $true; IsCurrent = $true }
+            }
+            Mock Get-PwDiagnostics {
+                [PSCustomObject]@{ IsHealthy = $true }
+            }
+
+            $result = Get-PwWorkshopDashboard -GeneratedAt $generatedAt
+
+            $result.SchemaVersion | Should Be '1.0'
+            $result.GeneratedAt.ToUniversalTime() |
+                Should Be $generatedAt.ToUniversalTime()
+            ($result.Sections.Name -join ',') | Should Be (
+                'Workshop,Repository,Profile,Catalog,Deployment,' +
+                'UpdateCache,Diagnostics'
+            )
+            @($result.Sections | Where-Object Status -ne 'Ready').Count |
+                Should Be 0
+            $result.ReadySectionCount | Should Be 7
+            $result.UnavailableSectionCount | Should Be 0
+            $result.IsComplete | Should Be $true
+            @($result.Errors).Count | Should Be 0
+            $result.Workshop.Name | Should Be 'Workshop'
+            $result.Repository.Branch | Should Be 'test'
+            $result.Profile.Name | Should Be 'Stable'
+            $result.Catalog.ModCount | Should Be 2
+            $result.Deployment.CanDeploy | Should Be $true
+            $result.UpdateCache.IsCurrent | Should Be $true
+            $result.Diagnostics.IsHealthy | Should Be $true
+
+            { $result | ConvertTo-Json -Depth 30 } | Should Not Throw
+        }
+    }
+
+    It 'isolates one unavailable provider without discarding other sections' {
+        InModuleScope PalworldModding {
+            Mock Get-PwWorkshopInfo {
+                [PSCustomObject]@{ Name = 'Workshop' }
+            }
+            Mock Get-PwDashboardRepositoryState {
+                [PSCustomObject]@{ Branch = 'test' }
+            }
+            Mock Get-PwDashboardProfileState {
+                [PSCustomObject]@{ Name = 'Stable' }
+            }
+            Mock Get-PwDashboardCatalogState {
+                [PSCustomObject]@{ ModCount = 2 }
+            }
+            Mock Get-PwDashboardDeploymentState {
+                [PSCustomObject]@{ CanDeploy = $false }
+            }
+            Mock Get-PwNexusMetadataCacheInfo {
+                throw 'Cache is unreadable.'
+            }
+            Mock Get-PwDiagnostics {
+                [PSCustomObject]@{ IsHealthy = $true }
+            }
+
+            $result = Get-PwWorkshopDashboard
+            $cacheSection = $result.Sections |
+                Where-Object Name -eq 'UpdateCache' |
+                Select-Object -First 1
+
+            $result.Workshop.Name | Should Be 'Workshop'
+            $result.Repository.Branch | Should Be 'test'
+            $result.UpdateCache | Should BeNullOrEmpty
+            $cacheSection.Status | Should Be 'Unavailable'
+            $cacheSection.Error | Should Be 'Cache is unreadable.'
+            $result.ReadySectionCount | Should Be 6
+            $result.UnavailableSectionCount | Should Be 1
+            $result.IsComplete | Should Be $false
+            $result.Errors[0].Section | Should Be 'UpdateCache'
+            $result.Errors[0].Message | Should Be 'Cache is unreadable.'
         }
     }
 }
