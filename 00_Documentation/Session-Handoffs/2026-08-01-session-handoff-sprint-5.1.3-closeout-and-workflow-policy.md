@@ -5,6 +5,40 @@
 **Authoritative branch:** `main`  
 **Sprint state:** Sprint 5.1.3 complete; Sprint 5.1.4 next planned
 
+## Mandatory startup instructions
+
+**Before answering any repository-specific question, making recommendations,
+planning work, or modifying files, the AI assistant must complete all of the
+following:**
+
+1. Read `README.md` completely from beginning to end. Do not skim it, read only
+   excerpts, or begin making assumptions after a superficial scan.
+2. Follow and read every document that `README.md` identifies as required or
+   authoritative for the requested work.
+3. Read `00_Documentation/RepositoryStructure.txt` and
+   `00_Documentation/RepositoryInventory.json` to verify the current repository
+   layout.
+4. Read `00_Documentation/AIRepositoryWorkflow.md` completely from beginning to
+   end, follow every document it requires, and strictly abide by its workflow and
+   safety rules.
+5. Read all operational, standards, design, roadmap, handoff, and implementation
+   documents indicated by those authoritative sources and relevant to the task.
+6. Read `00_Documentation/Scrapbook.md` completely and preserve its working
+   agreement, accepted decisions, and documented precedence rules.
+7. Read this handoff and any newer relevant handoff before deciding the current
+   continuation point.
+8. Treat the current repository, `README.md`, `AIRepositoryWorkflow.md`, every
+   document they require, the repository maps, relevant operational documents,
+   and `Scrapbook.md` as authoritative sources according to their documented
+   precedence. Do not allow conversation memory, cached context, prior answers,
+   or assumptions to override them.
+9. If any required source cannot be read completely, state exactly what remains
+   unverified. Do not claim compliance, infer repository state, or proceed from
+   assumptions as though the mandatory reading were complete.
+
+These instructions are a compliance gate, not a suggested reading list. Reading
+only this handoff is not sufficient preparation for repository work.
+
 ## Purpose
 
 Provide a clean continuation point for a new ChatGPT session after completing
@@ -12,22 +46,24 @@ Sprint 5.1.3, merging it to `main`, validating the merged result locally, and
 updating repository workflow guidance so branch usage is proportional to change
 size and risk.
 
-This handoff should be read after the repository entry documents and applicable
-workflow guidance. It summarizes current state; it does not override explicit
-user instructions or newer repository content.
+This handoff summarizes current state. It does not override explicit user
+instructions, the mandatory startup instructions above, or newer authoritative
+repository content.
 
 ## Authoritative reading order
 
-Before continuing repository work:
+After satisfying the mandatory startup instructions, use this reading order to
+confirm completion:
 
-1. Read `README.md`.
-2. Read `00_Documentation/RepositoryStructure.txt`.
-3. Read `00_Documentation/RepositoryInventory.json`.
-4. Read `00_Documentation/AIRepositoryWorkflow.md` fully.
-5. Follow every referenced document required by that workflow.
-6. Read the operational documents relevant to the requested task.
-7. Read `00_Documentation/Scrapbook.md` fully.
-8. Read this handoff and any newer relevant handoff.
+1. `README.md`, read completely.
+2. Every required document referenced by `README.md`.
+3. `00_Documentation/RepositoryStructure.txt`.
+4. `00_Documentation/RepositoryInventory.json`.
+5. `00_Documentation/AIRepositoryWorkflow.md`, read completely and obeyed.
+6. Every required document referenced by `AIRepositoryWorkflow.md`.
+7. Operational and standards documents relevant to the requested task.
+8. `00_Documentation/Scrapbook.md`, read completely.
+9. This handoff and any newer relevant handoff.
 
 Do not rely on conversation memory when current repository content can be
 verified.
@@ -287,31 +323,36 @@ requested priority at the start of the next session rather than assuming it.
 - Do not expand scope into Sprint 5.1.4, Sprint 5.1.5, or Pw-Git implementation
   without explicit user direction.
 
-## Immediate local synchronization required
+## Final synchronized state before this instruction amendment
 
-At the time this handoff was created, remote `main` contains the four workflow
-policy commits listed above plus this new handoff commit. The user's local `main`
-was last explicitly verified at the Sprint 5.1.3 merge commit before these
-remote documentation commits were pulled.
+After publishing the original handoff and refreshing the repository maps, the
+user verified the following local and remote state:
 
-In the next local step:
+```text
+Repository: D:\Projects\Palworld-Modding
+Branch: main
+Upstream: origin/main
+Working tree: clean
+HEAD: d29a1cc docs(repo): refresh maps after session handoff
+Previous: d060e1f docs(handoff): record Sprint 5.1.3 closeout and workflow policy
+```
 
-1. fetch and compare;
-2. fast-forward pull `main`;
-3. refresh repository maps because this handoff is a new included file;
-4. run `RepositoryStructure.Tests.ps1` and `git diff --check`;
-5. review, stage, commit, and push only the two generated map files if changed;
-6. verify clean synchronized `main`.
+The complete workshop validation remains the verified Sprint 5.1.3 result of
+145 passed and 0 failed. The focused repository-map suite was required and run
+during the original handoff/map closeout; do not invent a newer result.
 
-No full workshop test rerun is required solely for these documentation and map
-updates unless another implementation change has occurred. The focused
-repository-structure suite remains required after regeneration.
+This instruction amendment modifies only the contents of the existing handoff
+file. It does not add, remove, rename, or move a mapped path, so it does **not**
+require another repository-map refresh.
+
+At the beginning of the next session, fetch, compare, and fast-forward pull
+`main` before relying on a commit SHA or repository state recorded here.
 
 ## Session closeout status
 
-**The session is ready to continue in a new conversation after local
-synchronization and repository-map publication.**
+**The session is ready to continue in a new conversation after this handoff
+instruction amendment is synchronized locally.**
 
-The next session must begin by reading the authoritative repository documents
-and this handoff, verifying actual current repository state, and confirming
+The next session must begin by completing the mandatory startup instructions at
+the top of this file, verifying actual current repository state, and confirming
 whether the next objective is Sprint 5.1.4 or the planned Pw-Git improvements.
