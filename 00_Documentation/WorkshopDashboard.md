@@ -3,8 +3,8 @@
 ## Status
 
 **Sprint:** 5.1.3  
-**Implementation:** In progress  
-**Validation:** Pending local PowerShell and Pester execution
+**Implementation:** Complete  
+**Validation:** Verified locally under PowerShell 7.6.4 and Pester 3.4.0
 
 `Get-PwWorkshopDashboard` provides one structured, read-only snapshot of the
 current Palworld Modding Workshop state. It is a data model for automation,
@@ -139,6 +139,11 @@ The dashboard never calls `Update-PwNexusMetadataCache` and never performs a
 hidden Nexus or GitHub network refresh. An absent cache remains visible as an
 absent cache until the user explicitly uses an established Nexus-backed workflow.
 
+A successfully collected `UpdateCache` section may still report
+`IsComplete = false` or `IsCurrent = false`. Section status describes whether the
+provider returned data; cache completeness and currentness describe the state of
+the cache itself.
+
 ## Diagnostics section
 
 The diagnostics section returns the existing `Get-PwDiagnostics` result. Its
@@ -181,7 +186,7 @@ Sprint 5.1.4 may present this model through the existing adaptive menu. Sprint
 Those later increments must continue using established command authority rather
 than embedding duplicate logic in the interface.
 
-## Validation checkpoint
+## Validation record
 
 Focused coverage is defined in:
 
@@ -199,4 +204,18 @@ The tests cover:
 - zero calls to catalog, cache, build, deployment, or restoration mutation
   commands.
 
-Passing local results must be recorded before Sprint 5.1.3 is marked complete.
+Verified locally on 2026-08-01:
+
+- `WorkshopDashboard.Tests.ps1`: 3 passed, 0 failed;
+- `PalworldModding.Tests.ps1`: 10 passed, 0 failed;
+- complete workshop suite: 145 passed, 0 failed;
+- `RepositoryStructure.Tests.ps1`: 5 passed, 0 failed;
+- `git diff --check`: no whitespace errors;
+- real dashboard snapshot: 7 ready sections, 0 unavailable sections,
+  `IsComplete = true`;
+- JSON serialization completed successfully;
+- dashboard collection left the Git working tree clean.
+
+This validation satisfies the Sprint 5.1.3 completion criteria. Menu presentation
+remains assigned to Sprint 5.1.4, and broader health-provider expansion remains
+assigned to Sprint 5.1.5.
