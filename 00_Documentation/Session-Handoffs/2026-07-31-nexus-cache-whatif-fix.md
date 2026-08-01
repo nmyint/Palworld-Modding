@@ -5,7 +5,7 @@
 **Branch:** `agent/nexus-update-download-flow`
 **Pull request:** #2, open and draft
 
-## Reported Local Validation
+## Initial Local Validation
 
 The repository owner completed the requested focused validation under
 PowerShell 7.6.4 and Pester 3.4.0:
@@ -15,7 +15,7 @@ PowerShell 7.6.4 and Pester 3.4.0:
 - `CatalogMetadata.Tests.ps1`: 8 passed, 0 failed;
 - `NexusUpdateMenuInteraction.Tests.ps1`: 2 passed, 0 failed.
 
-The complete suite reported 139 passed and 1 failed.
+The first complete suite reported 139 passed and 1 failed.
 
 ## Failure
 
@@ -74,50 +74,42 @@ The isolated Pester 3.4 test verifies that `-WhatIf`:
 
 The existing failed menu-wiring test remains the integration-level regression.
 
-## Local Files Already Generated
+## Final Local Validation
 
-The repository owner regenerated:
+The repository owner pulled remote head
+`bf72d7e595b7ab72496a6ffcbcf2cb5b947d51b2`, regenerated the repository maps,
+reimported the module, and completed the corrective validation on 2026-07-31.
 
-- `00_Documentation/RepositoryStructure.txt`;
-- `00_Documentation/RepositoryInventory.json`.
+Results:
 
-Those files are locally modified and uncommitted. The new command and test files
-were added afterward, so the exporter must be run again after pulling this fix.
+- `NexusMetadataCacheTransaction.Tests.ps1`: 1 passed, 0 failed;
+- `NexusUpdateMenuWiring.Tests.ps1`: 5 passed, 0 failed;
+- complete `10_Scripts\Tests` suite: 141 passed, 0 failed;
+- skipped: 0;
+- pending: 0;
+- inconclusive: 0.
 
-The ignored cache check passed:
+The cache ignore check also passed:
 
 ```text
 .gitignore:96:/.cache/  ".cache\\NexusMetadata.json"
 ```
 
-## Required Validation
+The final working tree contained only the expected regenerated tracked files:
 
-Run from the repository root:
-
-```powershell
-git pull
-.\10_Scripts\Utilities\Export-PwRepositoryStructure.ps1
-Remove-Module PalworldModding -Force -ErrorAction SilentlyContinue
-Import-Module .\10_Scripts\Modules\PalworldModding.psd1 -Force -ErrorAction Stop
-Invoke-Pester .\10_Scripts\Tests\NexusMetadataCacheTransaction.Tests.ps1
-Invoke-Pester .\10_Scripts\Tests\NexusUpdateMenuWiring.Tests.ps1
-Invoke-Pester .\10_Scripts\Tests
-git status --short --branch
-git check-ignore -v .cache\NexusMetadata.json
+```text
+00_Documentation/RepositoryInventory.json
+00_Documentation/RepositoryStructure.txt
 ```
 
-Expected counts:
+No cache file, temporary cache file, deployment file, archive, mod payload, or
+game installation content was tracked or modified by the validation.
 
-- cache transaction suite: 1 passed, 0 failed;
-- menu wiring suite: 5 passed, 0 failed;
-- complete suite: 141 passed, 0 failed.
+## Remaining Repository Boundary
 
-Expected tracked working-tree changes after regeneration:
+The executable implementation and automated validation are complete.
 
-- `00_Documentation/RepositoryStructure.txt`;
-- `00_Documentation/RepositoryInventory.json`.
-
-The cache JSON must remain ignored and untracked.
-
-PR #2 must remain draft until this validation passes. Do not merge to `main`
-without explicit repository-owner approval.
+The repository owner must commit and push the two regenerated structure files so
+PR #2 includes the authoritative generated repository maps. After that push, the
+PR can be rechecked and marked ready for final review. It must not be merged to
+`main` without explicit repository-owner approval.
