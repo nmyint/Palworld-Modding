@@ -12,6 +12,8 @@ losing the intended hierarchy.
 - `Enter` usually returns to the previous menu level without applying changes.
 - Read-only views stay read-only until the user explicitly chooses to apply
   something.
+- The main menu summarizes the existing `Get-PwWorkshopDashboard` snapshot; it
+  does not duplicate provider logic or refresh remote state.
 
 ## Main Menu
 
@@ -27,7 +29,44 @@ The top-level menu is the one shown by `Start-PwWorkshop`.
 - `8` Diagnostics
 - `9` Installation inventory
 - `0` Deployment and restore history
+- `H` Current state dashboard
 - `Q` Exit
+
+The heading uses durable product and workflow language rather than transient
+sprint labels. Depending on terminal dimensions, the main menu shows a detailed,
+standard, or compact summary of:
+
+- active profile readiness and selected mod set;
+- local repository branch, working-tree state, and locally known divergence;
+- catalog counts;
+- deployment and assembly state;
+- update-cache state;
+- diagnostic health; and
+- dashboard collection completeness.
+
+The summary is collected once per menu render from `Get-PwWorkshopDashboard`.
+Provider failures remain isolated and are shown as unavailable or partial state
+without preventing the available menu actions from remaining usable.
+
+## Current State Dashboard (`H`)
+
+`H` opens a detailed read-only presentation of the current dashboard snapshot.
+It includes the profile, selected mod set, repository state, catalog summary,
+deployment and assembly state, update cache, diagnostics, and the status of all
+seven dashboard provider sections.
+
+The dashboard view does not:
+
+- fetch or pull Git state;
+- refresh Nexus or GitHub metadata;
+- update the catalog;
+- build deployment output;
+- deploy files;
+- restore backups; or
+- modify workshop or game state.
+
+`B` or Enter returns to the main menu. `Q` exits the workshop. Returning redraws
+the main menu so terminal resize and current local state are reflected.
 
 ## Catalog Submenu
 
@@ -166,7 +205,7 @@ profile.
 
 ## Staged UE4SS Snapshot
 
-Menu option `3` now mirrors the migrated `02_Staging\Pal\Binaries\Win64\ue4ss\Mods`
+Menu option `3` mirrors the migrated `02_Staging\Pal\Binaries\Win64\ue4ss\Mods`
 tree when that layout is present. It remains a read-only view of the active
 UE4SS/Lua staging folders and their enablement markers.
 
@@ -185,6 +224,9 @@ Back behavior:
 
 - Catalog, archive, and update actions are grouped as dedicated submenu loops.
 - Profile mod sets follow the same submenu pattern and are profile-scoped.
-- The main menu still redraws after each completed action.
+- The main menu redraws after each completed action and after leaving the
+  current-state dashboard.
+- Main-menu raw-key handling accepts every documented numeric option, including
+  `9` and `0`, plus `H` and `Q`.
 - Submenu prompts should be updated before adding new action branches so they
   continue to support `B` consistently.
