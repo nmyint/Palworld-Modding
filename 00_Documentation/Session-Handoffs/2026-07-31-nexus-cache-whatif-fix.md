@@ -20,8 +20,7 @@ Focused results:
 - `NexusMetadataCacheTransaction.Tests.ps1`: 1 passed, 0 failed;
 - `NexusUpdateMenuWiring.Tests.ps1`: 5 passed, 0 failed.
 
-Complete suite result at executable head
-`bf72d7e595b7ab72496a6ffcbcf2cb5b947d51b2`:
+The first complete suite after the cache transaction fix reported:
 
 ```text
 Passed: 141
@@ -39,50 +38,36 @@ The cache ignore check passed:
 
 ## Generated Repository Maps
 
-The repository owner regenerated, committed, and pushed:
+The repository owner initially regenerated, committed, and pushed:
 
 - `00_Documentation/RepositoryInventory.json`;
 - `00_Documentation/RepositoryStructure.txt`.
 
-Commit:
+Initial map commit:
 
 ```text
 39288d97d30d4abbd51b8a6b6b7d191b81cff7f4
 Refresh repository maps for Nexus metadata workflow
 ```
 
-The local branch was clean and synchronized after the push.
+## Map Hygiene Correction
 
-## Map Hygiene Issue Found During Final Review
-
-The generated maps included the ignored local path:
+Final review found that the generated maps included the ignored local path:
 
 ```text
 .cache\NexusMetadata.json
 ```
 
-The cache contents were not committed, but the documentation exporter listed the
-machine-local cache directory because it ignored only `.git`.
+The cache contents were not tracked, but map output should describe durable
+project structure and must not vary based on whether a local cache has been
+created.
 
-Repository maps should describe durable project structure and must not vary based
-on whether a local cache has been created.
+The corrective implementation:
 
-## Corrective Change
-
-`10_Scripts\Utilities\Export-PwRepositoryStructure.ps1` now excludes both:
-
-```text
-.git
-.cache
-```
-
-`10_Scripts\Tests\RepositoryStructure.Tests.ps1` adds a Pester 3.4 regression
-case verifying that:
-
-- `.cache` is absent from the text map;
-- `NexusMetadata.json` is absent from the text map;
-- `.cache` is absent from the JSON inventory; and
-- normal documented files remain present.
+- added `.cache` to the exporter directory exclusions;
+- added Pester 3.4 coverage proving that `.cache` and
+  `NexusMetadata.json` are absent from both generated maps while normal project
+  files remain present.
 
 Corrective executable/test commits:
 
@@ -91,26 +76,42 @@ Corrective executable/test commits:
 8b194a3ffc4f2c3a50abeb1c82e3dfbe5397b277
 ```
 
-## Required Local Validation
+## Final Owner Validation and Push
 
-Run from the repository root:
+The repository owner reported that the focused repository-structure tests and the
+complete workshop suite passed after the map-hygiene correction. The expected
+final complete-suite checkpoint was 142 passed and 0 failed.
 
-```powershell
-git pull
-Invoke-Pester .\10_Scripts\Tests\RepositoryStructure.Tests.ps1
-.\10_Scripts\Utilities\Export-PwRepositoryStructure.ps1
-Select-String -Path .\00_Documentation\RepositoryStructure.txt -Pattern '\.cache|NexusMetadata\.json'
-Invoke-Pester .\10_Scripts\Tests
-git status --short --branch
+The corrected maps were committed and pushed in:
+
+```text
+19d1b04b48f9cda1359e7b5f99fc9daa8a3da6e0
+Exclude local cache from repository maps
 ```
 
-Expected results:
+GitHub verification confirms that this commit is present on
+`agent/nexus-update-download-flow` and contains the regenerated map updates.
 
-- repository-structure suite: 5 passed, 0 failed;
-- `Select-String` returns no matches;
-- complete suite: 142 passed, 0 failed;
-- only the two regenerated repository-map files are modified.
+## Sprint-State Documentation Reconciliation
 
-Then commit and push the corrected maps. PR #2 must remain draft until that
-validation and push are complete. Do not merge to `main` without explicit
+After validation, documentation-only commits reconciled the next milestone
+boundary:
+
+- Sprint 5.1.1, repository awareness and structure documentation: Complete;
+- Sprint 5.1.2, workshop runtime and session model: Complete;
+- Sprint 5.1.3, dashboard data model: next planned Sprint 5.1 increment.
+
+`Environment.md` now documents the `Bootstrap.ps1` runtime/session contract.
+`Roadmap.md`, `README.md`, `Scrapbook.md`, and `DocumentationAudit.md` now agree on
+the accepted status. These commits do not change executable behavior or require
+another repository-map generation because no repository paths were added,
+removed, or renamed.
+
+## Current Boundary
+
+The Nexus metadata, update-menu, lazy content-inventory, cache transaction, and
+repository-map hygiene implementation is complete and locally validated by the
+repository owner.
+
+PR #2 remains open, draft, and unmerged. Do not merge to `main` without explicit
 repository-owner approval.
