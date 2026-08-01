@@ -2,7 +2,7 @@
 
 **Reviewed:** 2026-08-01  
 **Repository:** `nmyint/Palworld-Modding`  
-**Branch:** `agent/sprint-5.1.3-dashboard-data-model`
+**Branch:** `main`
 
 ## Purpose
 
@@ -32,7 +32,7 @@ The following earlier findings have been corrected:
 
 - `Scrapbook.md` uses consistent tracked casing and is discoverable from the
   repository entry workflow.
-- `Scrapbook.md` now assigns the workspace foundation, module foundation, safe
+- `Scrapbook.md` assigns the workspace foundation, module foundation, safe
   automation, and mod-library/compatibility outcomes to Sprints 1, 2, 3, and 4
   respectively instead of attributing early foundation work to Sprint 4.
 - `Roadmap.md`, `README.md`, and `Scrapbook.md` consistently mark Sprint 4 as
@@ -53,9 +53,11 @@ The following earlier findings have been corrected:
   documentation, module, and generated-map scope.
 - The repository structure exporter excludes `.git` and local `.cache` state.
 - `RepositoryStructure.txt` and `RepositoryInventory.json` were regenerated and
-  committed after the Nexus metadata, map-hygiene, and dashboard-model work.
+  committed after the Nexus metadata, map-hygiene, dashboard-model, and handoff
+  cleanup work.
 - `Pw-Git.md` provides durable operator documentation and records the completed
-  v1.2 command and safety model.
+  v1.2 command and safety model without depending on a deleted historical
+  handoff.
 - `ModCatalog.md` describes the current catalog, ownership, compatibility,
   profile assembly, and preview-only upgrade/removal capabilities.
 - `UpdateSources.md` documents `U` as the UE4SS baseline action and `B` as
@@ -70,6 +72,17 @@ The following earlier findings have been corrected:
   or full-state rollback.
 - `ModIntake.md` distinguishes the active game-shaped staging mirror from the
   legacy per-package cleanup path used by `Complete-PwModInstallation`.
+- The handoff directory was audited and reduced to one active continuation
+  record. Raw transcripts, temporary checkpoints, obsolete pre-merge records,
+  and contradictory continuation files were removed; Git history and merged
+  pull requests preserve their historical record.
+- `SessionStartup.md`, `README.md`, and `AIRepositoryWorkflow.md` now define two
+  canonical new-session modes: new project/implementation and handoff
+  continuation.
+- The startup policy now requires silent completion of the full startup gate in
+  one assistant turn. Acknowledgements, progress updates, apologies, plans,
+  promises, partial summaries, and lists of remaining reading are prohibited
+  before a completed result or genuine concise hard-blocker report.
 
 ## Remaining verified findings
 
@@ -100,26 +113,20 @@ whether the manifest should require 7.6.4.
 
 ### 3. Authority hierarchy duplication
 
-`README.md`, `AIRepositoryWorkflow.md`, and `Scrapbook.md` describe repository
-authority and reading order with overlapping wording. Their current direction is
-compatible, but the rules should eventually be consolidated so only one document
-defines precedence.
+`README.md`, `AIRepositoryWorkflow.md`, `SessionStartup.md`, and `Scrapbook.md`
+describe repository authority and reading order with overlapping wording. Their
+current direction is compatible, but future maintenance should keep the exact
+startup prompts centralized in `SessionStartup.md` and avoid introducing new
+competing copies.
 
-### 4. Historical handoff hygiene
-
-Some older files under `00_Documentation/Session-Handoffs` contain raw or poorly
-named historical material. Current Nexus, Pw-Git, and dashboard handoffs are
-structured, but older records should eventually be archived or standardized
-without altering authoritative current documentation.
-
-### 5. Automated documentation and health validation
+### 4. Automated documentation and health validation
 
 There is no dedicated health suite validating exact path casing, internal links,
 documented menu keys, required documents, generated-map freshness, module
 health, configuration health, and completed-feature language. This work remains
 explicitly assigned to Sprint 5.1.5.
 
-### 6. Transient sprint labels in implementation text
+### 5. Transient sprint labels in implementation text
 
 The interactive menu header still contains:
 
@@ -147,7 +154,8 @@ The following were reviewed but not changed:
 
 ## Status
 
-**Sprint 5.1.3 dashboard documentation reconciliation complete.**
+**Sprint 5.1.3 dashboard documentation reconciliation and session-startup policy
+reconciliation complete.**
 
 The remaining findings are assigned to later implementation or maintenance
 work. They must not be treated as unfinished Sprint 4 or Sprint 5.1.1 through
