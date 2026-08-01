@@ -49,6 +49,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\NexusMetadataCacheTransaction.ps1"
 . "$PSScriptRoot\..\Commands\NexusUpdateMenuWiring.ps1"
 . "$PSScriptRoot\..\Commands\NexusContentInventory.ps1"
+. "$PSScriptRoot\..\Commands\WorkshopDashboard.ps1"
 . "$PSScriptRoot\..\Commands\Tools.ps1"
 
 # ============================================================
@@ -70,6 +71,7 @@ Export-ModuleMember -Function @(
     # Workshop
     'Get-PwVersion',
     'Get-PwWorkshopInfo',
+    'Get-PwWorkshopDashboard',
 
     # Environment
     'Test-PwEnvironment',
