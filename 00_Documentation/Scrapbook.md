@@ -283,6 +283,38 @@ Transparency always takes precedence over confidence.
 
 The assistant shall always follow this workflow when performing repository-related work.
 
+## Branch and Pull Request Policy
+
+Use the lightest Git workflow that safely matches the scope and risk of the
+change.
+
+Work directly on `main` for minor, low-risk work whose boundaries are already
+clear, including small documentation corrections, narrow workflow guidance,
+simple metadata maintenance, and focused fixes.
+
+Create a dedicated branch only when it is materially useful, including:
+
+- starting a new sprint or major milestone;
+- implementing a major feature or broad behavior change;
+- performing a risky refactor, migration, or experiment;
+- handling uncertain scope that may expand across multiple systems;
+- isolating work that benefits from independent review or rollback.
+
+Branch creation is not mandatory ceremony for every edit. If a small change on
+`main` grows into major or risky work, stop and create a branch before continuing
+the expanded implementation.
+
+Use pull requests for branch-based work or when the user explicitly requests an
+isolated review. Branch-based work should normally use a merge commit so
+individual commit history and documented SHAs remain intact. Direct commits to
+`main` must still be focused, validated, reviewed, and synchronized.
+
+Delete local and remote branches only after merged `main` has been synchronized
+and the required tests or validation have passed. Explicit user instructions may
+override this default branch policy.
+
+---
+
 ## Step 1 — Determine the Authoritative Source
 
 Before making recommendations, determine which source is currently authoritative.
