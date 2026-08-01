@@ -268,54 +268,80 @@ commands without changing their established behavior or safety guarantees.
 
 #### Sprint 5.1.1 - Repository awareness and structure documentation
 
-Status: In progress  
+Status: Complete  
 Priority: 1
 
-Scope:
+Delivered:
 
-- Establish repository structure awareness before further session/dashboard UX
-  work.
-- Add a concise root-level repository map for fast navigation while keeping
-  detailed architecture guidance under `00_Documentation`.
-- Add PowerShell tooling to generate and validate folder structure
-  documentation.
-- Integrate repository and documentation structure checks into workshop
-  diagnostics.
-- Avoid duplicate sources of truth by generating or linking structure
-  information from one canonical definition.
+- Added automatic repository discovery through
+  `10_Scripts\Utilities\Export-PwRepositoryStructure.ps1`.
+- Generated the tracked `RepositoryStructure.txt` and
+  `RepositoryInventory.json` maps from one repository model.
+- Added the manual `pw-git refresh-structure` workflow without changing Git
+  staging automatically.
+- Replaced tracked map files transactionally through temporary outputs and
+  rollback copies.
+- Excluded local `.git` and `.cache` state so generated maps describe durable
+  project structure rather than machine-local runtime data.
+- Added Pester 3.4 coverage for generation, provenance, single-child traversal,
+  atomic replacement, module-manifest visibility, and cache exclusion.
+- Preserved existing PwWorkshop and Pw-Git command behavior.
 
-Completion criteria:
+Completion evidence:
 
-- The repository layout can be discovered automatically.
+- The repository layout is discovered automatically.
 - Structure documentation matches the verified repository state.
-- Missing required folders and documentation are reported clearly.
-- Existing commands and menu behavior remain unchanged.
+- Both generated maps are committed and maintained through one exporter.
+- Local cache state does not leak into tracked structure documentation.
+- The complete workshop suite passed after the final map-hygiene correction.
+
+Required-folder, required-document, link, freshness, module, configuration, and
+test-health reporting is intentionally assigned to Sprint 5.1.5. It is not a
+remaining blocker for this completed exporter milestone.
 
 #### Sprint 5.1.2 - Workshop runtime and session model
 
-Status: In progress
+Status: Complete
 
-Scope:
+Delivered:
 
-- Establish the workshop runtime/session model.
-- Preserve explicit, structured state without depending on hidden global state.
-- Keep initialization read-only unless an action is explicitly requested.
+- Established the runtime/session contract in
+  `10_Scripts\Core\Bootstrap.ps1`.
+- `Initialize-PwWorkshop` validates configuration and returns a structured,
+  read-only context containing the workshop root, configuration path, loaded
+  configuration, and session start time.
+- `Get-PwContext` lazily initializes and reuses the context within the current
+  imported-module session.
+- `Reset-PwContext` clears only the in-memory context so later access reloads the
+  current configuration.
+- Initialization performs no catalog, profile, deployment, archive, or live-game
+  mutation.
+- Existing commands continue to use the established context and configuration
+  interfaces.
+- `Environment.md` documents the runtime/session contract and its persistence
+  boundary.
+- Module tests cover initialization, context shape, configuration validation,
+  path resolution, exports, and backward compatibility with the existing command
+  surface.
 
-Completion criteria:
+Completion evidence:
 
 - Existing workshop commands continue to operate.
-- Session models return structured objects without unintended pipeline output.
-- Tests cover initialization and backward compatibility.
+- Runtime/session commands return structured objects without unintended pipeline
+  output.
+- Startup remains read-only unless an explicit action command is invoked.
+- Initialization and compatibility tests pass under the supported runtime.
 
 #### Sprint 5.1.3 - Dashboard data model
 
-Status: Planned
+Status: Planned  
+Next planned Sprint 5.1 increment
 
 Scope:
 
 - Add a structured dashboard model over existing commands.
-- Present repository, profile, catalog, deployment, and diagnostic state without
-  duplicating command logic.
+- Present repository, profile, catalog, deployment, update-cache, and diagnostic
+  state without duplicating command logic.
 - Keep dashboard data consumable by both the terminal UI and automation.
 
 Completion criteria:
@@ -333,6 +359,7 @@ Scope:
 - Integrate session and dashboard models into the current workshop entry point.
 - Preserve the one-command `PwWorkshop.ps1` workflow.
 - Maintain adaptive terminal behavior and explicit approval safeguards.
+- Replace transient sprint labels with durable workflow/product labels.
 
 Completion criteria:
 
@@ -346,7 +373,10 @@ Status: Planned
 
 Scope:
 
-- Add repository, documentation, configuration, module, and test health signals.
+- Add required repository-path and required-document checks.
+- Validate documentation links, tracked path casing, and generated-map
+  freshness.
+- Add repository, configuration, module, and test-health signals.
 - Provide actionable guidance for missing, stale, or inconsistent workshop
   components.
 - Distinguish tool limitations from actual project failures.
@@ -355,6 +385,7 @@ Completion criteria:
 
 - Health reporting identifies missing required paths and documents.
 - Reports distinguish warnings from blocking errors.
+- Repository-map and documentation inconsistencies are surfaced clearly.
 - Full workshop test suite passes under Pester 3.4.0.
 
 ## Sprint 6 - Packaging and maintenance
