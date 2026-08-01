@@ -151,7 +151,9 @@ During an approved write, the workshop:
 5. removes any surviving temporary file in `finally`.
 
 This prevents preview-only update checks from attempting to move a temporary
-cache file that was intentionally not created.
+cache file that was intentionally not created. The behavior is covered by the
+dedicated `NexusMetadataCacheTransaction.Tests.ps1` regression suite and the
+existing option-4 menu-wiring `-WhatIf` test.
 
 ## Lazy Nexus content inventories
 
