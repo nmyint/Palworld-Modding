@@ -22,6 +22,55 @@ Install-Module Pester -RequiredVersion 3.4.0 -Scope CurrentUser
 The test syntax currently targets Pester 3.4.0. Upgrading to Pester 5 should be a
 deliberate future task rather than an incidental dependency update.
 
+## Workshop runtime and session context
+
+The workshop runtime/session foundation is implemented by:
+
+```text
+10_Scripts\Core\Bootstrap.ps1
+```
+
+The module loads this script during import. It can also be dot-sourced
+independently because it loads the required JSON and workshop-configuration
+helpers itself.
+
+The runtime contract consists of three public commands:
+
+- `Initialize-PwWorkshop` validates the workshop configuration, resolves the
+  repository root and configuration path, loads configuration, and returns one
+  structured context object.
+- `Get-PwContext` lazily initializes that context on first use and returns the
+  same cached context for the current imported-module session.
+- `Reset-PwContext` removes only the cached in-memory context so the next access
+  revalidates and reloads the current configuration.
+
+The context object contains:
+
+- `WorkshopRoot`;
+- `ConfigPath`;
+- `Config`;
+- `Started`.
+
+Initialization is read-only. It does not create directories, alter profiles,
+write configuration, update the catalog, build deployment output, or modify the
+live game. Filesystem or external changes remain the responsibility of explicit
+commands with their own validation and `ShouldProcess` boundaries.
+
+The cached context is module-session state, not durable project state. It is not
+written to disk and does not survive a new PowerShell process or module reload.
+Durable configuration remains in `.config\Workshop.json`; profiles, catalog
+metadata, manifests, and other project records remain in their documented
+locations.
+
+`10_Scripts\Tests\PalworldModding.Tests.ps1` verifies initialization, repository
+root resolution, configuration loading and validation, configured path
+resolution, module exports, and compatibility with the existing command
+surface.
+
+This runtime/session model satisfies Sprint 5.1.2. A future dashboard model may
+compose additional read-only state over the existing commands, but it must not
+replace this context contract or introduce hidden mutation during startup.
+
 ## Moving to another computer
 
 1. Clone or restore the repository.

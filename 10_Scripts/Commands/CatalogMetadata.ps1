@@ -119,21 +119,57 @@ function Get-PwNexusCatalogMetadataReport {
     $records = @(
         $Catalog.Mods |
             Where-Object {
+                $versions = if ($_.PSObject.Properties['Versions']) {
+                    @($_.Versions)
+                }
+                else {
+                    @()
+                }
                 $_.Source -ne 'UE4SSBundled' -and
                 $_.CatalogKey -ne 'pal' -and
-                @($_.Versions | Where-Object ArchivePresent).Count -eq 0
+                @($versions | Where-Object ArchivePresent).Count -eq 0
             }
     )
 
     foreach ($record in $records) {
-        $ids = @($record.NexusModIds)
-        $searchTerm = @($record.InstallNames)[0]
+        $installNames = @(
+            if ($record.PSObject.Properties['InstallNames']) {
+                @($record.InstallNames) |
+                    Where-Object {
+                        -not [string]::IsNullOrWhiteSpace([string]$_)
+                    }
+            }
+        )
+        $ids = @(
+            if ($record.PSObject.Properties['NexusModIds']) {
+                @($record.NexusModIds) |
+                    Where-Object {
+                        $null -ne $_ -and
+                        [string]$_ -match '^\d+$' -and
+                        [int]$_ -gt 0
+                    } |
+                    ForEach-Object { [int]$_ } |
+                    Sort-Object -Unique
+            }
+        )
+        $searchTerm = if ($installNames.Count -gt 0) {
+            [string]$installNames[0]
+        }
+        elseif (
+            $record.PSObject.Properties['DisplayName'] -and
+            -not [string]::IsNullOrWhiteSpace([string]$record.DisplayName)
+        ) {
+            [string]$record.DisplayName
+        }
+        else {
+            [string]$record.CatalogKey
+        }
 
         if ($ids.Count -eq 0) {
             [PSCustomObject]@{
                 CatalogKey = [string]$record.CatalogKey
-                InstallNames = @($record.InstallNames)
-                SearchTerm = [string]$searchTerm
+                InstallNames = $installNames
+                SearchTerm = $searchTerm
                 NexusModId = $null
                 RemoteName = ''
                 RemoteVersion = ''
@@ -165,8 +201,8 @@ function Get-PwNexusCatalogMetadataReport {
             catch {
                 [PSCustomObject]@{
                     CatalogKey = [string]$record.CatalogKey
-                    InstallNames = @($record.InstallNames)
-                    SearchTerm = [string]$searchTerm
+                    InstallNames = $installNames
+                    SearchTerm = $searchTerm
                     NexusModId = [int]$id
                     RemoteName = ''
                     RemoteVersion = ''
@@ -180,13 +216,13 @@ function Get-PwNexusCatalogMetadataReport {
             }
 
             $nameMatch = Get-PwModNameMatch `
-                -InstallNames @($record.InstallNames) `
+                -InstallNames $installNames `
                 -RemoteName ([string]$mod.name)
 
             [PSCustomObject]@{
                 CatalogKey = [string]$record.CatalogKey
-                InstallNames = @($record.InstallNames)
-                SearchTerm = [string]$searchTerm
+                InstallNames = $installNames
+                SearchTerm = $searchTerm
                 NexusModId = [int]$id
                 RemoteName = [string]$mod.name
                 RemoteVersion = [string]$mod.version

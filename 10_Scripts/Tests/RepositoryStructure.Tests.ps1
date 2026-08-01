@@ -29,6 +29,24 @@ Describe 'Repository structure exporter' {
         })
         $temporaryArtifacts.Count | Should Be 0
     }
+    It 'excludes ignored local cache state from generated maps' {
+        $fixtureRoot = Join-Path $TestDrive 'cache-exclusion-repository'
+        $cacheDirectory = Join-Path $fixtureRoot '.cache'
+        $docsDirectory = Join-Path $fixtureRoot 'Docs'
+        $outputFolder = Join-Path $TestDrive 'cache-exclusion-output'
+        New-Item -ItemType Directory -Path $cacheDirectory -Force | Out-Null
+        New-Item -ItemType Directory -Path $docsDirectory -Force | Out-Null
+        New-Item -ItemType Directory -Path $outputFolder -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $cacheDirectory 'NexusMetadata.json') -Value '{"local":true}'
+        Set-Content -LiteralPath (Join-Path $docsDirectory 'Tracked.md') -Value '# Tracked'
+        & $exporterPath -Root $fixtureRoot -OutputFolder $outputFolder | Out-Null
+        $structure = Get-Content -LiteralPath (Join-Path $outputFolder 'RepositoryStructure.txt') -Raw
+        $inventory = Get-Content -LiteralPath (Join-Path $outputFolder 'RepositoryInventory.json') -Raw | ConvertFrom-Json
+        ($structure -match '(?m)^.*\.cache$') | Should Be $false
+        ($structure -match 'NexusMetadata.json') | Should Be $false
+        @($inventory.Structure | Where-Object Name -eq '.cache').Count | Should Be 0
+        ($structure -match 'Tracked.md') | Should Be $true
+    }
     It 'writes temporary outputs before replacing tracked files' {
         $source = Get-Content -LiteralPath $exporterPath -Raw
         (($source -match '\$TxtTemp') -and

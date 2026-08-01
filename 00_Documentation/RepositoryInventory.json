@@ -2,15 +2,15 @@
   "Metadata": {
     "Repository": "Palworld-Modding",
     "Root": ".",
-    "Branch": "main",
-    "CommitSHA": "7b1bef17b965563641f83c8536da316415a20e58",
-    "Generated": "2026-07-31T12:12:26.9820922-04:00"
+    "Branch": "agent/nexus-update-download-flow",
+    "CommitSHA": "667376467f394204a4f3fc0be4a91cdbecdc5bab",
+    "Generated": "2026-07-31T21:18:47.8234838-04:00"
   },
   "Statistics": {
     "Directories": 35,
-    "Files": 127,
-    "Documents": 127,
-    "PowerShellScripts": 80
+    "Files": 143,
+    "Documents": 143,
+    "PowerShellScripts": 91
   },
   "Structure": [
     {
@@ -105,6 +105,26 @@
               "Extension": ".md"
             },
             {
+              "Name": "2026-07-31-ai-workflow-v2-merge-complete.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-nexus-cache-whatif-fix.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-nexus-update-download-foundation.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-nexus-update-menu-wired.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
               "Name": "2026-07-31-pw-git-structure-review-handoff.md",
               "Type": "File",
               "Extension": ".md"
@@ -121,6 +141,11 @@
             },
             {
               "Name": "2026-07-31-pw-git-v1.2-implementation-checkpoint.md",
+              "Type": "File",
+              "Extension": ".md"
+            },
+            {
+              "Name": "2026-07-31-sprint-3-4-state-correction.md",
               "Type": "File",
               "Extension": ".md"
             },
@@ -354,6 +379,31 @@
             },
             {
               "Name": "ModIntake.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusContentInventory.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusMetadataCache.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusMetadataCacheTransaction.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusUpdateDownloads.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusUpdateMenuWiring.ps1",
               "Type": "File",
               "Extension": ".ps1"
             },
@@ -701,6 +751,36 @@
             },
             {
               "Name": "ModIntake.Tests.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusContentInventory.Tests.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusMetadataCacheTransaction.Tests.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusUpdateDownloads.Tests.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusUpdateMenuInteraction.Tests.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusUpdateMenuSafety.Tests.ps1",
+              "Type": "File",
+              "Extension": ".ps1"
+            },
+            {
+              "Name": "NexusUpdateMenuWiring.Tests.ps1",
               "Type": "File",
               "Extension": ".ps1"
             },

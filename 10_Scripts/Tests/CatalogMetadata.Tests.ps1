@@ -76,6 +76,35 @@ Describe 'PalworldModding remote catalog metadata' {
         }
     }
 
+    It 'falls back safely when a catalog record has no install names' {
+        InModuleScope PalworldModding {
+            Mock Invoke-PwNexusApi { throw 'API should not be called.' }
+            $catalog = [PSCustomObject]@{
+                Mods = @(
+                    [PSCustomObject]@{
+                        CatalogKey = 'incomplete-record'
+                        DisplayName = 'Incomplete Record'
+                        InstallNames = @()
+                        Source = 'Manual'
+                        NexusModIds = @()
+                        Versions = @()
+                    }
+                )
+            }
+            $result = @(
+                Get-PwNexusCatalogMetadataReport `
+                    -ApiKey 'fixture-key' `
+                    -Catalog $catalog
+            )
+
+            $result.Count | Should Be 1
+            $result[0].Status | Should Be 'NeedsNexusId'
+            $result[0].SearchTerm | Should Be 'Incomplete Record'
+            @($result[0].InstallNames).Count | Should Be 0
+            Assert-MockCalled Invoke-PwNexusApi -Times 0 -Scope It
+        }
+    }
+
     It 'ignores the normalized Pal staging container' {
         InModuleScope PalworldModding {
             Mock Invoke-PwNexusApi { throw 'API should not be called.' }
@@ -192,5 +221,4 @@ Describe 'PalworldModding remote catalog metadata' {
                 Should Be 'HintOnlyArchiveRequired'
         }
     }
-
 }

@@ -37,6 +37,7 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\StagingReconciliation.ps1"
 . "$PSScriptRoot\..\Commands\ProfileAssembly.ps1"
 . "$PSScriptRoot\..\Commands\NexusUpdates.ps1"
+. "$PSScriptRoot\..\Commands\NexusUpdateDownloads.ps1"
 . "$PSScriptRoot\..\Commands\SourceUpdates.ps1"
 . "$PSScriptRoot\..\Commands\CatalogMetadata.ps1"
 . "$PSScriptRoot\..\Commands\CurrentGameAdoption.ps1"
@@ -44,6 +45,10 @@ Set-StrictMode -Version Latest
 . "$PSScriptRoot\..\Commands\Recovery.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopBackup.ps1"
 . "$PSScriptRoot\..\Commands\WorkshopMenu.ps1"
+. "$PSScriptRoot\..\Commands\NexusMetadataCache.ps1"
+. "$PSScriptRoot\..\Commands\NexusMetadataCacheTransaction.ps1"
+. "$PSScriptRoot\..\Commands\NexusUpdateMenuWiring.ps1"
+. "$PSScriptRoot\..\Commands\NexusContentInventory.ps1"
 . "$PSScriptRoot\..\Commands\Tools.ps1"
 
 # ============================================================
@@ -115,6 +120,7 @@ Export-ModuleMember -Function @(
     'Get-PwModUpdateReport',
     'Open-PwNexusModPage',
     'Save-PwNexusModUpdate',
+    'Save-PwModUpdateFromReport',
     'Get-PwProfileModDownloadPlan',
     'Save-PwProfileModDownloads',
     'Get-PwUpdateSources',

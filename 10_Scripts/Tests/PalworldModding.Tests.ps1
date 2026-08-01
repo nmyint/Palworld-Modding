@@ -84,6 +84,7 @@ Describe 'PalworldModding module' {
             'Reset-PwContext'
             'Save-PwWorkshopConfig'
             'Save-PwNexusModUpdate'
+            'Save-PwModUpdateFromReport'
             'Save-PwProfileModDownloads'
             'Set-PwActiveProfile'
             'Set-PwModCatalogMetadata'

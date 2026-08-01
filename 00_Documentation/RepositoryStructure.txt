@@ -1,15 +1,15 @@
 Palworld Modding Workshop Repository Structure
-Generated: 07/31/2026 12:12:26
+Generated: 07/31/2026 21:18:47
 Repository: Palworld-Modding
 Root: .
-Branch: main
-CommitSHA: 7b1bef17b965563641f83c8536da316415a20e58
+Branch: agent/nexus-update-download-flow
+CommitSHA: 667376467f394204a4f3fc0be4a91cdbecdc5bab
 
 Statistics:
 Directories: 35
-Files: 127
-Documents: 127
-PowerShell Scripts: 80
+Files: 143
+Documents: 143
+PowerShell Scripts: 91
 
 ├── .config
 │   ├── UpdateSources.json
@@ -28,10 +28,15 @@ PowerShell Scripts: 80
 │   │   ├── 2026-07-30-shit.md
 │   │   ├── 2026-07-31-ai-workflow-compliance-review.md
 │   │   ├── 2026-07-31-ai-workflow-readme-reference-review.md
+│   │   ├── 2026-07-31-ai-workflow-v2-merge-complete.md
+│   │   ├── 2026-07-31-nexus-cache-whatif-fix.md
+│   │   ├── 2026-07-31-nexus-update-download-foundation.md
+│   │   ├── 2026-07-31-nexus-update-menu-wired.md
 │   │   ├── 2026-07-31-pw-git-structure-review-handoff.md
 │   │   ├── 2026-07-31-pw-git-v1.1-complete.md
 │   │   ├── 2026-07-31-pw-git-v1.2-complete.md
 │   │   ├── 2026-07-31-pw-git-v1.2-implementation-checkpoint.md
+│   │   ├── 2026-07-31-sprint-3-4-state-correction.md
 │   │   ├── Codex.txt
 │   ├── AIRepositoryWorkflow_v2_Design.md
 │   ├── AIRepositoryWorkflow.md
@@ -76,6 +81,11 @@ PowerShell Scripts: 80
 │   │   ├── Environment.ps1
 │   │   ├── ModCatalog.ps1
 │   │   ├── ModIntake.ps1
+│   │   ├── NexusContentInventory.ps1
+│   │   ├── NexusMetadataCache.ps1
+│   │   ├── NexusMetadataCacheTransaction.ps1
+│   │   ├── NexusUpdateDownloads.ps1
+│   │   ├── NexusUpdateMenuWiring.ps1
 │   │   ├── NexusUpdates.ps1
 │   │   ├── Paths.ps1
 │   │   ├── PersistentCatalog.ps1
@@ -142,6 +152,12 @@ PowerShell Scripts: 80
 │   │   ├── Deployment.Tests.ps1
 │   │   ├── ModCatalog.Tests.ps1
 │   │   ├── ModIntake.Tests.ps1
+│   │   ├── NexusContentInventory.Tests.ps1
+│   │   ├── NexusMetadataCacheTransaction.Tests.ps1
+│   │   ├── NexusUpdateDownloads.Tests.ps1
+│   │   ├── NexusUpdateMenuInteraction.Tests.ps1
+│   │   ├── NexusUpdateMenuSafety.Tests.ps1
+│   │   ├── NexusUpdateMenuWiring.Tests.ps1
 │   │   ├── NexusUpdates.Tests.ps1
 │   │   ├── PalworldModding.Tests.ps1
 │   │   ├── ProfileAssembly.Tests.ps1
