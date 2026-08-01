@@ -12,7 +12,7 @@ param(
 )
 $IncludeExtensions = @('.md', '.txt', '.json', '.ps1', '.psd1', '.psm1', '.ini', '.yaml', '.yml', '.toml', '.code-workspace')
 $IgnoreExtensions = @('.zip', '.7z', '.rar', '.pak', '.dll', '.exe', '.bin')
-$IgnoreDirectories = @('.git')
+$IgnoreDirectories = @('.git', '.cache')
 $TopLevelOnlyFolders = @('01_Archives', '02_Staging', '03_Mod_Library', '04_Projects', '05_Deployment', '06_Current_Installation', '07_Testing', '08_Tools', '09_Logs')
 $RecursiveFolders = @('00_Documentation', '10_Scripts', '11_Utilities', '12_Research', '14_Templates', '15_Sandbox', '16_Profiles')
 $Root = (Resolve-Path -LiteralPath $Root).Path
