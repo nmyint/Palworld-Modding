@@ -136,75 +136,85 @@ Local state is never substituted by this cache. `01_Archives`, the persistent
 catalog, profiles, and update-source configuration are still reread normally, so
 local changes remain visible immediately.
 
-## Lazy content inventories
+### Atomic cache writes and preview safety
 
-`NexusContentInventory.ps1` extends the same `.cache\NexusMetadata.json` file
-with per-file `ContentInventories`. It does not eagerly retrieve the content
-preview for every historical Nexus upload.
+`NexusMetadataCacheTransaction.ps1` treats the complete cache replacement as one
+`ShouldProcess` transaction. During `-WhatIf`, it returns before creating the
+cache directory, writing a temporary JSON file, or replacing the final cache.
 
-A content inventory is requested only when a Nexus file becomes operationally
-relevant, including:
+During an approved write, the workshop:
 
-- the current or update-candidate file selected by `Get-PwModUpdateReport`;
-- a file linked to a locally downloaded API archive whose filename records an
-  `Api<FileId>` token;
-- a file selected for direct download; or
-- a later module that explicitly requests that file inventory.
+1. creates the cache directory;
+2. serializes the complete snapshot to a uniquely named temporary file;
+3. verifies that the temporary file exists;
+4. replaces `.cache\NexusMetadata.json`; and
+5. removes any surviving temporary file in `finally`.
 
-For a remote Nexus preview, the cache retains:
+This prevents preview-only update checks from attempting to move a temporary
+cache file that was intentionally not created.
 
-- the complete raw content-preview JSON;
+## Lazy Nexus content inventories
+
+The workshop can retain archive-content information without storing downloaded
+archive bytes. Per-file inventories are stored inside the same
+`.cache\NexusMetadata.json` snapshot.
+
+Content previews are retrieved lazily, only when a Nexus file becomes
+operationally relevant:
+
+- a current or `UpdateAvailable` file selected by the update report;
+- an existing API-downloaded archive carrying an `Api<FileId>` filename token;
+- a successful guarded direct download; or
+- an explicit inventory request from another module.
+
+The workshop does not fetch every preview for every historical, archived,
+optional, or deleted Nexus file during a normal metadata refresh.
+
+Each cached inventory can retain:
+
+- the raw Nexus content-preview JSON;
 - normalized archive-relative paths;
-- the Nexus file metadata fingerprint used for invalidation;
+- a fingerprint of the complete Nexus file metadata;
 - detected package types;
-- detected candidate installation roots;
-- mixed-package status;
-- retrieval status, timestamp, source, authority, and errors.
+- candidate deployment roots;
+- file count and mixed-package status;
+- retrieval source, authority, status, timestamp, and errors;
+- local archive path and hash when the file has been inspected locally.
 
-The normalized package types currently include:
+Detected package types include:
 
 - `UE4SSLua`;
 - `Pak`;
 - `LogicMods`;
 - `Native`;
 - `Configuration`;
-- `Documentation`; and
+- `Documentation`;
 - `SupportOrUnknown`.
 
-Remote content previews are advisory. They can support pre-download planning,
-but they do not replace archive safety inspection or deployment routing review.
+Remote content previews are advisory. A changed Nexus file-metadata fingerprint
+invalidates the advisory inventory. A locally inspected ZIP or 7z archive is
+authoritative and replaces the advisory classification for that Nexus file.
 
-The authority order is:
+The practical authority order is:
 
-1. local ZIP or 7z inspection;
+1. locally inspected ZIP or 7z archive;
 2. cached Nexus content-preview inventory;
-3. Nexus file name and description hints;
+3. Nexus file metadata hints;
 4. Nexus mod description hints.
 
-When the same Nexus file is downloaded through the guarded API flow, the local
-archive is inspected and the advisory remote inventory is replaced with an
-authoritative `LocalArchiveInspection` record. Existing API-downloaded archives
-are also upgraded when their `Api<FileId>` filename token can be matched.
+Content-preview failure does not change the update status and does not bypass or
+weaken guarded download checks. The failure is retained as enrichment metadata
+for later review.
 
-A remote inventory is reused indefinitely while its complete Nexus file
-metadata fingerprint remains unchanged. A later metadata refresh invalidates an
-advisory inventory when that fingerprint changes. An authoritative local
-inventory remains associated with the inspected archive hash.
-
-`Get-PwModUpdateReport` now adds these non-breaking enrichment fields to rows
-that have a current or update-candidate Nexus file:
+Update rows may expose:
 
 - `RemoteContentInventoryStatus`;
 - `RemoteContentInventorySource`;
 - `RemotePackageTypes`;
 - `RemoteDetectedRoots`;
 - `RemoteContentFileCount`;
-- `RemoteIsMixedPackage`; and
+- `RemoteIsMixedPackage`;
 - `RemoteContentInventoryError`.
-
-Content-preview retrieval failure does not change `Current`, `UpdateAvailable`,
-or another update status. It is recorded as enrichment information and does not
-weaken the guarded download boundary.
 
 ## Download an update
 
@@ -258,9 +268,7 @@ remote filename, file ID, and status; refuses stale or non-actionable rows; and
 requires deliberate confirmation before calling the guarded report command.
 The result reports the downloaded archive path and SHA-256 hash and identifies
 the next workflow step: inspect and import the archive through menu option 2.
-After a successful direct download, local archive inspection upgrades the cached
-content inventory to authoritative package and path information. Manual browser
-download remains available as the normal-account fallback.
+Manual browser download remains available as the normal-account fallback.
 
 The workshop uses the user-local `wget.exe` installation at
 `%LOCALAPPDATA%\Programs\Wget`, otherwise `curl.exe`, and finally PowerShell web
