@@ -8,8 +8,8 @@
 
 `Get-PwWorkshopDashboard` provides one structured, read-only snapshot of the
 current Palworld Modding Workshop state. It is a data model for automation,
-future terminal presentation, and later MCP or interface adapters. It is not a
-menu screen and does not replace any existing command.
+terminal presentation, and later MCP or interface adapters. It does not replace
+any existing command.
 
 ## Command
 
@@ -181,9 +181,28 @@ the entire workshop.
 - restore backups;
 - delete, discard, or clean workshop data.
 
-Sprint 5.1.4 may present this model through the existing adaptive menu. Sprint
-5.1.5 may add broader repository/document/configuration/test health providers.
-Those later increments must continue using established command authority rather
+## Sprint 5.1.4 menu presentation
+
+Sprint 5.1.4 presents the existing model through the adaptive `PwWorkshop.ps1`
+menu without changing the dashboard schema or provider authority.
+
+The main menu collects one dashboard snapshot for each render and adapts the
+amount of visible state to the terminal dimensions. Detailed, standard, and
+compact layouts summarize the active profile, repository, catalog, deployment,
+update cache, diagnostics, and dashboard completeness.
+
+`H` opens a detailed current-state view. The view remains read-only and uses the
+same dashboard snapshot contract. It does not fetch, refresh remote metadata,
+build, deploy, restore, or mutate repository, workshop, or game state. Leaving
+the view redraws the main menu so resize handling and current local state remain
+consistent with the existing interface.
+
+The menu presentation helpers are private module implementation details. The
+public data contract remains `Get-PwWorkshopDashboard`, and existing action
+commands remain authoritative.
+
+Sprint 5.1.5 may add broader repository/document/configuration/test health
+providers. That work must continue using established command authority rather
 than embedding duplicate logic in the interface.
 
 ## Validation record
@@ -194,7 +213,7 @@ Focused coverage is defined in:
 10_Scripts/Tests/WorkshopDashboard.Tests.ps1
 ```
 
-The tests cover:
+The Sprint 5.1.3 tests cover:
 
 - fixed schema and section ordering;
 - deterministic timestamp input and JSON serialization;
@@ -204,7 +223,7 @@ The tests cover:
 - zero calls to catalog, cache, build, deployment, or restoration mutation
   commands.
 
-Verified locally on 2026-08-01:
+Verified locally on 2026-08-01 for Sprint 5.1.3:
 
 - `WorkshopDashboard.Tests.ps1`: 3 passed, 0 failed;
 - `PalworldModding.Tests.ps1`: 10 passed, 0 failed;
@@ -216,6 +235,7 @@ Verified locally on 2026-08-01:
 - JSON serialization completed successfully;
 - dashboard collection left the Git working tree clean.
 
-This validation satisfies the Sprint 5.1.3 completion criteria. Menu presentation
-remains assigned to Sprint 5.1.4, and broader health-provider expansion remains
-assigned to Sprint 5.1.5.
+Sprint 5.1.4 adds focused coverage for dashboard-to-menu state mapping, adaptive
+full and compact layouts, single-provider menu collection, and read-only detailed
+presentation. Those new tests and interactive resize checks must be executed
+under PowerShell 7.6.4 and Pester 3.4.0 before the Sprint 5.1.4 branch is merged.
