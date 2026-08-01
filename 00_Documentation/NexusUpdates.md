@@ -103,7 +103,7 @@ does not separately request or persist:
 - API validation responses, tracked-mod lists, endorsement lists, or other
   account endpoints;
 - transient direct-download links;
-- downloaded archive contents or content-preview payloads;
+- downloaded archive bytes;
 - unrelated games, mods, collections, comments, or discovery feeds.
 
 The mod metadata response is retained verbatim. Consequently, any optional
@@ -135,6 +135,76 @@ the cached data remains usable but visibly stale.
 Local state is never substituted by this cache. `01_Archives`, the persistent
 catalog, profiles, and update-source configuration are still reread normally, so
 local changes remain visible immediately.
+
+## Lazy content inventories
+
+`NexusContentInventory.ps1` extends the same `.cache\NexusMetadata.json` file
+with per-file `ContentInventories`. It does not eagerly retrieve the content
+preview for every historical Nexus upload.
+
+A content inventory is requested only when a Nexus file becomes operationally
+relevant, including:
+
+- the current or update-candidate file selected by `Get-PwModUpdateReport`;
+- a file linked to a locally downloaded API archive whose filename records an
+  `Api<FileId>` token;
+- a file selected for direct download; or
+- a later module that explicitly requests that file inventory.
+
+For a remote Nexus preview, the cache retains:
+
+- the complete raw content-preview JSON;
+- normalized archive-relative paths;
+- the Nexus file metadata fingerprint used for invalidation;
+- detected package types;
+- detected candidate installation roots;
+- mixed-package status;
+- retrieval status, timestamp, source, authority, and errors.
+
+The normalized package types currently include:
+
+- `UE4SSLua`;
+- `Pak`;
+- `LogicMods`;
+- `Native`;
+- `Configuration`;
+- `Documentation`; and
+- `SupportOrUnknown`.
+
+Remote content previews are advisory. They can support pre-download planning,
+but they do not replace archive safety inspection or deployment routing review.
+
+The authority order is:
+
+1. local ZIP or 7z inspection;
+2. cached Nexus content-preview inventory;
+3. Nexus file name and description hints;
+4. Nexus mod description hints.
+
+When the same Nexus file is downloaded through the guarded API flow, the local
+archive is inspected and the advisory remote inventory is replaced with an
+authoritative `LocalArchiveInspection` record. Existing API-downloaded archives
+are also upgraded when their `Api<FileId>` filename token can be matched.
+
+A remote inventory is reused indefinitely while its complete Nexus file
+metadata fingerprint remains unchanged. A later metadata refresh invalidates an
+advisory inventory when that fingerprint changes. An authoritative local
+inventory remains associated with the inspected archive hash.
+
+`Get-PwModUpdateReport` now adds these non-breaking enrichment fields to rows
+that have a current or update-candidate Nexus file:
+
+- `RemoteContentInventoryStatus`;
+- `RemoteContentInventorySource`;
+- `RemotePackageTypes`;
+- `RemoteDetectedRoots`;
+- `RemoteContentFileCount`;
+- `RemoteIsMixedPackage`; and
+- `RemoteContentInventoryError`.
+
+Content-preview retrieval failure does not change `Current`, `UpdateAvailable`,
+or another update status. It is recorded as enrichment information and does not
+weaken the guarded download boundary.
 
 ## Download an update
 
@@ -188,7 +258,9 @@ remote filename, file ID, and status; refuses stale or non-actionable rows; and
 requires deliberate confirmation before calling the guarded report command.
 The result reports the downloaded archive path and SHA-256 hash and identifies
 the next workflow step: inspect and import the archive through menu option 2.
-Manual browser download remains available as the normal-account fallback.
+After a successful direct download, local archive inspection upgrades the cached
+content inventory to authoritative package and path information. Manual browser
+download remains available as the normal-account fallback.
 
 The workshop uses the user-local `wget.exe` installation at
 `%LOCALAPPDATA%\Programs\Wget`, otherwise `curl.exe`, and finally PowerShell web
