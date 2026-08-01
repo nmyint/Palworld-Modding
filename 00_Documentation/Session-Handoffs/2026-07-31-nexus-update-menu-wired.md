@@ -14,9 +14,10 @@ branch now combines:
 - option-4 navigation and manual-download guidance;
 - a persistent catalog-wide Nexus metadata snapshot;
 - lazy per-file content inventories and package classification;
-- explicit refresh UX in menu 1 and menu 4; and
+- explicit refresh UX in menu 1 and menu 4;
 - a fix for menu 1 Remote Metadata when an incomplete catalog identity has no
-  install-name alias.
+  install-name alias; and
+- a corrective atomic cache-write boundary for `-WhatIf` safety.
 
 Do not merge to `main` without the repository owner's explicit approval.
 
@@ -117,13 +118,28 @@ There is no automatic Nexus cache expiration.
 - Menu 1 and menu 4 show the cache timestamp and ready-versus-catalog count.
 - When a refresh fails, a prior known-good entry is retained and the refresh
   error/time is recorded and surfaced in the title.
-- Cache writes use a temporary file followed by replacement of the final JSON
-  path.
 
 For approximately 30 unique mods, a complete refresh performs approximately 60
 stable metadata requests: one mod-info and one full file-list request per ID.
 Normal reads then reuse the snapshot until explicit refresh or catalog coverage
 changes.
+
+## Atomic Cache Write Boundary
+
+The cache transaction layer is:
+
+```text
+10_Scripts\Commands\NexusMetadataCacheTransaction.ps1
+```
+
+It loads immediately after `NexusMetadataCache.ps1`. It replaces the cache
+writer with one `SupportsShouldProcess` transaction covering directory creation,
+temporary JSON serialization, final replacement, and temporary-file cleanup.
+
+During `-WhatIf`, the function returns before any filesystem mutation. This
+corrects the locally observed failure where `Write-PwJson` was previewed but a
+later `Move-Item` still attempted to move a temporary file that had never been
+created.
 
 ## Lazy Nexus Content Inventories
 
@@ -132,10 +148,6 @@ The content-inventory extension is:
 ```text
 10_Scripts\Commands\NexusContentInventory.ps1
 ```
-
-It loads after `NexusUpdateMenuWiring.ps1` so it can preserve the cache behavior,
-enrich update reports, and upgrade successful direct downloads with local
-archive authority.
 
 It stores per-file `ContentInventories` inside the same
 `.cache\NexusMetadata.json` snapshot. It does **not** fetch every historical
@@ -160,15 +172,8 @@ Each inventory records:
 - retrieval timestamp, status, and error information;
 - local archive path/hash when locally inspected.
 
-Detected package types include:
-
-- `UE4SSLua`;
-- `Pak`;
-- `LogicMods`;
-- `Native`;
-- `Configuration`;
-- `Documentation`; and
-- `SupportOrUnknown`.
+Detected package types include `UE4SSLua`, `Pak`, `LogicMods`, `Native`,
+`Configuration`, `Documentation`, and `SupportOrUnknown`.
 
 Authority order:
 
@@ -179,23 +184,13 @@ Authority order:
 
 Remote preview inventories are advisory. A successful direct download is
 inspected locally and replaces the advisory record with an authoritative
-`LocalArchiveInspection` record. Existing API-downloaded archives can also be
-upgraded when their `Api<FileId>` token identifies the matching cached Nexus
-file.
-
-A remote inventory is retained while its complete Nexus file-metadata
-fingerprint remains unchanged. A later metadata refresh discards the advisory
-inventory when that fingerprint changes. Local authoritative inventories remain
-associated with the inspected archive hash.
-
-Content-preview retrieval or classification failure never changes an update
-status or bypasses the guarded download checks. The error is recorded as
-non-blocking enrichment data.
+`LocalArchiveInspection` record. A changed Nexus file-metadata fingerprint
+invalidates its advisory inventory. Inventory failures remain non-blocking.
 
 ## Update Report Enrichment
 
 For rows with a current or update-candidate Nexus file,
-`Get-PwModUpdateReport` now adds:
+`Get-PwModUpdateReport` adds:
 
 - `RemoteContentInventoryStatus`;
 - `RemoteContentInventorySource`;
@@ -217,146 +212,58 @@ Index was outside the bounds of the array.
 ```
 
 came from indexing the first `InstallNames` value without checking whether an
-incomplete catalog record had one.
+incomplete catalog record had one. The report now filters absent names safely,
+falls back to `DisplayName` and `CatalogKey`, keeps the record visible as
+`NeedsNexusId`, and no longer terminates the screen.
 
-`Get-PwNexusCatalogMetadataReport` now:
+## Local Validation Status
 
-- filters absent and blank install-name values safely;
-- uses the first valid install name when available;
-- falls back to `DisplayName`, then `CatalogKey`;
-- keeps the record visible as `NeedsNexusId`; and
-- no longer terminates the Remote Metadata screen.
+The repository owner validated under PowerShell 7.6.4 and Pester 3.4.0:
 
-## Menu UX
+- `NexusUpdateMenuSafety.Tests.ps1`: 12 passed, 0 failed;
+- `NexusContentInventory.Tests.ps1`: 4 passed, 0 failed;
+- `CatalogMetadata.Tests.ps1`: 8 passed, 0 failed;
+- `NexusUpdateMenuInteraction.Tests.ps1`: 2 passed, 0 failed.
 
-### Menu 1 - Remote Metadata
+The first complete suite after those changes reported 139 passed and 1 failed.
+The only failure was the menu-wiring `-WhatIf` cache transaction described
+above. The corrective layer and a dedicated regression test were added after
+that run.
 
-The screen title shows the Nexus cache timestamp and ready/catalog count.
-Controls include:
+The focused failure checkpoint is recorded in:
 
-- `A` store derived reviewed metadata;
-- `V` verify a review item;
-- `R` refresh the complete Nexus snapshot and redraw in place;
-- `B` return to the catalog submenu; and
-- `Q` exit.
-
-### Menu 4 - Updates
-
-The screen title shows the same Nexus cache timestamp and count. Controls
-include:
-
-- Nexus mod ID selection;
-- `U` UE4SS baseline flow;
-- `R` complete Nexus refresh plus GitHub source-cache clear;
-- `B` or Enter to return to the main menu; and
-- `Q` exit.
-
-## Implementation Files
-
-- `.gitignore`
-- `10_Scripts/Commands/NexusMetadataCache.ps1`
-- `10_Scripts/Commands/NexusContentInventory.ps1`
-- `10_Scripts/Commands/NexusUpdateDownloads.ps1`
-- `10_Scripts/Commands/NexusUpdateMenuWiring.ps1`
-- `10_Scripts/Commands/CatalogMetadata.ps1`
-- `10_Scripts/Modules/PalworldModding.psm1`
-- `10_Scripts/Tests/NexusContentInventory.Tests.ps1`
-- `10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1`
-- `10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1`
-- `10_Scripts/Tests/NexusUpdateMenuWiring.Tests.ps1`
-- `10_Scripts/Tests/NexusUpdateDownloads.Tests.ps1`
-- `10_Scripts/Tests/CatalogMetadata.Tests.ps1`
-- `00_Documentation/NexusUpdates.md`
-- `00_Documentation/MenuFlow.md`
-
-## Test Coverage Added
-
-The existing focused tests cover:
-
-- fail-closed refreshed-report behavior;
-- explicit-ID `-WhatIf` safety;
-- complete raw mod/file-list storage for every catalog ID;
-- persistent disk reuse without repeated API calls;
-- incremental retrieval of a newly reviewed ID;
-- exact-file lookup from the full cached file list;
-- live retrieval of every download-link response;
-- GitHub metadata session caching and explicit clearing;
-- menu 4 timestamp, `R`, and `B` behavior;
-- menu 1 explicit refresh and redraw;
-- manual browser handoff; and
-- incomplete catalog records with no install names.
-
-`NexusContentInventory.Tests.ps1` adds four isolated Pester 3.4 cases covering:
-
-- one-time raw remote-preview retrieval and mixed-package classification;
-- advisory inventory invalidation when Nexus file metadata changes;
-- replacement by authoritative local archive inspection without repeat work;
-- update-report enrichment from the cached inventory.
-
-New Pester 3.4 cache/UX cases remain isolated into separate `Describe` scopes to
-avoid module-scoped mock leakage.
-
-## Earlier Verified Checkpoint
-
-The repository owner validated executable commit
-`9baa746bab6054e1445a1de8fc9aefa1ba398af7` locally under PowerShell 7.6.4 and
-Pester 3.4.0 on 2026-07-31:
-
-- original safety suite: 2 passed, 0 failed;
-- complete suite: 125 passed, 0 failed.
-
-The persistent snapshot, menu 1 fix, and lazy content inventories are later
-executable changes and have not yet been locally validated.
+```text
+00_Documentation\Session-Handoffs\2026-07-31-nexus-cache-whatif-fix.md
+```
 
 ## Required Local Validation
 
-Two new command files and one new test file now exist, so regenerate the
-generated repository maps **before** the complete Pester suite:
+The new command, test, and handoff files require another structure export:
 
 ```powershell
+git pull
 .\10_Scripts\Utilities\Export-PwRepositoryStructure.ps1
-Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1
-Invoke-Pester ./10_Scripts/Tests/NexusContentInventory.Tests.ps1
-Invoke-Pester ./10_Scripts/Tests/CatalogMetadata.Tests.ps1
-Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1
-Invoke-Pester ./10_Scripts/Tests
-```
-
-Expected counts, assuming no additional tests are added first:
-
-- safety suite: 12 passed, 0 failed;
-- content-inventory suite: 4 passed, 0 failed;
-- catalog metadata suite: 8 passed, 0 failed;
-- option-4 interaction suite: 2 passed, 0 failed;
-- complete suite: 140 passed, 0 failed.
-
-Then verify:
-
-```powershell
+Remove-Module PalworldModding -Force -ErrorAction SilentlyContinue
+Import-Module .\10_Scripts\Modules\PalworldModding.psd1 -Force -ErrorAction Stop
+Invoke-Pester .\10_Scripts\Tests\NexusMetadataCacheTransaction.Tests.ps1
+Invoke-Pester .\10_Scripts\Tests\NexusUpdateMenuWiring.Tests.ps1
+Invoke-Pester .\10_Scripts\Tests
 git status --short --branch
-git check-ignore -v .cache/NexusMetadata.json
+git check-ignore -v .cache\NexusMetadata.json
 ```
 
-Expected generated tracked changes:
+Expected counts:
 
-- `00_Documentation/RepositoryStructure.txt`
-- `00_Documentation/RepositoryInventory.json`
+- cache transaction suite: 1 passed, 0 failed;
+- menu wiring suite: 5 passed, 0 failed;
+- complete suite: 141 passed, 0 failed.
 
-The cache JSON itself must remain ignored and untracked.
+Expected tracked working-tree changes after regeneration:
 
-## Interactive Acceptance
+- `00_Documentation/RepositoryStructure.txt`;
+- `00_Documentation/RepositoryInventory.json`.
 
-1. Menu 1 `R` opens Remote Metadata without an indexing exception.
-2. Menu 1 shows the timestamp/count and inner `R` refreshes/redraws.
-3. Menu 4 shows the same timestamp/count plus visible `R` and `B`.
-4. Menu 4 `B` returns to the main menu.
-5. Initial option-4 reporting may retrieve content previews for the selected
-   current/update candidate files; reopening reuses the disk inventories.
-6. Update rows expose package types and detected roots without changing status.
-7. Manual mode displays the resolved `01_Archives` path and opens Nexus.
-8. A successful direct download upgrades its inventory to
-   `LocalArchiveInspection`; cancellation leaves files unchanged.
-9. `.cache\NexusMetadata.json` exists after first use and remains ignored.
+The cache JSON must remain ignored and untracked.
 
-A real Nexus Premium download remains optional and must use the repository
-owner's own account and API key.
+PR #2 must remain draft until this validation passes. Do not merge to `main`
+without explicit repository-owner approval.
