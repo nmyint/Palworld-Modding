@@ -13,6 +13,7 @@ branch now combines:
 - guarded option-4 update downloads;
 - option-4 navigation and manual-download guidance;
 - a persistent catalog-wide Nexus metadata snapshot;
+- lazy per-file content inventories and package classification;
 - explicit refresh UX in menu 1 and menu 4; and
 - a fix for menu 1 Remote Metadata when an incomplete catalog identity has no
   install-name alias.
@@ -36,41 +37,21 @@ The option-4 direct-download flow:
 - obtains the direct-download link live;
 - downloads to a temporary path, inspects the archive, and only then moves it
   into `01_Archives`; and
-- returns the archive path, SHA-256 hash, and option-2 import next step.
+- returns the archive path, SHA-256 hash, option-2 import next step, and locally
+  inspected package classification when available.
 
 Manual browser download remains available for normal accounts. The menu displays
 the resolved `01_Archives` path before opening Nexus. Browser completion is not
 monitored; the completed ZIP or 7z must be saved into `01_Archives`, followed by
 option-4 `R` and option 2 archive inspection/import.
 
-## Nexus Metadata Usage Audit
-
-Current workshop consumers use these Nexus fields:
-
-- update reports: mod name/version and file ID, filename, version, category, and
-  upload time;
-- catalog metadata and identity review: name, version, summary, description,
-  GitHub links, and framework hints;
-- current-game adoption: identity data plus file name, version, category, size,
-  and upload time;
-- profile archive plans: mod data and latest compatible file;
-- configured Nexus sources: mod version/description and latest file metadata;
-- direct downloads: live Premium identity, current mod/file data, and a live
-  transient download link.
-
-Before this branch, these workflows independently repeated overlapping mod and
-file-list API calls.
-
 ## Universal Nexus Metadata Snapshot
 
-The single cache/API authority is:
+The primary cache/API authority is:
 
 ```text
 10_Scripts\Commands\NexusMetadataCache.ps1
 ```
-
-It loads **before** `NexusUpdateMenuWiring.ps1`. The wiring file consumes the
-cache services and contains only menu UX and download orchestration.
 
 The local persistent snapshot is:
 
@@ -98,7 +79,7 @@ out.
 
 Existing commands continue calling `Invoke-PwNexusApi`. The shared API layer
 routes supported mod, file-list, and exact-file reads to the snapshot, so menu
-and module code parse one authoritative dataset.
+and module code parse one persistent dataset.
 
 ### Deliberate exclusions
 
@@ -108,7 +89,7 @@ The snapshot does not separately request or store:
 - API validation responses;
 - tracked-mod or endorsement-list endpoints;
 - transient direct-download links;
-- archive contents or content-preview payloads;
+- downloaded archive bytes;
 - unrelated games, collections, comments, discovery feeds, or other user-
   specific endpoints.
 
@@ -139,13 +120,93 @@ There is no automatic Nexus cache expiration.
 - Cache writes use a temporary file followed by replacement of the final JSON
   path.
 
-Local archives, catalog, profiles, and source configuration remain uncached and
-are reread normally.
-
 For approximately 30 unique mods, a complete refresh performs approximately 60
 stable metadata requests: one mod-info and one full file-list request per ID.
 Normal reads then reuse the snapshot until explicit refresh or catalog coverage
 changes.
+
+## Lazy Nexus Content Inventories
+
+The content-inventory extension is:
+
+```text
+10_Scripts\Commands\NexusContentInventory.ps1
+```
+
+It loads after `NexusUpdateMenuWiring.ps1` so it can preserve the cache behavior,
+enrich update reports, and upgrade successful direct downloads with local
+archive authority.
+
+It stores per-file `ContentInventories` inside the same
+`.cache\NexusMetadata.json` snapshot. It does **not** fetch every historical
+content preview during the catalog-wide metadata refresh.
+
+A remote content preview is retrieved only when a file becomes operationally
+relevant:
+
+- a current or `UpdateAvailable` file chosen by `Get-PwModUpdateReport`;
+- an existing API-downloaded archive whose filename records `Api<FileId>`;
+- a successful guarded direct download; or
+- a later module explicitly requesting that file inventory.
+
+Each inventory records:
+
+- Nexus file ID and complete file-metadata fingerprint;
+- raw content-preview JSON when remotely retrieved;
+- normalized archive-relative paths;
+- detected package types and candidate roots;
+- file count and mixed-package status;
+- source and authority;
+- retrieval timestamp, status, and error information;
+- local archive path/hash when locally inspected.
+
+Detected package types include:
+
+- `UE4SSLua`;
+- `Pak`;
+- `LogicMods`;
+- `Native`;
+- `Configuration`;
+- `Documentation`; and
+- `SupportOrUnknown`.
+
+Authority order:
+
+1. local ZIP/7z inspection;
+2. cached Nexus content preview;
+3. Nexus file name/description hints;
+4. Nexus mod description hints.
+
+Remote preview inventories are advisory. A successful direct download is
+inspected locally and replaces the advisory record with an authoritative
+`LocalArchiveInspection` record. Existing API-downloaded archives can also be
+upgraded when their `Api<FileId>` token identifies the matching cached Nexus
+file.
+
+A remote inventory is retained while its complete Nexus file-metadata
+fingerprint remains unchanged. A later metadata refresh discards the advisory
+inventory when that fingerprint changes. Local authoritative inventories remain
+associated with the inspected archive hash.
+
+Content-preview retrieval or classification failure never changes an update
+status or bypasses the guarded download checks. The error is recorded as
+non-blocking enrichment data.
+
+## Update Report Enrichment
+
+For rows with a current or update-candidate Nexus file,
+`Get-PwModUpdateReport` now adds:
+
+- `RemoteContentInventoryStatus`;
+- `RemoteContentInventorySource`;
+- `RemotePackageTypes`;
+- `RemoteDetectedRoots`;
+- `RemoteContentFileCount`;
+- `RemoteIsMixedPackage`; and
+- `RemoteContentInventoryError`.
+
+The existing `Current`, `UpdateAvailable`, `VariantNotFound`, `NoRemoteFiles`,
+and `CheckFailed` semantics remain unchanged.
 
 ## Menu 1 Remote Metadata Fix
 
@@ -194,10 +255,12 @@ include:
 
 - `.gitignore`
 - `10_Scripts/Commands/NexusMetadataCache.ps1`
+- `10_Scripts/Commands/NexusContentInventory.ps1`
 - `10_Scripts/Commands/NexusUpdateDownloads.ps1`
 - `10_Scripts/Commands/NexusUpdateMenuWiring.ps1`
 - `10_Scripts/Commands/CatalogMetadata.ps1`
 - `10_Scripts/Modules/PalworldModding.psm1`
+- `10_Scripts/Tests/NexusContentInventory.Tests.ps1`
 - `10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1`
 - `10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1`
 - `10_Scripts/Tests/NexusUpdateMenuWiring.Tests.ps1`
@@ -208,7 +271,7 @@ include:
 
 ## Test Coverage Added
 
-The focused tests cover:
+The existing focused tests cover:
 
 - fail-closed refreshed-report behavior;
 - explicit-ID `-WhatIf` safety;
@@ -223,7 +286,14 @@ The focused tests cover:
 - manual browser handoff; and
 - incomplete catalog records with no install names.
 
-New Pester 3.4 cache/UX cases are isolated into separate `Describe` scopes to
+`NexusContentInventory.Tests.ps1` adds four isolated Pester 3.4 cases covering:
+
+- one-time raw remote-preview retrieval and mixed-package classification;
+- advisory inventory invalidation when Nexus file metadata changes;
+- replacement by authoritative local archive inspection without repeat work;
+- update-report enrichment from the cached inventory.
+
+New Pester 3.4 cache/UX cases remain isolated into separate `Describe` scopes to
 avoid module-scoped mock leakage.
 
 ## Earlier Verified Checkpoint
@@ -235,17 +305,18 @@ Pester 3.4.0 on 2026-07-31:
 - original safety suite: 2 passed, 0 failed;
 - complete suite: 125 passed, 0 failed.
 
-The persistent snapshot and menu 1 fix are later executable changes and have not
-yet been locally validated.
+The persistent snapshot, menu 1 fix, and lazy content inventories are later
+executable changes and have not yet been locally validated.
 
 ## Required Local Validation
 
-Because `NexusMetadataCache.ps1` is a new command file, regenerate the generated
-repository maps **before** the complete Pester suite:
+Two new command files and one new test file now exist, so regenerate the
+generated repository maps **before** the complete Pester suite:
 
 ```powershell
 .\10_Scripts\Utilities\Export-PwRepositoryStructure.ps1
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuSafety.Tests.ps1
+Invoke-Pester ./10_Scripts/Tests/NexusContentInventory.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests/CatalogMetadata.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests/NexusUpdateMenuInteraction.Tests.ps1
 Invoke-Pester ./10_Scripts/Tests
@@ -254,9 +325,10 @@ Invoke-Pester ./10_Scripts/Tests
 Expected counts, assuming no additional tests are added first:
 
 - safety suite: 12 passed, 0 failed;
+- content-inventory suite: 4 passed, 0 failed;
 - catalog metadata suite: 8 passed, 0 failed;
 - option-4 interaction suite: 2 passed, 0 failed;
-- complete suite: 136 passed, 0 failed.
+- complete suite: 140 passed, 0 failed.
 
 Then verify:
 
@@ -278,10 +350,13 @@ The cache JSON itself must remain ignored and untracked.
 2. Menu 1 shows the timestamp/count and inner `R` refreshes/redraws.
 3. Menu 4 shows the same timestamp/count plus visible `R` and `B`.
 4. Menu 4 `B` returns to the main menu.
-5. Manual mode displays the resolved `01_Archives` path and opens Nexus.
-6. Menu 4 `R` rescans local archives and refreshes remote metadata.
-7. Cancelling direct-download confirmation leaves files unchanged.
-8. `.cache\NexusMetadata.json` exists after first use and remains ignored.
+5. Initial option-4 reporting may retrieve content previews for the selected
+   current/update candidate files; reopening reuses the disk inventories.
+6. Update rows expose package types and detected roots without changing status.
+7. Manual mode displays the resolved `01_Archives` path and opens Nexus.
+8. A successful direct download upgrades its inventory to
+   `LocalArchiveInspection`; cancellation leaves files unchanged.
+9. `.cache\NexusMetadata.json` exists after first use and remains ignored.
 
 A real Nexus Premium download remains optional and must use the repository
 owner's own account and API key.
