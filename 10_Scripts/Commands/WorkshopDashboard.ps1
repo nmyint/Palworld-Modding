@@ -611,6 +611,9 @@ function Get-PwWorkshopMenuDashboardState {
         [object]$Dashboard
     )
 
+    $workshopSection = Get-PwWorkshopDashboardSection `
+        -Dashboard $Dashboard `
+        -Name Workshop
     $profileSection = Get-PwWorkshopDashboardSection `
         -Dashboard $Dashboard `
         -Name Profile
@@ -630,6 +633,9 @@ function Get-PwWorkshopMenuDashboardState {
         -Dashboard $Dashboard `
         -Name Diagnostics
 
+    $workshop = Get-PwDashboardPropertyValue `
+        -InputObject $Dashboard `
+        -Name Workshop
     $profile = Get-PwDashboardPropertyValue `
         -InputObject $Dashboard `
         -Name Profile
@@ -648,6 +654,48 @@ function Get-PwWorkshopMenuDashboardState {
     $diagnostics = Get-PwDashboardPropertyValue `
         -InputObject $Dashboard `
         -Name Diagnostics
+
+    $workshopAvailable = (
+        $null -ne $workshopSection -and
+        $workshopSection.Status -eq 'Ready' -and
+        $null -ne $workshop
+    )
+    $workshopName = if ($workshopAvailable) {
+        [string](
+            Get-PwDashboardPropertyValue `
+                -InputObject $workshop `
+                -Name Name `
+                -Default 'Palworld Modding Workshop'
+        )
+    }
+    else {
+        'Palworld Modding Workshop'
+    }
+    $workshopVersion = if ($workshopAvailable) {
+        [string](
+            Get-PwDashboardPropertyValue `
+                -InputObject $workshop `
+                -Name Version `
+                -Default ''
+        )
+    }
+    else {
+        ''
+    }
+    $sessionStartedValue = if ($workshopAvailable) {
+        Get-PwDashboardPropertyValue `
+            -InputObject $workshop `
+            -Name Started
+    }
+    else {
+        $null
+    }
+    $sessionStarted = if ($null -ne $sessionStartedValue) {
+        [datetime]$sessionStartedValue
+    }
+    else {
+        $null
+    }
 
     $profileAvailable = (
         $null -ne $profileSection -and
@@ -748,15 +796,21 @@ function Get-PwWorkshopMenuDashboardState {
     else {
         0
     }
+    $hasUpstream = if ($repositoryAvailable) {
+        [bool](
+            Get-PwDashboardPropertyValue `
+                -InputObject $repository `
+                -Name HasUpstream `
+                -Default $false
+        )
+    }
+    else {
+        $false
+    }
     $repositorySync = if (-not $repositoryAvailable) {
         'Unavailable'
     }
-    elseif (-not [bool](
-        Get-PwDashboardPropertyValue `
-            -InputObject $repository `
-            -Name HasUpstream `
-            -Default $false
-    )) {
+    elseif (-not $hasUpstream) {
         'No upstream'
     }
     elseif ($ahead -eq 0 -and $behind -eq 0) {
@@ -772,11 +826,26 @@ function Get-PwWorkshopMenuDashboardState {
         $null -ne $catalog
     )
     $catalogStatus = if ($catalogAvailable) {
-        '{0} mods / {1} enabled / {2} Nexus-reviewed' -f @(
-            [int](Get-PwDashboardPropertyValue -InputObject $catalog -Name ModCount -Default 0),
-            [int](Get-PwDashboardPropertyValue -InputObject $catalog -Name EnabledCount -Default 0),
-            [int](Get-PwDashboardPropertyValue -InputObject $catalog -Name WithNexusIdCount -Default 0)
+        $modCount = [int](
+            Get-PwDashboardPropertyValue `
+                -InputObject $catalog `
+                -Name ModCount `
+                -Default 0
         )
+        $enabledCount = [int](
+            Get-PwDashboardPropertyValue `
+                -InputObject $catalog `
+                -Name EnabledCount `
+                -Default 0
+        )
+        $nexusCount = [int](
+            Get-PwDashboardPropertyValue `
+                -InputObject $catalog `
+                -Name WithNexusIdCount `
+                -Default 0
+        )
+        '{0} mods / {1} enabled / {2} Nexus-reviewed' -f `
+            $modCount, $enabledCount, $nexusCount
     }
     else {
         'Unavailable'
@@ -787,23 +856,86 @@ function Get-PwWorkshopMenuDashboardState {
         $deploymentSection.Status -eq 'Ready' -and
         $null -ne $deployment
     )
+    $canDeploy = if ($deploymentAvailable) {
+        [bool](
+            Get-PwDashboardPropertyValue `
+                -InputObject $deployment `
+                -Name CanDeploy `
+                -Default $false
+        )
+    }
+    else {
+        $false
+    }
+    $profileReady = if ($deploymentAvailable) {
+        [bool](
+            Get-PwDashboardPropertyValue `
+                -InputObject $deployment `
+                -Name IsReady `
+                -Default $false
+        )
+    }
+    else {
+        $false
+    }
+    $readinessStatus = if ($deploymentAvailable) {
+        [string](
+            Get-PwDashboardPropertyValue `
+                -InputObject $deployment `
+                -Name ReadinessStatus `
+                -Default 'NotEvaluated'
+        )
+    }
+    else {
+        'Unavailable'
+    }
+    $readiness = if ($deploymentAvailable) {
+        Get-PwDashboardPropertyValue `
+            -InputObject $deployment `
+            -Name Readiness
+    }
+    else {
+        $null
+    }
+    $readyToDeploy = (
+        $readinessStatus -eq 'Ready' -and
+        $null -ne $readiness -and
+        [bool](
+            Get-PwDashboardPropertyValue `
+                -InputObject $readiness `
+                -Name ReadyToDeploy `
+                -Default $false
+        )
+    )
     $deploymentStatus = if (-not $deploymentAvailable) {
         'Unavailable'
     }
-    elseif ([bool](Get-PwDashboardPropertyValue -InputObject $deployment -Name CanDeploy)) {
+    elseif ($readyToDeploy) {
         'Ready to deploy'
     }
-    elseif ([bool](Get-PwDashboardPropertyValue -InputObject $deployment -Name IsReady)) {
-        'Configured; deployment blocked'
+    elseif ($canDeploy) {
+        'Target available; verification required'
+    }
+    elseif ($profileReady) {
+        'Profile ready; game target unavailable'
     }
     else {
         'Needs attention'
     }
     $assemblyStatus = if ($deploymentAvailable) {
-        '{0} / verification {1}' -f @(
-            [string](Get-PwDashboardPropertyValue -InputObject $deployment -Name AssemblyPlanStatus -Default 'Unavailable'),
-            [string](Get-PwDashboardPropertyValue -InputObject $deployment -Name AssemblyValidationStatus -Default 'Unavailable')
+        $planStatus = [string](
+            Get-PwDashboardPropertyValue `
+                -InputObject $deployment `
+                -Name AssemblyPlanStatus `
+                -Default 'Unavailable'
         )
+        $validationStatus = [string](
+            Get-PwDashboardPropertyValue `
+                -InputObject $deployment `
+                -Name AssemblyValidationStatus `
+                -Default 'Unavailable'
+        )
+        '{0} / verification {1}' -f $planStatus, $validationStatus
     }
     else {
         'Unavailable'
@@ -870,6 +1002,9 @@ function Get-PwWorkshopMenuDashboardState {
     }
 
     [PSCustomObject]@{
+        WorkshopName = $workshopName
+        WorkshopVersion = $workshopVersion
+        SessionStarted = $sessionStarted
         ProfileName = $profileName
         ProfileStatus = $profileStatus
         ActiveModSet = $activeModSet
@@ -884,6 +1019,30 @@ function Get-PwWorkshopMenuDashboardState {
         DiagnosticsStatus = $diagnosticsStatus
         CollectionStatus = $collectionStatus
     }
+}
+
+function Get-PwWorkshopMenuSessionText {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$State
+    )
+
+    $version = if ([string]::IsNullOrWhiteSpace($State.WorkshopVersion)) {
+        ''
+    }
+    else {
+        " v$($State.WorkshopVersion)"
+    }
+    $started = if ($null -eq $State.SessionStarted) {
+        'session unavailable'
+    }
+    else {
+        'started ' + ([datetime]$State.SessionStarted).ToLocalTime().ToString('g')
+    }
+
+    "$($State.WorkshopName)$version | $started"
 }
 
 function Get-PwWorkshopMenuLayout {
@@ -942,6 +1101,10 @@ function Get-PwWorkshopMenuLayout {
     )
 
     if ($Height -ge 30) {
+        $content.Add((New-PwWorkshopMenuLine `
+            -Text (Get-PwWorkshopMenuSessionText -State $state) `
+            -Color DarkGray `
+            -Width $Width))
         $content.Add((New-PwWorkshopMenuLine -Text (
             "Profile    : $($state.ProfileName) | $($state.ProfileStatus) | " +
             "Set: $($state.ActiveModSet) ($($state.SelectedModCount) mods)"
@@ -1128,6 +1291,7 @@ function Show-PwWorkshopDashboard {
             'Generated : ' + ([datetime]$generatedAt).ToLocalTime().ToString('u')
         )
     }
+    Write-Host ('Session   : ' + (Get-PwWorkshopMenuSessionText -State $state))
     Write-Host "Snapshot  : $($state.CollectionStatus)"
     Write-Host "Profile   : $($state.ProfileName) | $($state.ProfileStatus)"
     Write-Host (
