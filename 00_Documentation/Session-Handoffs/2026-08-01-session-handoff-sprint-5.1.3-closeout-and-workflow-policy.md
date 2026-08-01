@@ -1,19 +1,51 @@
-> **MANDATORY STARTUP GATE — COMPLETE BEFORE ANY REPOSITORY-SPECIFIC RESPONSE OR ACTION**
+> **SESSION HANDOFF CONTINUATION — SILENT STARTUP GATE**
 >
-> 1. Read `README.md` completely. Do not skim it, scan only headings, or begin from assumptions.
-> 2. Read every document that `README.md` identifies or requires for repository work.
-> 3. Read `00_Documentation/AIRepositoryWorkflow.md` completely and abide by every applicable rule.
-> 4. Read every applicable document required or referenced by the AI workflow.
-> 5. Read `00_Documentation/RepositoryStructure.txt`, `00_Documentation/RepositoryInventory.json`, the relevant operational documentation, `00_Documentation/Scrapbook.md`, and this handoff.
-> 6. Treat explicit current user instructions and the verified current repository/documentation set as authoritative sources.
-> 7. Verify current repository state before making assumptions, recommendations, status claims, or changes.
+> Use the GitHub connector for `nmyint/Palworld-Modding` and treat current
+> `main` as authoritative unless the user explicitly states that the local
+> repository differs.
 >
-> This handoff and previous chat memory are summaries only. They are subordinate to explicit user instructions and current authoritative repository sources.
+> Execute the complete startup gate silently within the same assistant turn.
+> Follow `00_Documentation/SessionStartup.md`, using its **Continue from session
+> handoff** mode and Silent startup-gate execution contract.
+>
+> Before sending a natural-language repository response:
+>
+> 1. Read this handoff completely.
+> 2. Read `README.md` completely, not superficially.
+> 3. Read every document required or referenced by README.
+> 4. Read `00_Documentation/SessionStartup.md` completely.
+> 5. Read `00_Documentation/AIRepositoryWorkflow.md` completely and strictly
+>    abide by it.
+> 6. Read every applicable document required or referenced by the AI workflow.
+> 7. Read `RepositoryStructure.txt`, `RepositoryInventory.json`, all repository
+>    documentation required by README, relevant operational and standards
+>    documentation, and `Scrapbook.md`.
+> 8. Verify connector access, current `main` HEAD, recent commits, repository
+>    state, active-handoff status, and the exact continuation boundary.
+>
+> Do not send an acknowledgement, progress update, apology, plan, promise,
+> partial summary, list of remaining reading, or request for permission to
+> continue the required startup work.
+>
+> The first visible natural-language response must be either:
+>
+> - **COMPLETED** — confirmation that the full gate was satisfied, a concise
+>   verified repository-state summary, the exact continuation boundary and
+>   unresolved choices, and the required scope-selection question; or
+> - **BLOCKED** — one concise genuine hard-blocker report containing the exact
+>   failed source or operation, exact error, and remaining required verification.
+>
+> Long reading, additional connector calls, and retrievable truncation are not
+> hard blockers. Do not begin implementation in the startup response.
+>
+> This handoff and previous chat memory are summaries only. They are subordinate
+> to explicit current user instructions and verified current repository sources.
 
 # Session Handoff - Sprint 5.1.3 Closeout and Workflow Policy
 
 **Date:** 2026-08-01  
 **Finalized:** 2026-08-01 09:55 -04:00  
+**Startup-policy amendment:** 2026-08-01 10:11 -04:00  
 **Repository:** `nmyint/Palworld-Modding`  
 **Authoritative branch:** `main`  
 **Sprint state:** Sprint 5.1.3 complete; Sprint 5.1.4 next planned
@@ -27,8 +59,10 @@ Provide one clean continuation point for a new ChatGPT session after:
 - adopting proportional branch usage;
 - recording accepted future Pw-Git improvements;
 - strengthening the AI/session-handoff compliance rules;
-- auditing and removing stale handoff documentation; and
-- publishing refreshed repository maps.
+- auditing and removing stale handoff documentation;
+- publishing refreshed repository maps; and
+- establishing separate silent startup blocks for new implementation sessions
+  and handoff-continuation sessions.
 
 This is the only active continuation handoff. Durable project facts remain in canonical documentation, implementation, Git history, and merged pull requests.
 
@@ -37,21 +71,22 @@ This is the only active continuation handoff. Durable project facts remain in ca
 Before continuing repository work:
 
 1. Read `README.md` completely.
-2. Follow and read every document it requires for the requested task.
-3. Read `00_Documentation/AIRepositoryWorkflow.md` completely.
-4. Follow and read every applicable document it requires or references.
-5. Read `00_Documentation/RepositoryStructure.txt`.
-6. Read `00_Documentation/RepositoryInventory.json`.
-7. Read the relevant operational and standards documentation.
-8. Read `00_Documentation/Scrapbook.md` completely.
-9. Read this handoff.
-10. Verify actual current repository state before proceeding.
+2. Read `00_Documentation/SessionStartup.md` completely and use its handoff-continuation mode.
+3. Follow and read every document README requires for repository work.
+4. Read `00_Documentation/AIRepositoryWorkflow.md` completely.
+5. Follow and read every applicable document it requires or references.
+6. Read `00_Documentation/RepositoryStructure.txt`.
+7. Read `00_Documentation/RepositoryInventory.json`.
+8. Read all repository documentation required by README and the relevant operational and standards documentation.
+9. Read `00_Documentation/Scrapbook.md` completely.
+10. Read this handoff completely.
+11. Verify actual current repository state before proceeding.
 
 Do not use previous conversation context as a substitute for this reading order.
 
-## Final verified repository state
+## Repository-state checkpoint
 
-The repository owner reported the following synchronized local state after the handoff cleanup and repository-map refresh:
+The last repository-owner-reported synchronized local state before the startup-policy amendment was:
 
 ```text
 Repository : D:\Projects\Palworld-Modding
@@ -61,17 +96,31 @@ Working tree: clean
 HEAD       : 5fde7e0 docs(repo): refresh maps after handoff cleanup
 ```
 
-GitHub independently confirms the full commit:
+GitHub independently confirmed the full commit:
 
 ```text
 5fde7e03cf5c6caa7a3a25499e90f693cdc8cb00
 ```
 
-That commit refreshes `RepositoryStructure.txt` and `RepositoryInventory.json` after removing 15 stale handoff files. The generated maps now show one active handoff and 133 mapped files/documents.
+The owner later fetched the original final-handoff amendment at:
 
-This final handoff amendment is a content-only edit to the existing active handoff path. It does not add, remove, rename, or move a mapped path. Therefore it does not require another repository-map refresh.
+```text
+043dcdb9b8a6b54433d9968ae6af48624ba4f246
+```
 
-After this remote amendment, the repository owner intends to fetch/pull through GitHub Desktop. A future session must still verify the actual current branch, commit, upstream, and working-tree state rather than assume the checkpoint above remains HEAD.
+The startup-policy amendment adds the new tracked path:
+
+```text
+00_Documentation/SessionStartup.md
+```
+
+and updates README, the AI workflow, this handoff, and related documentation.
+Because a mapped path was added, the repository maps must be regenerated after
+these documentation commits are pulled locally.
+
+A future session must verify actual current branch, HEAD, upstream, recent
+commits, and working-tree state. It must not assume that either checkpoint above
+remains current.
 
 ## Verified Sprint 5.1.3 completion
 
@@ -165,15 +214,43 @@ This policy is recorded in:
 - `00_Documentation/Scrapbook.md`
 - `CONTRIBUTING.md`
 
+### Dual-mode silent session startup policy
+
+The canonical startup behavior is now maintained in:
+
+```text
+00_Documentation/SessionStartup.md
+```
+
+It provides two explicit new-session modes:
+
+1. **New project or implementation** — begin from current canonical repository
+   state without assuming that an older handoff defines the new scope.
+2. **Continue from session handoff** — verify the active handoff against current
+   repository state and resume from its confirmed boundary.
+
+Both modes require the startup gate to execute silently within the same assistant
+turn. No acknowledgement, progress report, apology, plan, promise, partial
+summary, or list of remaining reading is permitted. The first visible
+natural-language response must be `COMPLETED` or a genuine concise `BLOCKED`
+result.
+
 ### Session-handoff policy
 
-`00_Documentation/AIRepositoryWorkflow.md` now requires every future handoff to:
+`00_Documentation/AIRepositoryWorkflow.md` requires every future active handoff to:
 
-- begin with the mandatory startup gate used at the top of this file;
-- require complete reading of README and the AI workflow;
-- require every applicable referenced document;
-- treat explicit user instructions and verified current repository sources as authoritative;
+- begin with or invoke the canonical handoff-continuation startup block;
+- require silent startup-gate completion in the same assistant turn;
+- require complete reading of README, SessionStartup, the AI workflow, every
+  applicable referenced document, repository maps, relevant operational and
+  standards documentation, Scrapbook, and the active handoff;
+- treat explicit current user instructions and verified current repository
+  sources as authoritative;
 - verify actual repository state before assumptions or status claims;
+- prohibit acknowledgements, progress messages, apologies, plans, promises,
+  partial results, and lists of remaining reading;
+- limit the first visible response to `COMPLETED` or a genuine concise `BLOCKED`
+  result;
 - inspect existing handoffs before publishing a new one;
 - normally retain one active continuation handoff;
 - move durable facts into canonical documentation;
@@ -292,17 +369,34 @@ Do not begin Sprint 5.1.4, Sprint 5.1.5, or Pw-Git implementation without explic
 
 The next session must:
 
-1. Complete the mandatory startup gate at the top of this file.
-2. Verify GitHub connector access to `nmyint/Palworld-Modding`.
-3. Verify current `main`, remote HEAD, recent commits, and repository status.
-4. Confirm that this is still the only active handoff.
-5. Confirm whether the next objective is:
+1. Use the canonical **Continue from session handoff** block in `SessionStartup.md`.
+2. Complete the silent mandatory startup gate in the same assistant turn.
+3. Verify GitHub connector access to `nmyint/Palworld-Modding`.
+4. Verify current `main`, remote HEAD, recent commits, and repository status.
+5. Confirm that this is still the only active handoff.
+6. Confirm whether the next objective is:
    - Sprint 5.1.4 menu UX integration; or
    - the accepted Pw-Git improvements.
-6. Read the implementation and documentation relevant to that selected objective.
-7. Create a branch only if the selected work is a new sprint, major/risky change, experiment, uncertain multi-system scope, or otherwise materially benefits from isolation.
-8. Do not begin implementation until verification and scope confirmation are complete.
+7. Read the implementation and documentation relevant to the selected objective.
+8. Create a branch only if the selected work is a new sprint, major/risky change, experiment, uncertain multi-system scope, or otherwise materially benefits from isolation.
+9. Do not begin implementation until verification and scope confirmation are complete.
+
+## Local synchronization required for the startup-policy amendment
+
+After these documentation commits are published, the repository owner should:
+
+1. fetch and pull `main`;
+2. refresh the repository maps because `SessionStartup.md` is a new included
+   file;
+3. run `RepositoryStructure.Tests.ps1` and `git diff --check`;
+4. review, stage, commit, and push only the two generated map files if they
+   changed;
+5. verify clean synchronized `main`.
+
+A full workshop test run is not required solely for this documentation and map
+update. The focused repository-structure suite is the applicable validation.
 
 ## Session closeout status
 
-**This session is fully closed and ready to continue in a new conversation after the repository owner fetches/pulls this final content-only handoff amendment through GitHub Desktop.**
+**The Sprint 5.1.3 development session remains closed. The startup-policy
+amendment is ready for local synchronization and repository-map publication.**
