@@ -6,15 +6,21 @@ Defines how AI assistants and automated tools should interact with this reposito
 
 ## Initial Repository Scan
 
-Always begin with:
+Always begin with the selected repository-root session entry file:
+
+- `NewSession.md` for a new project or implementation scope; or
+- `ContinueSession.md` for continuation from the active handoff.
+
+The selected entry file then requires this reading sequence:
 
 1. `README.md`
 2. `00_Documentation/SessionStartup.md`
 3. `00_Documentation/RepositoryStructure.txt`
 4. `00_Documentation/RepositoryInventory.json`
 5. `00_Documentation/AIRepositoryWorkflow.md`
-6. Relevant operational documentation in `00_Documentation`
+6. Relevant operational and standards documentation in `00_Documentation`
 7. `00_Documentation/Scrapbook.md` for the canonical working agreement and historical context
+8. Relevant implementation and tests
 
 These files define the repository map and startup behavior before deeper inspection.
 
@@ -22,16 +28,17 @@ These files define the repository map and startup behavior before deeper inspect
 
 Before answering any repository-specific request, making recommendations, or modifying files, verify:
 
-- README.md has been reviewed completely rather than skimmed for headings or keywords.
-- SessionStartup.md has been reviewed and the correct startup mode has been selected.
-- Every document explicitly required or referenced by README.md for repository work has been read.
-- AIRepositoryWorkflow.md has been reviewed completely and its rules are being followed.
-- Every applicable document required or referenced by AIRepositoryWorkflow.md has been read.
-- RepositoryStructure.txt has been reviewed.
-- RepositoryInventory.json has been reviewed.
-- Relevant operational and standards documentation has been identified and read.
-- Existing implementation and tests have been inspected when applicable.
-- Current repository access, branch, HEAD, and relevant recent state have been verified when available.
+- the selected root entry file has been reviewed completely and followed;
+- README.md has been reviewed completely rather than skimmed for headings or keywords;
+- SessionStartup.md has been reviewed completely;
+- every document explicitly required or referenced by README.md for repository work has been read;
+- AIRepositoryWorkflow.md has been reviewed completely and its rules are being followed;
+- every applicable document required or referenced by AIRepositoryWorkflow.md has been read;
+- RepositoryStructure.txt has been reviewed;
+- RepositoryInventory.json has been reviewed;
+- relevant operational and standards documentation has been identified and read;
+- existing implementation and tests have been inspected when applicable;
+- current repository access, branch, HEAD, and relevant recent state have been verified when available.
 
 Conversation history, previous responses, cached context, screenshots, handoff summaries, and assumptions are not authoritative repository state.
 
@@ -62,7 +69,7 @@ The first visible natural-language response must be one of these result types:
 
 ### COMPLETED
 
-The response may contain only:
+The response may contain only the completion items required by the selected root entry file:
 
 1. confirmation that the complete startup gate was satisfied;
 2. a concise verified repository-state summary;
@@ -84,13 +91,20 @@ Any acknowledgement, progress report, partial result, or promise to continue bef
 
 ## Session Startup Modes
 
-The canonical copy-and-paste prompts are maintained in `00_Documentation/SessionStartup.md`.
+The canonical repository-root entry files are:
 
-Choose exactly one mode for a new chat session.
+- `NewSession.md`
+- `ContinueSession.md`
+
+The shared startup policy is maintained in:
+
+- `00_Documentation/SessionStartup.md`
+
+Choose exactly one root entry file for a new chat session.
 
 ### New project or implementation
 
-Use this mode when beginning a new feature, sprint, maintenance project, investigation, or implementation scope that is not being resumed from an active handoff.
+Use `NewSession.md` when beginning a new feature, sprint, maintenance project, investigation, or implementation scope that is not being resumed from an active handoff.
 
 Required behavior:
 
@@ -103,7 +117,7 @@ Required behavior:
 
 ### Continue from session handoff
 
-Use this mode when resuming work summarized by the active file under `00_Documentation/Session-Handoffs`.
+Use `ContinueSession.md` when resuming work summarized by the active file under `00_Documentation/Session-Handoffs`.
 
 Required behavior:
 
@@ -148,12 +162,13 @@ https://github.com/nmyint/Palworld-Modding/blob/main/README.md
 
 Supporting authoritative sources:
 
-1. `00_Documentation/SessionStartup.md`
-2. `00_Documentation/RepositoryStructure.txt`
-3. `00_Documentation/RepositoryInventory.json`
-4. `00_Documentation/AIRepositoryWorkflow.md`
-5. Relevant operational documentation
-6. `00_Documentation/Scrapbook.md` for the canonical working agreement and historical context
+1. The selected repository-root entry file: `NewSession.md` or `ContinueSession.md`
+2. `00_Documentation/SessionStartup.md`
+3. `00_Documentation/RepositoryStructure.txt`
+4. `00_Documentation/RepositoryInventory.json`
+5. `00_Documentation/AIRepositoryWorkflow.md`
+6. Relevant operational and standards documentation
+7. `00_Documentation/Scrapbook.md` for the canonical working agreement and historical context
 
 Explicit current user instructions take precedence. The current repository contents and the required documentation set are authoritative over session summaries and prior conversation memory.
 
@@ -319,18 +334,18 @@ Before modifying files:
 
 A session handoff is a current continuation record, not a substitute for reading the repository.
 
-### Mandatory handoff opening block
+### Mandatory handoff opening reference
 
-Every newly created or substantially revised active handoff must begin with the handoff-continuation startup block or an exact self-contained equivalent from `00_Documentation/SessionStartup.md`.
+Every newly created or substantially revised active handoff must begin with a prominent instruction to read and follow the repository-root `ContinueSession.md` before any repository-specific response or action.
 
-The opening block must require:
+The handoff opening must state that:
 
-- complete silent startup-gate execution within the same assistant turn;
-- full reading of README, SessionStartup, AIRepositoryWorkflow, every required repository document, repository maps, relevant operational and standards documentation, Scrapbook, and the active handoff;
-- verification of current repository state and active-handoff status;
-- explicit authority of current user instructions and verified repository sources over the handoff and prior chat memory;
-- no acknowledgement, progress report, apology, plan, promise, partial summary, or list of remaining reading;
-- a first visible response limited to `COMPLETED` or a genuine concise `BLOCKED` result.
+- `ContinueSession.md` and the shared startup policy govern startup behavior;
+- the active handoff must be read completely;
+- current user instructions and verified repository state override the handoff and prior chat memory;
+- implementation remains blocked until startup verification and scope confirmation are complete.
+
+Do not duplicate the complete startup prompt inside every handoff. `ContinueSession.md` and `SessionStartup.md` are the canonical startup instructions.
 
 Reading only the handoff is never sufficient preparation for repository work.
 
@@ -338,7 +353,7 @@ Reading only the handoff is never sufficient preparation for repository work.
 
 Verify:
 
-- the full current README, SessionStartup, and AI workflow have been read;
+- the full current README, selected root entry file, SessionStartup, and AI workflow have been read;
 - all documents they require for the task have been read;
 - existing handoff files have been inspected;
 - current repository, branch, commit, and working-tree state have been verified when available;
@@ -394,12 +409,13 @@ Priority order:
 1. Explicit current user instructions
 2. `README.md`
 3. `AIRepositoryWorkflow.md`
-4. `SessionStartup.md`
-5. `RepositoryStructure.txt` and `RepositoryInventory.json`
-6. Individual operational and standards documentation
-7. `Scrapbook.md`
-8. Active handoff summaries
-9. Previous conversation memory
+4. The selected root entry file: `NewSession.md` or `ContinueSession.md`
+5. `SessionStartup.md`
+6. `RepositoryStructure.txt` and `RepositoryInventory.json`
+7. Individual operational and standards documentation
+8. `Scrapbook.md`
+9. Active handoff summaries
+10. Previous conversation memory
 
 Generated files describe the current repository state. They should not be manually edited unless specifically required.
 
