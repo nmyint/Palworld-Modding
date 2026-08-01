@@ -1,14 +1,37 @@
+## New Chat Session Startup
+
+Before starting repository work in a new AI chat, use one of the two canonical
+startup blocks in:
+
+`00_Documentation/SessionStartup.md`
+
+Choose exactly one mode:
+
+1. **New project or implementation** — begin from current canonical repository
+   state without assuming that an older handoff defines the new scope.
+2. **Continue from session handoff** — locate the active handoff, verify it
+   against current repository state, and resume from its confirmed boundary.
+
+Both modes require silent startup-gate execution in the same assistant turn. The
+assistant must complete all required reading and verification before sending a
+natural-language response. It must not send acknowledgements, progress updates,
+apologies, plans, promises, partial summaries, or lists of remaining reading.
+The first visible natural-language response must be either the completed verified
+startup result or one concise genuine hard-blocker report.
+
 ## Repository Entry Point (AI / Developer Workflow)
 
 When opening this repository, begin with:
 
-1. Read `README.md`
-2. Read `00_Documentation/RepositoryStructure.txt` and strictly abide by it.
-3. Read `00_Documentation/RepositoryInventory.json` and strictly abide by it.
-4. Read `00_Documentation/AIRepositoryWorkflow.md` and strictly abide by it.
-5. Read `00_Documentation/AIRepositoryWorkflow_v2_Design.md` as a design reference for the merged workflow guardrails.
-6. Review relevant operational documentation in `00_Documentation`
-7. Review `00_Documentation/Scrapbook.md` for historical context
+1. Read `README.md` completely.
+2. Read `00_Documentation/SessionStartup.md` and use the startup mode appropriate
+   to the session.
+3. Read `00_Documentation/RepositoryStructure.txt` and strictly abide by it.
+4. Read `00_Documentation/RepositoryInventory.json` and strictly abide by it.
+5. Read `00_Documentation/AIRepositoryWorkflow.md` and strictly abide by it.
+6. Read `00_Documentation/AIRepositoryWorkflow_v2_Design.md` as a design reference for the merged workflow guardrails.
+7. Review relevant operational documentation in `00_Documentation`.
+8. Review `00_Documentation/Scrapbook.md` for historical context.
 
 The generated repository structure files provide the authoritative map of:
 
@@ -42,20 +65,28 @@ unless the task specifically requires them.
 
 ## Session Handoffs
 
-Historical AI/development continuation records are stored in:
+The current AI/development continuation record is stored in:
 
 `00_Documentation/Session-Handoffs/`
 
-Use the latest relevant handoff when continuing previous work.
+Use the active handoff only when continuing previous work. New projects and
+implementations should use the new-project startup mode in
+`SessionStartup.md` instead of assuming that a handoff defines their scope.
 
-- `Scrapbook.md` contains project history and research context.
-- `Session-Handoffs/` contains continuation state from previous AI sessions.
+- `Scrapbook.md` contains the canonical working agreement, project history, and
+  research context.
+- `Session-Handoffs/` contains the current continuation state for resumed work.
+- Git history and merged pull requests preserve superseded historical records.
 
 ## AI Workflow Design Documents
 
 The active AI workflow is maintained in:
 
 - `00_Documentation/AIRepositoryWorkflow.md`
+
+The canonical new-session startup blocks are maintained in:
+
+- `00_Documentation/SessionStartup.md`
 
 The workflow guardrail design reference is maintained in:
 
