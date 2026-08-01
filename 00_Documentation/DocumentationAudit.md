@@ -1,8 +1,8 @@
 # Documentation Audit — Current Status
 
-**Reviewed:** 2026-07-31  
+**Reviewed:** 2026-08-01  
 **Repository:** `nmyint/Palworld-Modding`  
-**Branch:** `agent/nexus-update-download-flow`
+**Branch:** `agent/sprint-5.1.3-dashboard-data-model`
 
 ## Purpose
 
@@ -18,11 +18,12 @@ Pw-Git v1.2, the persistent Nexus metadata workflow, and the active Sprint 5.1
 sequence accurately enough to serve as the project knowledge base.
 
 Sprint 5 remains active. Sprint 5.1.1, repository awareness and structure
-documentation, and Sprint 5.1.2, workshop runtime and session model, are complete.
-Sprint 5.1.3, the dashboard data model, is the next planned Sprint 5.1 increment.
+documentation; Sprint 5.1.2, workshop runtime and session model; and Sprint
+5.1.3, the dashboard data model, are complete. Sprint 5.1.4, menu UX integration,
+is the next planned Sprint 5.1 increment.
 
 The documentation set still has maintenance items, but none invalidate the
-accepted Sprint 1–4 milestones or the completed Sprint 5.1.1 and 5.1.2
+accepted Sprint 1–4 milestones or the completed Sprint 5.1.1 through 5.1.3
 boundaries.
 
 ## Resolved findings
@@ -35,21 +36,24 @@ The following earlier findings have been corrected:
   automation, and mod-library/compatibility outcomes to Sprints 1, 2, 3, and 4
   respectively instead of attributing early foundation work to Sprint 4.
 - `Roadmap.md`, `README.md`, and `Scrapbook.md` consistently mark Sprint 4 as
-  complete, Sprint 5 as active, Sprint 5.1.1 and 5.1.2 as complete, and Sprint
-  5.1.3 as next planned.
-- `Environment.md` now provides the operator-facing documentation for
+  complete, Sprint 5 as active, Sprint 5.1.1 through 5.1.3 as complete, and
+  Sprint 5.1.4 as next planned.
+- `Environment.md` provides the operator-facing documentation for
   `10_Scripts\Core\Bootstrap.ps1`, including initialization, context lifetime,
   reset behavior, structured output, read-only startup, and durable-state
-  boundaries.
+  boundaries, and links the completed dashboard composition layer.
+- `WorkshopDashboard.md` documents the fixed dashboard schema, existing-command
+  authority, failure isolation, local Git boundary, serialization contract, and
+  verified read-only behavior.
 - Repository/document required-path, link, map-freshness, module,
   configuration, and test-health checks are assigned explicitly to Sprint
   5.1.5 rather than retained as an artificial blocker for the completed
-  repository exporter milestone.
+  repository exporter or dashboard milestones.
 - The repository structure exporter includes the intended configuration,
   documentation, module, and generated-map scope.
 - The repository structure exporter excludes `.git` and local `.cache` state.
 - `RepositoryStructure.txt` and `RepositoryInventory.json` were regenerated and
-  committed after the Nexus metadata and map-hygiene work.
+  committed after the Nexus metadata, map-hygiene, and dashboard-model work.
 - `Pw-Git.md` provides durable operator documentation and records the completed
   v1.2 command and safety model.
 - `ModCatalog.md` describes the current catalog, ownership, compatibility,
@@ -104,15 +108,15 @@ defines precedence.
 ### 4. Historical handoff hygiene
 
 Some older files under `00_Documentation/Session-Handoffs` contain raw or poorly
-named historical material. Current Nexus and Pw-Git handoffs are structured, but
-older records should eventually be archived or standardized without altering
-authoritative current documentation.
+named historical material. Current Nexus, Pw-Git, and dashboard handoffs are
+structured, but older records should eventually be archived or standardized
+without altering authoritative current documentation.
 
 ### 5. Automated documentation and health validation
 
 There is no dedicated health suite validating exact path casing, internal links,
 documented menu keys, required documents, generated-map freshness, module
-health, configuration health, and completed-feature language. This work is now
+health, configuration health, and completed-feature language. This work remains
 explicitly assigned to Sprint 5.1.5.
 
 ### 6. Transient sprint labels in implementation text
@@ -138,15 +142,14 @@ The following were reviewed but not changed:
 - upgrade or removal apply commands;
 - semantic analysis or merging of PAK contents;
 - semantic interaction analysis between separate Lua mods;
-- dashboard implementation;
 - broad menu UX redesign;
 - Sprint 5.1.5 health-check implementation.
 
 ## Status
 
-**Sprint-state and Bootstrap documentation correction complete.**
+**Sprint 5.1.3 dashboard documentation reconciliation complete.**
 
 The remaining findings are assigned to later implementation or maintenance
-work. They must not be treated as unfinished Sprint 4, Sprint 5.1.1, or Sprint
-5.1.2 work unless the project owner explicitly changes an accepted milestone
+work. They must not be treated as unfinished Sprint 4 or Sprint 5.1.1 through
+5.1.3 work unless the project owner explicitly changes an accepted milestone
 boundary.
