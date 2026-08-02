@@ -294,3 +294,331 @@ Describe 'PalworldModding workshop dashboard model' {
         }
     }
 }
+
+Describe 'PalworldModding dashboard menu integration' {
+
+    BeforeAll {
+        Remove-Module PalworldModding -Force -ErrorAction SilentlyContinue
+        Import-Module $moduleManifest -Force
+    }
+
+    It 'maps dashboard providers and session context into a clear menu summary' {
+        InModuleScope PalworldModding {
+            $started = [datetime]'2026-08-01T12:00:00Z'
+            $dashboard = [PSCustomObject]@{
+                IsComplete = $true
+                ReadySectionCount = 7
+                Sections = @(
+                    'Workshop',
+                    'Repository',
+                    'Profile',
+                    'Catalog',
+                    'Deployment',
+                    'UpdateCache',
+                    'Diagnostics'
+                ) | ForEach-Object {
+                    [PSCustomObject]@{
+                        Name = $_
+                        Status = 'Ready'
+                        Error = ''
+                    }
+                }
+                Workshop = [PSCustomObject]@{
+                    Name = 'Palworld Modding Workshop'
+                    Version = '0.4.9'
+                    Started = $started
+                }
+                Profile = [PSCustomObject]@{
+                    Name = 'Stable'
+                    IsValid = $true
+                    IsReady = $true
+                    ActiveModSet = 'Core'
+                    SelectedModCount = 12
+                }
+                Repository = [PSCustomObject]@{
+                    Branch = 'main'
+                    IsClean = $true
+                    HasUpstream = $true
+                    Ahead = 0
+                    Behind = 0
+                    Changes = @()
+                }
+                Catalog = [PSCustomObject]@{
+                    ModCount = 20
+                    EnabledCount = 12
+                    WithNexusIdCount = 18
+                }
+                Deployment = [PSCustomObject]@{
+                    IsReady = $true
+                    CanDeploy = $true
+                    AssemblyPlanStatus = 'Ready'
+                    AssemblyValidationStatus = 'Ready'
+                    ReadinessStatus = 'Ready'
+                    Readiness = [PSCustomObject]@{
+                        ReadyToDeploy = $true
+                    }
+                }
+                UpdateCache = [PSCustomObject]@{
+                    Exists = $true
+                    IsComplete = $true
+                    IsCurrent = $true
+                }
+                Diagnostics = [PSCustomObject]@{
+                    IsHealthy = $true
+                }
+            }
+
+            $state = Get-PwWorkshopMenuDashboardState -Dashboard $dashboard
+
+            $state.WorkshopName | Should Be 'Palworld Modding Workshop'
+            $state.WorkshopVersion | Should Be '0.4.9'
+            $state.SessionStarted | Should Be $started
+            $state.ProfileName | Should Be 'Stable'
+            $state.ProfileStatus | Should Be 'Ready'
+            $state.ActiveModSet | Should Be 'Core'
+            $state.SelectedModCount | Should Be 12
+            $state.Branch | Should Be 'main'
+            $state.RepositoryStatus | Should Be 'Clean'
+            $state.RepositorySync | Should Be 'Synchronized'
+            $state.CatalogStatus | Should Match '20 mods'
+            $state.DeploymentStatus | Should Be 'Ready to deploy'
+            $state.UpdateCacheStatus | Should Be 'Current'
+            $state.DiagnosticsStatus | Should Be 'Healthy'
+            $state.CollectionStatus | Should Be 'Complete (7/7)'
+        }
+    }
+
+    It 'does not confuse an available game target with verified deployment readiness' {
+        InModuleScope PalworldModding {
+            $dashboard = [PSCustomObject]@{
+                IsComplete = $false
+                ReadySectionCount = 1
+                Sections = @(
+                    [PSCustomObject]@{
+                        Name = 'Deployment'
+                        Status = 'Ready'
+                        Error = ''
+                    }
+                )
+                Deployment = [PSCustomObject]@{
+                    IsReady = $true
+                    CanDeploy = $true
+                    AssemblyPlanStatus = 'Ready'
+                    AssemblyValidationStatus = 'Ready'
+                    ReadinessStatus = 'NotEvaluated'
+                    Readiness = $null
+                }
+            }
+
+            $state = Get-PwWorkshopMenuDashboardState -Dashboard $dashboard
+
+            $state.DeploymentStatus |
+                Should Be 'Target available; verification required'
+        }
+    }
+
+    It 'renders durable dashboard-aware full and compact menu layouts' {
+        InModuleScope PalworldModding {
+            $dashboard = [PSCustomObject]@{
+                IsComplete = $true
+                ReadySectionCount = 7
+                Sections = @(
+                    'Workshop',
+                    'Repository',
+                    'Profile',
+                    'Catalog',
+                    'Deployment',
+                    'UpdateCache',
+                    'Diagnostics'
+                ) | ForEach-Object {
+                    [PSCustomObject]@{
+                        Name = $_
+                        Status = 'Ready'
+                        Error = ''
+                    }
+                }
+                Workshop = [PSCustomObject]@{
+                    Name = 'Palworld Modding Workshop'
+                    Version = '0.4.9'
+                    Started = [datetime]'2026-08-01T12:00:00Z'
+                }
+                Profile = [PSCustomObject]@{
+                    Name = 'Stable'
+                    IsValid = $true
+                    IsReady = $true
+                    ActiveModSet = 'Core'
+                    SelectedModCount = 12
+                }
+                Repository = [PSCustomObject]@{
+                    Branch = 'main'
+                    IsClean = $true
+                    HasUpstream = $true
+                    Ahead = 0
+                    Behind = 0
+                    Changes = @()
+                }
+                Catalog = [PSCustomObject]@{
+                    ModCount = 20
+                    EnabledCount = 12
+                    WithNexusIdCount = 18
+                }
+                Deployment = [PSCustomObject]@{
+                    IsReady = $true
+                    CanDeploy = $true
+                    AssemblyPlanStatus = 'Ready'
+                    AssemblyValidationStatus = 'Ready'
+                    ReadinessStatus = 'Ready'
+                    Readiness = [PSCustomObject]@{
+                        ReadyToDeploy = $true
+                    }
+                }
+                UpdateCache = [PSCustomObject]@{
+                    Exists = $true
+                    IsComplete = $true
+                    IsCurrent = $true
+                }
+                Diagnostics = [PSCustomObject]@{
+                    IsHealthy = $true
+                }
+            }
+
+            $full = Get-PwWorkshopMenuLayout `
+                -Dashboard $dashboard `
+                -Width 100 `
+                -Height 30
+            $compact = Get-PwWorkshopMenuLayout `
+                -Dashboard $dashboard `
+                -Width 60 `
+                -Height 18
+            $fullText = @($full.Text) -join "`n"
+            $compactText = @($compact.Text) -join "`n"
+
+            $fullText | Should Match 'Guided workshop operations and current state'
+            $fullText | Should Match 'Palworld Modding Workshop v0.4.9'
+            $fullText | Should Match '\[H\] View current state dashboard'
+            $fullText | Should Match 'Profile    : Stable'
+            $fullText | Should Match 'Repository : main'
+            $fullText.Contains('Sprint 4') | Should Be $false
+            $compactText | Should Match '\[H\] Current state dashboard'
+            $compactText | Should Match '\[9\] Inventory'
+            $compactText | Should Match '\[0\] History'
+            (@($compact).Count -le 18) | Should Be $true
+        }
+    }
+
+    It 'collects the dashboard once for the main menu and avoids legacy probes' {
+        InModuleScope PalworldModding {
+            $dashboard = [PSCustomObject]@{
+                IsComplete = $false
+                ReadySectionCount = 0
+                Sections = @()
+            }
+
+            Mock Get-PwWorkshopDashboard { $dashboard }
+            Mock Get-PwWorkshopTerminalSize {
+                [PSCustomObject]@{ Width = 80; Height = 24 }
+            }
+            Mock Get-PwWorkshopConfig {
+                throw 'Legacy configuration probe should not run.'
+            }
+            Mock Test-PwEnvironment {
+                throw 'Legacy environment probe should not run.'
+            }
+            Mock Write-Host {}
+
+            Show-PwWorkshopMenu
+
+            Assert-MockCalled Get-PwWorkshopDashboard -Times 1 -Exactly
+            Assert-MockCalled Get-PwWorkshopConfig -Times 0 -Exactly
+            Assert-MockCalled Test-PwEnvironment -Times 0 -Exactly
+        }
+    }
+
+    It 'keeps the detailed dashboard view read-only' {
+        InModuleScope PalworldModding {
+            $dashboard = [PSCustomObject]@{
+                GeneratedAt = [datetime]'2026-08-01T12:00:00Z'
+                IsComplete = $true
+                ReadySectionCount = 7
+                Sections = @(
+                    'Workshop',
+                    'Repository',
+                    'Profile',
+                    'Catalog',
+                    'Deployment',
+                    'UpdateCache',
+                    'Diagnostics'
+                ) | ForEach-Object {
+                    [PSCustomObject]@{
+                        Name = $_
+                        Status = 'Ready'
+                        Error = ''
+                    }
+                }
+                Errors = @()
+                Workshop = [PSCustomObject]@{
+                    Name = 'Palworld Modding Workshop'
+                    Version = '0.4.9'
+                    Started = [datetime]'2026-08-01T11:30:00Z'
+                }
+                Profile = [PSCustomObject]@{
+                    Name = 'Stable'
+                    IsValid = $true
+                    IsReady = $true
+                    ActiveModSet = 'Core'
+                    SelectedModCount = 12
+                }
+                Repository = [PSCustomObject]@{
+                    Branch = 'main'
+                    IsClean = $true
+                    HasUpstream = $true
+                    Ahead = 0
+                    Behind = 0
+                    Changes = @()
+                }
+                Catalog = [PSCustomObject]@{
+                    ModCount = 20
+                    EnabledCount = 12
+                    WithNexusIdCount = 18
+                }
+                Deployment = [PSCustomObject]@{
+                    IsReady = $true
+                    CanDeploy = $true
+                    AssemblyPlanStatus = 'Ready'
+                    AssemblyValidationStatus = 'Ready'
+                    ReadinessStatus = 'Ready'
+                    Readiness = [PSCustomObject]@{
+                        ReadyToDeploy = $true
+                    }
+                }
+                UpdateCache = [PSCustomObject]@{
+                    Exists = $true
+                    IsComplete = $true
+                    IsCurrent = $true
+                }
+                Diagnostics = [PSCustomObject]@{
+                    IsHealthy = $true
+                }
+            }
+
+            Mock Get-PwWorkshopTerminalSize {
+                [PSCustomObject]@{ Width = 100; Height = 30 }
+            }
+            Mock Clear-Host {}
+            Mock Write-Host {}
+            Mock Update-PwNexusMetadataCache {}
+            Mock Update-PwModCatalog {}
+            Mock Build-PwProfileDeployment {}
+            Mock Invoke-PwDeployment {}
+            Mock Restore-PwDeployment {}
+
+            Show-PwWorkshopDashboard -Dashboard $dashboard
+
+            Assert-MockCalled Update-PwNexusMetadataCache -Times 0 -Exactly
+            Assert-MockCalled Update-PwModCatalog -Times 0 -Exactly
+            Assert-MockCalled Build-PwProfileDeployment -Times 0 -Exactly
+            Assert-MockCalled Invoke-PwDeployment -Times 0 -Exactly
+            Assert-MockCalled Restore-PwDeployment -Times 0 -Exactly
+        }
+    }
+}
